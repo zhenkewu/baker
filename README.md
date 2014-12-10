@@ -5,15 +5,18 @@ devtools::install_github("zhenkewu/nplcm")
 ```
 
 * Why should someone use your package?
+
 To study disease etiology from case-control data from multiple sources and have measurement errors. If you are interested in estimating population etiology pie (fraction), and the probability of each cause for individual case, try `nplcm`.
 
 Reference can be found [here](http://arxiv.org/abs/1411.5774).
 
 * How does it compare to other existing solutions?
+
 Accknowledges various levels of measurement errors and combines multiple sources
 of data.
 
 * What are the main functions?
+
 `nplcm` that fits the model with or without covarites.
 
 * Platform:
