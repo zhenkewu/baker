@@ -17,7 +17,7 @@ of data.
 
 What are the main functions?
 
-*`nplcm` that fits the model with or without covarites.
+* `nplcm` that fits the model with or without covarites.
 
 * Platform:
   * currently implemented for Windows system, 7 or 8, because `nplcm` uses WinBUGS
