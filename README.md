@@ -26,5 +26,5 @@ Platform:
   each function. If you find package `ks` cannot be loaded due to failure of 
   loading package `rgl`, follow the following steps:
     * install X11 by going [here](http://xquartz.macosforge.org/trac/wiki/X112.7.7)
-    * `install.packages("http://cran.r-project.org/src/contrib/rgl_0.95.1158.tar.gz"    ,repo=NULL,type="source")`
+    * `install.packages("http://cran.r-project.org/src/contrib/rgl_0.95.1158.tar.gz",repo=NULL,type="source")`
 
