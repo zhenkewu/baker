@@ -1,8 +1,8 @@
 * How to install?
-{% highlight R%}
+```r
 install.packages(devtools)
 devtools::install_github("zhenkewu/nplcm")
-{% endhighlight%}
+```
 
 * Why should someone use your package?
 
