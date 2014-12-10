@@ -19,7 +19,7 @@ What are the main functions?
 
 * `nplcm` that fits the model with or without covarites.
 
-* Platform:
+Platform:
   * currently implemented for Windows system, 7 or 8, because `nplcm` uses WinBUGS
   to fit the models;
   * for Mac OS X system, one can install the package and study the components of
