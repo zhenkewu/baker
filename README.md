@@ -23,10 +23,12 @@ What are the main functions?
 
 Platform
 ---------
-- currently implemented for Windows system, 7 or 8, because `nplcm` uses WinBUGS
+- Currently implemented for Windows system, 7 or 8, because `nplcm` uses WinBUGS
   to fit the models;
+  
+- The `.bug` model files are included [here](https://github.com/zhenkewu/bugs.models/tree/master/nplcm);
 
-- for Mac OS X system, one can install the package and study the components of
+- For Mac OS X system, one can install the package and study the components of
   each function. If you find package `ks` cannot be loaded due to failure of 
   loading package `rgl`, follow the following steps:
   
