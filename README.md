@@ -1,7 +1,7 @@
 How to install?
 --------------
 ```r
-install.packages(devtools)
+install.packages("devtools")
 devtools::install_github("zhenkewu/nplcm")
 ```
 
