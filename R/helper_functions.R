@@ -179,7 +179,7 @@ Imat2cat <- function(binary_mat,allowed_list,pathogen_list){
   known_symb = sapply(known_code,I2symb,pathogen_list)
   if (sum(known_symb %in% allowed_list==FALSE)>0){
   stop("Some binary pattern in 'binary_mat' is not included by 'allowed_list'.")
-  } else {
+  }else {
   known_Icat = sapply(known_symb,function(s) which(allowed_list==s))
   return(known_Icat)
   }
