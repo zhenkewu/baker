@@ -159,7 +159,7 @@ logORmat = function(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS,
           at=par("usr")[1]+0.03*(length(pathogen_name)-s)*diff(par("usr")[1:2])+5,
           cex=1,line=0)
   }
-  mtext("cases",4,cex=2,line=6)
+  mtext("cases",4,cex=2,line=1)
   mtext("controls",1,cex=2,line=-1)
   #mtext(paste(eda_options$X_names,eda_options$X_values,sep="="),3,cex=2,line=-0.5)
 
