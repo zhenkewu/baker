@@ -137,7 +137,7 @@ logORmat = function(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS,
         abs.std.logOR <- abs(cor.txt3[i,j]/cor.se.txt3[i,j])
         if (!is.na(abs.std.logOR) && abs.std.logOR>1){
           if (abs.std.logOR>2){
-            text(i,j-0.3,round(abs.std.logOR,1),
+            text(i,j-0.3,round(cor.txt3[i,j]/cor.se.txt3[i,j],1),
                     col=ifelse(cor.txt[i,j]>0,"red","blue"),cex=cex_main)
           }else{
             text(i,j-0.3,ifelse(cor.txt[i,j]>0,"+","-"),
