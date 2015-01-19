@@ -61,7 +61,7 @@ logORmat = function(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS,
   #cell.num = logORmat/logORmat.se
   tmp       = logORmat
   tmp[abs(logORmat.se)>10]=NA
-  cell.num.std.logOR = tmp
+  cell.num.logOR = tmp
 
   tmp2 = logORmat.se
   tmp2[abs(logORmat.se)>10]=NA
@@ -127,15 +127,17 @@ logORmat = function(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS,
 
     cor.txt<- round(t(cor)[,n:1],1)
     cor.se.txt <-round(t(cor.se)[,n:1],1)
+    cor.txt3<- round(t(cor)[,n:1],3)
+    cor.se.txt3 <-round(t(cor.se)[,n:1],3)
     for (i in 1:n){
       for (j in 1:n){
         text(i,j+0.3,cor.txt[i,j],col=ifelse(cor.txt[i,j]>0,"red","blue"),cex=cex_main)
         text(i,j,cor.se.txt[i,j],col=ifelse(cor.txt[i,j]>0,"red","blue")
              ,cex=cex_se)
-        abs.std.logOR <- abs(cor.txt[i,j]/abs(cor.se.txt[i,j]))
+        abs.std.logOR <- abs(cor.txt3[i,j]/cor.se.txt3[i,j])
         if (!is.na(abs.std.logOR) && abs.std.logOR>1){
           if (abs.std.logOR>2){
-            text(i,j-0.3,round(cor.txt[i,j]/cor.se.txt[i,j],1),
+            text(i,j-0.3,round(abs.std.logOR,1),
                     col=ifelse(cor.txt[i,j]>0,"red","blue"),cex=cex_main)
           }else{
             text(i,j-0.3,ifelse(cor.txt[i,j]>0,"+","-"),
@@ -149,7 +151,7 @@ logORmat = function(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS,
     mtext(title,3,cex=1,line=1)
   }
 
-  circle.cor(cell.num.std.logOR,1/sqrt(cell.num.prec))
+  circle.cor(cell.num.logOR,1/sqrt(cell.num.prec))
 
   pathogen_name <- pathogen_BrS[reorder(pathogen_display,pathogen_BrS)]
   for (s in rev(1:length(pathogen_name))){
