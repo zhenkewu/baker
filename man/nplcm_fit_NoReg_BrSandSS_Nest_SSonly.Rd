@@ -10,31 +10,33 @@ nplcm_fit_NoReg_BrSandSS_Nest_SSonly(Mobs, Y, X, model_options, mcmc_options)
 \item{Mobs}{A list of measurements. The elements of the list
 should include \code{MBS}, \code{MSS}, and \code{MGS}.
 \itemize{
-\item \code{MBS} is a data frame of bronze-standard (BrS) measurements.
-Rows are subjects, columns are pathogens targeted in the BrS measurements
+\item \code{MBS} a data frame of bronze-standard (BrS) measurements.
+Rows are subjects, columns are pathogens.
+They have imperfect sensitivity/specificity.
 (e.g. nasalpharyngeal PCR). These mesaurements have imperfect sensitivity/specificty.
-\item \code{MSS} is a data frame of silver-standard (SS) measurements. Rows are subjects,
-  columns are pathogens targeted in the SS measurements (e.g. blood culture).
-  These measurements have perfect specificity but imperfect sensitivity.
-\item \code{MGS} is a data frame of gold-standard (GS) measurements. Rows are subject,
-columns are pathogens targeted in the GS measurements. These measurements
-have both perfect sensitivity and perfect specificity.
+\item \code{MSS} a data frame of silver-standard (SS) measurements.
+Rows are subjects, columns are pathogens (e.g. blood culture).
+These measurements have perfect specificity but imperfect sensitivity.
+\item \code{MGS} a data frame of gold-standard (GS) measurements. Rows are subject,
+columns are pathogens. These measurements have perfect sensitivity and specificity.
 }}
 
-\item{Y}{A vector of binary variables specifying the disease status (1 for case;
-0 for control).}
+\item{Y}{Vector of disease status: 1 for case, 0 for control.}
 
-\item{X}{A design matrix. For FPR and etiology regressions.}
+\item{X}{Design matrix. For regression modeling.}
 
 \item{model_options}{A list of model options.
 
 \itemize{
 \item \code{M_use} List of measurements to be used in the model;
-\item \code{k_subclass}The number of nested subclasses. It equals 1 if the
-model is plcm; its value will be useful if the model is nplcm.
-\item \code{TPR_prior} the prior for the measurements used. Its length should be
-the same with \code{M_use};
-\item \code{Eti_prior} the vector of parameters in etiology prior;
+\item \code{k_subclass}The number of nested subclasses. 1 for conditional independence,
+>1 for conditional dependence;
+\item \code{TPR_prior} Description of priors for the measurements
+(e.g., informative vs non-informative).
+Its length should be the same with \code{M_use};
+\item \code{Eti_prior} Description of etiology prior
+(e.g., overall uniform - all hyperparameters are 1, v.s. "0_1" - all hyperparameters
+are 0.1);
 \item \code{pathogen_BrS_list} The vector of pathogen names with BrS measure;
 \item \code{cause_list} The vector of causes, singleton, combinations, or 'NoA';
 \item \code{X_reg_FPR} The vector of covariate names that stratify/regress
@@ -57,7 +59,7 @@ model fitting;
 \item \code{n.burnin} for the number of burn-in samples;
 \item \code{n.thin} keep every other n.thin samples after burn-in period;
 \item \code{individual.pred} whether to perform individual prediction;
-\item \code{ppd} whether to perform posterior predictive checking
+\item \code{ppd} whether to perform posterior predictive (ppd) checking;
 \item \code{result.folder} for the path to folder storing the results;
 \item \code{bugsmodel.dir} for the directory to WinBUGS model files;
 \item \code{winbugs.dir} for the directory where WinBUGS 1.4 is installed.

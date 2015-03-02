@@ -2,7 +2,7 @@
 % Please edit documentation in R/assign_model.R
 \name{assign_model}
 \alias{assign_model}
-\title{Assign model based on model specification and data.}
+\title{Assign model based on model specification and data structure.}
 \usage{
 assign_model(Mobs, Y, X, model_options, silent = TRUE)
 }
@@ -19,12 +19,29 @@ assign_model(Mobs, Y, X, model_options, silent = TRUE)
 model descriptions on screen; otherwise, \code{FALSE}.}
 }
 \value{
-Assign the model type to be fit.
+The correct Bayesian model type to fit. The list of model
+type information is:
+\itemize{
+\item \code{measurement}
+\itemize{
+\item \code{quality} e.g. "BrS+SS" indicates both BrS and SS measures are
+available
+\item \code{SSonly} \code{TRUE} for existence of pathogens with only SS measures;
+otherwise, \code{FALSE};
+\item \code{nest} \code{TRUE} for conditional dependent model; \code{FALSE}
+for conditional independent model;
+}
+\item \code{reg}
+\itemize{
+\item \code{do_FPR_reg} \code{TRUE} for FPR regression; \code{FALSE} otherwise;
+\item \code{do_Eti_reg} \code{TRUE} for etiology regression; \code{FALSE} otherwise;
+}
+}
 }
 \description{
-Determine measurements that are available and false positive rate and
-etiology model components for a dataset used for fitting the model by
-\link{\code{nplcm}}. It also does consistency checking for specifications
+Before fitting the model, this function determines a) the available measurement
+types, b) false positive rate and c) etiology model components based on input
+data and model options. It also does consistency checking for the specifications
 in \code{model_options}, and their relations with actual inputted data.
 }
 
