@@ -105,6 +105,8 @@ perch_data_clean <- function(clean_options){
 
   Specimen  <- c("NP","B")
   Test      <- c("PCR","CX")
+  #Specimen  <- c("NP","B","IS","LA","PF")
+  #Test      <- c("PCR","CX","CX2")
 
   # extract_data_raw() will order pathogen_BrS according to B->F->V:
   if (is.null(X_strat) && is.null(X_strat_val)){
