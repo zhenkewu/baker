@@ -38,10 +38,9 @@ for visualizing results.}
 Tables and figures
 }
 \description{
-Outputs tables and figures to visualize data. Current functionality includes:
+Current functionalities are:
 \itemize{
-\item 1.total no. of positives in cases and controls
-\item 2.bubble plot of pairwise associations BrS measurements, separately for controls
+\item Pairwise associations among BrS measurements, separately for controls
   and cases.
 }
 }

@@ -2,10 +2,10 @@
 % Please edit documentation in R/extract_data_raw.R
 \name{extract_data_raw}
 \alias{extract_data_raw}
-\title{Extract data on pathogen measurements and covariates}
+\title{Convert raw data sheet to analyzable format}
 \usage{
 extract_data_raw(Pathogen, Specimen, Test, X, Xval, MeasDir, PathCatDir,
-  extra_covariates = NULL, silent = TRUE)
+  extra_covariates = NULL, silent = TRUE, individual = NULL)
 }
 \arguments{
 \item{Pathogen}{The vector of pathogen names. It will be reordered according
@@ -28,16 +28,18 @@ data cleaning, \code{Xval = list("02GAM","1")}}
 (.csv)}
 
 \item{extra_covariates}{The vector of covariate name for regression purposes.
-The default is NULL, which means no such covariates are necessary.}
+The default is NULL, which means no such covariate is necessary.}
 
-\item{silent}{TURE/FALSE. If TRUE, the function will not print anything on
-the screen. The default is TRUE.}
+\item{silent}{Default is \code{TRUE}: the function will not print anything on
+the screen; otherwise specify as \code{FALSE}.}
+
+\item{individual}{index for an individual to print his/her measurements}
 }
 \value{
 A list of data. Each element is either a measurement matrix, or
 a vector of covariate values
 }
 \description{
-Extract data on pathogen measurements and covariates
+Convert raw data sheet to analyzable format
 }
 

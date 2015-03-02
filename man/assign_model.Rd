@@ -15,16 +15,16 @@ assign_model(Mobs, Y, X, model_options, silent = TRUE)
 
 \item{model_options}{See the \code{nplcm} function.}
 
-\item{silent}{Default is \code{TRUE}, which means print on screen assigned
-model descriptions, otherwise, \code{FALSE}.}
+\item{silent}{Default is \code{TRUE}: print assigned
+model descriptions on screen; otherwise, \code{FALSE}.}
 }
 \value{
 Assign the model type to be fit.
 }
 \description{
-For a data set fed into \code{\link{nplcm}}, determine measurement and
-false positive rate and etiology model components. It also does consistency
-checking for specifications in \code{model_options}, and their relations
-with actual inputted data.
+Determine measurements that are available and false positive rate and
+etiology model components for a dataset used for fitting the model by
+\link{\code{nplcm}}. It also does consistency checking for specifications
+in \code{model_options}, and their relations with actual inputted data.
 }
 

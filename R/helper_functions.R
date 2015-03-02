@@ -293,7 +293,7 @@ sort_data_frame <- function(form,dat){
 }
 
 
-reorder <- function(disp_order,raw_nm){
+my_reorder <- function(disp_order,raw_nm){
         #disp_order <- display_order
         #raw_nm <- pathogen_BrS
         res <- rep(NA,length(raw_nm))
@@ -306,7 +306,7 @@ reorder <- function(disp_order,raw_nm){
 # disp_order <- c("B","E","D","C","F","A")
 #   #union_nm   <- c("A","B","C","D","E")
 #   raw_nm <- c("C","A","E")
-#   reorder(disp_order,raw_nm)
+#   my_reorder(disp_order,raw_nm)
 # # list(c("C","E"),
 # #      c("D","B"),
 

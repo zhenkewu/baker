@@ -1,9 +1,8 @@
 #' Exploratory Data Analysis (EDA)
 #'
-#' Outputs tables and figures to visualize data. Current functionality includes:
+#' Current functionalities are:
 #' \itemize{
-#' \item 1.total no. of positives in cases and controls
-#' \item 2.bubble plot of pairwise associations BrS measurements, separately for controls
+#' \item Pairwise associations among BrS measurements, separately for controls
 #'   and cases.
 #'}
 #' @param Mobs A list of measurements. The elements of the list should
@@ -39,14 +38,17 @@ eda <- function(Mobs, Y, X, eda_options,pathogen_display,pathogen_BrS){
          stop("==No bronze-standard data!==")
       }else{
             ord <- reorder(pathogen_display,pathogen_BrS)
+            # reorder(c("C","A","B"),c("A","B","C"))
             MBS.case <- Mobs$MBS[Y==1,ord]
             MBS.ctrl <- Mobs$MBS[Y==0,ord]
 
-          # plot of pairwise associations:--------------------
+          #  
+          # plot of pairwise associations:
           # a) unadjusted for covaraites:
+          #
             if (eda_options$bubble_plot){
-                  logORmat(MBS.case,MBS.ctrl,
-                                  pathogen_display,pathogen_BrS,cex_main=1.5,cex_se=1)
+                  logORmat(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS,
+                           cex_main=1.5,cex_se=1)
             }
 
 
