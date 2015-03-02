@@ -32,7 +32,6 @@ eti_prior_set <- function(model_options){
 #           }
         }
 
-
         alpha
 }
 

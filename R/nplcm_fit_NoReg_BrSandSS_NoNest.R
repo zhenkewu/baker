@@ -89,8 +89,7 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
     MSS.case <- Mobs$MSS[Y==1,1:JBrS]
     MSS.case <- as.matrix(MSS.case)
 
-
-
+    
     SS_index <- which(colMeans(is.na(MSS.case))<0.9)#.9 is arbitrary; any number <1 will work.
     JSS      <- length(SS_index)
     MSS      <- MSS.case[,SS_index]
@@ -138,8 +137,7 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
     }
 
     if (mcmc_options$ppd==TRUE){
-      stop("==Not implemented.==")
-      #gs <- mybugs("model_NoReg_BrSandSS_plcm_ppd.bug")
+      gs <- mybugs("model_NoReg_BrSandSS_plcm_ppd.bug")
     } else {
       gs <- mybugs("model_NoReg_BrSandSS_plcm.bug")
     }

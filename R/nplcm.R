@@ -70,7 +70,33 @@
 #' \item \code{winbugs.dir} for the directory where WinBUGS 1.4 is installed.
 #' }
 #' @return A WinBUGS result, fitted by function \code{bugs()} from
-#' the R2WinBUGS package.
+#' the R2WinBUGS package. Current implemented models follow the hierarchy below:
+#' \itemize{
+#' \item no regression: 
+#'    \itemize{
+#'    \item both BrS and SS measurements:
+#' 
+#'    \itemize{
+#'    \item no pathogens with only SS measure:
+#'        \itemize{
+#'          \item independence model
+#'          \item dependence model
+#'        }
+#'    \item there are some pathogens with SS only measure:
+#'      \itemize{
+#'        \item independence model
+#'        \item dependence model
+#'      }
+#'    
+#'    }
+#'    
+#'    \item only BrS measurements:
+#'       \itemize{
+#'        \item independence model
+#'        \item dependence model
+#'       }
+#'    }
+#' }
 #'
 #' @export
 

@@ -128,8 +128,6 @@ combined_visualization <- function(DIR_NPLCM,DIR_PLCM,npat=16){
         }
         pred_plcm = colMeans(pred_plcm_tmp) # d1_plcm for MCMC samples.
 
-
-
         #start plotting:
         barplot(rbind(pred_plcm,pred_nplcm),beside=TRUE,ylim=c(0,1.1),
                 col=c("white","dodgerblue2"),yaxt="n")

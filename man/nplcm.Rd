@@ -67,7 +67,33 @@ model fitting;
 }
 \value{
 A WinBUGS result, fitted by function \code{bugs()} from
-the R2WinBUGS package.
+the R2WinBUGS package. Current implemented models follow the hierarchy below:
+\itemize{
+\item no regression:
+   \itemize{
+   \item both BrS and SS measurements:
+
+   \itemize{
+   \item no pathogens with only SS measure:
+       \itemize{
+         \item independence model
+         \item dependence model
+       }
+   \item there are some pathogens with SS only measure:
+     \itemize{
+       \item independence model
+       \item dependence model
+     }
+
+   }
+
+   \item only BrS measurements:
+      \itemize{
+       \item independence model
+       \item dependence model
+      }
+   }
+}
 }
 \description{
 Uses WinBUGS in Windows system for Bayesian inference
