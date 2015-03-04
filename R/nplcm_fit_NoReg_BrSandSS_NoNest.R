@@ -24,9 +24,9 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
                           nburnin       = mcmc_options$n.burnin,
                           nthin         = mcmc_options$n.thin,
                           nchains       = mcmc_options$n.chains,
-                          dic = FALSE,
+                          dic      = FALSE,
                           is.debug = mcmc_options$debugstatus,
-                          workd= mcmc_options$result.folder,...) {
+                          workd    = mcmc_options$result.folder,...) {
 
       m.file <- paste(bugsmodel.dir, m.file, sep="");
       f.tmp <- function() {

@@ -43,7 +43,9 @@
 #' (e.g., overall uniform - all hyperparameters are 1, v.s. "0_1" - all hyperparameters
 #' are 0.1);
 #' \item \code{pathogen_BrS_list} The vector of pathogen names with BrS measure;
-#' \item \code{cause_list} The vector of causes, singleton, combinations, or 'NoA';
+#' \item \code{cause_list} The vector of causes that are either singleton or 
+#' combinations of items in \code{pathogen_BrS_list}; 'NoA' can also be included
+#' at the end, meaning 'None-of-Above';
 #' \item \code{X_reg_FPR} The vector of covariate names that stratify/regress
 #' false positive rates (FPR);
 #' \item \code{X_reg_Eti} The vector of covariate names that stratify/regress

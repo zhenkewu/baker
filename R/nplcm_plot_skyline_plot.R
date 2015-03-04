@@ -11,7 +11,7 @@
 #' etiolgy are put in the top-middle section with abbreviated pathogen name; etiology 
 #' contributed by each quartile are put at the corresponding section with proportion 
 #' contributed to overall etiology by each quartile listed below with brackets. Black histograms
-#' are for subset of kids with that particular pathogen detected in NP swap. 
+#' are for subset of kids with that particular pathogen detected in NP swab. 
 #'
 #' @export
 #' 

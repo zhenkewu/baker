@@ -19,6 +19,6 @@ The percentage below it means, within cases having the BrS
 pattern, the fraction of cases having this SS pattern.
 }
 \description{
-DN:1.currently only works for both BrS and SS data.
+DN:1.currently only works for both BrS and SS data, and SSonly data. Any causes.
 }
 
