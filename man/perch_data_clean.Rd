@@ -18,7 +18,7 @@ Its elements are defined as follows:
 stratify the data;}
 \item{\code{X_strat_val}}{: A list of actual values for \code{X_strat} to
 stratify the data set;}
-\item{\code{pathogen_BrS}}{: The vector of pathogen names (arbitrary order)
+\item{\code{pathogen_BrS_anyorder}}{: The vector of pathogen names (arbitrary order)
 that have BrS measurments (For definition of Bronze-standard and
 other standards, please see Wu et al. 2015, JRSS-C).
 It has to be a subset of pathogen category information contained in the \code{PathCatDir}.}
@@ -39,7 +39,10 @@ analysis;}
 \item{\code{allow_missing}}{: \code{TRUE} for using an observation that has either
 BrS missing, or SS missing. Set it to \code{TRUE} if we want
 to use the SS information from some cases who have missing BrS measurements. \code{TRUE}
-is equivalent to using all the subjects;}
+is equivalent to using all the subjects. Missingness is judged only based on those pathogens
+that are in BrS measurement assays: because if a subject miss SS measure on
+a pathogen that also has BrS measure, it means SS measure is missed altogether, i.e.,
+those pathogens not in BrS measurement assays cannot be detected anyway.}
 }}
 }
 \value{
@@ -58,7 +61,9 @@ are specified in \code{X_extra};
 data;
 \item \code{pathogen_MSS_ordered} Ordered vector of pathogen names. Pathogens
 with both SS and BrS pathogens are ordered first and then those with only BrS
-measurements. Pathogens with only silver-standard measures are not included.
+measurements. Note that for a pathogen name vector of arbitrary order, this
+function just picks out those pathogens with BrS+SS measures and puts them
+at the front. Other pathogens with only BrS measures are not reordered. Pathogens with only silver-standard measures are not included.
 \item \code{pathogen_cat} Pathogen categories ordered according to
 \code{pathogen_MSS_ordered}.
 \item \code{JSSonly} Number of pathogens with only silver-standard measures;
@@ -71,6 +76,7 @@ This function does not order silver-standard data only pathogens.
 It deletes cases with two positives for BCX measures. To order cases
 and controls separately according to site and enrollment date, we suggest put
 \code{c("newSITE","ENRLDATE")} in \code{X_extra} and \code{X_order_obs}
-whic are defined below.
+whic are defined below. Currently, there must be pathogens that have both
+BrS and SS measurements.
 }
 

@@ -11,8 +11,6 @@
 #'    Each element corresponds to that in \code{X}. For example, in PERCH
 #'    data cleaning, \code{Xval = list("02GAM","1")}
 #' @param MeasDir  The directory to the data set (.csv)
-#' @param PathCatDir The directory to the pathogen category specificaton file
-#' (.csv)
 #' @param extra_covariates The vector of covariate name for regression purposes.
 #'   The default is NULL, which means no such covariate is necessary.
 #' @param silent Default is \code{TRUE}: the function will not print anything on
@@ -31,7 +29,7 @@
 
 extract_data_raw <-function(Pathogen,Specimen,Test,
                              X,Xval,
-                             MeasDir,PathCatDir,
+                             MeasDir,
                              extra_covariates=NULL,
                              silent=TRUE,
                              individual=NULL){
@@ -54,11 +52,8 @@ extract_data_raw <-function(Pathogen,Specimen,Test,
 #   #
 #   #
 #   #
-  
-  pathogen_type = read.csv(PathCatDir)
-  rownames(pathogen_type) = pathogen_type[,1]
-  typeOrder = order(pathogen_type[Pathogen,2])
-  Pathogen = Pathogen[typeOrder]
+#   
+
 
   if (!silent){
     #show the ordered pathogen
@@ -177,3 +172,12 @@ extract_data_raw <-function(Pathogen,Specimen,Test,
     return(resdat)
   }
 }
+
+# # add the following if we want to organize bacteria first:
+# @param PathCatDir The directory to the pathogen category specificaton file
+# (.csv)
+#  #add right after the starting{
+#   pathogen_type = read.csv(PathCatDir)
+#   rownames(pathogen_type) = pathogen_type[,1]
+#   typeOrder = order(pathogen_type[Pathogen,2])
+#   Pathogen = Pathogen[typeOrder]

@@ -4,7 +4,7 @@
 \alias{extract_data_raw}
 \title{Convert raw data sheet to analyzable format}
 \usage{
-extract_data_raw(Pathogen, Specimen, Test, X, Xval, MeasDir, PathCatDir,
+extract_data_raw(Pathogen, Specimen, Test, X, Xval, MeasDir,
   extra_covariates = NULL, silent = TRUE, individual = NULL)
 }
 \arguments{
@@ -23,9 +23,6 @@ Each element corresponds to that in \code{X}. For example, in PERCH
 data cleaning, \code{Xval = list("02GAM","1")}}
 
 \item{MeasDir}{The directory to the data set (.csv)}
-
-\item{PathCatDir}{The directory to the pathogen category specificaton file
-(.csv)}
 
 \item{extra_covariates}{The vector of covariate name for regression purposes.
 The default is NULL, which means no such covariate is necessary.}

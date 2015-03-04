@@ -135,8 +135,7 @@ nplcm_fit_NoReg_BrS_NoNest<-
     }
 
     if (mcmc_options$ppd==TRUE){
-      stop("==Not implemented.==")
-      #gs <- mybugs("model_NoReg_BrSandSS_SSonly_plcm_ppd.bug")
+      gs <- mybugs("model_NoReg_BrS_plcm_ppd.bug")
     } else {
       gs <- mybugs("model_NoReg_BrS_plcm.bug")
     }
