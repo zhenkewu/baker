@@ -188,7 +188,11 @@ perch_data_clean <- function(clean_options){
                                         c(X_strat,case_def),append(X_strat_val,case_def_val),
                                         extra_covariates = X_extra,
                                         MeasDir,silent=TRUE)
-    SSonly_index <- which(colMeans(is.na(datacase_SSonly$BCX))<.9)
+    if (length(pathogen_SSonly)>1){
+      SSonly_index <- which(colMeans(is.na(datacase_SSonly$BCX))<.9)
+    }else{
+      SSonly_index <- which(mean(is.na(datacase_SSonly$BCX))<.9)
+    }
     cat("==Pathogens with ONLY blood culture measure:==","\n",
         pathogen_SSonly[SSonly_index],"\n")
     JSSonly       <- length(SSonly_index)
@@ -264,7 +268,13 @@ perch_data_clean <- function(clean_options){
   if (!is.null(pathogen_SSonly)){
     M_BCX_SSonly_ctrl <- as.data.frame(matrix(NA,nrow=Nu,ncol=length(pathogen_SSonly)))
     colnames(M_BCX_SSonly_ctrl) <- paste(pathogen_SSonly,"BCX",sep="_")
-    M_BCX_SSonly      <- rbind(datacase_SSonly$BCX[complete_case_index,],M_BCX_SSonly_ctrl)
+    if (length(pathogen_SSonly)>1){
+      M_BCX_SSonly      <- rbind(datacase_SSonly$BCX[complete_case_index,],M_BCX_SSonly_ctrl)
+    }else{
+      M_BCX_SSonly_case <- as.matrix(datacase_SSonly$BCX[complete_case_index],ncol=1)
+      colnames(M_BCX_SSonly_case) <- colnames(M_BCX_SSonly_ctrl)
+      M_BCX_SSonly      <- rbind(M_BCX_SSonly_case,M_BCX_SSonly_ctrl)
+    }
   }
 
   # get data sets as indicated by complete_case_index:
