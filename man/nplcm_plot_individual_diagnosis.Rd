@@ -12,13 +12,15 @@ nplcm_plot_individual_diagnosis(DIR_NPLCM, npat = 16)
 \item{npat}{The number of most frequent patterns among cases to display.}
 }
 \value{
-A figure with individual diagnosis plots. The bronze-standard (BrS) measurement pattern is listed
-at the top of the barplots. The percentage below it is the observed frequency in the actual data.
-Another 1/0 pattern is shown in red, and represents the silver-standard(SS) measurements.
-The percentage below it means, within cases having the BrS
-pattern, the fraction of cases having this SS pattern.
+A figure with individual diagnosis plots. The Bronze-Standard (BrS)
+ measurement pattern is listed at the top of the barplots. Below it is the
+ percentage of the observed frequency of that pattern among cases.
+ A second vector of 1/0 pattern is shown in red. It represents the
+Silver-Standard(SS) measurements. The percentage below it is the fraction of
+ cases having this SS pattern among cases with the BrS pattern on the top.
+ The whole list of causes are shown at the bottom.
 }
 \description{
-DN:1.currently only works for both BrS and SS data, and SSonly data. Any causes.
+DN:1.currently only works for both BrS and SS data, and SS only data. Any causes.
 }
 
