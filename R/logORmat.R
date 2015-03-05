@@ -45,7 +45,7 @@ logORmat = function(MBS.case,MBS.ctrl,
   for (j2 in 1:(J-1)){ #case (j2,j1); ctrl (j1,j2).
       for (j1 in (j2+1):J){
 
-          ## cases:
+          ## cases: (upper)
           x = MBS.case[,j2]
           y = MBS.case[,j1]
 
@@ -55,7 +55,7 @@ logORmat = function(MBS.case,MBS.ctrl,
             logORmat[j2,j1] = round(summary(fit)$coef["x",1],3)
             logORmat.se[j2,j1] = round(summary(fit)$coef["x",2],3)
           }
-          ##controls:
+          ##controls: (lower)
           x = MBS.ctrl[,j2]
           y = MBS.ctrl[,j1]
 
@@ -77,30 +77,6 @@ logORmat = function(MBS.case,MBS.ctrl,
   tmp2[abs(logORmat.se)>10]=NA
   cell.num.prec = 1/tmp2^2
 
-  colors <-rev(brewer.pal(10,"PuOr"))
-  pal <- colorRampPalette(colors)
-
-  val2col<-function(z, zlim, col = heat.colors(12), breaks){
-    if(!missing(breaks)){
-      if(length(breaks) != (length(col)+1)){stop("must have one more break than colour")}
-    }
-    if(missing(breaks) & !missing(zlim)){
-      zlim[2] <- zlim[2]+c(zlim[2]-zlim[1])*(1E-3)#adds a bit to the range in both directions
-      zlim[1] <- zlim[1]-c(zlim[2]-zlim[1])*(1E-3)
-      breaks <- seq(zlim[1], zlim[2], length.out=(length(col)+1))
-    }
-    if(missing(breaks) & missing(zlim)){
-      zlim <- range(z, na.rm=TRUE)
-      zlim[2] <- zlim[2]+c(zlim[2]-zlim[1])*(1E-3)#adds a bit to the range in both directions
-      zlim[1] <- zlim[1]-c(zlim[2]-zlim[1])*(1E-3)
-      breaks <- seq(zlim[1], zlim[2], length.out=(length(col)+1))
-    }
-    CUT <- cut(z, breaks=breaks)
-    colorlevels <- col[match(CUT, levels(CUT))] # assign colors to heights for each point
-    return(colorlevels)
-  }
-
-  
 #   cor = cell.num.logOR
 #   cor.se = 1/sqrt(cell.num.prec)
   
@@ -119,29 +95,6 @@ logORmat = function(MBS.case,MBS.ctrl,
              0.5 + 0:n, col = "gray")
     segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
                                                         n), col = "gray")
-    ##define circles' background color.
-    ##black for positive correlation coefficient and white for negative
-    bg = matrix(0,nrow=n,ncol=n)
-    
-    for (i in 1:n){
-      for (j in 1:n){
-        if (!is.na(cor[i,j])){
-          bg[i,j] = val2col(z=cor[i,j],c(-10,10),col=pal(64))
-        }
-      }
-    }
-    #bg = pal(64)
-    #bg[cor > 0] = "black"
-    #bg[cor <= 0] = "white"
-    ##plot n*n circles using vector language, suggested by Yihui Xie
-    
-    #symbols(rep(1:n, each = n), rep(n:1, n), add = TRUE, inches = F,
-    #        circles = as.vector(sqrt(abs(cor.se)/max(cor.se[!is.na(cor.se)]))/2),
-    #        bg = as.vector(bg))
-    
-    #text(rep(0, n), 1:n, n:1, col = "black")
-    #text(1:n, rep(n + 1), 1:n, col = "black")
-    
     cor.txt<- round(t(cor)[,n:1],1)
     cor.se.txt <-round(t(cor.se)[,n:1],1)
     cor.txt3<- round(t(cor)[,n:1],3)
@@ -177,18 +130,17 @@ logORmat = function(MBS.case,MBS.ctrl,
   # put texts in the boxes:
   circle.cor(cell.num.logOR,1/sqrt(cell.num.prec))
   
-  
   # put pathogen names on rows and columns:
   for (s in rev(1:length(pathogen_name))){
     #   text(-2,par("usr")[1]+0.03*(length(pathogen_name)-s)*diff(par("usr")[1:2])+5,
     #        paste0(s,":",pathogen_name[s]),las=2,
     #        cex=1)
-    text(-0,J-s+1,paste0(pathogen_name[s],":",s),cex=min(1.5,20/J),adj=1)
-    text(s,J+0.7,paste0(s,":",pathogen_name[s]),cex=min(1.5,20/J),srt=45,adj=0)
+    text(-0,J-s+1,paste0(pathogen_name[s],":(",s,")"),cex=min(1.5,20/J),adj=1)
+    text(s,J+0.7,paste0("(",s,"):",pathogen_name[s]),cex=min(1.5,20/J),srt=45,adj=0)
   }
   # labels for cases and controls:
-  text(J/2,0,"cases",cex=2)
-  text(J+1,J/2,"controls",cex=2,srt=-90)
+  text(J+1,J/2,"cases",cex=2,srt=-90)
+  text(J/2,0,"controls",cex=2)
 }
 
 

@@ -327,3 +327,115 @@ my_reorder <- function(disp_order,raw_nm){
 
 
 
+logOR <- function(MBS.case,MBS.ctrl,JBrS){  
+  JBrS <- ncol(MBS.case)
+  logORmat       <- matrix(NA,nrow=JBrS,ncol=JBrS)
+  logORmat.se    <- matrix(NA,nrow=JBrS,ncol=JBrS)
+  for (j2 in 1:(JBrS-1)){ #case (j2,j1); ctrl (j1,j2).
+    for (j1 in (j2+1):JBrS){
+      
+      # cases: (upper triangle)
+      x = MBS.case[,j2]
+      y = MBS.case[,j1]
+      
+      fit = glm(y~x,family = binomial(link="logit"))
+      
+      if ("x" %in% rownames(summary(fit)$coef)){
+        logORmat[j2,j1] = round(summary(fit)$coef["x",1],3)
+        logORmat.se[j2,j1] = round(summary(fit)$coef["x",2],3)
+      }
+      # controls: (lower triangle)
+      x = MBS.ctrl[,j2]
+      y = MBS.ctrl[,j1]
+      
+      fit = glm(y~x,family = binomial(link="logit"))
+      
+      if ("x" %in% rownames(summary(fit)$coef)){
+        logORmat[j1,j2] = round(summary(fit)$coef["x",1],3)
+        logORmat.se[j1,j2] = round(summary(fit)$coef["x",2],3)
+      }
+    }
+  }
+  
+  #cell.num = logORmat/logORmat.se
+  tmp       = logORmat
+  tmp[abs(logORmat.se)>10]=NA
+  
+  tmp.se = logORmat.se
+  tmp.se[abs(logORmat.se)>10] = NA
+  
+  
+  res <- list(tmp,tmp.se)
+  names(res) <- c("logOR","logOR.se")
+  return(res)
+}
+
+#' Visualize matrix for a quantity measured on cases and controls 
+#' 
+#' Special to case-control visualization: upper right for cases, lower left
+#' for controls. 
+#' 
+#' @param mat matrix of values: upper for cases, lower for controls;
+#' @param dim_names names of the columns, from left to right. It is also the 
+#' names of the rows, from bottom to top. Default is 1 through \code{ncol(mat)};
+#' @param cell_metrics the meaning of number in every cell;
+#' @param folding_line Default is \code{TRUE} for adding dashed major diagnoal
+#' line.
+#' 
+#' @export
+visualize_case_control_matrix <- function(mat, dim_names=ncol(mat), 
+                                   cell_metrics="",folding_line=TRUE,
+                                   axes = FALSE, xlab = "",ylab = "",
+                                   asp = 1,title="",...){
+  n = nrow(mat)
+  J = n
+  # size of the numbers in the boxes:
+  cex_main= min(2,20/n)
+  cex_se  = min(1.5,15/n)
+  
+  par(mar = c(0, 0, 5, 0), bg = "white",xpd=TRUE)
+  plot(c(0, n + 0.8), c(0, n + 0.8), axes = axes, xlab = "",
+       ylab = "", asp = 1, type = "n")
+  ##add grid
+  segments(rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5, n + 1),
+           0.5 + 0:n, col = "gray")
+  segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
+                                                      n), col = "gray")  
+  mat.txt<- round(t(mat)[,n:1],1)
+  mat.txt3<- round(t(mat)[,n:1],3)
+  
+  # add meaning of the number in a cell:
+  text(1,J,cell_metrics,cex=cex_main/2)
+  
+  for (i in 1:n){
+    for (j in 1:n){
+      abs.mat <- abs(mat.txt[i,j])
+      if ((!is.na(abs.mat)) && abs.mat>2){
+        text(i,j,round(mat.txt3[i,j],1),
+             col=ifelse(mat.txt3[i,j]>0,"red","blue"),cex=cex_main)
+      }
+      
+    }
+  }
+  
+  if (folding_line){
+  # diagonal line:
+    segments(0.5+1,.5+n-1,.5+n,0.5,col="black",lty=3,lwd=3)
+  }
+
+  #mtext(title,3,cex=1,line=1)
+  
+  # put pathogen names on rows and columns:
+  for (s in 1:J){
+    text(-0,J-s+1,paste0(dim_names[s],":",s),cex=min(1.5,20/J),adj=1)
+    text(s,J+0.7,paste0(s,":",dim_names[s]),cex=min(1.5,20/J),srt=45,adj=0)
+  }
+  # labels for cases and controls:
+  text(J+1,J/2,"cases",cex=2,srt=-90)
+  text(J/2,0,"controls",cex=2)
+}
+
+
+NA2dot <- function(s){
+  gsub("NA",".",s,fixed=TRUE)
+}

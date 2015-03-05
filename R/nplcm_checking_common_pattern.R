@@ -17,12 +17,9 @@
 #' @export
 #' 
 
-nplcm_checking_common_pattern <- function(DIR_NPLCM,npat.ctrl = 10,npat.case=10){
-  
-#   DIR_NPLCM = result.folder
-#   npat.ctrl = 20
-#   npat.case = 20
-  
+nplcm_checking_common_pattern <- function(DIR_NPLCM,
+                                          npat.case=10,npat.ctrl = 10){
+    
   # remember that the data.txt file in the WinBUGS working folder is transposed:
   bugs.dat <- dget(paste(DIR_NPLCM,"data.txt",sep="/"))
   for (bugs.variable.name in names(bugs.dat)){
@@ -34,7 +31,11 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,npat.ctrl = 10,npat.case=10)
   }
   
   model_options     <- dget(paste(DIR_NPLCM,"model_options.txt",sep="/"))
+  #
+  # can be modified to actual visualization order:
+  #
   pathogen_BrS_list <- model_options$pathogen_BrS_list
+  
   
   ## reading nplcm outputs:
   res_nplcm <- read.coda(paste(DIR_NPLCM,"coda1.txt",sep="/"),
@@ -42,49 +43,22 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,npat.ctrl = 10,npat.case=10)
                          quiet=TRUE)
   
   JBrS  <- bugs.dat$JBrS
-  Nd <- bugs.dat$Nd
-  Nu <- bugs.dat$Nu
-  Y  <- c(rep(1,Nd),rep(0,Nu))
-  
-  MBS.case <- bugs.dat$MBS[Y==1,]
-  MBS.ctrl <- bugs.dat$MBS[Y==0,]
-  
+  Nd    <- bugs.dat$Nd
+  Nu    <- bugs.dat$Nu
+  Y     <- c(rep(1,Nd),rep(0,Nu))
   #
-  # Controls:
+  # test: (pathogen_display can be separately specified):
   #
-  nonzero.pat <- apply(MBS.ctrl,1,paste,collapse = "" )
-  ctrlpat     <- sort(table(nonzero.pat),decreasing=TRUE)
+  pathogen_display  <- pathogen_BrS_list
+  index_display <- my_reorder(pathogen_display,pathogen_BrS_list)
+  pathogen_name <- pathogen_BrS_list[index_display]
   
-  ctrlpat.high      <- ctrlpat[1:npat.ctrl]/Nu
-  ctrlpat.high.name <- names(ctrlpat.high)
+  MBS.case <- bugs.dat$MBS[Y==1,index_display]
+  MBS.ctrl <- bugs.dat$MBS[Y==0,index_display]
   
   # get posterior predicted datasets:
   MBS.new <- res_nplcm[,grep("MBS.new",colnames(res_nplcm))]
   new.tmp <- MBS.new
-  
-  # Rows: iterations; 
-  # Columns: frequencies of npat most common patterns+the rest:
-  ctpat.ctrl <- matrix(NA,nrow=nrow(new.tmp),ncol=npat.ctrl+1)
-  
-  for (iter in 1:nrow(new.tmp)){
-    mat             <- matrix(new.tmp[iter,-(1:(JBrS*Nd))],ncol=JBrS,byrow=TRUE)
-    nonzero.pat.tmp <- apply(mat,1,paste,collapse = "" )
-    ctrlpat.tmp     <- table(nonzero.pat.tmp)
-    
-    ppd.pat.ct = (sapply(ctrlpat.high.name,function(x) {
-      indtmp = names(ctrlpat.tmp)==x
-      if (sum(indtmp)==0){
-        res = 0
-      } else{
-        res = ctrlpat.tmp[indtmp]
-      }     
-      res
-    }
-    ))
-    
-    ctpat.ctrl[iter,-ncol(ctpat.ctrl)] = ppd.pat.ct/Nu
-    ctpat.ctrl[iter,ncol(ctpat.ctrl)]  =  1-sum(ppd.pat.ct/Nu)
-  }
   
   #
   # Cases:
@@ -95,10 +69,12 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,npat.ctrl = 10,npat.case=10)
   casepat.high      <- casepat[1:npat.case]/Nd
   casepat.high.name <- names(casepat.high)
   
+  # Rows: iterations; 
+  # Columns: frequencies of npat most common patterns+the rest:
   ctpat.case <- matrix(NA,nrow=nrow(new.tmp),ncol=npat.case+1)
   
   for (iter in 1:nrow(new.tmp)){
-    mat             <- matrix(new.tmp[iter,1:(JBrS*Nd)],ncol=JBrS,byrow=TRUE)
+    mat             <- matrix(new.tmp[iter,1:(JBrS*Nd)],ncol=JBrS,byrow=TRUE)[,index_display]
     nonzero.pat.tmp <- apply(mat , 1 , paste , collapse = "" )
     casepat.tmp     <- table(nonzero.pat.tmp)
     
@@ -117,47 +93,64 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,npat.ctrl = 10,npat.case=10)
     ctpat.case[iter,ncol(ctpat.case)]  = 1-sum(ppd.pat.ct/Nd)
   }
   
+  #
+  # Controls:
+  #
+  nonzero.pat <- apply(MBS.ctrl,1,paste,collapse = "" )
+  ctrlpat     <- sort(table(nonzero.pat),decreasing=TRUE)
+  
+  ctrlpat.high      <- ctrlpat[1:npat.ctrl]/Nu
+  ctrlpat.high.name <- names(ctrlpat.high)
+  
+  # Rows: iterations; 
+  # Columns: frequencies of npat most common patterns+the rest:
+  ctpat.ctrl <- matrix(NA,nrow=nrow(new.tmp),ncol=npat.ctrl+1)
+  
+  for (iter in 1:nrow(new.tmp)){
+    mat             <- matrix(new.tmp[iter,-(1:(JBrS*Nd))],ncol=JBrS,byrow=TRUE)[,index_display]
+    nonzero.pat.tmp <- apply(mat,1,paste,collapse = "" )
+    ctrlpat.tmp     <- table(nonzero.pat.tmp)
+    
+    ppd.pat.ct = (sapply(ctrlpat.high.name,function(x) {
+      indtmp = names(ctrlpat.tmp)==x
+      if (sum(indtmp)==0){
+        res = 0
+      } else{
+        res = ctrlpat.tmp[indtmp]
+      }     
+      res
+    }
+    ))
+    
+    ctpat.ctrl[iter,-ncol(ctpat.ctrl)] = ppd.pat.ct/Nu
+    ctpat.ctrl[iter,ncol(ctpat.ctrl)]  =  1-sum(ppd.pat.ct/Nu)
+  }
+  
   
   #
   # start plotting:
   #
-  op<-par()
-  pdf(paste0(result.folder,"//frequent_pattern_check.pdf"),
-      width=16,height=16)
-  nf  <- layout(matrix(c(1,2),nrow=2),widths=c(20,20),heights=c(8,8))
-  top <- .5
+  #
+  # start plotting:
+  #
+  pdf(paste0(DIR_NPLCM,"//frequent_pattern_check.pdf"),
+      width=20,height=10)
+  nf  <- layout(matrix(c(1,2),nrow=1,ncol=2),
+                widths=c(10,10),heights=c(6,6))
+  top <- max(ctpat.case,ctpat.ctrl)+0.05
   #layout.show(nf)
-  ## controls:
+  
+  #
+  # cases:
+  #
   boxwex =0.2 
-  loc.gap = boxwex/1.9
-  par(mai=op$mai+c(JBrS/11+.5,1,0,0),xpd=TRUE)
-  boxplot(ctpat.ctrl,at=1:(npat.ctrl+1)-loc.gap,xlab="",
-          ylab="frequency",xaxt="n",cex.main=2,ylim=c(0,top),
-          boxwex=boxwex,yaxt="n",cex.lab=2,outline=FALSE)
-  
-  # mtext("pattern (ordered by observed frequency)",1,line=8)
-  axis(1,at=1:(length(ctrlpat.high.name)+1),labels=c(ctrlpat.high.name,"other"),
-       las=2,cex.axis=2)
-  axis(2,at = seq(0.1,top,by=0.1),labels=seq(0.1,top,by=0.1),cex.axis=2)
-  ci95.ctrl = apply(ctpat.ctrl,2,quantile,c(0.025,0.975))
-  matplot(1:(npat.ctrl+1)-loc.gap,t(ci95.ctrl),add=TRUE,col="black",pch="*",cex=2)
-  
-  points(c(ctrlpat.high,1-sum(ctrlpat.high)),col="red",pch=1,cex=1,lwd=2)
-  cumpat = round(cumsum(c(ctrlpat.high,1-sum(ctrlpat.high)))*100,1)
-  for (s in 1:(length(ctrlpat.high)+1)){
-    text(s,top+0.07,paste0(cumpat[s],"%"),srt=45,cex=2)
-  }
-  #legend("topright",c("observed frequency","2.5% posterior predictive quantile",
-  #                    "97.5% posterior predictive quantile"),
-  #col=c("red","blue","blue"),lty=c(1,1,2),pch=c(15,3,3))
-  
-  ## cases:
-  boxwex =0.2 
-  loc.gap = boxwex/1.9
-  par(mai=op$mai+c(JBrS/11+.5,1,0,0),xpd=TRUE)
+  loc.gap = 0#boxwex/1.9
+  par(mar=c(5.1, 4.1, 4.1, 2.1)+c(JBrS,1,0,-2.1),xpd=TRUE)
   boxplot(ctpat.case,at=1:(npat.case+1)-loc.gap,xlab="",
           ylab="frequency",cex.lab=2,xaxt="n",cex.main=2,ylim=c(0,top),
-          boxwex=boxwex,yaxt="n",outline=FALSE)
+          boxwex=boxwex,yaxt="n",outline=FALSE,bty="n")
+  
+  casepat.high.name <- NA2dot(casepat.high.name)
   
   #mtext("pattern (ordered by observed frequency)",1,line=8)
   axis(1,at=1:(length(casepat.high.name)+1),labels=c(casepat.high.name,"other"),
@@ -168,10 +161,52 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,npat.ctrl = 10,npat.case=10)
   
   points(c(casepat.high,1-sum(casepat.high)),col="red",pch=1,cex=1,lwd=2)
   cumpat = round(cumsum(c(casepat.high,1-sum(casepat.high)))*100,1)
-  for (s in 1:(length(casepat.high)+1)){
-    text(s,top+0.07,paste0(cumpat[s],"%"),srt=45,cex=2)
-  }
+  
+  mtext("case",side = 3,line=-5,cex=4)
+  mtext("BrS pattern",side=1,line=JBrS+3,cex=2)
+  # # cumulative frequencies:
+  # plot(1:(npat.case+1),rep(0,npat.case+1)+cumpat/100,type="o",ylim=c(0,1),
+  #      ylab="Cumulative",xaxt="n",xlab="n")
+  # for (s in 1:(length(casepat.high)+1)){
+  #   text(s,top+0.07,paste0(cumpat[s],"%"),srt=45,cex=2)
+  # }
+  
+  #
+  # controls:
+  #
+  boxwex =0.2 
+  loc.gap = 0#boxwex/1.9
+  par(mar=c(5.1, 4.1, 4.1, 2.1)+c(JBrS,-4.1,0,0),xpd=TRUE)
+  boxplot(ctpat.ctrl,at=1:(npat.ctrl+1)-loc.gap,xlab="",
+          ylab="",xaxt="n",cex.main=2,ylim=c(0,top),
+          boxwex=boxwex,yaxt="n",cex.lab=2,outline=FALSE,
+          yaxt="n")
+  
+  ctrlpat.high.name <- NA2dot(ctrlpat.high.name)
+  # mtext("pattern (ordered by observed frequency)",1,line=8)
+  axis(1,at=1:(length(ctrlpat.high.name)+1),labels=c(ctrlpat.high.name,"other"),
+       las=2,cex.axis=2)
+  #axis(2,at = seq(0.1,top,by=0.1),labels=seq(0.1,top,by=0.1),cex.axis=2)
+  ci95.ctrl = apply(ctpat.ctrl,2,quantile,c(0.025,0.975))
+  matplot(1:(npat.ctrl+1)-loc.gap,t(ci95.ctrl),add=TRUE,col="black",pch="*",cex=2)
+  
+  points(c(ctrlpat.high,1-sum(ctrlpat.high)),col="red",pch=1,cex=1,lwd=2)
+  cumpat = round(cumsum(c(ctrlpat.high,1-sum(ctrlpat.high)))*100,1)
+  
+  mtext("control",side = 3,line=-5,cex=4)
+  mtext("BrS pattern",side=1,line=JBrS+3,cex=2)
+  legend("topright",c("observed frequency","97.5% posterior predictive quantile",
+                      "2.5% posterior predictive quantile"),
+         col=c("red","black","black"),pch=c(1,8,8),bty="n")
+  
+  # par(mar=c(0,0,0,2.1))
+  # plot(1:(npat.ctrl+1),rep(0,npat.ctrl+1)+cumpat/100,type="o",ylim=c(0,1),
+  #      xaxt="n",xlab="n",ylab="",yaxt="n")
+  # for (s in 1:(length(ctrlpat.high)+1)){
+  #   text(s,top+0.07,paste0(cumpat[s],"%"),srt=45,cex=2)
+  # }
   dev.off()
+  
   
   cat("==A figure is generated for model checking: frequent BrS measurement
       patterns. Stored in ",DIR_NPLCM," ==")
