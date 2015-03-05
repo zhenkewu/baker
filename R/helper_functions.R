@@ -427,8 +427,8 @@ visualize_case_control_matrix <- function(mat, dim_names=ncol(mat),
   
   # put pathogen names on rows and columns:
   for (s in 1:J){
-    text(-0,J-s+1,paste0(dim_names[s],":",s),cex=min(1.5,20/J),adj=1)
-    text(s,J+0.7,paste0(s,":",dim_names[s]),cex=min(1.5,20/J),srt=45,adj=0)
+    text(-0,J-s+1,paste0(dim_names[s],":(",s,")"),cex=min(1.5,20/J),adj=1)
+    text(s,J+0.7,paste0("(",s,"):",dim_names[s]),cex=min(1.5,20/J),srt=45,adj=0)
   }
   # labels for cases and controls:
   text(J+1,J/2,"cases",cex=2,srt=-90)
