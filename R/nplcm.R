@@ -135,11 +135,19 @@ nplcm <- function(Mobs,Y,X,model_options,mcmc_options){
               }
           }
     }
+  } else{
+      # if stratification or regression:
+      if (parsing$measurement$quality=="BrS+SS"){
+        stop("== Not yet implemented. Please contact maintainer. Thanks.")
+      }else if (parsing$measurement$quality=="BrS"){
+        if (!parsing$measurement$SSonly){
+          if (!parsing$measurement$nest){
+            stop("== Not yet implemented. Please contact maintainer. Thanks.")
+          }else{
+            res <- nplcm_fit_reg(Mobs,Y,X,model_options,mcmc_options)
+          }
+        }
+      }
   }
-
-#   else{
-#     # with stratification or regression:
-#     res <- nplcm_fit_reg(Mobs,Y,X,model_options,mcmc_options)
-#   }
   res
 }

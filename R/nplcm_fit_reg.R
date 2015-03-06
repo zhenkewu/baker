@@ -479,7 +479,8 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
                       }
 
                       if (mcmc_options$ppd==TRUE){
-                        gs <- mybugs("model_plcm_SSonly_ppd.bug")
+                        stop("== Not yet implemented. Please contact maintainer. Thanks.==")
+                        #gs <- mybugs("model_plcm_SSonly_ppd.bug")
                       } else {
                         gs <- mybugs("model_plcm_SSonly_strat.bug")
                       }
