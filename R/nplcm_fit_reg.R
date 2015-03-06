@@ -217,9 +217,10 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
         }
 
         if (mcmc_options$ppd==TRUE){
-          gs <- mybugs("model_plcm_ppd.bug")
+          stop("== Not yet implemented. Please contact maintainer. Thanks.")
+          #gs <- mybugs("model_plcm_ppd.bug")
         } else {
-          gs <- mybugs("model_plcm_strat.bug")
+          gs <- mybugs("model_Reg_BrSandSS_plcm.bug")
         }
       }
 
@@ -482,7 +483,7 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
                         stop("== Not yet implemented. Please contact maintainer. Thanks.==")
                         #gs <- mybugs("model_plcm_SSonly_ppd.bug")
                       } else {
-                        gs <- mybugs("model_plcm_SSonly_strat.bug")
+                        gs <- mybugs("model_Reg_BrSandSS_SSonly_plcm.bug")
                       }
                 }
        }#END plcm model.
