@@ -66,6 +66,7 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,
   nonzero.pat <- apply(MBS.case,1,paste,collapse = "" )
   casepat     <- sort(table(nonzero.pat),decreasing=TRUE)
   
+  npat.case <- min(npat.case,length(casepat))
   casepat.high      <- casepat[1:npat.case]/Nd
   casepat.high.name <- names(casepat.high)
   
@@ -99,6 +100,7 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,
   nonzero.pat <- apply(MBS.ctrl,1,paste,collapse = "" )
   ctrlpat     <- sort(table(nonzero.pat),decreasing=TRUE)
   
+  npat.ctrl <- min(npat.ctrl,length(ctrlpat))
   ctrlpat.high      <- ctrlpat[1:npat.ctrl]/Nu
   ctrlpat.high.name <- names(ctrlpat.high)
   

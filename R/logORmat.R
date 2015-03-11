@@ -95,8 +95,8 @@ logORmat = function(MBS.case,MBS.ctrl,
              0.5 + 0:n, col = "gray")
     segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
                                                         n), col = "gray")
-    cor.txt<- round(t(cor)[,n:1],1)
-    cor.se.txt <-round(t(cor.se)[,n:1],1)
+    cor.txt<- round(t(cor)[,n:1],2)
+    cor.se.txt <-round(t(cor.se)[,n:1],2)
     cor.txt3<- round(t(cor)[,n:1],3)
     cor.se.txt3 <-round(t(cor.se)[,n:1],3)
     
