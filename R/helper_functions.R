@@ -318,16 +318,10 @@ my_reorder <- function(disp_order,raw_nm){
         order(res)
 }
 
-# disp_order <- c("B","E","D","C","F","A")
-#   #union_nm   <- c("A","B","C","D","E")
-#   raw_nm <- c("C","A","E")
-#   my_reorder(disp_order,raw_nm)
-# # list(c("C","E"),
-# #      c("D","B"),
 
 
 
-logOR <- function(MBS.case,MBS.ctrl,JBrS){  
+logOR <- function(MBS.case,MBS.ctrl){  
   JBrS <- ncol(MBS.case)
   logORmat       <- matrix(NA,nrow=JBrS,ncol=JBrS)
   logORmat.se    <- matrix(NA,nrow=JBrS,ncol=JBrS)
@@ -335,20 +329,20 @@ logOR <- function(MBS.case,MBS.ctrl,JBrS){
     for (j1 in (j2+1):JBrS){
       
       # cases: (upper triangle)
-      x = MBS.case[,j2]
-      y = MBS.case[,j1]
+      x <- MBS.case[,j2]
+      y <- MBS.case[,j1]
       
-      fit = glm(y~x,family = binomial(link="logit"))
+      fit <- glm(y~x,family = binomial(link="logit"))
       
       if ("x" %in% rownames(summary(fit)$coef)){
         logORmat[j2,j1] = round(summary(fit)$coef["x",1],3)
         logORmat.se[j2,j1] = round(summary(fit)$coef["x",2],3)
       }
       # controls: (lower triangle)
-      x = MBS.ctrl[,j2]
-      y = MBS.ctrl[,j1]
+      x <- MBS.ctrl[,j2]
+      y <- MBS.ctrl[,j1]
       
-      fit = glm(y~x,family = binomial(link="logit"))
+      fit <- glm(y~x,family = binomial(link="logit"))
       
       if ("x" %in% rownames(summary(fit)$coef)){
         logORmat[j1,j2] = round(summary(fit)$coef["x",1],3)
@@ -369,6 +363,12 @@ logOR <- function(MBS.case,MBS.ctrl,JBrS){
   names(res) <- c("logOR","logOR.se")
   return(res)
 }
+
+
+
+
+
+
 
 #' Visualize matrix for a quantity measured on cases and controls 
 #' 
@@ -423,8 +423,6 @@ visualize_case_control_matrix <- function(mat, dim_names=ncol(mat),
     segments(0.5+1,.5+n-1,.5+n,0.5,col="black",lty=3,lwd=3)
   }
 
-  #mtext(title,3,cex=1,line=1)
-  
   # put pathogen names on rows and columns:
   for (s in 1:J){
     text(-0,J-s+1,paste0(dim_names[s],":(",s,")"),cex=min(1.5,20/J),adj=1)
@@ -435,7 +433,9 @@ visualize_case_control_matrix <- function(mat, dim_names=ncol(mat),
   text(J/2,0,"controls",cex=2)
 }
 
-
+#
+#
+#
 NA2dot <- function(s){
   gsub("NA",".",s,fixed=TRUE)
 }

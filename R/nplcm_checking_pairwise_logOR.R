@@ -66,7 +66,6 @@ nplcm_checking_pairwise_logOR <- function(DIR_NPLCM){
       logORmat       <- out$logOR
       logORmat.se    <- out$logOR.se
       
-      
       # posterior predicted:
       logORmat.ppd     <- array(NA,c(JBrS,JBrS,Niter))
       logORmat.se.ppd  <- array(NA,c(JBrS,JBrS,Niter))
