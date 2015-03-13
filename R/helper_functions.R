@@ -320,6 +320,15 @@ my_reorder <- function(disp_order,raw_nm){
 
 
 
+#' calculate pairwise log odds ratios
+#' 
+#' Case at upper triangle; control at lower triangle
+#' 
+#' @param MBS.case Case Bronze-Standard (BrS) data
+#' @param MBS.ctrl Control Bronze-Standard (BrS) data
+#' 
+#' @export
+#'
 
 logOR <- function(MBS.case,MBS.ctrl){  
   JBrS <- ncol(MBS.case)
