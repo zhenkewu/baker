@@ -4,7 +4,8 @@
 \alias{logORmat}
 \title{Matrix of pairwise log odds ratios (LOR) for BrS data (has three rows)}
 \usage{
-logORmat(MBS.case, MBS.ctrl, pathogen_display, pathogen_BrS)
+logORmat(MBS.case, MBS.ctrl, pathogen_display, pathogen_BrS,
+  logOR_rounding = 2)
 }
 \arguments{
 \item{MBS.case}{Case BrS measurements.}
@@ -17,9 +18,7 @@ It can be of larger length than that of \code{pathogen_BrS}.}
 \item{pathogen_BrS}{The vector of pathogen names corresponding to each
 row/column in the plot. All pathogens have BrS measures.}
 
-\item{cex_main}{The size of LOR and Z-stat.}
-
-\item{cex_se}{The size of standard error of LOR.}
+\item{logOR_rounding}{Rounding number of the log odds ratio. Default is 2.}
 }
 \value{
 Figure of LOR matrix and relavent s.e. and significance information.

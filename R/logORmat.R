@@ -14,8 +14,7 @@
 #' It can be of larger length than that of \code{pathogen_BrS}.
 #' @param pathogen_BrS The vector of pathogen names corresponding to each
 #'  row/column in the plot. All pathogens have BrS measures.
-#'  @param cex_main The size of LOR and Z-stat.
-#'  @param cex_se The size of standard error of LOR.
+#' @param logOR_rounding Rounding number of the log odds ratio. Default is 2.
 #' @importFrom RColorBrewer brewer.pal
 #' 
 #' @return Figure of LOR matrix and relavent s.e. and significance information.
@@ -24,7 +23,7 @@
 
 logORmat = function(MBS.case,MBS.ctrl,
                     pathogen_display,
-                    pathogen_BrS){
+                    pathogen_BrS,logOR_rounding = 2){
   
   J   <- ncol(MBS.case)
   Y   <- c(rep(1,nrow(MBS.case)),rep(0,nrow(MBS.ctrl)))
@@ -95,8 +94,8 @@ logORmat = function(MBS.case,MBS.ctrl,
              0.5 + 0:n, col = "gray")
     segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
                                                         n), col = "gray")
-    cor.txt<- round(t(cor)[,n:1],2)
-    cor.se.txt <-round(t(cor.se)[,n:1],2)
+    cor.txt<- round(t(cor)[,n:1],logOR_rounding)
+    cor.se.txt <-round(t(cor.se)[,n:1],logOR_rounding)
     cor.txt3<- round(t(cor)[,n:1],3)
     cor.se.txt3 <-round(t(cor.se)[,n:1],3)
     
