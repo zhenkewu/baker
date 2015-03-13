@@ -370,7 +370,7 @@ logOR <- function(MBS.case,MBS.ctrl){
 
 
 
-#' Visualize matrix for a quantity measured on cases and controls 
+#' Visualize matrix for a quantity measured on cases and controls (a single number)
 #' 
 #' Special to case-control visualization: upper right for cases, lower left
 #' for controls. 

@@ -1,4 +1,4 @@
-#' Matrix of pairwise log odds ratios (LOR) for BrS data
+#' Matrix of pairwise log odds ratios (LOR) for BrS data (has three rows)
 #'
 #' The matrix of values is with controls on upper right and cases on lower
 #' left. Log odds ratio (LOR) is at the top of the cell.  Below it, its standard

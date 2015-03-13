@@ -2,7 +2,7 @@
 % Please edit documentation in R/helper_functions.R
 \name{visualize_case_control_matrix}
 \alias{visualize_case_control_matrix}
-\title{Visualize matrix for a quantity measured on cases and controls}
+\title{Visualize matrix for a quantity measured on cases and controls (a single number)}
 \usage{
 visualize_case_control_matrix(mat, dim_names = ncol(mat), cell_metrics = "",
   folding_line = TRUE, axes = FALSE, xlab = "", ylab = "", asp = 1,

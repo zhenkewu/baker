@@ -2,7 +2,7 @@
 % Please edit documentation in R/logORmat.R
 \name{logORmat}
 \alias{logORmat}
-\title{Matrix of pairwise log odds ratios (LOR) for BrS data}
+\title{Matrix of pairwise log odds ratios (LOR) for BrS data (has three rows)}
 \usage{
 logORmat(MBS.case, MBS.ctrl, pathogen_display, pathogen_BrS)
 }
