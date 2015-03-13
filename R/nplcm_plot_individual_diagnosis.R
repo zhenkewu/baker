@@ -14,7 +14,10 @@
 #'  The whole list of causes are shown at the bottom.
 #'
 #' @export
+
+
 nplcm_plot_individual_diagnosis <- function(DIR_NPLCM,npat=16){#BEGIN of function:
+
             # remember that the data.txt file in winbugs working folder is transposed:
             bugs.dat <- dget(paste(DIR_NPLCM,"data.txt",sep="/"))
             for (bugs.variable.name in names(bugs.dat)) {
@@ -112,27 +115,45 @@ nplcm_plot_individual_diagnosis <- function(DIR_NPLCM,npat=16){#BEGIN of functio
                 #mtext(casepat.high.name[i],side=3,line=-2,cex=3)
                 #BrS:
                 casepat.high.name.str <- unlist(strsplit(casepat.high.name[i],split=""))
-                for (j2 in 1:(JBrS+JSSonly)){
-                  points(2*(j2)-.5,1,pch=casepat.high.name.str[j2],cex=1.5)
-                }
-                #mtext(paste0(round(length(ind.tmp)/Nd,3)*100,"%"),side=3,line=-4,cex=2)
-                text(2*((JBrS+JSSonly)/2)-.5,0.9,paste0(round(length(ind.tmp)/Nd,3)*100,"%"),
-                     cex=1.5)
-                #SS:
-                MSS_pat_high.name.str <- unlist(strsplit(MSS_pat_high.name[j],split=""))
-                for (j2 in 1:JBrS){
-                  points(2*(j2)-.5,0.8,pch=MSS_pat_high.name.str[j2],col="red",cex=1.5)
-                }
-                for (j2 in 1:JSSonly){
-                  points(2*(j2+JBrS)-.5,0.8,pch=MSS_pat_high.name.str[j2+JSS],col="red",cex=1.5)
-                }
-                text(2*((JBrS+JSSonly)/2)-.5,.7,paste0(round(length(ind.interest.list.MSS[[j]])/length(ind.tmp),3)*100,"%"),col="red",
-                     cex=1.5)
-#                 for (j in 1:(JBrS+JSSonly)){
-#                   text(2*j-0.5,1.05,pathogen_list[j],srt=45,adj=0)
-#                 }
-                  axis(3,at=2*(1:(JBrS+JSSonly))-.5,labels=pathogen_list,
-                        las=2,line=-0.5)
+                
+                if (!is.null(MSS.only)){
+                   # if has SSonly measurements:
+                    for (j2 in 1:(JBrS+JSSonly)){
+                        points(2*(j2)-.5,1,pch=casepat.high.name.str[j2],cex=1.5)
+                    }
+                    #mtext(paste0(round(length(ind.tmp)/Nd,3)*100,"%"),side=3,line=-4,cex=2)
+                    text(2*((JBrS+JSSonly)/2)-.5,0.9,paste0(round(length(ind.tmp)/Nd,3)*100,"%"),
+                         cex=1.5)
+                    #SS:
+                    MSS_pat_high.name.str <- unlist(strsplit(MSS_pat_high.name[j],split=""))
+                    for (j2 in 1:JBrS){
+                      points(2*(j2)-.5,0.8,pch=MSS_pat_high.name.str[j2],col="red",cex=1.5)
+                    }
+                    for (j2 in 1:JSSonly){
+                      points(2*(j2+JBrS)-.5,0.8,pch=MSS_pat_high.name.str[j2+JSS],col="red",cex=1.5)
+                    }
+                    text(2*((JBrS+JSSonly)/2)-.5,.7,paste0(round(length(ind.interest.list.MSS[[j]])/length(ind.tmp),3)*100,"%"),col="red",
+                         cex=1.5)
+                    axis(3,at=2*(1:(JBrS+JSSonly))-.5,labels=pathogen_list,
+                            las=2,line=-0.5)
+                  }else{
+                    # if no SSonly measurements:
+                    for (j2 in 1:(JBrS)){
+                      points(2*(j2)-.5,1,pch=casepat.high.name.str[j2],cex=1.5)
+                    }
+                    #mtext(paste0(round(length(ind.tmp)/Nd,3)*100,"%"),side=3,line=-4,cex=2)
+                    text(2*((JBrS)/2)-.5,0.9,paste0(round(length(ind.tmp)/Nd,3)*100,"%"),
+                         cex=1.5)
+                    #SS:
+                    MSS_pat_high.name.str <- unlist(strsplit(MSS_pat_high.name[j],split=""))
+                    for (j2 in 1:JBrS){
+                      points(2*(j2)-.5,0.8,pch=MSS_pat_high.name.str[j2],col="red",cex=1.5)
+                    }
+                    text(2*((JBrS)/2)-.5,.7,paste0(round(length(ind.interest.list.MSS[[j]])/length(ind.tmp),3)*100,"%"),col="red",
+                         cex=1.5)
+                    axis(3,at=2*(1:(JBrS))-.5,labels=pathogen_list,
+                         las=2,line=-0.5)
+                  }
                       text(-2,1.1,"Pathogen:",adj=0)
                   axis(1,at=2*(1:Jcause)-.5,labels=model_options$cause_list,
                        las=2,line=0.5)

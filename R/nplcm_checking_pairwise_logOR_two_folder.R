@@ -17,10 +17,10 @@
 
 nplcm_checking_pairwise_logOR_two_folder <- function(DIR_NPLCM1,DIR_NPLCM2){
   
-  obs_logOR_list   <- list()
-  obs_logORse_list   <- list()
-  pred_list <- list()
-  Niter_list <- list()
+  obs_logOR_list      <- list()
+  obs_logORse_list    <- list()
+  pred_list           <- list()
+  Niter_list          <- list()
   misfit.vis.mat_list <- list()
   count <- 1
   for (DIR_NPLCM in c(DIR_NPLCM1,DIR_NPLCM2)){
