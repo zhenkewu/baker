@@ -10,6 +10,8 @@
 #' Default is 10.
 #' @param npat.case Number of the most common BrS measurement pattern among cases.
 #' Default is 10.
+#' 
+#' 
 #' @importFrom coda read.coda
 #' @return A figure of posterior predicted frequencies compared with the observed 
 #' frequencies of the most common patterns for the BrS data. The function generates
