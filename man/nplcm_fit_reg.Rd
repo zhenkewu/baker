@@ -18,8 +18,9 @@ They have imperfect sensitivity/specificity.
 \item \code{MSS} a data frame of silver-standard (SS) measurements.
 Rows are subjects, columns are pathogens (e.g. blood culture).
 These measurements have perfect specificity but imperfect sensitivity.
-\item \code{MGS} a data frame of gold-standard (GS) measurements. Rows are subject,
-columns are pathogens. These measurements have perfect sensitivity and specificity.
+\item \code{MGS} a data frame of gold-standard (GS) measurements.
+Rows are subject, columns are pathogens.
+These measurements have perfect sensitivity and specificity.
 }}
 
 \item{Y}{Vector of disease status: 1 for case, 0 for control.}

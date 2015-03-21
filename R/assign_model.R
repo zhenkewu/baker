@@ -42,7 +42,10 @@ assign_model <- function(Mobs,Y,X,model_options,silent=TRUE){
   quality_nm[which(names(Mobs)=="MBS")] <- "BrS"
   quality_nm[which(names(Mobs)=="MSS")] <- "SS"
   quality_nm[which(names(Mobs)=="MGS")] <- "GS"
-  input_data_sources  <- quality_nm[!is.na(Mobs)]
+  input_data_sources  <- quality_nm[!is.na(Mobs) & 
+                                      unlist(lapply(Mobs,function(a) !is.null(a)))]
+  # the !is.null criteria is for situations where NULL is specified for MGS or MSS
+  # in the list 'Mobs'.
 
   if (!all(input_data_sources%in%use_data_sources)){
     # test for data sources as specified by model_options and

@@ -131,8 +131,8 @@ TPR_prior_set <- function(model_options,Mobs,Y,X=NULL){
                               used_cat = temp_cat)
               }else{
                        res <- list(alphaB = alphaB, betaB = betaB,
-                             alphaS = alphaS, betaS = betaS,
-                             used_cat = temp_cat)
+                              alphaS = alphaS, betaS = betaS,
+                              used_cat = temp_cat)
               }
        }
 

@@ -7,7 +7,7 @@
 nplcm_plot_three_panel(DIR_NPLCM, ss_upperlimit = 1, eti_upperlimit = 0.4)
 }
 \arguments{
-\item{DIR_NPLCM}{directory of results}
+\item{DIR_NPLCM}{File path to the folder containing posterior samples}
 
 \item{ss_upperlimit}{The upper limit of horizontal bar for the silver-standard
 subpanel (the middle panel). The default value is .25.}
@@ -24,6 +24,7 @@ DN: 1. current implementation: nplcm, BrS and SS.
 "Jfull" here is not the same as in other functions: it refers to the number of
 pathogens even if there are pathogens with only silver-standard data;
 in other functions, "Jfull" refers to the number of pathogens that have BrS data.
-2. Missing data for BrS or SS are dropped when calculating fractionsa
+2. Missing data for BrS or SS are dropped when calculating observed measurement
+prevalences
 }
 

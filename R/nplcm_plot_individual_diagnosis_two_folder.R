@@ -96,7 +96,6 @@ nplcm_plot_individual_diagnosis_two_folder <- function(DIR_NPLCM1,
            count <- count+1
    }# END loop over folders storing results of model fits.
   
-
   for (i in 1:length(casepat.high.name)){
     ind.tmp = ind.interest.list[[i]]
     

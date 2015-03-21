@@ -448,3 +448,6 @@ visualize_case_control_matrix <- function(mat, dim_names=ncol(mat),
 NA2dot <- function(s){
   gsub("NA",".",s,fixed=TRUE)
 }
+
+
+
