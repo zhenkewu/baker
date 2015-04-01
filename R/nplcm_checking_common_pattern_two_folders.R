@@ -148,7 +148,7 @@ nplcm_checking_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
   #
   # start plotting:
   #
-  pdf("frequent_pattern_check_two_folders.pdf",
+  pdf("C:\\frequent_pattern_check_two_folders.pdf",
       width=20,height=10)
   nf  <- layout(matrix(c(1,2),nrow=1,ncol=2),
                 widths=c(10,10),heights=c(6,6))
@@ -238,5 +238,5 @@ nplcm_checking_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
   
   
   cat("==A figure is generated for model checking: frequent BrS measurement
-      patterns. Stored in ",DIR_NPLCM," ==")
+      patterns. Stored in ","C:\\"," ==")
 }
