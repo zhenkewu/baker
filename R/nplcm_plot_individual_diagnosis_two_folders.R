@@ -21,7 +21,7 @@
 #' @export
 
 
-nplcm_plot_individual_diagnosis_two_folder <- function(DIR_NPLCM1,
+nplcm_plot_individual_diagnosis_two_folders <- function(DIR_NPLCM1,
                                                        DIR_NPLCM2,npat=16){
 
     d1_nplcm_list          <- list() # no. of MCMC iterations

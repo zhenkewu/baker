@@ -15,7 +15,7 @@
 #' @export
 #' 
 
-nplcm_checking_pairwise_logOR_two_folder <- function(DIR_NPLCM1,DIR_NPLCM2){
+nplcm_checking_pairwise_logOR_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2){
   
   obs_logOR_list      <- list()
   obs_logORse_list    <- list()

@@ -168,7 +168,7 @@ nplcm_checking_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
           boxwex=boxwex,yaxt="n",outline=FALSE,bty="n")
   boxplot(ctpat.case_list[[2]],at=1:(npat.case+1)+loc.gap,xlab="",
           ylab="frequency",cex.lab=2,xaxt="n",cex.main=2,ylim=c(0,top),
-          boxwex=boxwex,yaxt="n",outline=FALSE,bty="n",add=TRUE,col="dogerblue2")
+          boxwex=boxwex,yaxt="n",outline=FALSE,bty="n",add=TRUE,col="dodgerblue2")
   
   casepat.high.name <- NA2dot(casepat.high.name)
   
