@@ -442,9 +442,11 @@ visualize_case_control_matrix <- function(mat, dim_names=ncol(mat),
   text(J/2,0,"controls",cex=2)
 }
 
-#
-#
-#
+#' convert 'NA' to '.'
+#'
+#' @param s A string of characters that may contain "NA"
+#' @return A string of characters without 'NA'
+#' @export
 NA2dot <- function(s){
   gsub("NA",".",s,fixed=TRUE)
 }

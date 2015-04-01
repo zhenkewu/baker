@@ -10,7 +10,7 @@
 #' Default is 10.
 #' @param npat.case Number of the most common BrS measurement pattern among cases.
 #' Default is 10.
-#' 
+#' @param cex.pattern Size of patterns; Default is 1.
 #' 
 #' @importFrom coda read.coda
 #' @return A figure of posterior predicted frequencies compared with the observed 
@@ -20,8 +20,10 @@
 #' 
 
 nplcm_checking_common_pattern <- function(DIR_NPLCM,
-                                          npat.case=10,npat.ctrl = 10){
+                                          npat.case=10,npat.ctrl = 10,
+                                          cex.pattern = 1){
     
+  
   # remember that the data.txt file in the WinBUGS working folder is transposed:
   bugs.dat <- dget(paste(DIR_NPLCM,"data.txt",sep="/"))
   for (bugs.variable.name in names(bugs.dat)){
@@ -158,7 +160,7 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,
   
   #mtext("pattern (ordered by observed frequency)",1,line=8)
   axis(1,at=1:(length(casepat.high.name)+1),labels=c(casepat.high.name,"other"),
-       las=2,cex.axis=2)
+       las=2,cex.axis=cex.pattern)
   axis(2,at = seq(0.1,top,by=0.1),labels=seq(0.1,top,by=0.1),cex.axis=2)
   ci95.case = apply(ctpat.case,2,quantile,c(0.025,0.975))
   matplot(1:(npat.case+1)-loc.gap,t(ci95.case),add=TRUE,col="black",pch="*",cex=2)
@@ -189,7 +191,7 @@ nplcm_checking_common_pattern <- function(DIR_NPLCM,
   ctrlpat.high.name <- NA2dot(ctrlpat.high.name)
   # mtext("pattern (ordered by observed frequency)",1,line=8)
   axis(1,at=1:(length(ctrlpat.high.name)+1),labels=c(ctrlpat.high.name,"other"),
-       las=2,cex.axis=2)
+       las=2,cex.axis=cex.pattern)
   #axis(2,at = seq(0.1,top,by=0.1),labels=seq(0.1,top,by=0.1),cex.axis=2)
   ci95.ctrl = apply(ctpat.ctrl,2,quantile,c(0.025,0.975))
   matplot(1:(npat.ctrl+1)-loc.gap,t(ci95.ctrl),add=TRUE,col="black",pch="*",cex=2)
