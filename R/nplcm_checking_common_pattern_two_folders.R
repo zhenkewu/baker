@@ -148,7 +148,7 @@ nplcm_checking_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
   #
   # start plotting:
   #
-  pdf("C:\\frequent_pattern_check_two_folders.pdf",
+  pdf("frequent_pattern_check_two_folders.pdf",
       width=20,height=10)
   nf  <- layout(matrix(c(1,2),nrow=1,ncol=2),
                 widths=c(10,10),heights=c(6,6))
@@ -176,8 +176,12 @@ nplcm_checking_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
   axis(1,at=1:(length(casepat.high.name)+1),labels=c(casepat.high.name,"other"),
        las=2,cex.axis=cex.pattern)
   axis(2,at = seq(0.1,top,by=0.1),labels=seq(0.1,top,by=0.1),cex.axis=2)
-  ci95.case = apply(ctpat.case,2,quantile,c(0.025,0.975))
+  # folder 1:
+  ci95.case = apply(ctpat.case_list[[1]],2,quantile,c(0.025,0.975))
   matplot(1:(npat.case+1)-loc.gap,t(ci95.case),add=TRUE,col="black",pch="*",cex=2)
+  # folder 2:
+  ci95.case = apply(ctpat.case_list[[2]],2,quantile,c(0.025,0.975))
+  matplot(1:(npat.case+1)+loc.gap,t(ci95.case),add=TRUE,col="dodgerblue2",pch="*",cex=2)
   
   points(c(casepat.high,1-sum(casepat.high)),col="red",pch=1,cex=1,lwd=2)
   cumpat = round(cumsum(c(casepat.high,1-sum(casepat.high)))*100,1)
@@ -211,8 +215,12 @@ nplcm_checking_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
   axis(1,at=1:(length(ctrlpat.high.name)+1),labels=c(ctrlpat.high.name,"other"),
        las=2,cex.axis=cex.pattern)
   #axis(2,at = seq(0.1,top,by=0.1),labels=seq(0.1,top,by=0.1),cex.axis=2)
-  ci95.ctrl = apply(ctpat.ctrl,2,quantile,c(0.025,0.975))
+  # folder 1:
+  ci95.ctrl = apply(ctpat.ctrl_list[[1]],2,quantile,c(0.025,0.975))
   matplot(1:(npat.ctrl+1)-loc.gap,t(ci95.ctrl),add=TRUE,col="black",pch="*",cex=2)
+  # folder 2:
+  ci95.ctrl = apply(ctpat.ctrl_list[[2]],2,quantile,c(0.025,0.975))
+  matplot(1:(npat.ctrl+1)+loc.gap,t(ci95.ctrl),add=TRUE,col="dodgerblue2",pch="*",cex=2)
   
   points(c(ctrlpat.high,1-sum(ctrlpat.high)),col="red",pch=1,cex=1,lwd=2)
   cumpat = round(cumsum(c(ctrlpat.high,1-sum(ctrlpat.high)))*100,1)
@@ -238,5 +246,5 @@ nplcm_checking_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
   
   
   cat("==A figure is generated for model checking: frequent BrS measurement
-      patterns. Stored in ","C:\\"," ==")
+      patterns. Stored in current working directory"," ==")
 }
