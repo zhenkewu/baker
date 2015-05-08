@@ -1,4 +1,4 @@
-#' Matrix of pairwise log odds ratios (LOR) for BrS data (has three rows)
+#' Visualize pairwise log odds ratios (LOR) for BrS data
 #'
 #' The matrix of values is with controls on upper right and cases on lower
 #' left. Log odds ratio (LOR) is at the top of the cell.  Below it, its standard
@@ -19,11 +19,17 @@
 #' 
 #' @return Figure of LOR matrix and relavent s.e. and significance information.
 #' @export
-#'
 
 logORmat = function(MBS.case,MBS.ctrl,
                     pathogen_display,
-                    pathogen_BrS,logOR_rounding = 2){
+                    pathogen_BrS,
+                    logOR_rounding = 2){
+  
+  # this plotting function will change graphical paramter "mar"; use
+  # on.exit function to reset the graphical parameters after we have executed 
+  # the function:
+  default_par <- list(mar = par("mar"))
+  on.exit(par(default_par))
   
   J   <- ncol(MBS.case)
   Y   <- c(rep(1,nrow(MBS.case)),rep(0,nrow(MBS.ctrl)))

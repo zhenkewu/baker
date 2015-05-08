@@ -1,19 +1,21 @@
-#' Assign model based on model specification and data structure.
+#' Choose a model to fit
 #'
-#' Before fitting the model, this function determines a) the available measurement
-#' types, b) false positive rate and c) etiology model components based on input
-#' data and model options. It also does consistency checking for the specifications 
-#' in \code{model_options}, and their relations with actual inputted data.
+#' \code{assign_model} recognizes the model to fit as requested by user.
+#' \code{assign_model} will also inspect the actual data supplied to this function
+#'  and check if the data conform to user's requested model. The following features of data and user
+#' inputs are checked: 1) available measurement quality types, i.e., gold-, silver- or bronze-standard or
+#' any combinations; 2) model for false positive rates: covariate-dependent or not;
+#' 3) model for etiology: covariate-dependent or not.
+#' 
 #'
-#' @param Mobs See the \code{nplcm} function.
-#' @param Y See the \code{nplcm} function.
-#' @param X See the \code{nplcm} function.
-#' @param model_options See the \code{nplcm} function.
+#' @param Mobs See \code{\link{nplcm}} function.
+#' @param Y See \code{\link{nplcm}} function.
+#' @param X See \code{\link{nplcm}} function.
+#' @param model_options See \code{\link{nplcm}} function.
 #' @param silent Default is \code{TRUE}: print assigned
 #' model descriptions on screen; otherwise, \code{FALSE}.
 #'
-#' @return The correct Bayesian model type to fit. The list of model
-#' type information is:
+#' @return A list of model information:
 #' \itemize{
 #' \item \code{measurement}
 #' \itemize{
@@ -26,8 +28,8 @@
 #' }
 #' \item \code{reg}
 #' \itemize{
-#' \item \code{do_FPR_reg} \code{TRUE} for FPR regression; \code{FALSE} otherwise;
-#' \item \code{do_Eti_reg} \code{TRUE} for etiology regression; \code{FALSE} otherwise;
+#' \item \code{do_FPR_reg} \code{TRUE} for allowing FPR to be covariate-dependent; \code{FALSE} otherwise;
+#' \item \code{do_Eti_reg} \code{TRUE} for allowing etiology to be covariate-dependent; \code{FALSE} otherwise;
 #' }
 #' }
 #'
