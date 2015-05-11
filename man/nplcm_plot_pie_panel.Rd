@@ -15,8 +15,6 @@ nplcm_plot_pie_panel(model_options, res_nplcm, bugs.dat, top_pie = 1)
 
 \item{top_pie}{Numerical value to specify the rightmost limit
 on the horizontal axis for the pie panel.}
-
-\item{Y}{Case-control status vector. Cases first (1s) and then controls.}
 }
 \description{
 Now only works for singleton etiologies.

@@ -8,7 +8,9 @@ pairwise log odds ratio (parallel comparisons for two folders)}
 nplcm_checking_pairwise_logOR_two_folders(DIR_NPLCM1, DIR_NPLCM2)
 }
 \arguments{
-\item{DIR_NPLCM}{File path to the folder that stores results from npLCM fit.}
+\item{DIR_NPLCM1}{File path to the first folder that stores results from npLCM fit.}
+
+\item{DIR_NPLCM2}{File path to the second folder}
 }
 \value{
 A figure of posterior predicted log odds ratio compared with the observed

@@ -7,9 +7,9 @@
 #' the top, controls at the bottom), columns for pathogen-specimen combination.
 #' \code{MSS} has fewer columns than MBS and those pathogens with both BrS and SS
 #' measurements should be arranged in the first several columns. This should
-#' have been done by \code{\link{perch_data_clean}}.
+#' have been done by \code{\link{clean_perch_data}}.
 #' @param model_options See \code{\link{nplcm}}
-#' @param clean_options See \code{\link{perch_data_clean}}
+#' @param clean_options See \code{\link{clean_perch_data}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
 #' @param top_SS Default is \code{0.3}. Numerical value to specify the rightmost limit 

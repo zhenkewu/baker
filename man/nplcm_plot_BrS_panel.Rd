@@ -13,7 +13,7 @@ the top, controls at the bottom), columns for pathogen-specimen combination.}
 
 \item{model_options}{See \code{\link{nplcm}}}
 
-\item{clean_options}{See \code{\link{perch_data_clean}}}
+\item{clean_options}{See \code{\link{clean_perch_data}}}
 
 \item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
 

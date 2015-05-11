@@ -7,7 +7,7 @@
 #' The cause list can be of any causes.
 #'
 #' @param DIR_NPLCM1 The first file path to the folder that stores results from npLCM fit.
-#' @param DIR_NPLCM2
+#' @param DIR_NPLCM2 The second file path to the folder
 #' @param npat The number of most frequent patterns among cases to display.
 #' @importFrom coda read.coda
 #' @return A figure with individual diagnosis plots. The Bronze-Standard (BrS)

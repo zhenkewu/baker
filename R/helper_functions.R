@@ -383,12 +383,17 @@ logOR <- function(MBS.case,MBS.ctrl){
 #' @param cell_metrics the meaning of number in every cell;
 #' @param folding_line Default is \code{TRUE} for adding dashed major diagnoal
 #' line.
+#' @param axes plot axes; default is \code{FALSE};
+#' @param xlab label for x-axis
+#' @param ylab label for y-axis
+#' @param asp aspect ratio; default is \code{1} to ensure square shape
+#' @param title text for the figure
 #' 
 #' @export
 visualize_case_control_matrix <- function(mat, dim_names=ncol(mat), 
                                    cell_metrics="",folding_line=TRUE,
                                    axes = FALSE, xlab = "",ylab = "",
-                                   asp = 1,title="",...){
+                                   asp = 1,title=""){
   n = nrow(mat)
   J = n
   # size of the numbers in the boxes:
@@ -779,4 +784,5 @@ load_or_install <- function(package_names,repos="http://lib.stat.cmu.edu/R/CRAN"
     library(package_name,character.only=TRUE,quietly=TRUE,verbose=FALSE)  
   }  
 } 
+
 

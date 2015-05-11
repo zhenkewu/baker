@@ -5,8 +5,8 @@
 #' parameter values at that iteration. The sample size of the new data set equals
 #' that of the actual data set, i.e. the same number of cases and controls.
 #' 
-#' @param DIR_NPLCM File path to the folder that stores results from npLCM fit.
-#' 
+#' @param DIR_NPLCM1 File path to the first folder that stores results from npLCM fit.
+#' @param DIR_NPLCM2 File path to the second folder
 #' @importFrom coda read.coda
 #' 
 #' @return A figure of posterior predicted log odds ratio compared with the observed 

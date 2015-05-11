@@ -2,7 +2,6 @@
 #' 
 #' Now only works for singleton etiologies.
 #' 
-#' @param Y Case-control status vector. Cases first (1s) and then controls.
 #' @param model_options See \code{\link{nplcm}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.

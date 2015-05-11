@@ -12,11 +12,11 @@ nplcm_plot_SS_panel(MSS, model_options, clean_options, res_nplcm, bugs.dat,
 the top, controls at the bottom), columns for pathogen-specimen combination.
 \code{MSS} has fewer columns than MBS and those pathogens with both BrS and SS
 measurements should be arranged in the first several columns. This should
-have been done by \code{\link{perch_data_clean}}.}
+have been done by \code{\link{clean_perch_data}}.}
 
 \item{model_options}{See \code{\link{nplcm}}}
 
-\item{clean_options}{See \code{\link{perch_data_clean}}}
+\item{clean_options}{See \code{\link{clean_perch_data}}}
 
 \item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
 

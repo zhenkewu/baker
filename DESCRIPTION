@@ -15,7 +15,6 @@ Depends:
 Imports:
     R2WinBUGS(>= 2.1),
     lubridate(>= 1.3),
-    sets(>= 1.0),
     RColorBrewer(>= 1.0),
     binom(>= 1.1),
     coda(>= 0.16),

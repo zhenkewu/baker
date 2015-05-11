@@ -6,7 +6,7 @@
 \usage{
 visualize_case_control_matrix(mat, dim_names = ncol(mat), cell_metrics = "",
   folding_line = TRUE, axes = FALSE, xlab = "", ylab = "", asp = 1,
-  title = "", ...)
+  title = "")
 }
 \arguments{
 \item{mat}{matrix of values: upper for cases, lower for controls;}
@@ -18,6 +18,16 @@ names of the rows, from bottom to top. Default is 1 through \code{ncol(mat)};}
 
 \item{folding_line}{Default is \code{TRUE} for adding dashed major diagnoal
 line.}
+
+\item{axes}{plot axes; default is \code{FALSE};}
+
+\item{xlab}{label for x-axis}
+
+\item{ylab}{label for y-axis}
+
+\item{asp}{aspect ratio; default is \code{1} to ensure square shape}
+
+\item{title}{text for the figure}
 }
 \description{
 Special to case-control visualization: upper right for cases, lower left

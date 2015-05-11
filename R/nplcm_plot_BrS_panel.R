@@ -5,7 +5,7 @@
 #' @param MBS Matrix of bronze-standard measurements. Rows for subjects (cases at
 #' the top, controls at the bottom), columns for pathogen-specimen combination.
 #' @param model_options See \code{\link{nplcm}}
-#' @param clean_options See \code{\link{perch_data_clean}}
+#' @param clean_options See \code{\link{clean_perch_data}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
 #' @param top_BrS Numerical value to specify the rightmost limit 

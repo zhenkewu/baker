@@ -11,7 +11,7 @@ nplcm_plot_individual_diagnosis_two_folders(DIR_NPLCM1, DIR_NPLCM2, npat = 16)
 \arguments{
 \item{DIR_NPLCM1}{The first file path to the folder that stores results from npLCM fit.}
 
-\item{DIR_NPLCM2}{}
+\item{DIR_NPLCM2}{The second file path to the folder}
 
 \item{npat}{The number of most frequent patterns among cases to display.}
 }
