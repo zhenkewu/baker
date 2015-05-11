@@ -3,4 +3,5 @@ nplcm.Rproj
 .Rhistory
 .RData
 .pdf
+.DS_Store
 inst/doc
