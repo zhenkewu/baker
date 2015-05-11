@@ -1,4 +1,6 @@
-A R Package for Fitting [Nested Partially Latent Class Models](http://biostats.bepress.com/jhubiostat/paper276/) [![Build Status](https://travis-ci.org/zhenkewu/nplcm.svg?branch=master)](https://travis-ci.org/zhenkewu/nplcm)
+A R Package for Fitting Bayesian [Nested Partially Latent Class Models](http://biostats.bepress.com/jhubiostat/paper276/) 
+
+[![Build Status](https://travis-ci.org/zhenkewu/nplcm.svg?branch=master)](https://travis-ci.org/zhenkewu/nplcm)
 
 How to install?
 --------------
