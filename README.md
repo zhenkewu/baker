@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zhenkewu/nplcm.svg?branch=master)](https://travis-ci.org/zhenkewu/nplcm)
+A R Package for Fitting [Nested Partially Latent Class Models](http://biostats.bepress.com/jhubiostat/paper276/) [![Build Status](https://travis-ci.org/zhenkewu/nplcm.svg?branch=master)](https://travis-ci.org/zhenkewu/nplcm)
 
 How to install?
 --------------
@@ -12,11 +12,11 @@ Why should someone use `nplcm`?
 
 - To study disease etiology from case-control data from multiple sources that have measurement errors. If you are interested in estimating the population etiology pie (fraction), and the probability of each cause for individual case, try `nplcm`.
 
-- Reference publication can be found [here](http://arxiv.org/abs/1411.5774).
+- Reference publication can be found [here](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/abstract) and [here](http://biostats.bepress.com/jhubiostat/paper276/).
 
 How does it compare to other existing solutions?
 ------------------------------------------------
-- Accknowledges various levels of measurement errors and combines multiple sources
+- Acknowledges various levels of measurement errors and combines multiple sources
 of data.
 
 What are the main functions?
