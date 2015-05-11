@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zhenkewu/nplcm.svg)](https://travis-ci.org/zhenkewu/nplcm)
+
 How to install?
 --------------
 ```r
