@@ -47,8 +47,7 @@ eda <- function(Mobs, Y, X, eda_options,pathogen_display,pathogen_BrS){
           # a) unadjusted for covaraites:
           #
             if (eda_options$bubble_plot){
-                  logORmat(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS,
-                           cex_main=1.5,cex_se=1)
+                  logORmat(MBS.case,MBS.ctrl,pathogen_display,pathogen_BrS)
             }
 
 
