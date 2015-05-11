@@ -12,3 +12,8 @@ notifications:
   email:
     on_success: change
     on_failure: change
+	
+# whitelist
+branches:
+  only:
+    - master
