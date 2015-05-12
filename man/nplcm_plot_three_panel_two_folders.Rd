@@ -6,7 +6,7 @@
 \usage{
 nplcm_plot_three_panel_two_folders(DIR_NPLCM1, DIR_NPLCM2,
   DIR_MEAS_PANEL = DIR_NPLCM2, index_for_order, SS_upperlimit = 1,
-  eti_upperlimit = 1)
+  eti_upperlimit = 1, X = NULL)
 }
 \arguments{
 \item{DIR_NPLCM1}{File path 1 to the folder containing posterior samples}
@@ -25,6 +25,9 @@ subpanel (the middle panel). The default value is .25.}
 
 \item{eti_upperlimit}{The upper limit of horizontal bar for the etiology
 posterior subpanel (the rightmost panel). The default value is .4}
+
+\item{X}{covariate values; default is \code{NULL}. Current use of this function
+does not need X.}
 }
 \value{
 A figure with two or three columns

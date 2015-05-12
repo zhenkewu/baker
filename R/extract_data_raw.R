@@ -54,13 +54,6 @@ extract_data_raw <-function(Pathogen,Specimen,Test,
 #   #
 #   
 
-
-  if (!silent){
-    #show the ordered pathogen
-    cat("Pathogens included:")
-    print(t(rbind(Pathogen,as.character(pathogen_type[Pathogen,2]))))
-  }
-
   datraw = read.csv(MeasDir,header=TRUE)
   dat0   = datraw
   cleanName = colnames(dat0)
@@ -181,3 +174,8 @@ extract_data_raw <-function(Pathogen,Specimen,Test,
 #   rownames(pathogen_type) = pathogen_type[,1]
 #   typeOrder = order(pathogen_type[Pathogen,2])
 #   Pathogen = Pathogen[typeOrder]
+#   if (!silent){
+#     #show the ordered pathogen
+#     cat("Pathogens included:")
+#     print(t(rbind(Pathogen,as.character(pathogen_type[Pathogen,2]))))
+#   }

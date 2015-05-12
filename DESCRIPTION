@@ -20,7 +20,8 @@ Imports:
     coda(>= 0.16),
     ks(>= 1.9),
     robCompositions(>= 1.9),
-    ggplot2(>= 1.0)
+    ggplot2(>= 1.0),
+    plyr
 License: MIT + file LICENSE
 Suggests:
     knitr

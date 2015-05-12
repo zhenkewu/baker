@@ -1,3 +1,5 @@
+if(getRversion() >= "2.15.1") utils::globalVariables(c("pathogen","etiology","model"))
+
 ##' compare the posterior distribution of population etiologies side-by-side
 #'
 #' The so-called "music-sheet plot". It takes two, or three or more output
@@ -14,14 +16,14 @@
 #'that stores the display order of pathogens in the combined music sheet plot.
 #'
 #'@param dir_separator The separator character for a file path.
-#' @importFrom coda read.coda
-#' @import ggplot2
+#' 
+#'@importFrom coda read.coda
+#'@import ggplot2
 #'@return A figure that compares posterior etiology distribution stored in
 #'two or more folders
 #'
 #'@export
 #'
-
 nplcm_plot_etiology_music_sheet <- function(DIR_list,
                                             DIR_pathogen_displayorder_lookup,
                                             dir_separator = "[\\]"){
@@ -207,7 +209,8 @@ nplcm_plot_etiology_music_sheet <- function(DIR_list,
                          etiology = c(1,1),
                          label = c("viral","bacterial"),
                          model = c(1, 1))
-    res<-ggplot(data = data_for_boxplot, aes(x = factor(pathogen), y =etiology,
+    res<-ggplot2::ggplot(data = data_for_boxplot, 
+                ggplot2::aes(x = factor(pathogen), y =etiology,
                                           fill = factor(model))) +
                 #geom_boxplot(width = 0.8) +
                 labs(list(x = "pathogen", y = "etiology"))+theme_bw()+

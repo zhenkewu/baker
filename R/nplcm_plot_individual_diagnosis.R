@@ -40,7 +40,7 @@ nplcm_plot_individual_diagnosis <- function(DIR_NPLCM,npat=16){#BEGIN of functio
   JSSonly = bugs.dat$JSSonly
   MSS.only = bugs.dat$MSS.only
   
-  Jcasue = bugs.dat$Jcause
+  Jcause = bugs.dat$Jcause
   
   Nd = bugs.dat$Nd
   Nu = bugs.dat$Nu

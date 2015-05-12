@@ -52,7 +52,7 @@ nplcm_plot_individual_diagnosis_two_folders <- function(DIR_NPLCM1,
           JSSonly = bugs.dat$JSSonly
           MSS.only = bugs.dat$MSS.only
           
-          Jcasue = bugs.dat$Jcause
+          Jcause = bugs.dat$Jcause
           
           Nd = bugs.dat$Nd
           Nu = bugs.dat$Nu

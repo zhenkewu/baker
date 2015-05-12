@@ -3,11 +3,13 @@
 #' Now only works for singleton etiologies.
 #' 
 #' @param model_options_list See \code{\link{nplcm}}
-#' @param res_nplcm_list See \code{\link{nplcm_read_folder}}
+#' @param res_nplcm_list A list of posterior samples
 #' @param bugs.dat_list Data input for the model fitting.
 #' @param index_for_order The index of the list to be used for 
 #' ordering the pathogens. Because each model output might give
 #' different ordering of pathogens (based on posterior mean).
+#' @param dir_nplcm_list A list of file paths to the folders containing 
+#' posterior samples
 #' @param top_pie Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the pie panel.
 #' 
@@ -19,6 +21,7 @@ nplcm_plot_pie_panel_two_folders <- function(model_options_list,
                                              res_nplcm_list,
                                              bugs.dat_list,
                                              index_for_order,
+                                             dir_nplcm_list,
                                              top_pie = 1){
   #
   # now only deal with singleton etiologies:
@@ -144,7 +147,7 @@ nplcm_plot_pie_panel_two_folders <- function(model_options_list,
     }
   
   legend("topleft",# inset=c(0.1,0.12),
-         legend=c(DIR_NPLCM1,DIR_NPLCM2)[seq_folder_iter], 
+         legend=c(dir_nplcm_list[[1]],dir_nplcm_list[[2]])[seq_folder_iter], 
            lty=c(1,1),pch=c(20,20), 
          title="Folders",col=dotcolor_vec[seq_folder_iter],bty='n')
   
