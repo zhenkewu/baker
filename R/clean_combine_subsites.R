@@ -24,4 +24,4 @@ clean_combine_subsites <- function(RawMeasDir,subsites_list,newsites_vec){
       }
       return(tmp.dat)
     }
-  }
+}
