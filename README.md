@@ -23,7 +23,7 @@ of data.
 
 What are the main functions?
 -----------------------------
-- `nplcm` that fits the model with or without covarites.
+- `nplcm` that fits the model with or without covariates.
 
 Platform
 ---------
