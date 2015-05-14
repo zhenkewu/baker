@@ -9,26 +9,28 @@
 #' DN: 1.make the assignment of prior dependent on the BCX data availability
 #' or species (bacteria)?
 #'
-#' @param model_options See \code{nplcm} function.
-#' @param Mobs See \code{nplcm} function.
-#' @param Y See \code{nplcm} function.
-#' @param X Default is \code{NULL}. See \code{nplcm} function.
+#' @param model_options See \code{\link{nplcm}} function.
+#' @param data_nplcm See \code{\link{assign_model}} function.
 #' @return Parameters for the TPR priors, separately for BrS and SS
 #'
 #' @export
 
-TPR_prior_set <- function(model_options,Mobs,Y,X=NULL){
-
+TPR_prior_set <- function(model_options,data_nplcm){
+      
+      Mobs <- data_nplcm$Mobs
+      Y    <- data_nplcm$Y
+      X    <- data_nplcm$X
+  
       pathogen_BrS_list <- model_options$pathogen_BrS_list
       JBrS         <- length(pathogen_BrS_list)#note that here JBrS=JBrS_BrS in nplcm_fit.
 
-      parsing <- assign_model(Mobs,Y,X,model_options)
+      parsing <- assign_model(data_nplcm,model_options)
 
       # only BrS data is used:
       if (parsing$measurement$quality=="BrS"){
         temp_cat_ind <- sapply(model_options$pathogen_BrS_list,
-                               function(path) {which(model_options$pathogen_cat$X==path)})
-        temp_cat     <- model_options$pathogen_cat[temp_cat_ind,]
+                               function(path) {which(model_options$pathogen_BrS_cat$X==path)})
+        temp_cat     <- model_options$pathogen_BrS_cat[temp_cat_ind,]
 
         if (model_options$TPR_prior=="noninformative"){
            alphaB = rep(1,JBrS)
@@ -65,8 +67,8 @@ TPR_prior_set <- function(model_options,Mobs,Y,X=NULL){
               ##------------------------------
 
               temp_cat_ind <- sapply(model_options$pathogen_BrS_list,
-                                     function(path) {which(model_options$pathogen_cat$X==path)})
-              temp_cat     <- model_options$pathogen_cat[temp_cat_ind,]
+                                     function(path) {which(model_options$pathogen_BrS_cat$X==path)})
+              temp_cat     <- model_options$pathogen_BrS_cat[temp_cat_ind,]
 
               if (model_options$TPR_prior[1]=="noninformative"){
                    alphaB <- rep(1,JBrS)
@@ -105,8 +107,8 @@ TPR_prior_set <- function(model_options,Mobs,Y,X=NULL){
                   alphaS <- rep(NA,JSS)
                   betaS  <- rep(NA,JSS)
                   temp_cat_ind <- sapply(model_options$pathogen_BrS_list,
-                                         function(path) {which(model_options$pathogen_cat$X==path)})
-                  temp_cat     <- model_options$pathogen_cat[temp_cat_ind,]
+                                         function(path) {which(model_options$pathogen_BrS_cat$X==path)})
+                  temp_cat     <- model_options$pathogen_BrS_cat[temp_cat_ind,]
                   for (t in 1:JSS){
                       temp_param <- beta_parms_from_quantiles(c(.05,.15),p=c(0.025,.975),plot=FALSE)
                       alphaS[t] <- temp_param$a

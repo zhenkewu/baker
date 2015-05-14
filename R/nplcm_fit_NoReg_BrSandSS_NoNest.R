@@ -9,13 +9,17 @@
 #' }
 #'
 #' @inheritParams nplcm
-#' @importFrom R2WinBUGS bugs
 #' @return WinBUGS fit results.
 #'
 #' @export
 
 nplcm_fit_NoReg_BrSandSS_NoNest<-
-  function(Mobs,Y,X,model_options,mcmc_options){
+  function(data_nplcm,model_options,mcmc_options){
+    Mobs <- data_nplcm$Mobs
+    Y    <- data_nplcm$Y
+    X    <- data_nplcm$X
+    
+    
     # define generic function to call WinBUGS:
     call.bugs <- function(data, inits, parameters,m.file,
                           bugsmodel.dir = mcmc_options$bugsmodel.dir,
@@ -31,7 +35,7 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
       m.file <- paste(bugsmodel.dir, m.file, sep="");
       f.tmp <- function() {
         ##winbugs
-        gs <- bugs(data, inits, parameters,
+        gs <- R2WinBUGS::bugs(data, inits, parameters,
                    model.file = m.file,
                    working.directory=workd,
                    n.chains = nchains,
@@ -54,7 +58,7 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
 
     #-------------------------------------------------------------------#
     # prepare data:
-    parsing <- assign_model(Mobs,Y,X,model_options)
+    parsing <- assign_model(data_nplcm,model_options)
     Nd <- sum(Y==1)
     Nu <- sum(Y==0)
 
@@ -97,7 +101,7 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
     # set priors:
     alpha          <- eti_prior_set(model_options)
 
-    TPR_prior_list <- TPR_prior_set(model_options,Mobs,Y)
+    TPR_prior_list <- TPR_prior_set(model_options,data_nplcm)
     alphaB      <- TPR_prior_list$alphaB
     betaB       <- TPR_prior_list$betaB
     alphaS      <- TPR_prior_list$alphaS

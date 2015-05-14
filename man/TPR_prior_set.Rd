@@ -4,16 +4,12 @@
 \alias{TPR_prior_set}
 \title{Set true positive rate (TPR) prior ranges}
 \usage{
-TPR_prior_set(model_options, Mobs, Y, X = NULL)
+TPR_prior_set(model_options, data_nplcm)
 }
 \arguments{
-\item{model_options}{See \code{nplcm} function.}
+\item{model_options}{See \code{\link{nplcm}} function.}
 
-\item{Mobs}{See \code{nplcm} function.}
-
-\item{Y}{See \code{nplcm} function.}
-
-\item{X}{Default is \code{NULL}. See \code{nplcm} function.}
+\item{data_nplcm}{See \code{\link{assign_model}} function.}
 }
 \value{
 Parameters for the TPR priors, separately for BrS and SS

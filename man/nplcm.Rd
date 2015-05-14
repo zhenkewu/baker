@@ -4,10 +4,11 @@
 \alias{nplcm}
 \title{Fit nested partially latent class models (high-level)}
 \usage{
-nplcm(Mobs, Y, X, model_options, mcmc_options)
+nplcm(data_nplcm, model_options, mcmc_options)
 }
 \arguments{
-\item{Mobs}{A list of measurements. The elements of the list
+\item{data_nplcm}{\itemize{
+\item  \code{Mobs} A list of measurements. The elements of the list
 should include \code{MBS}, \code{MSS}, and \code{MGS}. If any of the component
 is not available, please specify it as, e.g., \code{MGS=NA} or \code{MGS=NULL}
 (effectively deleting \code{MGS} from \code{Mobs}).
@@ -22,11 +23,11 @@ These measurements have perfect specificity but imperfect sensitivity.
 \item \code{MGS} a data frame of gold-standard (GS) measurements.
 Rows are subject, columns are pathogens.
 These measurements have perfect sensitivity and specificity.
+}
+
+\item \code{Y} Vector of disease status: 1 for case, 0 for control.
+\item \code{X} Design matrix. For regression modeling.
 }}
-
-\item{Y}{Vector of disease status: 1 for case, 0 for control.}
-
-\item{X}{Design matrix. For regression modeling.}
 
 \item{model_options}{A list of model options.
 
@@ -48,7 +49,7 @@ at the end, meaning 'None-of-Above';
 false positive rates (FPR);
 \item \code{X_reg_Eti} The vector of covariate names that stratify/regress
  etiologies;
-\item \code{pathogen_cat} The two-column dataframe that has category of pathogens: virus (V), bacteria (B)
+\item \code{pathogen_BrS_cat} The two-column dataframe that has category of pathogens: virus (V), bacteria (B)
 and fungi (F);
 \item \code{pathogen_SSonly_list} The vector of pathogens with only
 SS measure;

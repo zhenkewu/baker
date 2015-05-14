@@ -19,15 +19,11 @@
 #'
 #' @param eti_upperlimit The upper limit of horizontal bar for the etiology
 #' posterior subpanel (the rightmost panel). The default value is .4
-#' @param X covariate values; default is \code{NULL}. Current use of this function
-#' does not need X.
 #' 
-#' @importFrom coda read.coda
-#' @importFrom binom binom.confint
 #' @return A figure with two or three columns
 #'
 #' @export
-nplcm_plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1,X=NULL){#BEGIN function
+nplcm_plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1){#BEGIN function
   
   # read NPLCM outputs:
   out           <- nplcm_read_folder(DIR_NPLCM)
@@ -40,8 +36,10 @@ nplcm_plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1,X=
   bugs.dat      <- out$bugs.dat
   rm(out)
   
+  data_nplcm <- list(Mobs  = Mobs, Y = Y)
+  
   # Determine which three-panel plot to draw:
-  parsing <- assign_model(Mobs,Y,X,model_options)
+  parsing <- assign_model(data_nplcm,model_options)
   # X not needed in the three-panel plot, but because 'assign_model' was designed
   # to distinguish models even with X, so we have to stick to the useage of 
   # assign_model.

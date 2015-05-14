@@ -4,8 +4,7 @@
 \alias{nplcm_plot_three_panel}
 \title{Plot three-panel figures for nested partially-latent model results}
 \usage{
-nplcm_plot_three_panel(DIR_NPLCM, SS_upperlimit = 1, eti_upperlimit = 1,
-  X = NULL)
+nplcm_plot_three_panel(DIR_NPLCM, SS_upperlimit = 1, eti_upperlimit = 1)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -15,9 +14,6 @@ subpanel (the middle panel). The default value is .25.}
 
 \item{eti_upperlimit}{The upper limit of horizontal bar for the etiology
 posterior subpanel (the rightmost panel). The default value is .4}
-
-\item{X}{covariate values; default is \code{NULL}. Current use of this function
-does not need X.}
 }
 \value{
 A figure with two or three columns

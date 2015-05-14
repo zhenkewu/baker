@@ -11,21 +11,24 @@ clean_perch_data(clean_options)
 Its elements are defined as follows:
 \itemize{
 \item{\code{case_def}}{: variable name in raw data for case definition;}
-\item{\code{case_def_val}}{: The value corresponding to cases;}
+\item{\code{case_def_val}}{: The value for case definition;}
 \item{\code{ctrl_def}}{: variable name in raw data for control definition;}
-\item{\code{ctrl_def_val}}{: The value corresponding to controls;}
+\item{\code{ctrl_def_val}}{: The value for control definition;}
 \item{\code{X_strat}}{: A vector of variable names for stratifying the data
 to perform SEPARATE analyses;}
-\item{\code{X_strat_val}}{: A list of actual values for \code{X_strat};}
+\item{\code{X_strat_val}}{: A list of values for \code{X_strat}. The output
+data will only correspond to those with \code{identical(X_strat,X_strat_val)==TRUE}.
+To perform analysis on a single site, say \code{"02GAM"}, use \code{X_strat="newSITE"} and
+\code{X_strat_val=list("02GAM")};}
 \item{\code{pathogen_BrS_anyorder}}{: The vector of pathogen names (arbitrary
 order) that have bronze-standard (BrS) measurments (cf. Wu et al. (2015) for
 definitions and examplels of BrS, SS, and GS). It has to be a subset of
-pathogens listed incategory information at the file path \code{PathCatDir}.}
+pathogens listed in taxonomy information at the file path \code{PathCatDir}.}
 \item{\code{pathogen_SSonly}}{: A vector of pathogens that only have SS data;}
-\item{\code{X_extra}}{: A vector of variable names for regression purpose
-or visualization purposes;}
+\item{\code{X_extra}}{: A vector of covariate names for regression
+or visualization;}
 \item{\code{X_order_obs}}{: A vector of variable names for ordering observations.
-For example, it can include site names or enrollment dates. It has to be a
+For example, it can include site names or enrollment dates. It must be a
 subset of X_extra;}
 \item{\code{RawMeasDir}}{: The file path to the raw data;}
 \item{\code{write_newSite}}{: Must be set to \code{TRUE} if the raw data is
@@ -34,17 +37,18 @@ changed;}
 combining subsites within a site;}
 \item{\code{MeasDir}}{: The file path to the cleaned data set, usually the
 same as \code{newSite_write_Dir};}
-\item{\code{PathCatDir}}{: The file path to the pathogen category information
-(.csv). This list should be as complete as possible to display all pathogens
-considered an actual analysis;}
-\item{\code{allow_missing}}{: \code{TRUE} for allowing the program to use an
-observation that has either BrS missing, or SS missing. Set it to \code{TRUE}
-if we want to use the SS information from some cases who missed BrS
-measurements. \code{TRUE} is equivalent to using all the subjects.}
+\item{\code{PathCatDir}}{: The file path to the pathogen category or taxonomy
+information (.csv). The information should be as complete as possible to
+display all pathogens considered in an actual study;}
+\item{\code{allow_missing}}{: \code{TRUE} for using an observation that has
+either BrS missing, or SS missing. Set it to \code{TRUE} if we want to use
+the SS information from some cases who missed BrS measurements.
+In other words, all the subjects' data will be used if \code{allow_missing} is
+set to \code{TRUE}.}
 }}
 }
 \value{
-A List: \code{list(Mobs,Y,X,JSS,pathogen_MSS_ordered,pathogen_cat)}, or
+A List: \code{list(Mobs,Y,X,JSS,pathogen_BrS_ordered_by_MSS,pathogen_BrS_cat)}, or
 with additional \code{JSSonly, pathogen_SSonly_cat} if silver-
 standard only pathogens are supplied.
 \itemize{
@@ -57,15 +61,15 @@ if some pathogens only have SS measures, then MSS will have extra columns;
 names are specified in \code{X_extra};
 \item \code{JSS} Number of pathogens having both silver- and bronze-standard
 data;
-\item \code{pathogen_MSS_ordered} Ordered vector of pathogen names. Pathogens
+\item \code{pathogen_BrS_ordered_by_MSS} Ordered vector of pathogen names. Pathogens
 with both SS and BrS pathogens are ordered first and then those with only BrS
 measurements. Note that for a pathogen name vector of arbitrary order
 (\code{pathogen_BrS_anyorder}), this function just picks out those pathogens
 with BrS+SS measures and puts them at the front. Other pathogens with only
 BrS measures are not reordered. Pathogens with only silver-standard measures
 are not included.
-\item \code{pathogen_cat} Pathogen categories ordered according to
-\code{pathogen_MSS_ordered}.
+\item \code{pathogen_BrS_cat} Pathogen categories ordered according to
+\code{pathogen_BrS_ordered_by_MSS}.
 \item \code{JSSonly} Number of pathogens with only silver-standard measures;
 \item \code{pathogen_SSonly_cat} Category of pathogens with only silver-standard
 data.
@@ -74,10 +78,14 @@ This function does not re-order pathogens with only silver-standard data.
 }
 \description{
 \code{clean_perch_data} transforms a raw data table (row for subject, column
-for variable) into a list. It deletes cases having two positives
-for BCX measures. To order cases and controls separately according to site
-and enrollment date, we suggest put \code{c("newSITE","ENRLDATE")} in
-\code{X_extra} and \code{X_order_obs} as defined below. The raw data must
-have both BrS and SS measurements.
+for variable - usually \code{\{pathogen name\}_\{specimen\}} and other covariate
+names) into a list. It is specific for PERCH data format.
+}
+\details{
+It deletes cases (\code{Y==1}) having two positives
+for BCX measures. We suggest put \code{c("newSITE","ENRLDATE")} in
+\code{X_extra} and \code{X_order_obs} to order cases and controls separately
+according to site and enrollment date. In current implementation,
+the raw data must have both BrS and SS measurements.
 }
 

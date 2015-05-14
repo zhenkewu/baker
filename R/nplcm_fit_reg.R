@@ -3,11 +3,12 @@
 #'
 #' @inheritParams nplcm
 #' @return A WinBUGS result, fitted by function \code{bugs()} from the R2WinBUGS package.
-#' @importFrom R2WinBUGS bugs
 #' @export
 #'
-nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
-
+nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
+  Mobs <- data_nplcm$Mobs
+  Y    <- data_nplcm$Y
+  X    <- data_nplcm$X
   #define generic function to call WinBUGS:
   call.bugs <- function(data, inits, parameters,m.file,
                         bugsmodel.dir = mcmc_options$bugsmodel.dir,
@@ -22,7 +23,7 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
     m.file <- paste(bugsmodel.dir, m.file, sep="");
     f.tmp <- function() {
       ##winbugs
-      gs <- bugs(data, inits, parameters,
+      gs <- R2WinBUGS::bugs(data, inits, parameters,
                  model.file = m.file,
                  working.directory=workd,
                  n.chains = nchains,
@@ -130,7 +131,7 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
 
         alpha <- eti_prior_set(model_options)
 
-        TPR_prior_list <- TPR_prior_set(model_options,Mobs,Y)
+        TPR_prior_list <- TPR_prior_set(model_options,data_nplcm)
 
         alphaB <- TPR_prior_list$alphaB
         betaB <- TPR_prior_list$betaB
@@ -183,7 +184,7 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
 
         alpha <- eti_prior_set(model_options)
 
-        TPR_prior_list <- TPR_prior_set(model_options,Mobs,Y)
+        TPR_prior_list <- TPR_prior_set(model_options,data_nplcm)
 
         alphaB <- TPR_prior_list$alphaB
         betaB <- TPR_prior_list$betaB
@@ -240,7 +241,7 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
 
         alpha <- eti_prior_set(model_options)
 
-        TPR_prior_list <- TPR_prior_set(model_options,Mobs,Y)
+        TPR_prior_list <- TPR_prior_set(model_options,data_nplcm)
 
         alphaB <- TPR_prior_list$alphaB
         betaB <- TPR_prior_list$betaB
@@ -309,7 +310,7 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
 
         alpha <- eti_prior_set(model_options)
 
-        TPR_prior_list <- TPR_prior_set(model_options,Mobs,Y)
+        TPR_prior_list <- TPR_prior_set(model_options,data_nplcm)
 
         alphaB <- TPR_prior_list$alphaB
         betaB <- TPR_prior_list$betaB
@@ -442,7 +443,7 @@ nplcm_fit_reg<-function(Mobs,Y,X,model_options,mcmc_options){#BEGIN function
 
                       alpha <- eti_prior_set(model_options)
 
-                      TPR_prior_list <- TPR_prior_set(model_options,Mobs,Y)
+                      TPR_prior_list <- TPR_prior_set(model_options,data_nplcm)
 
                       alphaB <- TPR_prior_list$alphaB
                       betaB <- TPR_prior_list$betaB

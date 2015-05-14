@@ -24,8 +24,6 @@
 #'
 #' @param eti_upperlimit The upper limit of horizontal bar for the etiology
 #' posterior subpanel (the rightmost panel). The default value is .4
-#' @param X covariate values; default is \code{NULL}. Current use of this function
-#' does not need X.
 #' 
 #' @importFrom coda read.coda
 #' @importFrom binom binom.confint
@@ -36,8 +34,7 @@ nplcm_plot_three_panel_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
                                                DIR_MEAS_PANEL = DIR_NPLCM2,
                                                index_for_order,
                                                SS_upperlimit=1,
-                                               eti_upperlimit=1,
-                                               X=NULL){#BEGIN function
+                                               eti_upperlimit=1){#BEGIN function
     
   model_options_list <- list()
   clean_options_list <- list()
@@ -59,6 +56,8 @@ nplcm_plot_three_panel_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
       res_nplcm     <- out$res_nplcm
       bugs.dat      <- out$bugs.dat
       
+      data_nplcm <- list(Mobs  = Mobs, Y = Y)
+      
       model_options_list[[count]] <- model_options
       clean_options_list[[count]] <- clean_options
       res_nplcm_list[[count]]     <- res_nplcm
@@ -70,7 +69,7 @@ nplcm_plot_three_panel_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
   # which folder to put as measurement summary:
   which_meas <- which(DIR_vec == DIR_MEAS_PANEL)
   # Determine which three-panel plot to draw:
-  parsing <- assign_model(Mobs,Y,X,model_options_list[[which_meas]])
+  parsing <- assign_model(data_nplcm,model_options_list[[which_meas]])
   # X not needed in the three-panel plot, but because 'assign_model' was designed
   # to distinguish models even with X, so we have to stick to the useage of 
   # assign_model.

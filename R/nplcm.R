@@ -14,7 +14,9 @@
 #' \item need to add ppd regression functionality
 #'}
 #'
-#' @param Mobs A list of measurements. The elements of the list
+#' @param data_nplcm
+#' \itemize{
+#' \item  \code{Mobs} A list of measurements. The elements of the list
 #' should include \code{MBS}, \code{MSS}, and \code{MGS}. If any of the component
 #' is not available, please specify it as, e.g., \code{MGS=NA} or \code{MGS=NULL}
 #' (effectively deleting \code{MGS} from \code{Mobs}).
@@ -31,8 +33,9 @@
 #' These measurements have perfect sensitivity and specificity.
 #' }
 #'
-#' @param Y Vector of disease status: 1 for case, 0 for control.
-#' @param X Design matrix. For regression modeling.
+#' \item \code{Y} Vector of disease status: 1 for case, 0 for control.
+#' \item \code{X} Design matrix. For regression modeling.
+#' }
 #' @param model_options A list of model options.
 #'
 #' \itemize{
@@ -53,7 +56,7 @@
 #' false positive rates (FPR);
 #' \item \code{X_reg_Eti} The vector of covariate names that stratify/regress
 #'  etiologies;
-#' \item \code{pathogen_cat} The two-column dataframe that has category of pathogens: virus (V), bacteria (B)
+#' \item \code{pathogen_BrS_cat} The two-column dataframe that has category of pathogens: virus (V), bacteria (B)
 #' and fungi (F);
 #' \item \code{pathogen_SSonly_list} The vector of pathogens with only
 #' SS measure;
@@ -105,36 +108,39 @@
 #'
 #' @export
 
-nplcm <- function(Mobs,Y,X,model_options,mcmc_options){
-  parsing <- assign_model(Mobs,Y,X,model_options)
+nplcm <- function(data_nplcm,model_options,mcmc_options){
+  Mobs <- data_nplcm$Mobs
+  Y    <- data_nplcm$Y
+  X    <- data_nplcm$X
+  parsing <- assign_model(data_nplcm,model_options)
   if (!any(unlist(parsing$reg))){
     # if no stratification or regression:
     if (parsing$measurement$quality=="BrS+SS"){
           if (!parsing$measurement$SSonly){
               if (!parsing$measurement$nest){
                 # model 1, DONE
-                    res <- nplcm_fit_NoReg_BrSandSS_NoNest(Mobs,Y,X,model_options,mcmc_options)
+                    res <- nplcm_fit_NoReg_BrSandSS_NoNest(data_nplcm,model_options,mcmc_options)
               }else{
                 # model 2, DONE
-                    res <- nplcm_fit_NoReg_BrSandSS_Nest(Mobs,Y,X,model_options,mcmc_options)
+                    res <- nplcm_fit_NoReg_BrSandSS_Nest(data_nplcm,model_options,mcmc_options)
               }
           } else{
               if (!parsing$measurement$nest){
                 # model 3, DONE
-                res <- nplcm_fit_NoReg_BrSandSS_NoNest_SSonly(Mobs,Y,X,model_options,mcmc_options)
+                res <- nplcm_fit_NoReg_BrSandSS_NoNest_SSonly(data_nplcm,model_options,mcmc_options)
               }else{
                 # model 4, DONE
-                res <- nplcm_fit_NoReg_BrSandSS_Nest_SSonly(Mobs,Y,X,model_options,mcmc_options)
+                res <- nplcm_fit_NoReg_BrSandSS_Nest_SSonly(data_nplcm,model_options,mcmc_options)
               }
           }
     }else if (parsing$measurement$quality=="BrS"){
           if (!parsing$measurement$SSonly){
               if (!parsing$measurement$nest){
                 # model 5, DONE
-                   res <- nplcm_fit_NoReg_BrS_NoNest(Mobs,Y,X,model_options,mcmc_options)
+                   res <- nplcm_fit_NoReg_BrS_NoNest(data_nplcm,model_options,mcmc_options)
               }else{
                 # model 6, DONE
-                   res <- nplcm_fit_NoReg_BrS_Nest(Mobs,Y,X,model_options,mcmc_options)
+                   res <- nplcm_fit_NoReg_BrS_Nest(data_nplcm,model_options,mcmc_options)
               }
           }
     }
@@ -146,14 +152,14 @@ nplcm <- function(Mobs,Y,X,model_options,mcmc_options){
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }else{
             # model 2, DONE
-            res <- nplcm_fit_reg(Mobs,Y,X,model_options,mcmc_options)
+            res <- nplcm_fit_reg(data_nplcm,model_options,mcmc_options)
           }
         } else{
           if (!parsing$measurement$nest){
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }else{
             # model 4, DONE
-            res <- nplcm_fit_reg(Mobs,Y,X,model_options,mcmc_options)
+            res <- nplcm_fit_reg(data_nplcm,model_options,mcmc_options)
           }
         }
       }else if (parsing$measurement$quality=="BrS"){

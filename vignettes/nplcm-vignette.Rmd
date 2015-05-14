@@ -12,12 +12,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Variable Definition
+# Variable and Function Definitions
 
-We collect variable definitions below for easier reference. Current variable
-names are motivated by PERCH study to provide an easy interface for analysts. 
-We will convert them to generic names in the framework of [nested partially latent
-class models](http://biostats.bepress.com/jhubiostat/paper276/) in future versions of `nplcm`.
+We collect variable and function definitions below for easier reference. Currently, we use names that are motivated by PERCH study to provide an easy and scientifically
+grounded interface for analysts. We will convert them to generic names in the framework of [nested partially latent
+class models](http://biostats.bepress.com/jhubiostat/paper276/) in future versions of `nplcm`, because the model is a general discrete state model.
 
 Raw Data
 ---
@@ -30,6 +29,8 @@ Exploratory Data Analysis (EDA)
 
 Choosing Model
 ---
+* `assign_model()` chooses the model to fit based on user-specified model options
+and the actual data supplied for analysis.
 
 Fit Model
 ---
@@ -45,6 +46,7 @@ Visualize Results
 Pathogen orders
     - raw pathogen orders input by the data
     - reorganized pathogen orders 
+    - pathogen orders for display
 
 
 <!---
