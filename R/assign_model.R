@@ -1,21 +1,33 @@
 #' Choose a model to fit
 #'
-#' \code{assign_model} recognizes the model to fit as requested by user.
-#' \code{assign_model} will also inspect the actual data supplied to this function
-#'  and check if the data conform to user's requested model. The following features of data and user
-#' inputs are checked: 1) available measurement quality types, i.e., gold-, silver- or bronze-standard or
-#' any combinations; 2) model for false positive rates: covariate-dependent or not;
-#' 3) model for etiology: covariate-dependent or not.
+#' \code{assign_model} recognizes the model to fit from user input.
 #' 
-#'
-#' @param Mobs See \code{\link{nplcm}} function.
-#' @param Y See \code{\link{nplcm}} function.
-#' @param X See \code{\link{nplcm}} function.
+#' @details \code{assign_model} will also inspect the actual data supplied 
+#'  and check if the data conform to user's requested model. The following 
+#'  features of data and user inputs are checked against each other: 
+#' \enumerate{
+#' \item Available types of measurement quality, 
+#' i.e., gold-, silver- or bronze-standard or any combinations; 
+#' \item Model for false positive rates: covariate-dependent or not;
+#' \item Model for etiology: covariate-dependent or not.
+#' }
+#' @param data_nplcm Data for model fitting. Details are
+#' \itemize{
+#' \item \code{Mobs} See \code{\link{nplcm}} function.
+#' \item \code{Y} See \code{\link{nplcm}} function.
+#' \item \code{X} See \code{\link{nplcm}} function.
+#' \item \code{Mname} A list of pathogen names. \code{Mname_BrS} for BrS only pathogens,
+#' and \code{Mname_SSonly} for pathogens with only SS measures.
+#' \item \code{taxonomy} A list of pathogen taxonomy. The elements include 
+#' \code{taxo_BrS} and \code{taxo_SSonly}. It can be used to represent biological
+#' classifications, such as bacteria (\code{B}) versus virus (\code{V}).
+#' }
+#' 
 #' @param model_options See \code{\link{nplcm}} function.
 #' @param silent Default is \code{TRUE}: print assigned
 #' model descriptions on screen; otherwise, \code{FALSE}.
-#'
-#' @return A list of model information:
+#' 
+#' @return A list of information for the selected model:
 #' \itemize{
 #' \item \code{measurement}
 #' \itemize{
@@ -35,8 +47,11 @@
 #'
 #' @export
 
-assign_model <- function(Mobs,Y,X,model_options,silent=TRUE){
-
+assign_model <- function(data_nplcm,model_options,silent=TRUE){
+  Mobs <- data_nplcm$Mobs
+  Y    <- data_nplcm$Y
+  X    <- data_nplcm$X
+  
   use_data_sources <- model_options$M_use
   model_meas       <- model_options$k_subclass>1
 
@@ -44,10 +59,11 @@ assign_model <- function(Mobs,Y,X,model_options,silent=TRUE){
   quality_nm[which(names(Mobs)=="MBS")] <- "BrS"
   quality_nm[which(names(Mobs)=="MSS")] <- "SS"
   quality_nm[which(names(Mobs)=="MGS")] <- "GS"
+  
   input_data_sources  <- quality_nm[!is.na(Mobs) & 
                                       unlist(lapply(Mobs,function(a) !is.null(a)))]
   # the !is.null criteria is for situations where NULL is specified for MGS or MSS
-  # in the list 'Mobs'.
+  # in the list 'Mobs' (when you call 'Mobs$MGS', the output will be NULL).
 
   if (!all(input_data_sources%in%use_data_sources)){
     # test for data sources as specified by model_options and
@@ -57,20 +73,62 @@ assign_model <- function(Mobs,Y,X,model_options,silent=TRUE){
 
   }else{
     if (length(model_options$TPR_prior)!=length(model_options$M_use)){
-       stop("==Please input same number of TPR priors (i.e., length of 'TPR_prior') 
-         as in number of measuremens levels (i.e., length of 'M_use') used 
-            in 'model_options'. ==")
+       stop("==Please input the same number of TPR priors 
+            (i.e., length of 'TPR_prior') as in number of measuremens levels 
+            (i.e., length of 'M_use') used in 'model_options'. ==")
     }else{
       assigned_model <- list(quality= paste(use_data_sources,collapse="+"),
                              SSonly = !is.null(model_options$pathogen_SSonly_list),
                              nest   = model_meas)
-                reg  <- list(do_FPR_reg = !is.null(model_options$X_reg_FPR),
-                             do_Eti_reg = !is.null(model_options$X_reg_Eti))
+      
+      
+      # FPR regression:
+      in_user <- !is.null(model_options$X_reg_FPR)
+      in_data <- !is.null(X)
+      if (!in_user && !in_data){
+        do_FPR_reg <- FALSE
+      } else if (in_user && !in_data){
+        stop(paste0("==","Data does not have user specified covaraites for FPR regression!","=="))
+      } else if (!in_user && in_data){
+        do_FPR_reg <- FALSE
+      } else {
+        if (!all(model_options$X_reg_FPR%in%colnames(X))){
+          stop(paste0("==Covariate(s), '",setdiff(model_options$X_reg_FPR,colnames(X)), 
+                      "', not in data! =="))
+        } else{
+          do_FPR_reg <- TRUE
+        }
+      }
+      
+    
+      
+      # Etiology regression:
+      in_user <- !is.null(model_options$X_reg_Eti)
+      in_data <- !is.null(X)
+      if (!in_user && !in_data){
+        do_Eti_reg <- FALSE
+      } else if (in_user && !in_data){
+        stop(paste0("==","Data does not have user specified covaraites for Eti regression!","=="))
+      } else if (!in_user && in_data){
+        do_Eti_reg <- FALSE
+      } else {
+        if (!all(model_options$X_reg_Eti%in%colnames(X))){
+          stop(paste0("==Covariate(s),",setdiff(model_options$X_reg_Eti,colnames(X)), 
+                      " not in data! =="))
+        } else{
+          do_Eti_reg <- TRUE
+        }
+      }
+      
+      
+      reg  <- list(do_FPR_reg = do_FPR_reg, do_Eti_reg = do_Eti_reg)
+      list(measurement = assigned_model,reg = reg)
     }
   }
-
-  list(      measurement = assigned_model,
-                     reg = reg)
 }
 
-#assign_model(Mobs,Y,X,model_options)
+
+
+
+
+

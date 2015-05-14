@@ -4,14 +4,20 @@
 \alias{assign_model}
 \title{Choose a model to fit}
 \usage{
-assign_model(Mobs, Y, X, model_options, silent = TRUE)
+assign_model(data_nplcm, model_options, silent = TRUE)
 }
 \arguments{
-\item{Mobs}{See \code{\link{nplcm}} function.}
-
-\item{Y}{See \code{\link{nplcm}} function.}
-
-\item{X}{See \code{\link{nplcm}} function.}
+\item{data_nplcm}{Data for model fitting. Details are
+\itemize{
+\item \code{Mobs} See \code{\link{nplcm}} function.
+\item \code{Y} See \code{\link{nplcm}} function.
+\item \code{X} See \code{\link{nplcm}} function.
+\item \code{Mname} A list of pathogen names. \code{Mname_BrS} for BrS only pathogens,
+and \code{Mname_SSonly} for pathogens with only SS measures.
+\item \code{taxonomy} A list of pathogen taxonomy. The elements include
+\code{taxo_BrS} and \code{taxo_SSonly}. It can be used to represent biological
+classifications, such as bacteria (\code{B}) versus virus (\code{V}).
+}}
 
 \item{model_options}{See \code{\link{nplcm}} function.}
 
@@ -19,7 +25,7 @@ assign_model(Mobs, Y, X, model_options, silent = TRUE)
 model descriptions on screen; otherwise, \code{FALSE}.}
 }
 \value{
-A list of model information:
+A list of information for the selected model:
 \itemize{
 \item \code{measurement}
 \itemize{
@@ -38,11 +44,17 @@ for conditional independent model;
 }
 }
 \description{
-\code{assign_model} recognizes the model to fit as requested by user.
-\code{assign_model} will also inspect the actual data supplied to this function
- and check if the data conform to user's requested model. The following features of data and user
-inputs are checked: 1) available measurement quality types, i.e., gold-, silver- or bronze-standard or
-any combinations; 2) model for false positive rates: covariate-dependent or not;
-3) model for etiology: covariate-dependent or not.
+\code{assign_model} recognizes the model to fit from user input.
+}
+\details{
+\code{assign_model} will also inspect the actual data supplied
+ and check if the data conform to user's requested model. The following
+ features of data and user inputs are checked against each other:
+\enumerate{
+\item Available types of measurement quality,
+i.e., gold-, silver- or bronze-standard or any combinations;
+\item Model for false positive rates: covariate-dependent or not;
+\item Model for etiology: covariate-dependent or not.
+}
 }
 

@@ -1,6 +1,9 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Manual for R Package: `nplcm`"
+author: "Zhenke Wu <br> 
+        [zhwu@jhu.edu](zhwu@jhu.edu) <br> 
+        Department of Biostatistics <br>
+        Johns Hopkins Bloomberg School of Public Health"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -9,6 +12,42 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Variable Definition
+
+We collect variable definitions below for easier reference. Current variable
+names are motivated by PERCH study to provide an easy interface for analysts. 
+We will convert them to generic names in the framework of [nested partially latent
+class models](http://biostats.bepress.com/jhubiostat/paper276/) in future versions of `nplcm`.
+
+Raw Data
+---
+
+Clean Data
+---
+
+Exploratory Data Analysis (EDA)
+---
+
+Choosing Model
+---
+
+Fit Model
+---
+
+Check Model
+---
+
+Visualize Results
+---
+
+# Developer Notes
+
+Pathogen orders
+    - raw pathogen orders input by the data
+    - reorganized pathogen orders 
+
+
+<!---
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 
 - Never uses retina figures
@@ -56,3 +95,5 @@ Also a quote using `>`:
 
 > "He who gives up [code] safety for [code] speed deserves neither."
 ([via](https://twitter.com/hadleywickham/status/504368538874703872))
+
+-->

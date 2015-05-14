@@ -5,11 +5,9 @@
 #' @param parameter_vals The actual parameter values
 #'
 #' @return A string for folder name
-#'
 #' @export
 #'
-make_foldername <-
-function(parent_path,parameter_names,parameter_vals){
+make_foldername <- function(parent_path,parameter_names,parameter_vals){
   subfolder <- paste(parameter_names,parameter_vals,collapse="_",sep="=")
   res       <- paste(parent_path,subfolder,sep="\\")
   res
@@ -29,11 +27,11 @@ function(parent_path,parameter_names,parameter_vals){
 #' @export
 #'
 make_filename<-
-function(parameter_names,parameter_vals,format){
-  res1 <- paste(parameter_names,parameter_vals,collapse="_",sep="=")
-  res  <- paste(res1,format,sep=".")
-  res
-}
+  function(parameter_names,parameter_vals,format){
+    res1 <- paste(parameter_names,parameter_vals,collapse="_",sep="=")
+    res  <- paste(res1,format,sep=".")
+    res
+  }
 
 #' logit function
 #'
@@ -49,7 +47,6 @@ logit <- function(p) log(p)-log(1-p)
 #' @return a Probability between 0 and 1
 #' @export
 expit <- function(x) 1/(1+exp(-x))
-
 
 
 
@@ -72,6 +69,11 @@ function(p){
   res
 }
 
+
+
+
+
+
 #' Convert 0/1 binary coded sequence into decimal digits
 #'
 #' Useful when try to list all the binary patterns. One can group the binary
@@ -80,8 +82,8 @@ function(p){
 #' @param binary_vector a binary number
 #' @return a decimal number
 #' @export
-bin2dec <-
-function(binary_vector) {
+#' 
+bin2dec <- function(binary_vector) {
   sum(2^(which(rev(binary_vector)==TRUE)-1))
 }
 

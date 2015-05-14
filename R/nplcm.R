@@ -15,7 +15,9 @@
 #'}
 #'
 #' @param Mobs A list of measurements. The elements of the list
-#' should include \code{MBS}, \code{MSS}, and \code{MGS}.
+#' should include \code{MBS}, \code{MSS}, and \code{MGS}. If any of the component
+#' is not available, please specify it as, e.g., \code{MGS=NA} or \code{MGS=NULL}
+#' (effectively deleting \code{MGS} from \code{Mobs}).
 #' \itemize{
 #' \item \code{MBS} a data frame of bronze-standard (BrS) measurements.
 #' Rows are subjects, columns are pathogens. 
