@@ -9,7 +9,7 @@ Authors@R: as.person(c(
     "Scott Zeger <sz@jhu.edu> [aut]"
     ))
 Description: Nested Partially-Latent Class Models (npLCM) for Inference of
-    Population Disease Etiology and Individual Diagnosis
+    Population Disease Etiology and Individual Diagnosis.
 Depends: 
     R(>= 3.1)
 Imports: 

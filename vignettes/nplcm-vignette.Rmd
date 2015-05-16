@@ -43,10 +43,11 @@ Visualize Results
 
 # Developer Notes
 
-Pathogen orders
-    - raw pathogen orders input by the data
-    - reorganized pathogen orders 
-    - pathogen orders for display
+Pathogen orders:
+
+1. raw pathogen orders input by the data
+2. reorganized pathogen orders 
+3. pathogen orders for display
 
 
 <!---
