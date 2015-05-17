@@ -787,4 +787,21 @@ load_or_install <- function(package_names,repos="http://lib.stat.cmu.edu/R/CRAN"
   }  
 } 
 
+#' Convert \code{NULL} to zero.
+#' 
+#' \code{null_as_zero} make \code{NULL} to be zero. 
+#' 
+#' @param x A number (usually a member of a list) that might be \code{NULL}
+#' @return A number
+#' 
+#' @export
+#' 
+#'
+null_as_zero <- function(x){
+  if (is.null(x)){
+    return(0)
+  } else {
+    x
+  }
+}
 

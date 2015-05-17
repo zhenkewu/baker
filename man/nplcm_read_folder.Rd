@@ -10,7 +10,7 @@ nplcm_read_folder(DIR_NPLCM)
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
 }
 \value{
-None
+A list with data, options and posterior samples.
 }
 \description{
 Read data and other model information from a folder that stores model results.

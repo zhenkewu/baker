@@ -68,8 +68,7 @@ plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1){#BEGIN 
         plot_SS_panel(Mobs$MSS,model_options,clean_options,res_nplcm,
                             bugs.dat,top_SS = SS_upperlimit)
         # Etiology panel:
-        plot_pie_panel(model_options,res_nplcm,bugs.dat,
-                       top_pie = eti_upperlimit)
+        plot_pie_panel(model_options,res_nplcm,bugs.dat,top_pie = eti_upperlimit)
           
       } else{# with SS-only measured pathogens:
         if (!parsing$measurement$nest){
@@ -89,7 +88,6 @@ plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1){#BEGIN 
       }
     }
   } else{
-    stop("== Three panel plot not implemented for stratification or regression
-         settings. Please check back later for updates. Thanks. ==")
+    stop("== Three panel plot not implemented for stratification or regression settings. Please check back later for updates. Thanks. ==")
   }
 }# END function

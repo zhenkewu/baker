@@ -1,7 +1,7 @@
 #' Read data and other model information from a folder that stores model results.
 #'
 #' @param DIR_NPLCM File path to the folder containing posterior samples
-#' @return None
+#' @return A list with data, options and posterior samples.
 #'
 #' @export
 

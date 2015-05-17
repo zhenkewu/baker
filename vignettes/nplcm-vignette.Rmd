@@ -50,6 +50,9 @@ Fit Model
 Check Model
 ---
 
+* `check_common_pattern()`
+* `check_pairwise_logOR()`
+
 Visualize Results
 ---
 
