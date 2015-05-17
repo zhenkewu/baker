@@ -161,8 +161,8 @@ plot_group_etiology <- function(DIR_NPLCM,ksFrac = 1,levellabel = 5){
   
   ilr.grid    = suppressWarnings(robCompositions::isomLR(prob.grid))
   
-  fhat1       = ks::kde(x=temp,H=Hpi(temp),compute.cont=T)
-  fhat2       = ks::kde(x=temp,H=Hpi(temp),eval.points=ilr.grid)
+  fhat1       = ks::kde(x=temp,H=ks::Hpi(temp),compute.cont=T)
+  fhat2       = ks::kde(x=temp,H=ks::Hpi(temp),eval.points=ilr.grid)
   
   tri.z       = matrix(fhat2$estimate,nrow=length(coord1),ncol=length(coord2))
   
@@ -232,8 +232,8 @@ plot_group_etiology <- function(DIR_NPLCM,ksFrac = 1,levellabel = 5){
   
   ilr.grid    = suppressWarnings(robCompositions::isomLR(prob.grid))
   
-  fhat1       = ks::kde(x=temp,H=Hpi(temp),compute.cont=T)
-  fhat2       = ks::kde(x=temp,H=Hpi(temp),eval.points=ilr.grid)
+  fhat1       = ks::kde(x=temp,H=ks::Hpi(temp),compute.cont=T)
+  fhat2       = ks::kde(x=temp,H=ks::Hpi(temp),eval.points=ilr.grid)
   
   tri.z       = matrix(fhat2$estimate,nrow=length(coord1),ncol=length(coord2))
   
