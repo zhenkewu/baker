@@ -18,8 +18,11 @@ nplcm_read_folder <- function(DIR_NPLCM){
     assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
   }
   
-  model_options  <- dget(paste(DIR_NPLCM,"model_options.txt",sep="/"))
-  clean_options  <- dget(paste(DIR_NPLCM,"data_clean_options.txt",sep="/"))
+  model_options  <- dget(file.path(DIR_NPLCM,"model_options.txt"))
+  if (!file.exists(file.path(DIR_NPLCM,"data_clean_options.txt"))){
+    stop("=='data_clean_options.txt' does not exist in the result folder. Please 'dput' the clean_options in the result folder. ==")
+  } 
+  clean_options  <- dget(file.path(DIR_NPLCM,"data_clean_options.txt"))
   #some data preparation:
   Nd <- bugs.dat$Nd
   Nu <- bugs.dat$Nu
@@ -29,8 +32,8 @@ nplcm_read_folder <- function(DIR_NPLCM){
                MSS = bugs.dat$MSS,
                MGS = bugs.dat$MGS)
   
-  res_nplcm <- coda::read.coda(paste(DIR_NPLCM,"coda1.txt",sep="/"),
-                         paste(DIR_NPLCM,"codaIndex.txt",sep="/"),
+  res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"coda1.txt"),
+                         file.path(DIR_NPLCM,"codaIndex.txt"),
                          quiet=TRUE)
   res <- list(bugs.dat = bugs.dat,
               model_options = model_options,

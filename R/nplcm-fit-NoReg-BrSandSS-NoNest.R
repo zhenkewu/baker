@@ -15,6 +15,14 @@
 
 nplcm_fit_NoReg_BrSandSS_NoNest<-
   function(data_nplcm,model_options,mcmc_options){
+    # Record the settings of current analysis:
+    cat("==Results stored in: ==","\n",mcmc_options$result.folder)
+    #model_options:
+    dput(model_options,file.path(mcmc_options$result.folder,"model_options.txt"))
+    #mcmc_options:
+    dput(mcmc_options,file.path(mcmc_options$result.folder,"mcmc_options.txt"))
+    
+    
     Mobs <- data_nplcm$Mobs
     Y    <- data_nplcm$Y
     X    <- data_nplcm$X
@@ -32,7 +40,7 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
                           is.debug = mcmc_options$debugstatus,
                           workd    = mcmc_options$result.folder,...) {
 
-      m.file <- paste(bugsmodel.dir, m.file, sep="");
+      m.file <- file.path(bugsmodel.dir, m.file);
       f.tmp <- function() {
         ##winbugs
         gs <- R2WinBUGS::bugs(data, inits, parameters,
@@ -140,10 +148,170 @@ nplcm_fit_NoReg_BrSandSS_NoNest<-
       rst.bugs
     }
 
-    if (mcmc_options$ppd==TRUE){
-      gs <- mybugs("model_NoReg_BrSandSS_plcm_ppd.bug")
-    } else {
-      gs <- mybugs("model_NoReg_BrSandSS_plcm.bug")
+    
+    
+    #-----------------BEGINNING OF MODELS----------------------------------#
+    
+    #
+    # write the .bug files into mcmc_options$bugsmodel.dir; could later set it equal to result.folder.
+    #
+    
+    # the one with posterior predictive distribution:
+    model_NoReg_BrSandSS_plcm_ppd <- function(){
+      #begin model
+      ## 1) accommodates singletons, combos, and NoA;
+      ## 2) check-bit to prevent case data informing FPR;
+      
+      # BrS measurements:
+      for (k in 1:Nd){
+        for (j in 1:JBrS){
+          ind[k,j] <- equals(1,template[Icat[k],j])
+          MBS[k,j] ~ dbern(mu_bs[k,j])
+          mu_bs[k,j] <- ind[k,j]*thetaBS[j]+(1-ind[k,j])*psiBS.cut[j]
+          
+          ind.new[k,j] <- equals(1,template[Icat.new[k],j])
+          MBS.new[k,j] ~ dbern(mu_bs.new[k,j])
+          mu_bs.new[k,j] <- ind.new[k,j]*thetaBS[j]+(1-ind.new[k,j])*psiBS.cut[j]
+          
+        }
+      }
+      
+      for (k in (Nd+1):(Nd+Nu)){
+        for (j in 1:JBrS){
+          MBS[k,j] ~ dbern(mu_bs[k,j])
+          mu_bs[k,j]<- psiBS[j]
+          
+          MBS.new[k,j] ~ dbern(mu_bs.new[k,j])
+          mu_bs.new[k,j] <- psiBS[j]
+        }
+      }
+      
+      ## SS measurements on pathogens that also have BrS:
+      for (k in 1:Nd){
+        for (j in 1:JSS){
+          MSS[k,j]   ~ dbern(mu_ss[k,j])
+          mu_ss[k,j] <- ind[k,j]*thetaSS[j]+(1-ind[k,j])*psiSS[j]
+        }
+        #for (j in 1:JSSonly){
+        #  ind[k,j+JBrS]<- equals(1,template[Icat[k],j+JBrS])
+        #  MSS.only[k,j] ~ dbern(mu_ss.only[k,j])
+        #  mu_ss.only[k,j]<-ind[k,j+JBrS]*thetaSS.only[j]
+        #}
+      }
+      
+      # priors
+      for (k in 1:Nd){
+        Icat[k] ~ dcat(pEti[1:Jcause])
+        
+        Icat.new[k] ~ dcat(pEti[1:Jcause])
+      }
+      pEti[1:Jcause]~ddirch(alpha[])
+      
+      #for (k in (Nd+1):(Nd+Nu)){
+      #  Icat[k] <- Jcause+1
+      #}
+      
+      # bronze-standard measurement characteristics:
+      for (j in 1:JBrS){
+        thetaBS[j]~dbeta(alphaB[j],betaB[j])
+        psiBS[j]~dbeta(1,1)
+        psiBS.cut[j]<-cut(psiBS[j])
+      }
+      
+      # silver-standard measurement characteristics:
+      for (j in 1:JSS){
+        thetaSS[j]~dbeta(alphaS[j],betaS[j])
+        psiSS[j]<-0
+      }
+      
+      #for (j in 1:JSSonly){
+      #	thetaSS.only[j]~dbeta(alphaS.only[j],betaS.only[j])
+      #}
+      
+      
     }
-
-  }
+    # the one without ppd:
+    model_NoReg_BrSandSS_plcm <- function(){
+      #begin model
+      ## 1) accommodates singletons, combos, and NoA;
+      ## 2) check-bit to prevent case data informing FPR;
+      
+      # BrS measurements:
+      for (k in 1:Nd){
+        for (j in 1:JBrS){
+          ind[k,j] <- equals(1,template[Icat[k],j])
+          MBS[k,j] ~ dbern(mu_bs[k,j])
+          mu_bs[k,j]<-ind[k,j]*thetaBS[j]+(1-ind[k,j])*psiBS.cut[j]
+        }
+      }
+      
+      for (k in (Nd+1):(Nd+Nu)){
+        for (j in 1:JBrS){
+          MBS[k,j] ~ dbern(mu_bs[k,j])
+          mu_bs[k,j]<- psiBS[j]
+        }
+      }
+      
+      ## SS measurements on pathogens that also have BrS:
+      for (k in 1:Nd){
+        for (j in 1:JSS){
+          MSS[k,j]   ~ dbern(mu_ss[k,j])
+          mu_ss[k,j] <- ind[k,j]*thetaSS[j]+(1-ind[k,j])*psiSS[j]
+        }
+        #for (j in 1:JSSonly){
+        #  ind[k,j+JBrS]<- equals(1,template[Icat[k],j+JBrS])
+        #  MSS.only[k,j] ~ dbern(mu_ss.only[k,j])
+        #  mu_ss.only[k,j]<-ind[k,j+JBrS]*thetaSS.only[j]
+        #}
+      }
+      
+      # priors
+      for (k in 1:Nd){
+        Icat[k] ~ dcat(pEti[1:Jcause])
+      }
+      pEti[1:Jcause]~ddirch(alpha[])
+      
+      #for (k in (Nd+1):(Nd+Nu)){
+      #  Icat[k] <- Jcause+1
+      #}
+      
+      # bronze-standard measurement characteristics:
+      for (j in 1:JBrS){
+        thetaBS[j]~dbeta(alphaB[j],betaB[j])
+        psiBS[j]~dbeta(1,1)
+        psiBS.cut[j]<-cut(psiBS[j])
+      }
+      
+      # silver-standard measurement characteristics:
+      for (j in 1:JSS){
+        thetaSS[j]~dbeta(alphaS[j],betaS[j])
+        psiSS[j]<-0
+      }
+      
+      #for (j in 1:JSSonly){
+      #	thetaSS.only[j]~dbeta(alphaS.only[j],betaS.only[j])
+      #}
+      
+    }
+    
+    #-----------------END OF MODELS----------------------------------#
+    
+    #
+    # run the model:
+    #
+    if (mcmc_options$ppd==TRUE){
+      model_func         <- model_NoReg_BrSandSS_plcm_ppd
+      model_bugfile_name <- "model_NoReg_BrSandSS_plcm_ppd.bug"
+      #file.show(filename)
+      # gs <- mybugs("model_NoReg_BrS_plcm_ppd.bug")
+    } else {
+      model_func         <- model_NoReg_BrSandSS_plcm
+      model_bugfile_name <- "model_NoReg_BrSandSS_plcm.bug"
+      #gs <- mybugs("model_NoReg_BrS_plcm.bug")
+    }
+    
+    filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
+    R2WinBUGS::write.model(model_func, filename)
+    gs <- mybugs(model_bugfile_name)
+    
+}

@@ -16,13 +16,12 @@ is not available, please specify it as, e.g., \code{MGS=NA} or \code{MGS=NULL}
 \itemize{
 \item \code{MBS} a data frame of bronze-standard (BrS) measurements.
 Rows are subjects, columns are pathogens.
-They have imperfect sensitivity/specificity.
-(e.g. nasalpharyngeal PCR). These mesaurements have imperfect sensitivity/specificty.
+They have imperfect sensitivity/specificity (e.g. nasalpharyngeal PCR). These mesaurements have imperfect sensitivity/specificty.
 \item \code{MSS} a data frame of silver-standard (SS) measurements.
-Rows are subjects, columns are pathogens (e.g. blood culture).
+Rows are subjects, columns are pathogens measured in specimen (e.g. blood culture).
 These measurements have perfect specificity but imperfect sensitivity.
 \item \code{MGS} a data frame of gold-standard (GS) measurements.
-Rows are subject, columns are pathogens.
+Rows are subject, columns are pathogen measurements.
 These measurements have perfect sensitivity and specificity.
 }
 
@@ -40,7 +39,7 @@ These measurements have perfect sensitivity and specificity.
 (e.g., informative vs non-informative).
 Its length should be the same with \code{M_use};
 \item \code{Eti_prior} Description of etiology prior
-(e.g., overall uniform - all hyperparameters are 1, v.s. "0_1" - all hyperparameters
+(e.g., \code{overall_uniform} - all hyperparameters are 1; or \code{0_1} - all hyperparameters
 are 0.1);
 \item \code{pathogen_BrS_list} The vector of pathogen names with BrS measure;
 \item \code{cause_list} The vector of causes that are either singleton or
@@ -50,7 +49,7 @@ at the end, meaning 'None-of-Above';
 false positive rates (FPR);
 \item \code{X_reg_Eti} The vector of covariate names that stratify/regress
  etiologies;
-\item \code{pathogen_BrS_cat} The two-column dataframe that has category of pathogens: virus (V), bacteria (B)
+\item \code{pathogen_BrS_cat} The two-column data frame that has category of pathogens: virus (V), bacteria (B)
 and fungi (F);
 \item \code{pathogen_SSonly_list} The vector of pathogens with only
 SS measure;
@@ -60,16 +59,16 @@ SS measure;
 \item{mcmc_options}{A list of Markov chain Monte Carlo (MCMC) options.
 
 \itemize{
-\item \code{debugstatus} for whether to pause WinBUGS after it finishes
+\item \code{debugstatus} Logical - whether to pause WinBUGS after it finishes
 model fitting;
-\item \code{n.chains} for the number of MCMC chains;
-\item \code{n.burnin} for the number of burn-in samples;
-\item \code{n.thin} keep every other n.thin samples after burn-in period;
+\item \code{n.chains} Number of MCMC chains;
+\item \code{n.burnin} Number of burn-in samples;
+\item \code{n.thin} To keep every other \code{n.thin} samples after burn-in period;
 \item \code{individual.pred} whether to perform individual prediction;
 \item \code{ppd} whether to perform posterior predictive (ppd) checking;
-\item \code{result.folder} for the path to folder storing the results;
-\item \code{bugsmodel.dir} for the directory to WinBUGS model files;
-\item \code{winbugs.dir} for the directory where WinBUGS 1.4 is installed.
+\item \code{result.folder} Path to folder storing the results;
+\item \code{bugsmodel.dir} Path to WinBUGS model files;
+\item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
 }}
 }
 \value{

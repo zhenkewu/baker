@@ -35,9 +35,7 @@ plot_group_etiology <- function(DIR_NPLCM,ksFrac = 1,levellabel = 5){
   
   #compatibility checking:
   if (length(model_options$M_use)!=length(model_options$TPR_prior)){
-    stop("The number of measurement source(s) is different from
-         the number of TPR prior option!
-         Make them equal, and match with order!")
+    stop("The number of measurement source(s) is different from the number of TPR prior option! Make them equal, and match with order!")
   }
   
   old_par <- par(no.readonly=TRUE)

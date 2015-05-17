@@ -29,13 +29,16 @@ Inputs include (wrapped in `data_nplcm`):
 
 Clean Data
 ---
+The R functions below preprocess the raw PERCH data into a form that is analyzable
+by `nplcm`:
+
 * `clean_perch_data()`
     - `clean_combine_subsites()`
     - `extract_data_raw()`
     
 Exploratory Data Analysis (EDA)
 ---
-All EDA functions are in `eda.R`:
+Model-free display of raw data information. All EDA functions are in `eda.R`:
 
 * `plot_logORmat()`
 
@@ -47,22 +50,25 @@ and the actual data supplied for analysis.
 Fit Model
 ---
 
+The fitting function `nplcm()` takes in the following three arguments:
+* `data_nplcm`
+* `model_options`
+* `mcmc_options`
+
+
 Check Model
 ---
 
-* `check_common_pattern()`
-* `check_pairwise_logOR()`
+Posterior predictive checking:
+* `check_common_pattern()` and `check_common_pattern_two_folders()`
+* `check_pairwise_logOR()` and `check_pairwise_logOR_two_folders()`
+
 
 Visualize Results
 ---
 
 # Developer Notes
 
-Pathogen orders:
-
-1. raw pathogen orders input by the data
-2. reorganized pathogen orders 
-3. pathogen orders for display
 
 
 
