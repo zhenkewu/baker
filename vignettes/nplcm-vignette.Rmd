@@ -20,12 +20,24 @@ class models](http://biostats.bepress.com/jhubiostat/paper276/) in future versio
 
 Raw Data
 ---
+Inputs include (wrapped in `data_nplcm`):
+
+* raw measurement data (lab tests, clinical information with case-control status, 
+    other covaraite information)
+* pathogen names
+* pathogen taxonomy information 
 
 Clean Data
 ---
-
+* `clean_perch_data()`
+    - `clean_combine_subsites()`
+    - `extract_data_raw()`
+    
 Exploratory Data Analysis (EDA)
 ---
+All EDA functions are in `eda.R`:
+
+* `plot_logORmat()`
 
 Choosing Model
 ---
@@ -48,6 +60,20 @@ Pathogen orders:
 1. raw pathogen orders input by the data
 2. reorganized pathogen orders 
 3. pathogen orders for display
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!---

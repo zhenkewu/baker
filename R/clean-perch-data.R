@@ -75,12 +75,13 @@
 #' \item \code{pathogen_SSonly_cat} Category of pathogens with only silver-standard
 #' data.
 #' }
-#' This function does not re-order pathogens with only silver-standard data.
+#' This function does not re-order pathogens that only have silver-standard data.
 #' @export
 
 
 clean_perch_data <- function(clean_options){
 
+  RawMeasDir   <- clean_options$RawMeasDir
   case_def     <- clean_options$case_def
   case_def_val <- clean_options$case_def_val
   ctrl_def     <- clean_options$ctrl_def
@@ -89,7 +90,6 @@ clean_perch_data <- function(clean_options){
   X_strat_val  <- clean_options$X_strat_val
   pathogen_BrS_anyorder     <- clean_options$pathogen_BrS_anyorder
   X_extra      <- clean_options$X_extra
-  RawMeasDir   <- clean_options$RawMeasDir
   write_newSite<- clean_options$write_newSite
   newSite_write_Dir <- clean_options$newSite_write_Dir
   MeasDir           <- clean_options$MeasDir

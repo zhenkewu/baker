@@ -13,7 +13,6 @@
 #' Default is 10.
 #' @param cex.pattern Size of patterns; Default is 1.
 #' 
-#' @importFrom coda read.coda
 #' @return A figure of posterior predicted frequencies compared with the observed 
 #' frequencies of the most common patterns for the BrS data. The function generates
 #' this figure in your working directory automatically.
@@ -55,7 +54,6 @@ check_common_pattern_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2,
       JBrS  <- bugs.dat$JBrS
       Nd    <- bugs.dat$Nd
       Nu    <- bugs.dat$Nu
-      Y     <- c(rep(1,Nd),rep(0,Nu))
       
       #
       # test: (pathogen_display can be separately specified):

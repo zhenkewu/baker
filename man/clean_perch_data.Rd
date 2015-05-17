@@ -74,7 +74,7 @@ are not included.
 \item \code{pathogen_SSonly_cat} Category of pathogens with only silver-standard
 data.
 }
-This function does not re-order pathogens with only silver-standard data.
+This function does not re-order pathogens that only have silver-standard data.
 }
 \description{
 \code{clean_perch_data} transforms a raw data table (row for subject, column

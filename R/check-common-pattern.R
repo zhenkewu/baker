@@ -12,44 +12,35 @@
 #' Default is 10.
 #' @param cex.pattern Size of patterns; Default is 1.
 #' 
-#' @importFrom coda read.coda
 #' @return A figure of posterior predicted frequencies compared with the observed 
 #' frequencies of the most common patterns for the BrS data. The function generates
 #' this figure in your working directory automatically.
 #' @export
 #' 
 
-check_common_pattern <- function(DIR_NPLCM,
-                                          npat.case=10,npat.ctrl = 10,
+check_common_pattern <- function(DIR_NPLCM,npat.case=10,npat.ctrl = 10,
                                           cex.pattern = 1){
     
+  # read NPLCM outputs:
+  out           <- nplcm_read_folder(DIR_NPLCM)
+  # organize ouputs:
+  Mobs          <- out$Mobs
+  Y             <- out$Y
+  model_options <- out$model_options
+  clean_options <- out$clean_options
+  res_nplcm     <- out$res_nplcm
+  bugs.dat      <- out$bugs.dat
+  rm(out)
   
-  # remember that the data.txt file in the WinBUGS working folder is transposed:
-  bugs.dat <- dget(paste(DIR_NPLCM,"data.txt",sep="/"))
-  for (bugs.variable.name in names(bugs.dat)){
-    if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
-      dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
-      bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
-    }
-    assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
-  }
-  
-  model_options     <- dget(paste(DIR_NPLCM,"model_options.txt",sep="/"))
+ 
   #
   # can be modified to actual visualization order:
   #
   pathogen_BrS_list <- model_options$pathogen_BrS_list
   
-  
-  ## reading nplcm outputs:
-  res_nplcm <- read.coda(paste(DIR_NPLCM,"coda1.txt",sep="/"),
-                         paste(DIR_NPLCM,"codaIndex.txt",sep="/"),
-                         quiet=TRUE)
-  
   JBrS  <- bugs.dat$JBrS
   Nd    <- bugs.dat$Nd
   Nu    <- bugs.dat$Nu
-  Y     <- c(rep(1,Nd),rep(0,Nu))
   #
   # test: (pathogen_display can be separately specified):
   #

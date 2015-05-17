@@ -65,65 +65,66 @@ assign_model <- function(data_nplcm,model_options,silent=TRUE){
   # the !is.null criteria is for situations where NULL is specified for MGS or MSS
   # in the list 'Mobs' (when you call 'Mobs$MGS', the output will be NULL).
 
-  if (!all(input_data_sources%in%use_data_sources)){
+  if (!all(use_data_sources%in%input_data_sources)){
     # test for data sources as specified by model_options and
     # the actual input data set:
-    stop("==Please supply actual datasets as specified by 'M_use' in
-         'model_options'.==")
+    stop("==Please supply actual datasets as specified by 'M_use' in 'model_options'.==")
 
   }else{
-    if (length(model_options$TPR_prior)!=length(model_options$M_use)){
-       stop("==Please input the same number of TPR priors 
-            (i.e., length of 'TPR_prior') as in number of measuremens levels 
-            (i.e., length of 'M_use') used in 'model_options'. ==")
-    }else{
-      assigned_model <- list(quality= paste(use_data_sources,collapse="+"),
-                             SSonly = !is.null(model_options$pathogen_SSonly_list),
-                             nest   = model_meas)
-      
-      
-      # FPR regression:
-      in_user <- !is.null(model_options$X_reg_FPR)
-      in_data <- !is.null(X)
-      if (!in_user && !in_data){
-        do_FPR_reg <- FALSE
-      } else if (in_user && !in_data){
-        stop(paste0("==","Data does not have user specified covaraites for FPR regression!","=="))
-      } else if (!in_user && in_data){
-        do_FPR_reg <- FALSE
-      } else {
-        if (!all(model_options$X_reg_FPR%in%colnames(X))){
-          stop(paste0("==Covariate(s), '",setdiff(model_options$X_reg_FPR,colnames(X)), 
-                      "', not in data! =="))
-        } else{
-          do_FPR_reg <- TRUE
-        }
-      }
-      
-    
-      
-      # Etiology regression:
-      in_user <- !is.null(model_options$X_reg_Eti)
-      in_data <- !is.null(X)
-      if (!in_user && !in_data){
-        do_Eti_reg <- FALSE
-      } else if (in_user && !in_data){
-        stop(paste0("==","Data does not have user specified covaraites for Eti regression!","=="))
-      } else if (!in_user && in_data){
-        do_Eti_reg <- FALSE
-      } else {
-        if (!all(model_options$X_reg_Eti%in%colnames(X))){
-          stop(paste0("==Covariate(s),",setdiff(model_options$X_reg_Eti,colnames(X)), 
-                      " not in data! =="))
-        } else{
-          do_Eti_reg <- TRUE
-        }
-      }
-      
-      
-      reg  <- list(do_FPR_reg = do_FPR_reg, do_Eti_reg = do_Eti_reg)
-      list(measurement = assigned_model,reg = reg)
-    }
+    if (use_data_sources == "SS" || use_data_sources == "GS" || 
+        setequal(use_data_sources,c("SS","GS")) || setequal(use_data_sources, c("BrS","GS")) ||
+        setequal(use_data_sources,c("BrS","SS","GS"))){
+      stop("==Model not implemented! Please specify in 'model_options' to use M_use = 'BrS' or c('BrS','SS'). ==")
+    } else {
+           if (length(model_options$TPR_prior)!=length(model_options$M_use)){
+               stop("==Please input the same number of TPR priors (i.e., length of 'TPR_prior') as in number of measuremens levels (i.e., length of 'M_use') used in 'model_options'. ==")
+            }else{
+              assigned_model <- list(quality= paste(use_data_sources,collapse="+"),
+                                     SSonly = !is.null(model_options$pathogen_SSonly_list),
+                                     nest   = model_meas)
+              
+              
+              # FPR regression:
+              in_user <- !is.null(model_options$X_reg_FPR)
+              in_data <- !is.null(X)
+              if (!in_user && !in_data){
+                do_FPR_reg <- FALSE
+              } else if (in_user && !in_data){
+                stop(paste0("==","Data does not have user specified covaraites for FPR regression!","=="))
+              } else if (!in_user && in_data){
+                do_FPR_reg <- FALSE
+              } else {
+                if (!all(model_options$X_reg_FPR%in%colnames(X))){
+                  stop(paste0("==Covariate(s), '",setdiff(model_options$X_reg_FPR,colnames(X)), "', not in data! =="))
+                } else{
+                  do_FPR_reg <- TRUE
+                }
+              }
+              
+            
+              
+              # Etiology regression:
+              in_user <- !is.null(model_options$X_reg_Eti)
+              in_data <- !is.null(X)
+              if (!in_user && !in_data){
+                do_Eti_reg <- FALSE
+              } else if (in_user && !in_data){
+                stop(paste0("==","Data does not have user specified covaraites for Eti regression!","=="))
+              } else if (!in_user && in_data){
+                do_Eti_reg <- FALSE
+              } else {
+                if (!all(model_options$X_reg_Eti%in%colnames(X))){
+                  stop(paste0("==Covariate(s),",setdiff(model_options$X_reg_Eti,colnames(X)), " not in data! =="))
+                } else{
+                  do_Eti_reg <- TRUE
+                }
+              }
+              
+              
+              reg  <- list(do_FPR_reg = do_FPR_reg, do_Eti_reg = do_Eti_reg)
+              list(measurement = assigned_model,reg = reg)
+            }
+            }
   }
 }
 

@@ -85,9 +85,7 @@ nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
 
     #compatibility checking:
     if (length(model_options$M_use)!=length(model_options$TPR_prior)){
-      stop("The number of measurement source(s) is different from
-           the number of TPR prior option!
-           Make them equal, and match with order!")
+      stop("The number of measurement source(s) is different from the number of TPR prior option! Make them equal, and match with order!")
     }
 
     #some data preparation:

@@ -7,7 +7,6 @@
 #' 
 #' @param DIR_NPLCM1 File path to the first folder that stores results from npLCM fit.
 #' @param DIR_NPLCM2 File path to the second folder
-#' @importFrom coda read.coda
 #' 
 #' @return A figure of posterior predicted log odds ratio compared with the observed 
 #' log odds ratio for the BrS data. The function generates this figure in your working directory automatically.
@@ -27,17 +26,16 @@ check_pairwise_logOR_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2){
       #
       # read in the data:
       #  
-      # remember that the data.txt file in the WinBUGS working folder is transposed:
-      bugs.dat <- dget(paste(DIR_NPLCM,"data.txt",sep="/"))
-      for (bugs.variable.name in names(bugs.dat)){
-        if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
-          dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
-          bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
-        }
-        assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
-      }
-      
-      model_options     <- dget(paste(DIR_NPLCM,"model_options.txt",sep="/"))
+      # read NPLCM outputs:
+      out           <- nplcm_read_folder(DIR_NPLCM)
+      # organize ouputs:
+      Mobs          <- out$Mobs
+      Y             <- out$Y
+      model_options <- out$model_options
+      clean_options <- out$clean_options
+      res_nplcm     <- out$res_nplcm
+      bugs.dat      <- out$bugs.dat
+      rm(out)
       pathogen_BrS_list <- model_options$pathogen_BrS_list
       
       #
@@ -47,15 +45,9 @@ check_pairwise_logOR_two_folders <- function(DIR_NPLCM1,DIR_NPLCM2){
       index_display    <- my_reorder(pathogen_display,pathogen_BrS_list)
       pathogen_name    <- pathogen_BrS_list[index_display]
       
-      ## reading nplcm outputs:
-      res_nplcm <- read.coda(paste(DIR_NPLCM,"coda1.txt",sep="/"),
-                             paste(DIR_NPLCM,"codaIndex.txt",sep="/"),
-                             quiet=TRUE)
-      
       JBrS  <- bugs.dat$JBrS
       Nd <- bugs.dat$Nd
       Nu <- bugs.dat$Nu
-      Y  <- c(rep(1,Nd),rep(0,Nu))
       
       MBS.case <- bugs.dat$MBS[Y==1,index_display]
       MBS.ctrl <- bugs.dat$MBS[Y==0,index_display]

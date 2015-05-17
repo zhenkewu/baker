@@ -106,6 +106,8 @@ Uses WinBUGS in Windows system for Bayesian inference
 (see README file for an instruction to install WinBUGS on windows 7 or 8.).
 For stratification/regression functionalities, true positive rates are constant
 across stratum or covariate values.\cr
+}
+\details{
 Developer Note (DN):\cr
 \itemize{
 \item need to add checking empty cell functionality when performing

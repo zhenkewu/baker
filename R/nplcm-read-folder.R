@@ -1,7 +1,6 @@
 #' Read data and other model information from a folder that stores model results.
 #'
 #' @param DIR_NPLCM File path to the folder containing posterior samples
-#' @importFrom coda read.coda
 #' @return None
 #'
 #' @export
@@ -30,7 +29,7 @@ nplcm_read_folder <- function(DIR_NPLCM){
                MSS = bugs.dat$MSS,
                MGS = bugs.dat$MGS)
   
-  res_nplcm <- read.coda(paste(DIR_NPLCM,"coda1.txt",sep="/"),
+  res_nplcm <- coda::read.coda(paste(DIR_NPLCM,"coda1.txt",sep="/"),
                          paste(DIR_NPLCM,"codaIndex.txt",sep="/"),
                          quiet=TRUE)
   res <- list(bugs.dat = bugs.dat,

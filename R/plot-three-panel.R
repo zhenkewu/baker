@@ -23,6 +23,7 @@
 #' @return A figure with two or three columns
 #'
 #' @export
+
 plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1){#BEGIN function
   
   # read NPLCM outputs:
@@ -68,9 +69,9 @@ plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1){#BEGIN 
                             bugs.dat,top_SS = SS_upperlimit)
         # Etiology panel:
         plot_pie_panel(model_options,res_nplcm,bugs.dat,
-                             top_pie = eti_upperlimit)
+                       top_pie = eti_upperlimit)
           
-      } else{
+      } else{# with SS-only measured pathogens:
         if (!parsing$measurement$nest){
           stop("== BrS+SS; SSonly; subclass number: K = 1: not done.  ==")
 
@@ -78,7 +79,7 @@ plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1){#BEGIN 
           stop("== BrS+SS; SSonly; subclass number: K > 1: not done.  ==")
         }
       }
-    }else if (parsing$measurement$quality=="BrS"){
+    } else if (parsing$measurement$quality=="BrS"){
       if (!parsing$measurement$SSonly){
         if (!parsing$measurement$nest){
           stop("== BrS; no SSonly; subclass number: K = 1: not done.  ==")
@@ -91,5 +92,4 @@ plot_three_panel <- function(DIR_NPLCM,SS_upperlimit=1,eti_upperlimit=1){#BEGIN 
     stop("== Three panel plot not implemented for stratification or regression
          settings. Please check back later for updates. Thanks. ==")
   }
-
 }# END function
