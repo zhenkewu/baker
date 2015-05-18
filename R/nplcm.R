@@ -166,7 +166,11 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
       }else if (parsing$measurement$quality=="BrS"){
         if (!parsing$measurement$SSonly){
           if (!parsing$measurement$nest){
-            res <- nplcm_fit_Strat_BrS_NoNest(data_nplcm,model_options,mcmc_options)
+            if (is_discrete(X,c(model_options$X_reg_FPR,model_options$X_reg_Eti))){
+                res <- nplcm_fit_Strat_BrS_NoNest(data_nplcm,model_options,mcmc_options)
+            } else{
+              stop("==Not done.==")
+            }
           }else{
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }

@@ -823,6 +823,7 @@ null_as_zero <- function(x){
 #' \item \code{group} A vector of group indicator for every observation
 #' }
 #' 
+#' @export
 
 set_strat <- function(X,X_reg){
   if (!is.data.frame(X)){
@@ -864,5 +865,34 @@ set_strat <- function(X,X_reg){
   list(N_grp = N_grp, group=group)
 }
 
+
+#' Check if covariates are discrete
+#' 
+#' \code{is_discrete} checks if the specified covariates could be regarded as discrete
+#' variables. 
+#' 
+#' @details Note that this function should be used with caution. It used
+#' \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an \emph{ad hoc} criterion.
+#' It is not the same as \code{\link{is.discrete}}
+#' 
+#' @inheritParams set_strat
+#' 
+#' @return \code{TRUE} for discrete; \code{FALSE} otherwise.
+#' @export
+
+is_discrete <- function(X,X_reg){
+  if (!is.data.frame(X)){
+    stop("==X is not a data frame. Please transform it into a data frame.==")
+  }
+  if (!all(X_reg%in%names(X))){
+    stop("==",paste(X_reg,collapse=", ")," not in X ==")
+  }
+  nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10
+}
+
+# is_discrete(X,"ENRLDATE")
+# is_discrete(X,c("ENRLDATE","AGECAT"))
+# is_discrete(X,c("HIV","AGECAT"))
+# is_discrete(X,c("newSITE","AGECAT"))
 
 

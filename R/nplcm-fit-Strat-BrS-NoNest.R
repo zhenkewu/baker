@@ -1,9 +1,8 @@
-if(getRversion() >= "2.15.1") utils::globalVariables(c(""))
-
-
-
 #' Fit nested partially-latent class model with stratification (low-level)
 #'
+#' Use it when one wants manually split data analyses - it requires discrete
+#' covariates to split the data sets. Please check other regression fitting functions
+#' that use design matrix to bypass the discrete versus continous covariate check. 
 #' Features:
 #' \itemize{
 #' \item Stratification;
@@ -17,7 +16,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c(""))
 #'
 #' @export
 
-nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
+nplcm_fit_Strat_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     # Record the settings of current analysis:
     cat("==Results stored in: ==","\n",mcmc_options$result.folder)
     #model_options:
@@ -171,11 +170,11 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     #
     
     # the one with posterior predictive distribution:
-    model_Reg_BrS_plcm_ppd <- function(){
+    model_Strat_BrS_plcm_ppd <- function(){
     
     }
     # the one without ppd:
-    model_Reg_BrS_plcm <- function(){
+    model_Strat_BrS_plcm <- function(){
         for (k in 1:(Nd)){
           for (j in 1:JBrS){
             ind[k,j]<-equals(1,template[Icat[k],j])
@@ -220,14 +219,12 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     #
     if (mcmc_options$ppd==TRUE){
       stop("==Posterior predictive checking not implemented for this model. Please check back later or contact the maintainer. Thanks.==")
-      model_func         <- model_Reg_BrS_plcm_ppd
-      model_bugfile_name <- "model_Reg_BrS_plcm_ppd.bug"
+      model_func         <- model_Strat_BrS_plcm_ppd
+      model_bugfile_name <- "model_Strat_BrS_plcm_ppd.bug"
       #file.show(filename)
-      # gs <- mybugs("model_NoReg_BrS_plcm_ppd.bug")
     } else {
-      model_func         <- model_Reg_BrS_plcm
-      model_bugfile_name <- "model_Reg_BrS_plcm.bug"
-      #gs <- mybugs("model_NoReg_BrS_plcm.bug")
+      model_func         <- model_Strat_BrS_plcm
+      model_bugfile_name <- "model_Strat_BrS_plcm.bug"
     }
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
