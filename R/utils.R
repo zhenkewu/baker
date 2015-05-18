@@ -805,3 +805,64 @@ null_as_zero <- function(x){
   }
 }
 
+#' Stratification setup by covaraites
+#' 
+#' \code{set_strat} makes group indicators based on \code{model_options$X_reg_*}
+#' 
+#' @details the resuls from this function will help stratify etiology or FPR for
+#' different strata; the ways of stratification for etiology and FPR can be based
+#' on different covariates.
+#' 
+#' @param X   A data frame of covariates
+#' @param X_reg The vector of covariates that will stratify the analyses. These
+#' variables have to be categorical.
+#' 
+#' @return A list with following elements:
+#' \itemize{
+#' \item \code{N_group} The number of groups
+#' \item \code{group} A vector of group indicator for every observation
+#' }
+#' 
+
+set_strat <- function(X,X_reg){
+  if (!is.data.frame(X)){
+    stop("==X is not a data frame. Please transform it into a data frame.==")
+  }
+  if (!all(X_reg%in%names(X))){
+    stop("==",paste(X_reg,collapse=", ")," not in X ==")
+  }
+  X_group        <- X[,X_reg,drop=FALSE]
+  #   # dichotomize age variable:
+  #   if ("AGECAT" %in% model_options$X_reg_Eti){
+  #    X_group$AGECAT <- as.numeric(X_group$AGECAT > 1)+1
+  #   }
+  X_group$group_names <- apply(X_group,1,paste,collapse="&")
+  X_group$ID          <- 1:nrow(X_group)
+  
+  form_agg <- as.formula(paste0("cbind(group_names,ID)~",
+                                paste(X_reg,collapse="+")))
+  
+  grouping <- aggregate(form_agg,X_group,identity)
+  
+  ## temporary code to get the count of observations in each group:
+  #form_agg2 <- as.formula(paste0("cbind(group_names,ID)~",
+  #                              paste(c("Y",model_options$X_reg),collapse="+")))
+  #aggregate(form_agg2,X_group,length)
+  
+  group_nm <- lapply(grouping$group_names,function(v) unique(as.character(v)))
+  names(group_nm) <- 1:length(group_nm)
+  X_group$grp <- rep(NA,nrow(X_group))
+  
+  for (l in seq_along(group_nm)){
+    X_group$grp[unfactor(grouping$ID[[l]])] <- l
+  }
+  
+  group <- X_group$grp
+  N_vec <- table(group)
+  N_grp <- length(N_vec)
+  
+  list(N_grp = N_grp, group=group)
+}
+
+
+

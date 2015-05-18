@@ -1,14 +1,14 @@
-#' (Low-level function) Fitting nested partially-latent class models with
-#' stratification/regression. [needs revision!!]
+#' Fitting nested partially-latent class models with regression (low-level).
 #'
 #' @inheritParams nplcm
 #' @return A WinBUGS result, fitted by function \code{bugs()} from the R2WinBUGS package.
 #' @export
 #'
-nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
+nplcm_fit_Reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
   X    <- data_nplcm$X
+  
   #define generic function to call WinBUGS:
   call.bugs <- function(data, inits, parameters,m.file,
                         bugsmodel.dir = mcmc_options$bugsmodel.dir,
@@ -20,7 +20,7 @@ nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
                         dic = FALSE, is.debug = mcmc_options$debugstatus,
                         workd= mcmc_options$result.folder,...) {
 
-    m.file <- paste(bugsmodel.dir, m.file, sep="");
+    m.file <- file.path(bugsmodel.dir, m.file);
     f.tmp <- function() {
       ##winbugs
       gs <- R2WinBUGS::bugs(data, inits, parameters,
@@ -44,17 +44,17 @@ nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
     rst.bugs;
   }
 
-  ## for discrete stratified/regression analysis
-  X_group        <- X[model_options$X_reg]
-  # dichotomize age variable:
-  if ("AGECAT" %in% model_options$X_reg){
-   X_group$AGECAT <- as.numeric(X_group$AGECAT > 1)+1
-  }
+  ## for discrete stratified/regression analysis:
+  X_group        <- X[,model_options$X_reg_Eti,drop=FALSE]
+#   # dichotomize age variable:
+#   if ("AGECAT" %in% model_options$X_reg_Eti){
+#    X_group$AGECAT <- as.numeric(X_group$AGECAT > 1)+1
+#   }
   X_group$group_names <- apply(X_group,1,paste,collapse="&")
   X_group$ID     <- 1:nrow(X_group)
 
   form_agg <- as.formula(paste0("cbind(group_names,ID)~",
-                                paste(model_options$X_reg,collapse="+")))
+                                paste(model_options$X_reg_Eti,collapse="+")))
 
   grouping <- aggregate(form_agg,X_group,identity)
 
@@ -76,34 +76,8 @@ nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
   N_grp <- length(N_vec)
 
   if (is.null(model_options$SSonly)|| model_options$SSonly==FALSE){
-    ##if all pathogens have NPPCR data:--------------------------
+    ##if all pathogens have BrS data:--------------------------
     #check sources of measurement data:
-    data_source        <- c("yes","no")[is.na(Mobs)+1]
-    names(data_source) <- names(Mobs)
-    cat("Available measurements: \n")
-    print(data_source)
-
-    #compatibility checking:
-    if (length(model_options$M_use)!=length(model_options$TPR_prior)){
-      stop("The number of measurement source(s) is different from the number of TPR prior option! Make them equal, and match with order!")
-    }
-
-    #some data preparation:
-    Nd <- sum(Y==1)
-    Nu <- sum(Y==0)
-
-    model_data_source <- rep(NA,3)
-    names(model_data_source) <- c("MBS","MSS","MGS")
-    model_data_source[1] <- c("no","yes")["BrS"%in%model_options$M_use+1]
-    model_data_source[2] <- c("no","yes")["SS"%in%model_options$M_use+1]
-    model_data_source[3] <- c("no","yes")["GS"%in%model_options$M_use+1]
-
-    cat("Actual measurements used in the model: \n")
-    print(model_data_source)
-
-    cat("True positive rate (TPR) prior(s) for ",
-        c("MBS","MSS","MGS")[model_data_source=="yes"],"\n",
-        " is(are respectively) ", model_options$TPR_prior,"\n")
 
     allowed_list <- model_options$allowed_list
     pathogen_list <-model_options$pathogen_list
@@ -118,52 +92,7 @@ nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
       cat("Number of subclasses: ", model_options$k_subclass,"\n")
       #plcm: conditional independence model
       #plcm-BrS only:
-      if (model_data_source[1]=="yes" &
-            model_data_source[2]=="no" &
-            model_data_source[3]=="no"){
-
-        MBS.case <- Mobs$MBS[Y==1,]
-        MBS.ctrl <- Mobs$MBS[Y==0,]
-        MBS      <- as.matrix(rbind(MBS.case,MBS.ctrl))
-
-
-        alpha <- set_prior_eti(model_options)
-
-        TPR_prior_list <- set_prior_tpr(model_options,data_nplcm)
-
-        alphaB <- TPR_prior_list$alphaB
-        betaB <- TPR_prior_list$betaB
-
-        mybugs <- function(...){
-          inits      <- function(){list(thetaBS = rbeta(Jfull,1,1),
-                                        psiBS   = rbeta(Jfull,1,1))};
-          data       <- c("Nd","Nu","Jfull","Jallowed","alpha",
-                          "template","MBS","alphaB","betaB");
-
-          if (mcmc_options$individual.pred==FALSE & mcmc_options$ppd==TRUE){
-            parameters <- c("thetaBS","psiBS","pEti","MBS.new");
-
-          } else if(mcmc_options$individual.pred==TRUE & mcmc_options$ppd==TRUE){
-            parameters <- c("thetaBS","psiBS","pEti","Icat","MBS.new");
-
-          } else if (mcmc_options$individual.pred==TRUE & mcmc_options$ppd==FALSE){
-            parameters <- c("thetaBS","psiBS","pEti","Icat");
-
-          } else if (mcmc_options$individual.pred==FALSE & mcmc_options$ppd==FALSE){
-            parameters <- c("thetaBS","psiBS","pEti");
-
-          }
-          rst.bugs   <- call.bugs(data, inits, parameters,...);
-          rst.bugs
-        }
-
-        if (mcmc_options$ppd==TRUE){
-          gs <- mybugs("model_plcm_brsonly_ppd.bug")
-        } else {
-          gs <- mybugs("model_plcm_brsonly.bug")
-        }
-      }
-
+      
       ##plcm-BrS + SS:
       if (model_data_source[1]=="yes" &
             model_data_source[2]=="yes" &
@@ -227,137 +156,8 @@ nplcm_fit_reg<-function(data_nplcm,model_options,mcmc_options){#BEGIN function
       #nplcm: conditional dependence model
       cat("Number of subclasses: ", model_options$k_subclass,"\n")
       # nplcm: BrS only:
-      if (model_data_source[1]=="yes" &
-            model_data_source[2]=="no" &
-              model_data_source[3]=="no"){
+     
 
-        MBS.case <- Mobs$MBS[Y==1,]
-        MBS.ctrl <- Mobs$MBS[Y==0,]
-        MBS      <- as.matrix(rbind(MBS.case,MBS.ctrl))
-
-        K        <- model_options$k_subclass
-
-        alpha <- set_prior_eti(model_options)
-
-        TPR_prior_list <- set_prior_tpr(model_options,data_nplcm)
-
-        alphaB <- TPR_prior_list$alphaB
-        betaB <- TPR_prior_list$betaB
-
-        mybugs <- function(...){
-          inits      <- function(){list(pEti = rep(1/Jallowed,Jallowed),
-                                        r0 = c(rep(.5,K-1),NA),
-                                        r1 = cbind(matrix(rep(.5,Jfull*(K-1)),
-                                                          nrow=Jfull,ncol=K-1),
-                                                   rep(NA,Jfull)),
-                                        alphadp0 = 1)};
-          data       <- c("Nd","Nu","Jfull","Jallowed",
-                          "alpha","template","K",
-                          "MBS","alphaB","betaB");
-
-          if (mcmc_options$individual.pred==FALSE & mcmc_options$ppd==TRUE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0","MBS.new",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS")
-
-          } else if(mcmc_options$individual.pred==TRUE & mcmc_options$ppd==TRUE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0","Icat","MBS.new",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS")
-
-          } else if (mcmc_options$individual.pred==TRUE & mcmc_options$ppd==FALSE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0","Icat",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS")
-
-          } else if (mcmc_options$individual.pred==FALSE & mcmc_options$ppd==FALSE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS")
-
-          }
-          rst.bugs   <- call.bugs(data, inits, parameters,...);
-          rst.bugs
-        }
-
-        if (mcmc_options$ppd==TRUE){
-          gs <- mybugs("model_nplcm_brsonly_ppd.bug")
-        } else {
-          gs <- mybugs("model_nplcm_brsonly.bug")
-        }
-      }
-
-
-      ## nplcm: BrS + SS:
-      if (model_data_source[1]=="yes" &
-            model_data_source[2]=="yes" &
-              model_data_source[3]=="no"){
-
-        MBS.case <- Mobs$MBS[Y==1,]
-        MBS.ctrl <- Mobs$MBS[Y==0,]
-        MBS      <- as.matrix(rbind(MBS.case,MBS.ctrl))
-
-        MSS.case <- Mobs$MSS[Y==1,1:Jfull]
-        MSS.case <- as.matrix(MSS.case)
-
-        SS_index <- which(colMeans(is.na(MSS.case))<0.9)#.9 is arbitrary; any number <1 will work.
-        JSS      <- length(SS_index)
-        MSS      <- MSS.case[,SS_index]
-
-        K        <- model_options$k_subclass
-
-        alpha <- set_prior_eti(model_options)
-
-        TPR_prior_list <- set_prior_tpr(model_options,data_nplcm)
-
-        alphaB <- TPR_prior_list$alphaB
-        betaB <- TPR_prior_list$betaB
-        alphaS <- TPR_prior_list$alphaS
-        betaS <- TPR_prior_list$betaS
-
-        mybugs <- function(...){
-          inits      <- function(){list(pEti = rep(1/Jallowed,Jallowed),
-                                        r0 = c(rep(.5,K-1),NA),
-                                        r1 = cbind(matrix(rep(.5,Jfull*(K-1)),
-                                                          nrow=Jfull,ncol=K-1),
-                                                   rep(NA,Jfull)),
-                                        alphadp0 = 1)};
-          data       <- c("Nd","Nu","Jfull","Jallowed",
-                          "alpha","template","K",
-                          "JSS","MSS",
-                          "MBS","alphaB","betaB","alphaS","betaS");
-
-          if (mcmc_options$individual.pred==FALSE & mcmc_options$ppd==TRUE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0","MBS.new",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS","thetaSS")
-
-          } else if(mcmc_options$individual.pred==TRUE & mcmc_options$ppd==TRUE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0","Icat","MBS.new",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS","thetaSS")
-
-          } else if (mcmc_options$individual.pred==TRUE & mcmc_options$ppd==FALSE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0","Icat",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS","thetaSS")
-
-          } else if (mcmc_options$individual.pred==FALSE & mcmc_options$ppd==FALSE){
-            parameters <- c("pEti","Lambda","Eta","alphadp0",
-                            "ThetaBS.marg","PsiBS.marg","PsiBS.case",
-                            "ThetaBS","PsiBS","thetaSS")
-
-          }
-          rst.bugs   <- call.bugs(data, inits, parameters,...);
-          rst.bugs
-        }
-
-        if (mcmc_options$ppd==TRUE){
-          gs <- mybugs("model_nplcm_ppd.bug")
-        } else {
-          gs <- mybugs("model_nplcm.bug")
-        }
-      }
     }
     #END fitting model---------------------------------------------------------
     }else{#BEGIN SS only model:

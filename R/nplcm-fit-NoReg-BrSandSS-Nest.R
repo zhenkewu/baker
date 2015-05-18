@@ -1,3 +1,6 @@
+if(getRversion() >= "2.15.1") utils::globalVariables(c("equals","Icat","Z","ThetaBS","Icat.new","Z.new","PsiBS","thetaSS","inprod2"))
+
+
 #' Fit nested partially-latent class model (low-level)
 #'
 #' Features:

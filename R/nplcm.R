@@ -113,6 +113,7 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   Y    <- data_nplcm$Y
   X    <- data_nplcm$X
   parsing <- assign_model(data_nplcm,model_options)
+  
   if (!any(unlist(parsing$reg))){
     # if no stratification or regression:
     if (parsing$measurement$quality=="BrS+SS"){
@@ -152,20 +153,20 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }else{
             # model 2, DONE
-            res <- nplcm_fit_reg(data_nplcm,model_options,mcmc_options)
+            res <- nplcm_fit_Reg(data_nplcm,model_options,mcmc_options)
           }
         } else{
           if (!parsing$measurement$nest){
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }else{
             # model 4, DONE
-            res <- nplcm_fit_reg(data_nplcm,model_options,mcmc_options)
+            res <- nplcm_fit_Reg(data_nplcm,model_options,mcmc_options)
           }
         }
       }else if (parsing$measurement$quality=="BrS"){
         if (!parsing$measurement$SSonly){
           if (!parsing$measurement$nest){
-            stop("== Done but need to clean code. Please contact maintainer. Thanks.")
+            res <- nplcm_fit_Strat_BrS_NoNest(data_nplcm,model_options,mcmc_options)
           }else{
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }
