@@ -76,54 +76,43 @@ assign_model <- function(data_nplcm,model_options,silent=TRUE){
         setequal(use_data_sources,c("BrS","SS","GS"))){
       stop("==Model not implemented! Please specify in 'model_options' to use M_use = 'BrS' or c('BrS','SS'). ==")
     } else {
-           if (length(model_options$TPR_prior)!=length(model_options$M_use)){
-               stop("==Please input the same number of TPR priors (i.e., length of 'TPR_prior') as in number of measuremens levels (i.e., length of 'M_use') used in 'model_options'. ==")
-            }else{
-              assigned_model <- list(quality= paste(use_data_sources,collapse="+"),
-                                     SSonly = !is.null(model_options$pathogen_SSonly_list),
-                                     nest   = model_meas)
-              
-              
-              # FPR regression:
-              in_user <- !is.null(model_options$X_reg_FPR)
-              in_data <- !is.null(X)
-              if (!in_user && !in_data){
-                do_FPR_reg <- FALSE
-              } else if (in_user && !in_data){
-                stop(paste0("==","Data does not have user specified covaraites for FPR regression!","=="))
-              } else if (!in_user && in_data){
-                do_FPR_reg <- FALSE
-              } else {
-                if (!all(model_options$X_reg_FPR%in%colnames(X))){
-                  stop(paste0("==Covariate(s), '",setdiff(model_options$X_reg_FPR,colnames(X)), "', not in data! =="))
+             if (length(model_options$TPR_prior)!=length(model_options$M_use)){
+                 stop("==Please input the same number of TPR priors (i.e., length of 'TPR_prior') as in number of measuremens levels (i.e., length of 'M_use') used in 'model_options'. ==")
+              }else{
+                assigned_model <- list(quality= paste(use_data_sources,collapse="+"),
+                                       SSonly = !is.null(model_options$pathogen_SSonly_list),
+                                       nest   = model_meas)
+                
+                
+                
+                # FPR regression:
+                # try building design matrix:
+                res <- try(model.matrix(model_options$X_reg_FPR,data.frame(data_nplcm$X,data_nplcm$Y)))
+                
+                if (is.error(res)){
+                  stop("==There are covariates that are specified in 'model_options$X_reg_FPR' but not in the data: 'data_nplcm'==")
+                } else if (is.empty.model(model_options$X_reg_FPR)){
+                  do_FPR_reg <- FALSE
                 } else{
                   do_FPR_reg <- TRUE
                 }
-              }
-              
-            
-              
-              # Etiology regression:
-              in_user <- !is.null(model_options$X_reg_Eti)
-              in_data <- !is.null(X)
-              if (!in_user && !in_data){
-                do_Eti_reg <- FALSE
-              } else if (in_user && !in_data){
-                stop(paste0("==","Data does not have user specified covaraites for Eti regression!","=="))
-              } else if (!in_user && in_data){
-                do_Eti_reg <- FALSE
-              } else {
-                if (!all(model_options$X_reg_Eti%in%colnames(X))){
-                  stop(paste0("==Covariate(s),",setdiff(model_options$X_reg_Eti,colnames(X)), " not in data! =="))
+                
+        
+                # Etiology regression:
+                # try building design matrix:
+                res <- try(model.matrix(model_options$X_reg_Eti,data.frame(data_nplcm$X,data_nplcm$Y)))
+                
+                if (is.error(res)){
+                  stop("==There are covariates that are specified in 'model_options$X_reg_Eti' but not in the data: 'data_nplcm'==")
+                } else if (is.empty.model(model_options$X_reg_Eti)){
+                  do_Eti_reg <- FALSE
                 } else{
                   do_Eti_reg <- TRUE
                 }
+              
+                reg  <- list(do_FPR_reg = do_FPR_reg, do_Eti_reg = do_Eti_reg)
+                list(measurement = assigned_model,reg = reg)
               }
-              
-              
-              reg  <- list(do_FPR_reg = do_FPR_reg, do_Eti_reg = do_Eti_reg)
-              list(measurement = assigned_model,reg = reg)
-            }
             }
   }
 }

@@ -29,7 +29,6 @@ nplcm_fit_NoReg_BrS_Nest <-
     
     Mobs <- data_nplcm$Mobs
     Y    <- data_nplcm$Y
-    X    <- data_nplcm$X
     
     # define generic function to call WinBUGS:
     call.bugs <- function(data, inits, parameters,m.file,
@@ -69,7 +68,7 @@ nplcm_fit_NoReg_BrS_Nest <-
 
     #-------------------------------------------------------------------#
     # prepare data:
-    parsing <- assign_model(data_nplcm,model_options)
+    #parsing <- assign_model(data_nplcm,model_options)
     Nd <- sum(Y==1)
     Nu <- sum(Y==0)
 

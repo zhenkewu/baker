@@ -895,4 +895,147 @@ is_discrete <- function(X,X_reg){
 # is_discrete(X,c("HIV","AGECAT"))
 # is_discrete(X,c("newSITE","AGECAT"))
 
+#' Test for 'try-error' class
+#'
+#' @param x An object to be test if it is "try-error"
+#' 
+#' 
+#' @references  \url{http://adv-r.had.co.nz/Exceptions-Debugging.html}
+#' @return Logical. \code{TRUE} for "try-error"; \code{FALSE} otherwise
+#' @export
+is.error <- function(x) inherits(x, "try-error")
+
+
+
+#' Get unique month from Date
+#' 
+#' \code{unique_month} converts observed dates into unique months
+#' to help visualize sampled months
+#' 
+#' @param Rdate standard date format in R
+#' 
+#' @return a vector of characters with \code{month-year}, e.g., \code{4-2012}.
+#' @export
+#' 
+#' 
+#' 
+unique_month <- function(Rdate){
+  unique(paste(lubridate::month(Rdate),lubridate::year(Rdate),sep="-"))
+}
+
+#' Make FPR design matrix for dates with R format. 
+#' 
+#' \code{dm_Rdate_FPR} creates desigm matrices for false positive rate regressions.
+#' 
+#' @param Rdate a vector of dates of R format
+#' @param Y binary case/control status; 1 for case; 0 for controls
+#' @param num_knots_FPR number of knots for FPR regression
+#' 
+#' @return Design matrix for FPR regression:
+#' \itemize{\
+#' \item \code{Z_FPR_ctrl} transformed design matrix for FPR regression for controls
+#' \item \code{Z_FPR_case} transformed design matrix for borrowing FPR 
+#' regression from controls to cases. It is obtained using control-standardation,
+#' and square-root matrix of control's $Omega=(abs(outer(knots,knots,"-")))^3$.
+#' }
+#' @export
+dm_Rdate_FPR <- function(Rdate,Y,num_knots_FPR){
+  
+  # standardization:
+  df    <- data.frame(Y=Y,num_date = as.numeric(Rdate))
+  grp_mean <- c(mean(df$num_date[Y==0]),mean(df$num_date[Y==1]))
+  grp_sd <- c(sd(df$num_date[Y==0]),sd(df$num_date[Y==1]))
+  df$ingrp_std_num_date <- (df$num_date - grp_mean[df$Y+1])/grp_sd[df$Y+1]
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  df$outgrp_std_num_date <- (df$num_date - grp_mean[1])/grp_sd[1]
+  df$outgrp_std_num_date[df$Y==0] <- NA
+  
+
+  # for FPR regression in controls:
+  ctrl_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y==0]
+  knots_FPR <- quantile(unique(ctrl_ingrp_std_num_date), 
+                        seq(0,1,length=(num_knots_FPR+2))[-c(1,(num_knots_FPR+2))])
+  
+  
+  Z_K_FPR_ctrl <- (abs(outer(ctrl_ingrp_std_num_date,knots_FPR,"-")))^3
+  OMEGA_all_ctrl <- (abs(outer(knots_FPR,knots_FPR,"-")))^3
+  svd.OMEGA_all_ctrl <-  svd(OMEGA_all_ctrl)
+  sqrt.OMEGA_all_ctrl<-  t(svd.OMEGA_all_ctrl$v %*% (t(svd.OMEGA_all_ctrl$u)*sqrt(svd.OMEGA_all_ctrl$d)))
+  
+  Z_FPR_ctrl<-  t(solve(sqrt.OMEGA_all_ctrl,t(Z_K_FPR_ctrl)))
+  
+  # for borrowing FPR regression from controls to cases:
+  case_outgrp_std_num_date <- df$outgrp_std_num_date[df$Y==1]
+  Z_K_FPR_case <- (abs(outer(case_outgrp_std_num_date,knots_FPR,"-")))^3
+  Z_FPR_case <- t(solve(sqrt.OMEGA_all_ctrl,t(Z_K_FPR_case)))
+  
+  ind <- which(Y==1)
+  res <- matrix(NA,nrow=length(Y),ncol=ncol(Z_FPR_case))
+  res[ind,] <- Z_FPR_case
+  res[-ind,] <- Z_FPR_ctrl
+  res
+} 
+
+#' Make etiology design matrix for dates with R format. 
+#' 
+#' \code{dm_Rdate_Eti} creates desigm matrices for etiology regressions.
+#' 
+#' @param Rdate a vector of dates of R format
+#' @param Y binary case/control status; 1 for case; 0 for controls
+#' @param num_knots_Eti number of knots for etiology regression
+#' @param basis_Eti the type of basis functions to use for etiology regression. It can be "ncs" (natural
+#' cubic splines) or "tprs" (thin-plate regression splines). Default is "ncs".
+#' 
+#' @return Design matrix for Eti regression:
+#' \itemize{\
+#' \item \code{Z_Eti} transformed design matrix for etiology regression
+#' }
+#' @export
+dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs" ){
+  
+#       #
+#       # test:
+#       #
+#       Rdate <- data_nplcm$X$ENRLDATE
+#       Y <- data_nplcm$Y
+#       num_knots_Eti <- 5
+#       basis_Eti = "ncs"
+#       #
+#       #
+#       #
+#   
+  # standardization:
+  df    <- data.frame(Y=Y,num_date = as.numeric(Rdate))
+  grp_mean <- c(mean(df$num_date[Y==0]),mean(df$num_date[Y==1]))
+  grp_sd <- c(sd(df$num_date[Y==0]),sd(df$num_date[Y==1]))
+  df$ingrp_std_num_date <- (df$num_date - grp_mean[df$Y+1])/grp_sd[df$Y+1]
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  df$outgrp_std_num_date <- (df$num_date - grp_mean[1])/grp_sd[1]
+  df$outgrp_std_num_date[df$Y==0] <- NA
+  
+  if (basis_Eti=="ncs"){
+    # for etiology regression:
+    case_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y==1]
+    Z_Eti <- splines::ns(case_ingrp_std_num_date,df=num_knots_Eti)
+  } 
+  
+  if (basis_Eti=="tprs"){
+    # for etiology regression:
+    case_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y==1]
+    knots_Eti <- quantile(unique(case_ingrp_std_num_date), 
+                          seq(0,1,length=(num_knots_Eti+2))[-c(1,(num_knots_Eti+2))])
+    
+    Z_K_Eti <- (abs(outer(case_ingrp_std_num_date,knots_Eti,"-")))^3
+    OMEGA_all_Eti <- (abs(outer(knots_Eti,knots_Eti,"-")))^3
+    svd.OMEGA_all_Eti <- svd(OMEGA_all_Eti)
+    sqrt.OMEGA_all_Eti<- t(svd.OMEGA_all_Eti$v %*% (t(svd.OMEGA_all_Eti$u)*sqrt(svd.OMEGA_all_Eti$d)))
+    Z_Eti  <- t(solve(sqrt.OMEGA_all_Eti,t(Z_K_Eti)))
+  }
+  
+  ind <- which(Y==1)
+  res <- matrix(NA,nrow=length(Y),ncol=ncol(Z_Eti))
+  res[ind,]  <- Z_Eti
+  res
+} 
+
 

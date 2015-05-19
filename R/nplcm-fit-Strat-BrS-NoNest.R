@@ -66,7 +66,7 @@ nplcm_fit_Strat_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     
     #-------------------------------------------------------------------#
     # prepare data:
-    parsing <- assign_model(data_nplcm,model_options)
+   # parsing <- assign_model(data_nplcm,model_options)
     Nd      <- sum(Y==1)
     Nu      <- sum(Y==0)
     
@@ -127,12 +127,12 @@ nplcm_fit_Strat_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     #alphaS      <- TPR_prior_list$alphaS
     #betaS       <- TPR_prior_list$betaS
     
-    if (parsing$measurement$SSonly){
-      MSS.only.case <- Mobs$MSS[Y==1,(1:JSSonly)+JBrS]
-      MSS.only <- as.matrix(MSS.only.case)
-      alphaS.only <- TPR_prior_list$alphaS.only
-      betaS.only  <- TPR_prior_list$betaS.only
-    }
+#     if (parsing$measurement$SSonly){
+#       MSS.only.case <- Mobs$MSS[Y==1,(1:JSSonly)+JBrS]
+#       MSS.only <- as.matrix(MSS.only.case)
+#       alphaS.only <- TPR_prior_list$alphaS.only
+#       betaS.only  <- TPR_prior_list$betaS.only
+#     }
     
     mybugs <- function(...){
       inits      <- function(){list(thetaBS = rbeta(JBrS,1,1),

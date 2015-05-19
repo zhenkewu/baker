@@ -27,7 +27,6 @@ nplcm_fit_NoReg_BrSandSS_Nest <-
     
     Mobs <- data_nplcm$Mobs
     Y    <- data_nplcm$Y
-    X    <- data_nplcm$X
     
     
     # define generic function to call WinBUGS:
@@ -68,7 +67,7 @@ nplcm_fit_NoReg_BrSandSS_Nest <-
 
     #-------------------------------------------------------------------#
     # prepare data:
-    parsing <- assign_model(data_nplcm,model_options)
+    #parsing <- assign_model(data_nplcm,model_options)
     Nd <- sum(Y==1)
     Nu <- sum(Y==0)
 
@@ -115,12 +114,12 @@ nplcm_fit_NoReg_BrSandSS_Nest <-
     betaB       <- TPR_prior_list$betaB
     alphaS      <- TPR_prior_list$alphaS
     betaS       <- TPR_prior_list$betaS
-    if (parsing$measurement$SSonly){
-      MSS.only.case <- Mobs$MSS[Y==1,(1:JSSonly)+JBrS]
-      MSS.only <- as.matrix(MSS.only.case)
-      alphaS.only <- TPR_prior_list$alphaS.only
-      betaS.only  <- TPR_prior_list$betaS.only
-    }
+#     if (parsing$measurement$SSonly){
+#       MSS.only.case <- Mobs$MSS[Y==1,(1:JSSonly)+JBrS]
+#       MSS.only <- as.matrix(MSS.only.case)
+#       alphaS.only <- TPR_prior_list$alphaS.only
+#       betaS.only  <- TPR_prior_list$betaS.only
+#     }
 
 
     K        <- model_options$k_subclass
