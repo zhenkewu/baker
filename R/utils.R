@@ -923,6 +923,33 @@ unique_month <- function(Rdate){
   unique(paste(lubridate::month(Rdate),lubridate::year(Rdate),sep="-"))
 }
 
+
+#' get symmetric difference of months from two vector of R-format dates
+#' 
+#' \code{sym_diff_month} evaluates the symmetric difference between two sets
+#' of R-formated date
+#' 
+#' @param Rdate1, Rdate2 R-formated R dates. See \code{\link{as.Date}}
+#' 
+#' @return \code{NULL} if no difference; the set of different months otherwise.
+#' 
+#' @export
+sym_diff_month <- function(Rdate1, Rdate2){
+  
+  month1 <- unique_month(Rdate1)
+  month2 <- unique_month(Rdate1)
+  res <- sets::as.set(month1)%D%sets::as.set(month2)
+  
+  if (length(res)==0){
+      return(NULL)
+  }
+  
+  #cat("==Different months for cases and controls: ", sym_diff_month ,"==")
+  return(res)
+}
+
+
+
 #' Make FPR design matrix for dates with R format. 
 #' 
 #' \code{dm_Rdate_FPR} creates desigm matrices for false positive rate regressions.
@@ -939,9 +966,15 @@ unique_month <- function(Rdate){
 #' and square-root matrix of control's $Omega=(abs(outer(knots,knots,"-")))^3$.
 #' }
 #' @export
-dm_Rdate_FPR <- function(Rdate,Y,num_knots_FPR){
+dm_Rdate_FPR <- function(Rdate,Y,effect,num_knots_FPR=NULL){
   
-  # standardization:
+  if (is.null(num_knots_FPR) & effect=="random"){
+    stop("==Please specify number of knots for FPR in thin-plate regression spline using 'num_knots_FPR'.==")
+  }
+  
+  if (!is.null(num_knots_FPR) & effect=="fixed"){
+    stop("==Don't need 'num_knots_FPR' for fixed effects.==")
+  }# standardization:
   df    <- data.frame(Y=Y,num_date = as.numeric(Rdate))
   grp_mean <- c(mean(df$num_date[Y==0]),mean(df$num_date[Y==1]))
   grp_sd <- c(sd(df$num_date[Y==0]),sd(df$num_date[Y==1]))
@@ -950,31 +983,42 @@ dm_Rdate_FPR <- function(Rdate,Y,num_knots_FPR){
   df$outgrp_std_num_date <- (df$num_date - grp_mean[1])/grp_sd[1]
   df$outgrp_std_num_date[df$Y==0] <- NA
   
-
-  # for FPR regression in controls:
-  ctrl_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y==0]
-  knots_FPR <- quantile(unique(ctrl_ingrp_std_num_date), 
-                        seq(0,1,length=(num_knots_FPR+2))[-c(1,(num_knots_FPR+2))])
+  if (effect == "random"){
+      # for FPR regression in controls:
+      ctrl_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y==0]
+      knots_FPR <- quantile(unique(ctrl_ingrp_std_num_date), 
+                            seq(0,1,length=(num_knots_FPR+2))[-c(1,(num_knots_FPR+2))])
+      
+      
+      Z_K_FPR_ctrl <- (abs(outer(ctrl_ingrp_std_num_date,knots_FPR,"-")))^3
+      OMEGA_all_ctrl <- (abs(outer(knots_FPR,knots_FPR,"-")))^3
+      svd.OMEGA_all_ctrl <-  svd(OMEGA_all_ctrl)
+      sqrt.OMEGA_all_ctrl<-  t(svd.OMEGA_all_ctrl$v %*% (t(svd.OMEGA_all_ctrl$u)*sqrt(svd.OMEGA_all_ctrl$d)))
+      
+      Z_FPR_ctrl<-  t(solve(sqrt.OMEGA_all_ctrl,t(Z_K_FPR_ctrl)))
+      
+      # for borrowing FPR regression from controls to cases:
+      case_outgrp_std_num_date <- df$outgrp_std_num_date[df$Y==1]
+      Z_K_FPR_case <- (abs(outer(case_outgrp_std_num_date,knots_FPR,"-")))^3
+      Z_FPR_case <- t(solve(sqrt.OMEGA_all_ctrl,t(Z_K_FPR_case)))
+      
+      ind <- which(Y==1)
+      res <- matrix(NA,nrow=length(Y),ncol=ncol(Z_FPR_case))
+      res[ind,] <- Z_FPR_case
+      res[-ind,] <- Z_FPR_ctrl
+      return(res)
+  }
   
-  
-  Z_K_FPR_ctrl <- (abs(outer(ctrl_ingrp_std_num_date,knots_FPR,"-")))^3
-  OMEGA_all_ctrl <- (abs(outer(knots_FPR,knots_FPR,"-")))^3
-  svd.OMEGA_all_ctrl <-  svd(OMEGA_all_ctrl)
-  sqrt.OMEGA_all_ctrl<-  t(svd.OMEGA_all_ctrl$v %*% (t(svd.OMEGA_all_ctrl$u)*sqrt(svd.OMEGA_all_ctrl$d)))
-  
-  Z_FPR_ctrl<-  t(solve(sqrt.OMEGA_all_ctrl,t(Z_K_FPR_ctrl)))
-  
-  # for borrowing FPR regression from controls to cases:
-  case_outgrp_std_num_date <- df$outgrp_std_num_date[df$Y==1]
-  Z_K_FPR_case <- (abs(outer(case_outgrp_std_num_date,knots_FPR,"-")))^3
-  Z_FPR_case <- t(solve(sqrt.OMEGA_all_ctrl,t(Z_K_FPR_case)))
-  
-  ind <- which(Y==1)
-  res <- matrix(NA,nrow=length(Y),ncol=ncol(Z_FPR_case))
-  res[ind,] <- Z_FPR_case
-  res[-ind,] <- Z_FPR_ctrl
-  res
+  if (effect == "fixed"){
+    ind <- which(Y==1)
+    res <- matrix(NA,nrow=length(Y),ncol=1)
+    res[ind,1] <- df$outgrp_std_num_date[ind]
+    res[-ind,1] <- df$ingrp_std_num_date[-ind]
+    return(res)
+  }
 } 
+
+
 
 #' Make etiology design matrix for dates with R format. 
 #' 
@@ -1038,4 +1082,56 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs" ){
   res
 } 
 
+#' create regressor summation equation used in regression for FPR
+#' 
+#' \code{create_bugs_regressor_FPR} creates linear product of coefficients
+#' and a row of design matrix used in regression
+#' 
+#' @param n the length of coefficients
+#' @param dm_nm name of design matrix; default \code{"dm_FPR"}
+#' @param b_nm name of the coefficients; defaul \code{"b"}
+#' @param ind_nm name of the coefficient iterator; default \code{"j"}
+#' @param sub_ind_nm name of the subject iterator; default \code{"k"}
+#'
+#' @return a character string with linear product form
+#' 
+#' @export
+#' 
+
+create_bugs_regressor_FPR <- function(n,dm_nm="dm_FPR",
+                                  b_nm="b",ind_nm="j",
+                                  sub_ind_nm = "k"){
+  summand  <- rep(NA,n)
+  for (i in 1:n){
+    summand[i] <- paste0(b_nm,"[",ind_nm,",",i,"]*",
+                         dm_nm,"[",sub_ind_nm,",",i+2,"]")
+  }
+  paste(summand,collapse="+")
+}
+
+#' create regressor summation equation used in regression for etiology
+#' 
+#' \code{create_bugs_regressor_Eti} creates linear product of coefficients
+#' and a row of design matrix used in regression
+#' 
+#' @param n the length of coefficients
+#' @param dm_nm name of design matrix; default \code{"dm_Eti"}
+#' @param b_nm name of the coefficients; defaul \code{"betaEti"}
+#' @param ind_nm name of the coefficient iterator; default \code{"j"}
+#' @param sub_ind_nm name of the subject iterator; default \code{"k"}
+#'
+#' @return a character string with linear product form
+#' 
+#' @export
+#' 
+create_bugs_regressor_Eti <- function(n,dm_nm="dm_Eti",
+                                      b_nm="betaEti",ind_nm="j",
+                                      sub_ind_nm = "k"){
+  summand  <- rep(NA,n)
+  for (i in 1:n){
+    summand[i] <- paste0(b_nm,"[",ind_nm,",",i,"]*",
+                         dm_nm,"[",sub_ind_nm,",",i,"]")
+  }
+  paste(summand,collapse="+")
+}
 

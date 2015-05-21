@@ -4,7 +4,7 @@
 \alias{dm_Rdate_FPR}
 \title{Make FPR design matrix for dates with R format.}
 \usage{
-dm_Rdate_FPR(Rdate, Y, num_knots_FPR)
+dm_Rdate_FPR(Rdate, Y, effect, num_knots_FPR = NULL)
 }
 \arguments{
 \item{Rdate}{a vector of dates of R format}

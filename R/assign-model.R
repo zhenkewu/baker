@@ -87,7 +87,8 @@ assign_model <- function(data_nplcm,model_options,silent=TRUE){
                 
                 # FPR regression:
                 # try building design matrix:
-                res <- try(model.matrix(model_options$X_reg_FPR,data.frame(data_nplcm$X,data_nplcm$Y)))
+                res <- try(model.matrix(model_options$X_reg_FPR,
+                                        data.frame(data_nplcm$X,Y = data_nplcm$Y)))
                 
                 if (is.error(res)){
                   stop("==There are covariates that are specified in 'model_options$X_reg_FPR' but not in the data: 'data_nplcm'==")
@@ -100,7 +101,8 @@ assign_model <- function(data_nplcm,model_options,silent=TRUE){
         
                 # Etiology regression:
                 # try building design matrix:
-                res <- try(model.matrix(model_options$X_reg_Eti,data.frame(data_nplcm$X,data_nplcm$Y)))
+                res <- try(model.matrix(model_options$X_reg_Eti,
+                                        data.frame(data_nplcm$X, Y = data_nplcm$Y)))
                 
                 if (is.error(res)){
                   stop("==There are covariates that are specified in 'model_options$X_reg_Eti' but not in the data: 'data_nplcm'==")
