@@ -91,8 +91,11 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
                             data.frame(data_nplcm$X,Y = data_nplcm$Y)))
     dm_Eti <- try(model.matrix(model_options$X_reg_Eti,
                             data.frame(data_nplcm$X, Y = data_nplcm$Y)))
-    num.knots.FPR <- ncol(dm_FPR)-2
-    num.knots.Eti <- ncol(dm_Eti)-1
+
+    num.knots.FPR <- length(grep("random",colnames(dm_FPR)))
+    num.knots.Eti <- length(grep("dm_Rdate_Eti",colnames(dm_Eti)))
+    ncol_dm_FPR   <- ncol(dm_FPR)
+    ncol_dm_Eti   <- ncol(dm_Eti)
     
     template <- rbind(as.matrix(rbind(symb2I(c(cause_list),
                                              c(pathogen_BrS_list,pathogen_SSonly_list)))),
@@ -129,16 +132,16 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
 #     }
     
     mybugs <- function(...){
-      inits      <- function(){list(beta = matrix(0,nrow=JBrS,ncol=2),
+      inits      <- function(){list(beta = matrix(0,nrow=JBrS,ncol=ncol(dm_FPR)-num.knots.FPR),
                                     b = matrix(0,nrow=JBrS,ncol=num.knots.FPR),
                                     taub = rep(0.01,JBrS),
                                     betaEti = rbind(matrix(0,nrow=JBrS-1,ncol=ncol(dm_Eti)),
                                                     rep(NA,ncol(dm_Eti)))
                                     )};
-      data       <- c("Nd","Nu","JBrS","Jcause",
+      data       <- c("Nd","Nu","JBrS","Jcause","ncol_dm_FPR","ncol_dm_Eti",
                       "template",
                       "MBS",
-                      "dm_Eti","num.knots.Eti",
+                      "dm_Eti",#"num.knots.Eti",
                       "dm_FPR","num.knots.FPR",
                       "alphaB","betaB");
       
@@ -173,8 +176,7 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     
     }
     # the one without ppd:
-    model_Reg_BrS_plcm_factory <- function(nFPR,nEti){
-          function(){#BEGIN model
+    model_Reg_BrS_plcm <- function(){
              chunk1 <-  paste0("for (j in 1:JBrS){
                 #cases
                 for (k in 1:Nd){
@@ -193,8 +195,9 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
                 
                 for (k in 1:(Nd+Nu)){
                   m[k,j]<-mfe[k,j]+mre[k,j]
-                  mfe[k,j]<-beta[j,1]*dm_FPR[k,1]+beta[j,2]*dm_FPR[k,2] \n 
-                  mre[k,j] <- ",create_bugs_regressor_FPR(nFPR),"\n")
+                  mfe[k,j]<- ",create_bugs_regressor_Eti(ncol(dm_FPR)-num.knots.FPR,"dm_FPR","beta"),"\n 
+                  mre[k,j] <- ",create_bugs_regressor_FPR(num.knots.FPR),"\n")
+             
              chunk2 <-paste0("}
               }
               
@@ -206,7 +209,7 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
                   b[j,o]~dnorm(0,taub[j])
                 }
                 
-                for (l in 1:2){
+                for (l in 1:(ncol_dm_FPR-num.knots.FPR)){
                   beta[j,l]~dnorm(0,1.0E-2)
                 }
                 
@@ -222,12 +225,12 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
                 for (j in 1:Jcause){     
                   pEti[k,j]     <- phi[k,j]/sum(phi[k,])
                   log(phi[k,j]) <- mEti[k,j]
-                  mEti[k,j] <- ",create_bugs_regressor_Eti(nEti),"\n")
+                  mEti[k,j] <- ",create_bugs_regressor_Eti(ncol(dm_Eti)),"\n")
              chunk3 <-paste0("}
               }
               
               for (j in 1:(Jcause-1)){
-                for (l in 1:(num.knots.Eti+1)){
+                for (l in 1:(ncol_dm_Eti)){
                   betaEti[j,l]~dnorm(0,0.1) #
                   #betaEti[j,l]~dnorm(0,tauEti[l]) # to make betaEti's to be similar
                 }
@@ -238,7 +241,7 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
               #		sigmaEti[l]<-1/sqrt(tauEti[l])
               #	}
               
-              for (l in 1:(num.knots.Eti+1)){
+              for (l in 1:(ncol_dm_Eti)){
                 betaEti[JBrS,l]<-0
               }
               
@@ -252,8 +255,6 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
             paste0("model{\n",
                    chunk1,"\n",chunk2,"\n",chunk3,"\n",
                    "}")
-          } # END of model
-       
     }
     
     #-----------------END OF MODELS----------------------------------#
@@ -267,7 +268,7 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
       model_bugfile_name <- "model_Reg_BrS_plcm_ppd.bug"
       #file.show(filename)
     } else {
-      model_func         <- model_Reg_BrS_plcm_factory(num.knots.FPR,num.knots.Eti)()
+      model_func         <- model_Reg_BrS_plcm()
       model_bugfile_name <- "model_Reg_BrS_plcm.bug"
     }
     
