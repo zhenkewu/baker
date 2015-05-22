@@ -28,8 +28,10 @@ Design matrix for etiology regression:
 }
 \details{
 It is used in \code{model_options$X_reg_Eti}. For example, one can specify
-it as:
-\deqn{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)}
+it as: \cr
+\cr
+\code{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)} \cr
+\cr
 to call an etiology regression with intercept, main effects for 'AGECAT' and 'HIV', and
 natual cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
 sample quantiles.

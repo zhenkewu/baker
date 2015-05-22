@@ -16,8 +16,10 @@ is "fixed". When specified as "fixed", it produces standardized R-format dates
 using control's mean and standard deviation; When specified as "random", it produces
 \code{num_knots_FPR} columns of design matrix for thin-plate regression splines (TPRS) fitting.
 One needs both "fixed" and "random" in a FPR regression formula in \code{model_options}
-to enable TPRS fitting. For example, \code{model_options$X_reg_FPR} can be
-\deqn{~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)}
+to enable TPRS fitting. For example, \code{model_options$X_reg_FPR} can be \cr
+\cr
+\code{~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)}\cr
+\cr
 means FPR regression with intercept, main effects for 'AGECAT' and 'HIV', and TPRS
 bases for 'ENRLDATE' using 10 knots placed at 10 equal-probability-spaced sample quantiles.}
 
@@ -30,8 +32,8 @@ Design matrix for FPR regression:
 \item \code{Z_FPR_ctrl} transformed design matrix for FPR regression for controls
 \item \code{Z_FPR_case} transformed design matrix for borrowing FPR
 regression from controls to cases. It is obtained using control-standardation,
-and square-root matrix of control's
-\deqn{Omega=(abs(outer(knots,knots,"-")))^3}.
+and square-root the following matrix (\eqn{\Omega}]) with (\eqn{j_1},\eqn{j_2}) element being
+\deqn{\Omega_{j_1j_2}=\|knots_{j_1}-knots_{j_2}\|^3}.
 }
 }
 \description{
