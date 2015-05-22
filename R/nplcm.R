@@ -153,14 +153,15 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }else{
             # model 2, DONE
-            res <- nplcm_fit_Reg(data_nplcm,model_options,mcmc_options)
+            stop("== Done but need to clean code. Please contact maintainer. Thanks.")
+            
           }
         } else{
           if (!parsing$measurement$nest){
             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }else{
             # model 4, DONE
-            res <- nplcm_fit_Reg(data_nplcm,model_options,mcmc_options)
+            stop("== Done but need to clean code. Please contact maintainer. Thanks.")
           }
         }
       }else if (parsing$measurement$quality=="BrS"){
