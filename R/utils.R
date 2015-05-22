@@ -929,16 +929,20 @@ unique_month <- function(Rdate){
 #' \code{sym_diff_month} evaluates the symmetric difference between two sets
 #' of R-formated date
 #' 
-#' @param Rdate1, Rdate2 R-formated R dates. See \code{\link{as.Date}}
+#' @param Rdate1,Rdate2 R-formated R dates. See \code{\link{as.Date}}
 #' 
 #' @return \code{NULL} if no difference; the set of different months otherwise.
 #' 
 #' @export
+#' 
 sym_diff_month <- function(Rdate1, Rdate2){
   
   month1 <- unique_month(Rdate1)
   month2 <- unique_month(Rdate1)
-  res <- sets::as.set(month1)%D%sets::as.set(month2)
+  
+  symdiff <- function(x, y) {setdiff(union(x, y), intersect(x, y))}
+  
+  res <- symdiff(month1,month2)
   
   if (length(res)==0){
       return(NULL)
@@ -956,7 +960,10 @@ sym_diff_month <- function(Rdate1, Rdate2){
 #' 
 #' @param Rdate a vector of dates of R format
 #' @param Y binary case/control status; 1 for case; 0 for controls
-#' @param num_knots_FPR number of knots for FPR regression
+#' @param effect The design matrix for "random" effect or "fixed" effect; Default
+#' is "fixed".
+#' @param num_knots_FPR number of knots for FPR regression; default is \code{NULL}
+#' to accomodate fixed effect specification.
 #' 
 #' @return Design matrix for FPR regression:
 #' \itemize{\
@@ -966,7 +973,7 @@ sym_diff_month <- function(Rdate1, Rdate2){
 #' and square-root matrix of control's $Omega=(abs(outer(knots,knots,"-")))^3$.
 #' }
 #' @export
-dm_Rdate_FPR <- function(Rdate,Y,effect,num_knots_FPR=NULL){
+dm_Rdate_FPR <- function(Rdate,Y,effect="fixed",num_knots_FPR=NULL){
   
   if (is.null(num_knots_FPR) & effect=="random"){
     stop("==Please specify number of knots for FPR in thin-plate regression spline using 'num_knots_FPR'.==")

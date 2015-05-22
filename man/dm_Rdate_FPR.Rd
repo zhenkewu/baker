@@ -4,14 +4,18 @@
 \alias{dm_Rdate_FPR}
 \title{Make FPR design matrix for dates with R format.}
 \usage{
-dm_Rdate_FPR(Rdate, Y, effect, num_knots_FPR = NULL)
+dm_Rdate_FPR(Rdate, Y, effect = "fixed", num_knots_FPR = NULL)
 }
 \arguments{
 \item{Rdate}{a vector of dates of R format}
 
 \item{Y}{binary case/control status; 1 for case; 0 for controls}
 
-\item{num_knots_FPR}{number of knots for FPR regression}
+\item{effect}{The design matrix for "random" effect or "fixed" effect; Default
+is "fixed".}
+
+\item{num_knots_FPR}{number of knots for FPR regression; default is \code{NULL}
+to accomodate fixed effect specification.}
 }
 \value{
 Design matrix for FPR regression:
