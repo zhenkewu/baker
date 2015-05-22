@@ -11,22 +11,33 @@ dm_Rdate_FPR(Rdate, Y, effect = "fixed", num_knots_FPR = NULL)
 
 \item{Y}{binary case/control status; 1 for case; 0 for controls}
 
-\item{effect}{The design matrix for "random" effect or "fixed" effect; Default
-is "fixed".}
+\item{effect}{The design matrix for "random" or "fixed" effect; Default
+is "fixed". When specified as "fixed", it produces standardized R-format dates
+using control's mean and standard deviation; When specified as "random", it produces
+\code{num_knots_FPR} columns of design matrix for thin-plate regression splines (TPRS) fitting.
+One needs both "fixed" and "random" in a FPR regression formula in \code{model_options}
+to enable TPRS fitting. For example, \code{model_options$X_reg_FPR} can be
+\deqn{~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)}
+means FPR regression with intercept, main effects for 'AGECAT' and 'HIV', and TPRS
+bases for 'ENRLDATE' using 10 knots placed at 10 equal-probability-spaced sample quantiles.}
 
 \item{num_knots_FPR}{number of knots for FPR regression; default is \code{NULL}
 to accomodate fixed effect specification.}
 }
 \value{
 Design matrix for FPR regression:
-\itemize{\
+\itemize{
 \item \code{Z_FPR_ctrl} transformed design matrix for FPR regression for controls
 \item \code{Z_FPR_case} transformed design matrix for borrowing FPR
 regression from controls to cases. It is obtained using control-standardation,
-and square-root matrix of control's $Omega=(abs(outer(knots,knots,"-")))^3$.
+and square-root matrix of control's
+\deqn{Omega=(abs(outer(knots,knots,"-")))^3}.
 }
 }
 \description{
 \code{dm_Rdate_FPR} creates desigm matrices for false positive rate regressions.
+}
+\seealso{
+\code{\link{nplcm}}
 }
 

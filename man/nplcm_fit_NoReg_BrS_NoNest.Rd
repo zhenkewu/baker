@@ -44,10 +44,17 @@ are 0.1);
 \item \code{cause_list} The vector of causes that are either singleton or
 combinations of items in \code{pathogen_BrS_list}; 'NoA' can also be included
 at the end, meaning 'None-of-Above';
-\item \code{X_reg_FPR} The vector of covariate names that stratify/regress
-false positive rates (FPR);
-\item \code{X_reg_Eti} The vector of covariate names that stratify/regress
- etiologies;
+\item \code{X_reg_FPR} formula for false positive rates (FPR) regressions; see
+\code{\link{formula}}. You can use \code{\link{dm_Rdate_FPR}} to specify part
+of the design matrix for R format enrollment date; it will produce thin-plate
+regression spline basis for every date (if \code{effect="random"} and \code{num_knots_FPR} is
+specified to a positive integer, e.g., 10.). If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
+will just specify a design matrix with appropirately standardized dates. Specify \code{~0} if no
+regression is intended.
+\item \code{X_reg_Eti} formula for etiology regressions. You can use
+\code{\link{dm_Rdate_Eti}} to specify the design matrix for R format enrollment date;
+it will produce natural cubic splines for every date. Specify \code{~0} if no
+regression is intended.
 \item \code{pathogen_BrS_cat} The two-column data frame that has category of pathogens: virus (V), bacteria (B)
 and fungi (F);
 \item \code{pathogen_SSonly_list} The vector of pathogens with only

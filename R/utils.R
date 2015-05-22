@@ -960,17 +960,26 @@ sym_diff_month <- function(Rdate1, Rdate2){
 #' 
 #' @param Rdate a vector of dates of R format
 #' @param Y binary case/control status; 1 for case; 0 for controls
-#' @param effect The design matrix for "random" effect or "fixed" effect; Default
-#' is "fixed".
+#' @param effect The design matrix for "random" or "fixed" effect; Default
+#' is "fixed". When specified as "fixed", it produces standardized R-format dates
+#' using control's mean and standard deviation; When specified as "random", it produces
+#' \code{num_knots_FPR} columns of design matrix for thin-plate regression splines (TPRS) fitting.
+#' One needs both "fixed" and "random" in a FPR regression formula in \code{model_options} 
+#' to enable TPRS fitting. For example, \code{model_options$X_reg_FPR} can be
+#' \deqn{~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)}
+#' means FPR regression with intercept, main effects for 'AGECAT' and 'HIV', and TPRS
+#' bases for 'ENRLDATE' using 10 knots placed at 10 equal-probability-spaced sample quantiles.
 #' @param num_knots_FPR number of knots for FPR regression; default is \code{NULL}
 #' to accomodate fixed effect specification.
 #' 
+#' @seealso \code{\link{nplcm}}
 #' @return Design matrix for FPR regression:
-#' \itemize{\
+#' \itemize{
 #' \item \code{Z_FPR_ctrl} transformed design matrix for FPR regression for controls
 #' \item \code{Z_FPR_case} transformed design matrix for borrowing FPR 
 #' regression from controls to cases. It is obtained using control-standardation,
-#' and square-root matrix of control's $Omega=(abs(outer(knots,knots,"-")))^3$.
+#' and square-root matrix of control's 
+#' \deqn{Omega=(abs(outer(knots,knots,"-")))^3}.
 #' }
 #' @export
 dm_Rdate_FPR <- function(Rdate,Y,effect="fixed",num_knots_FPR=NULL){
@@ -1035,10 +1044,19 @@ dm_Rdate_FPR <- function(Rdate,Y,effect="fixed",num_knots_FPR=NULL){
 #' @param Y binary case/control status; 1 for case; 0 for controls
 #' @param num_knots_Eti number of knots for etiology regression
 #' @param basis_Eti the type of basis functions to use for etiology regression. It can be "ncs" (natural
-#' cubic splines) or "tprs" (thin-plate regression splines). Default is "ncs".
+#' cubic splines) or "tprs" (thin-plate regression splines). Default is "ncs". "tprs"
+#' will be implemented later.
 #' 
-#' @return Design matrix for Eti regression:
-#' \itemize{\
+#' @details It is used in \code{model_options$X_reg_Eti}. For example, one can specify
+#' it as:
+#' \deqn{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)}
+#' to call an etiology regression with intercept, main effects for 'AGECAT' and 'HIV', and
+#' natual cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
+#' sample quantiles.
+#' 
+#' @seealso \code{\link{nplcm}}
+#' @return Design matrix for etiology regression:
+#' \itemize{
 #' \item \code{Z_Eti} transformed design matrix for etiology regression
 #' }
 #' @export
@@ -1071,6 +1089,7 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs" ){
   } 
   
   if (basis_Eti=="tprs"){
+    stop("==Under development. Please contact maintainer. Thanks.==")
     # for etiology regression:
     case_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y==1]
     knots_Eti <- quantile(unique(case_ingrp_std_num_date), 

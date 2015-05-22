@@ -14,15 +14,27 @@ dm_Rdate_Eti(Rdate, Y, num_knots_Eti, basis_Eti = "ncs")
 \item{num_knots_Eti}{number of knots for etiology regression}
 
 \item{basis_Eti}{the type of basis functions to use for etiology regression. It can be "ncs" (natural
-cubic splines) or "tprs" (thin-plate regression splines). Default is "ncs".}
+cubic splines) or "tprs" (thin-plate regression splines). Default is "ncs". "tprs"
+will be implemented later.}
 }
 \value{
-Design matrix for Eti regression:
-\itemize{\
+Design matrix for etiology regression:
+\itemize{
 \item \code{Z_Eti} transformed design matrix for etiology regression
 }
 }
 \description{
 \code{dm_Rdate_Eti} creates desigm matrices for etiology regressions.
+}
+\details{
+It is used in \code{model_options$X_reg_Eti}. For example, one can specify
+it as:
+\deqn{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)}
+to call an etiology regression with intercept, main effects for 'AGECAT' and 'HIV', and
+natual cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
+sample quantiles.
+}
+\seealso{
+\code{\link{nplcm}}
 }
 
