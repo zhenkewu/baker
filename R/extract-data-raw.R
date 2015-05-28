@@ -49,7 +49,7 @@ extract_data_raw <-function(Pathogen,Specimen,Test,
 #   #
 #   
 
-  datraw = read.csv(MeasDir,header=TRUE)
+  datraw = read.csv(MeasDir,header=TRUE,stringsAsFactors=FALSE)
   dat0   = datraw
   cleanName = colnames(dat0)
 

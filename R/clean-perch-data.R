@@ -42,6 +42,9 @@
 #' \item{\code{PathCatDir}}{: The file path to the pathogen category or taxonomy 
 #' information (.csv). The information should be as complete as possible to 
 #' display all pathogens considered in an actual study;}
+#' \item{\code{date_formats}}{possible formats of date; default is 
+#' \code{c("\%d\%B\%Y","\%d\%B\%y")}.
+#' See \code{\link{lubridate::parse_date_time}} for a complete list of date formats.}
 #' \item{\code{allow_missing}}{: \code{TRUE} for using an observation that has 
 #' either BrS missing, or SS missing. Set it to \code{TRUE} if we want to use 
 #' the SS information from some cases who missed BrS measurements. 
@@ -76,6 +79,8 @@
 #' data.
 #' }
 #' This function does not re-order pathogens that only have silver-standard data.
+#' 
+#' @seealso parse_date_time
 #' @export
 
 
@@ -95,6 +100,11 @@ clean_perch_data <- function(clean_options){
   MeasDir           <- clean_options$MeasDir
   PathCatDir        <- clean_options$PathCatDir
   X_order_obs       <- clean_options$X_order_obs
+  if (!is.null(clean_options$date_formats)){
+    date_formats      <- clean_options$date_formats
+  }else{
+    date_formats      <- c("%d%B%Y","%d%B%y")
+  }
 
 
   # if there are silver-only pathogen measurements:
@@ -125,7 +135,7 @@ clean_perch_data <- function(clean_options){
   }
 
   # list the pathogen categories:
-  pathogen_cat_lookup <- read.csv(PathCatDir)
+  pathogen_cat_lookup <- read.csv(PathCatDir,stringsAsFactors=FALSE)
 
   Specimen  <- c("NP","B")
   Test      <- c("PCR","CX")
@@ -304,8 +314,10 @@ clean_perch_data <- function(clean_options){
   }
   # 1. if ENRLDATE is in the dataset, transform the date format
   if ("ENRLDATE" %in% X_extra){
-    Rdate.case <- as.Date(datcase_X_extra_subset$ENRLDATE, "%d%B%Y")
-    Rdate.ctrl <- as.Date(datctrl_X_extra_subset$ENRLDATE, "%d%B%Y")
+    #Rdate.case <- as.Date(datcase_X_extra_subset$ENRLDATE, "%d%B%Y")
+    #Rdate.ctrl <- as.Date(datctrl_X_extra_subset$ENRLDATE, "%d%B%Y")
+    Rdate.case <- lubridate::parse_date_time(datcase_X_extra_subset$ENRLDATE, date_formats)
+    Rdate.ctrl <- lubridate::parse_date_time(datctrl_X_extra_subset$ENRLDATE, date_formats)
 
     uniq.month.case <- unique(paste(lubridate::month(Rdate.case),lubridate::year(Rdate.case),sep="-"))
     uniq.month.ctrl <- unique(paste(lubridate::month(Rdate.ctrl),lubridate::year(Rdate.ctrl),sep="-"))
