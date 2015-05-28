@@ -44,7 +44,7 @@
 #' display all pathogens considered in an actual study;}
 #' \item{\code{date_formats}}{possible formats of date; default is 
 #' \code{c("\%d\%B\%Y","\%d\%B\%y")}.
-#' See \code{\link{lubridate::parse_date_time}} for a complete list of date formats.}
+#' See \link[lubridate]{parse_date_time} for a complete list of date formats.}
 #' \item{\code{allow_missing}}{: \code{TRUE} for using an observation that has 
 #' either BrS missing, or SS missing. Set it to \code{TRUE} if we want to use 
 #' the SS information from some cases who missed BrS measurements. 
@@ -80,7 +80,7 @@
 #' }
 #' This function does not re-order pathogens that only have silver-standard data.
 #' 
-#' @seealso parse_date_time
+#' @seealso \link[ludridate]{parse_date_time}
 #' @export
 
 
