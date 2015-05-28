@@ -80,7 +80,7 @@
 #' }
 #' This function does not re-order pathogens that only have silver-standard data.
 #' 
-#' @seealso \link[ludridate]{parse_date_time}
+#' @seealso \link[lubridate]{parse_date_time}
 #' @export
 
 

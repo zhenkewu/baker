@@ -92,6 +92,6 @@ according to site and enrollment date. In current implementation,
 the raw data must have both BrS and SS measurements.
 }
 \seealso{
-\link[ludridate]{parse_date_time}
+\link[lubridate]{parse_date_time}
 }
 
