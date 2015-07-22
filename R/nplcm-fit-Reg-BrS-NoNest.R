@@ -155,7 +155,7 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
         stop("==Not done.==")
         
       } else if (mcmc_options$individual.pred==FALSE & mcmc_options$ppd==FALSE){
-        parameters <- c("taub","sigmab","beta","b","betaEti","Icat",
+        parameters <- c("taub","sigmab","beta","b","betaEti","Icat","pEti",
                         "tpr","mu","fpr.case","fpr.ctrl")
         
       }
