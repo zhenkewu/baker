@@ -21,7 +21,8 @@ Imports:
     robCompositions(>= 1.9),
     ggplot2(>= 1.0),
     plyr,
-    splines
+    splines,
+    stringi
 License: MIT + file LICENSE
 Suggests: 
     knitr,
