@@ -5,7 +5,7 @@ A R Package for Fitting Bayesian [Nested Partially Latent Class Models](http://b
 How to install?
 --------------
 ```r
-install.packages("devtools",repos="https://cran.rstudio.com/")
+install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
 devtools::install_github("zhenkewu/nplcm")
 ```
 
