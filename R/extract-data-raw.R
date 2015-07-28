@@ -10,7 +10,7 @@
 #' @param Xval     The list of covariate values to stratify data.
 #'    Each element corresponds to that in \code{X}. For example, in PERCH
 #'    data cleaning, \code{Xval = list("02GAM","1")}
-#' @param MeasDir  The directory to the data set (.csv)
+#' @param meas_dir  The directory to the data set (.csv)
 #' @param extra_covariates The vector of covariate name for regression purposes.
 #'   The default is NULL, which means no such covariate is necessary.
 #' @param silent Default is \code{TRUE}: the function will not print anything on
@@ -24,7 +24,7 @@
 
 extract_data_raw <-function(Pathogen,Specimen,Test,
                              X,Xval,
-                             MeasDir,
+                             meas_dir,
                              extra_covariates=NULL,
                              silent=TRUE,
                              individual=NULL){
@@ -38,7 +38,7 @@ extract_data_raw <-function(Pathogen,Specimen,Test,
 #   Test = Test
 #   X = c(X_strat,case_def)
 #   Xval = append(X_strat_val,case_def_val)
-#   MeasDir = MeasDir
+#   meas_dir = meas_dir
 #   PathCatDir = PathCatDir
 #   extra_covariates = X_extra
 #   silent=TRUE
@@ -49,7 +49,7 @@ extract_data_raw <-function(Pathogen,Specimen,Test,
 #   #
 #   
 
-  datraw = read.csv(MeasDir,header=TRUE,stringsAsFactors=FALSE)
+  datraw = read.csv(meas_dir,header=TRUE,stringsAsFactors=FALSE)
   dat0   = datraw
   cleanName = colnames(dat0)
 

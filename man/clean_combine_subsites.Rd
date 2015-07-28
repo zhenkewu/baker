@@ -4,10 +4,10 @@
 \alias{clean_combine_subsites}
 \title{Combine subsites in raw PERCH data set}
 \usage{
-clean_combine_subsites(RawMeasDir, subsites_list, newsites_vec)
+clean_combine_subsites(raw_meas_dir, subsites_list, newsites_vec)
 }
 \arguments{
-\item{RawMeasDir}{The file path to the raw data file (.csv)}
+\item{raw_meas_dir}{The file path to the raw data file (.csv)}
 
 \item{subsites_list}{The list of subsite group names. Each group is a vector of
 subsites to be combined}

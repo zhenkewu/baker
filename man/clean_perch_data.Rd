@@ -10,7 +10,8 @@ clean_perch_data(clean_options)
 \item{clean_options}{The list of options for cleaning PERCH data.
 Its elements are defined as follows:
 \itemize{
-\item{\code{RawMeasDir}}{: The file path to the raw data;}
+\item{\code{raw_meas_dir}}{: The file path to the raw data (the program automatically
+detects if it has been prepared.);}
 \item{\code{case_def}}{: variable name in raw data for case definition;}
 \item{\code{case_def_val}}{: The value for case definition;}
 \item{\code{ctrl_def}}{: variable name in raw data for control definition;}
@@ -24,20 +25,14 @@ To perform analysis on a single site, say \code{"02GAM"}, use \code{X_strat="new
 \item{\code{pathogen_BrS_anyorder}}{: The vector of pathogen names (arbitrary
 order) that have bronze-standard (BrS) measurments (cf. Wu et al. (2015) for
 definitions and examplels of BrS, SS, and GS). It has to be a subset of
-pathogens listed in taxonomy information at the file path \code{PathCatDir}.}
+pathogens listed in taxonomy information at the file path \code{patho_taxo_dir}.}
 \item{\code{pathogen_SSonly}}{: A vector of pathogens that only have SS data;}
 \item{\code{X_extra}}{: A vector of covariate names for regression
 or visualization;}
 \item{\code{X_order_obs}}{: A vector of variable names for ordering observations.
 For example, it can include site names or enrollment dates. It must be a
 subset of X_extra;}
-\item{\code{write_newSite}}{: Must be set to \code{TRUE} if the raw data is
-changed;}
-\item{\code{newSite_write_Dir}}{: The file path to a cleaned data set after
-combining subsites within a site;}
-\item{\code{MeasDir}}{: The file path to the cleaned data set, usually the
-same as \code{newSite_write_Dir};}
-\item{\code{PathCatDir}}{: The file path to the pathogen category or taxonomy
+\item{\code{patho_taxo_dir}}{: The file path to the pathogen category or taxonomy
 information (.csv). The information should be as complete as possible to
 display all pathogens considered in an actual study;}
 \item{\code{date_formats}}{possible formats of date; default is
@@ -48,6 +43,8 @@ either BrS missing, or SS missing. Set it to \code{TRUE} if we want to use
 the SS information from some cases who missed BrS measurements.
 In other words, all the subjects' data will be used if \code{allow_missing} is
 set to \code{TRUE}.}
+\item{\code{extra_meas_nm}}{: a list of (pathogen,specimen,test) names, each of which
+is considered extra measurements informative for etiology.}
 }}
 }
 \value{
@@ -76,6 +73,7 @@ are not included.
 \item \code{JSSonly} Number of pathogens with only silver-standard measures;
 \item \code{pathogen_SSonly_cat} Category of pathogens with only silver-standard
 data.
+\item \code{extra_Mobs} extra measurements as requested by \code{extra_meas_nm}.
 }
 This function does not re-order pathogens that only have silver-standard data.
 }

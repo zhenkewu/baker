@@ -12,7 +12,8 @@
 #' @param clean_options The list of options for cleaning PERCH data.
 #' Its elements are defined as follows:
 #' \itemize{
-#' \item{\code{RawMeasDir}}{: The file path to the raw data;}
+#' \item{\code{raw_meas_dir}}{: The file path to the raw data (the program automatically 
+#' detects if it has been prepared.);}
 #' \item{\code{case_def}}{: variable name in raw data for case definition;}
 #' \item{\code{case_def_val}}{: The value for case definition;}
 #' \item{\code{ctrl_def}}{: variable name in raw data for control definition;}
@@ -26,20 +27,14 @@
 #' \item{\code{pathogen_BrS_anyorder}}{: The vector of pathogen names (arbitrary 
 #' order) that have bronze-standard (BrS) measurments (cf. Wu et al. (2015) for 
 #' definitions and examplels of BrS, SS, and GS). It has to be a subset of 
-#' pathogens listed in taxonomy information at the file path \code{PathCatDir}.}
+#' pathogens listed in taxonomy information at the file path \code{patho_taxo_dir}.}
 #' \item{\code{pathogen_SSonly}}{: A vector of pathogens that only have SS data;}
 #' \item{\code{X_extra}}{: A vector of covariate names for regression
 #' or visualization;}
 #' \item{\code{X_order_obs}}{: A vector of variable names for ordering observations. 
 #' For example, it can include site names or enrollment dates. It must be a 
 #' subset of X_extra;}
-#' \item{\code{write_newSite}}{: Must be set to \code{TRUE} if the raw data is 
-#' changed;}
-#' \item{\code{newSite_write_Dir}}{: The file path to a cleaned data set after 
-#' combining subsites within a site;}
-#' \item{\code{MeasDir}}{: The file path to the cleaned data set, usually the 
-#' same as \code{newSite_write_Dir};}
-#' \item{\code{PathCatDir}}{: The file path to the pathogen category or taxonomy 
+#' \item{\code{patho_taxo_dir}}{: The file path to the pathogen category or taxonomy 
 #' information (.csv). The information should be as complete as possible to 
 #' display all pathogens considered in an actual study;}
 #' \item{\code{date_formats}}{possible formats of date; default is 
@@ -50,6 +45,8 @@
 #' the SS information from some cases who missed BrS measurements. 
 #' In other words, all the subjects' data will be used if \code{allow_missing} is 
 #' set to \code{TRUE}.}
+#' \item{\code{extra_meas_nm}}{: a list of (pathogen,specimen,test) names, each of which
+#' is considered extra measurements informative for etiology.}
 #'}
 #'
 #' @return A List: \code{list(Mobs,Y,X,JSS,pathogen_BrS_ordered_by_MSS,pathogen_BrS_cat)}, or
@@ -77,16 +74,16 @@
 #' \item \code{JSSonly} Number of pathogens with only silver-standard measures;
 #' \item \code{pathogen_SSonly_cat} Category of pathogens with only silver-standard
 #' data.
+#' \item \code{extra_Mobs} extra measurements as requested by \code{extra_meas_nm}.
 #' }
 #' This function does not re-order pathogens that only have silver-standard data.
 #' 
 #' @seealso \link[lubridate]{parse_date_time}
 #' @export
 
-
 clean_perch_data <- function(clean_options){
 
-  RawMeasDir   <- clean_options$RawMeasDir
+  raw_meas_dir <- clean_options$raw_meas_dir
   case_def     <- clean_options$case_def
   case_def_val <- clean_options$case_def_val
   ctrl_def     <- clean_options$ctrl_def
@@ -95,47 +92,61 @@ clean_perch_data <- function(clean_options){
   X_strat_val  <- clean_options$X_strat_val
   pathogen_BrS_anyorder     <- clean_options$pathogen_BrS_anyorder
   X_extra      <- clean_options$X_extra
-  write_newSite<- clean_options$write_newSite
-  newSite_write_Dir <- clean_options$newSite_write_Dir
-  MeasDir           <- clean_options$MeasDir
-  PathCatDir        <- clean_options$PathCatDir
+  patho_taxo_dir        <- clean_options$patho_taxo_dir
   X_order_obs       <- clean_options$X_order_obs
+  extra_meas_nm  <- clean_options$extra_meas_nm
+  
+  # clean dates: use specified date format; if not specified, try the formats
+  # specified in the "else" sub-clause:
   if (!is.null(clean_options$date_formats)){
     date_formats      <- clean_options$date_formats
   }else{
     date_formats      <- c("%d%B%Y","%d%B%y")
   }
 
-
   # if there are silver-only pathogen measurements:
   if (!is.null(clean_options$pathogen_SSonly)){
           pathogen_SSonly   <- clean_options$pathogen_SSonly
   }
 
-  # combine two sub-sites:
-  # 06NTH and 07STH  --> THA,
-  # 08MBA and 09DBA  --> BAN:
-  PERCH_data_with_newSITE <- clean_combine_subsites(RawMeasDir,
-                               subsites_list = list(c("06NTH","07STH"),
-                                                    c("08MBA","09DBA")),
-                               newsites_vec  = c("06THA","07BAN"))
-
-  # clean the column names (delete "X_"):
-  delete_start_with = function(s,vec){
-    ind = grep(s,substring(vec,1,nchar(s)))
-    old = vec[ind]
-    vec[ind] = substring(old,nchar(s)+1)
-    return(vec)
+  # check if the data specified in 'raw_meas_dir' has been cleaned by the pacakge:
+  # Here "prepared" means revoming X_ from the colmn names and combined Bangladesh and
+  # Thailand subsites. The final output of this whole function will be called "cleaned".
+  raw_data <- read.csv(raw_meas_dir)
+  if (is.null(attr(raw_data,"prepared_by_package"))){
+    do_prepare <- TRUE
+  } else{
+    if (attr(raw_data,"prepared_by_package")== TRUE){
+      do_prepare <- FALSE
+      meas_dir <- raw_meas_dir
+    } else{
+      do_prepare <- TRUE
+    }
   }
-  cleanName  <- delete_start_with("X_",names(PERCH_data_with_newSITE))
-  colnames(PERCH_data_with_newSITE) <- cleanName
+  rm(raw_data)
   
-  if (write_newSite){
-      write.csv(PERCH_data_with_newSITE, newSite_write_Dir,row.names=FALSE)
+  if (do_prepare){
+    # combine two sub-sites:
+    # 06NTH and 07STH  --> THA,
+    # 08MBA and 09DBA  --> BAN:
+    PERCH_data_with_newSITE <- clean_combine_subsites(raw_meas_dir,
+                                 subsites_list = list(c("06NTH","07STH"),
+                                                      c("08MBA","09DBA")),
+                                 newsites_vec  = c("06THA","07BAN"))
+    
+    cleanName  <- delete_start_with("X_",names(PERCH_data_with_newSITE))
+    colnames(PERCH_data_with_newSITE) <- cleanName
+    
+    attr(PERCH_data_with_newSITE,"prepared_by_package") <- TRUE
+    
+    # write cleaned data into working directory:
+    meas_dir <- file.path(dirname(raw_meas_dir),paste0("cleaned_",basename(raw_meas_dir)))
+    write.csv(PERCH_data_with_newSITE, meas_dir, row.names=FALSE)
+    rm(PERCH_data_with_newSITE)
   }
-
-  # list the pathogen categories:
-  pathogen_cat_lookup <- read.csv(PathCatDir,stringsAsFactors=FALSE)
+  
+  # create the pathogen category lookup table:
+  pathogen_cat_lookup <- read.csv(patho_taxo_dir,stringsAsFactors=FALSE)
 
   Specimen  <- c("NP","B")
   Test      <- c("PCR","CX")
@@ -145,30 +156,44 @@ clean_perch_data <- function(clean_options){
   # extract_data_raw() will NOT order pathogen_BrS_anyorder according to B->F->V:
   if (is.null(X_strat) && is.null(X_strat_val)){
     # no stratification:
-    datacase <- extract_data_raw(pathogen_BrS_anyorder,Specimen,Test,
-                                 c(case_def),list(case_def_val),
-                                 extra_covariates = X_extra,
-                                 MeasDir,silent=TRUE)
-
-    datactrl <- extract_data_raw(pathogen_BrS_anyorder,Specimen,Test,
-                                 c(ctrl_def),list(ctrl_def_val),
-                                 extra_covariates = X_extra,
-                                 MeasDir,silent=TRUE)
+    X_strat_nm_tmp  <- c(case_def)
+    X_strat_val_tmp <- list(case_def_val)
   }else{
     # stratify by levels of X_strat:
-    datacase <- extract_data_raw(pathogen_BrS_anyorder,Specimen,Test,
-                                 c(X_strat,case_def),
-                                 append(X_strat_val,case_def_val),
-                                 extra_covariates = X_extra,
-                                 MeasDir,silent=TRUE)
-
-    datactrl <- extract_data_raw(pathogen_BrS_anyorder,Specimen,Test,
-                                 c(X_strat,ctrl_def),
-                                 append(X_strat_val,ctrl_def_val),
-                                 extra_covariates = X_extra,
-                                 MeasDir,silent=TRUE)
+    X_strat_nm_tmp  <- c(X_strat, case_def)
+    X_strat_val_tmp <- list(X_strat_val, case_def_val)
   }
-
+  datacase <- extract_data_raw(pathogen_BrS_anyorder,Specimen,Test,
+                               X_strat_nm_tmp,
+                               X_strat_val_tmp,
+                               extra_covariates = X_extra,
+                               meas_dir,silent=TRUE)
+  
+  datactrl <- extract_data_raw(pathogen_BrS_anyorder,Specimen,Test,
+                               X_strat_nm_tmp,
+                               X_strat_val_tmp,
+                               extra_covariates = X_extra,
+                               meas_dir,silent=TRUE)
+  
+  
+  if (!is.null(extra_meas_nm)){
+      # read in extra measurements, e.g., 2nd or 3rd bronze-standard:
+      prepared_data <- read.csv(meas_dir,header=TRUE,stringsAsFactors=FALSE)
+      
+      indX = 1:nrow(prepared_data)
+      for (j in 1:length(X_strat_nm_tmp)){
+        indX = indX[which(prepared_data[indX,X_strat_nm_tmp[j]]==X_strat_val_tmp[[j]] & 
+                            !is.na(prepared_data[indX,X_strat_nm_tmp[j]]))]
+      }
+      extracted_prepared_data = prepared_data[indX,]
+      
+      extra_Mobs <- list()
+      for (i in seq_along(extra_meas_nm)){
+        extra_Mobs <- append(extra_Mobs, list(extracted_prepared_data[extra_meas_nm[[i]]]))
+      }
+      names(extra_Mobs) <- names(extra_meas_nm)
+  }
+  
   #write.csv(datacase,"C:/package_test/datacase.csv")
   #write.csv(datactrl,"C:/package_test/datactrl.csv")
 
@@ -203,7 +228,7 @@ clean_perch_data <- function(clean_options){
     datacase_SSonly <- extract_data_raw(pathogen_SSonly,Specimen,Test,
                                         c(X_strat,case_def),append(X_strat_val,case_def_val),
                                         extra_covariates = X_extra,
-                                        MeasDir,silent=TRUE)
+                                        meas_dir,silent=TRUE)
     if (length(pathogen_SSonly)>1){
       SSonly_index <- which(colMeans(is.na(datacase_SSonly$BCX))<.9)
     }else{
@@ -435,22 +460,25 @@ clean_perch_data <- function(clean_options){
   if (!is.null(pathogen_SSonly)){
     pathogen_SSonly_cat <- pathogen_cat_lookup[sapply(1:JSSonly,function(i)
                          which(pathogen_cat_lookup$X==pathogen_SSonly[i])),]
-    return(list(Mobs = Mobs,
+    res <- list(Mobs = Mobs,
                    Y = Y,
                    X = X,
                    JSS  = JSS,
                    pathogen_BrS_ordered_by_MSS = pathogen_BrS_ordered_by_MSS,
                    pathogen_BrS_cat         = pathogen_cat_lookup[path_cat_ind,],
                    JSSonly = JSSonly,
-                   pathogen_SSonly_cat = pathogen_SSonly_cat))
+                   pathogen_SSonly_cat = pathogen_SSonly_cat)
   } else{
-    list(Mobs = Mobs,
-         Y = Y,
-         X = X,
-         JSS  = JSS,
-         JSSonly = 0,
-         pathogen_BrS_ordered_by_MSS = pathogen_BrS_ordered_by_MSS,
-         pathogen_BrS_cat         = pathogen_cat_lookup[path_cat_ind,])
+    res <- list(Mobs = Mobs,
+                 Y = Y,
+                 X = X,
+                 JSS  = JSS,
+                 JSSonly = 0,
+                 pathogen_BrS_ordered_by_MSS = pathogen_BrS_ordered_by_MSS,
+                 pathogen_BrS_cat         = pathogen_cat_lookup[path_cat_ind,])
   }
-
+  if (!is.null(extra_meas_nm)){
+    res$extra_Mobs <- extra_Mobs
+  }
+  res
 }
