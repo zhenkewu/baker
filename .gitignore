@@ -6,3 +6,4 @@ nplcm.Rproj
 .DS_Store .
 inst/doc
 dev-notes/
+vignettes/
