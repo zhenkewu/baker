@@ -10,9 +10,9 @@ Authors@R: as.person(c(
     ))
 Description: Nested Partially-Latent Class Models (npLCM) for Inference of
     Population Disease Etiology and Individual Diagnosis. In the motivating 
-    scientific study, Penumonia Etiology Research for Child Health, we informally
-    call them *population etiology pie* and *individual etiology pie* for their compositional
-    nature.
+    scientific study, Penumonia Etiology Research for Child Health, the scientists
+    usually call them *population etiology pie* and *individual etiology pie* for 
+    their compositional nature, hence the name of the package.
 Depends: 
     R(>= 3.1)
 Imports: 
