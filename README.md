@@ -1,4 +1,4 @@
-A R Package for Fitting Bayesian [Nested Partially Latent Class Models](http://biostats.bepress.com/jhubiostat/paper276/) 
+``baker`: A R Package for Fitting Bayesian [Nested Partially Latent Class Models](http://biostats.bepress.com/jhubiostat/paper276/) 
 
 [![Build Status](https://travis-ci.org/zhenkewu/nplcm.svg?branch=master)](https://travis-ci.org/zhenkewu/nplcm)
 
@@ -6,13 +6,13 @@ How to install?
 --------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/nplcm")
+devtools::install_github("zhenkewu/baker")
 ```
 
-Why should someone use `nplcm`?
+Why should someone use `baker`?
 -------------------------------------
 
-- To study disease etiology from case-control data from multiple sources that have measurement errors. If you are interested in estimating the population etiology pie (fraction), and the probability of each cause for individual case, try `nplcm`.
+- To study disease etiology from case-control data from multiple sources that have measurement errors. If you are interested in estimating the population etiology pie (fraction), and the probability of each cause for individual case, try `baker`.
 
 - Reference publication can be found [here](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/abstract) and [here](http://biostats.bepress.com/jhubiostat/paper276/).
 
@@ -23,11 +23,11 @@ of data.
 
 What are the main functions?
 -----------------------------
-- `nplcm` that fits the model with or without covariates.
+- `nplcm()` that fits the model with or without covariates.
 
 Platform
 ---------
-- Currently implemented for Windows system, 7 or 8, because `nplcm` uses WinBUGS
+- Currently implemented for Windows system, 7 or 8, because `baker` uses WinBUGS
   to fit the models;
   
 - The `.bug` model files are included [here](https://github.com/zhenkewu/bugs.models/tree/master/nplcm);
