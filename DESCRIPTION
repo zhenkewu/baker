@@ -1,6 +1,6 @@
-Package: nplcm
+Package: baker
 Type: Package
-Title: Nested Partially-Latent Class Models (npLCM)
+Title: Bayesian Analytic Kit for Etiology Research
 Version: 0.1
 Date: 2014-09-17
 Authors@R: as.person(c(
@@ -9,7 +9,10 @@ Authors@R: as.person(c(
     "Scott Zeger <sz@jhu.edu> [aut]"
     ))
 Description: Nested Partially-Latent Class Models (npLCM) for Inference of
-    Population Disease Etiology and Individual Diagnosis.
+    Population Disease Etiology and Individual Diagnosis. In the motivating 
+    scientific study, Penumonia Etiology Research for Child Health, we informally
+    call them *population etiology pie* and *individual etiology pie* for their compositional
+    nature.
 Depends: 
     R(>= 3.1)
 Imports: 

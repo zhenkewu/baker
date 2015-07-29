@@ -12,8 +12,7 @@
 #' @param clean_options The list of options for cleaning PERCH data.
 #' Its elements are defined as follows:
 #' \itemize{
-#' \item{\code{raw_meas_dir}}{: The file path to the raw data (the program automatically 
-#' detects if it has been prepared.);}
+#' \item{\code{raw_meas_dir}}{: The file path to the raw data;}
 #' \item{\code{case_def}}{: variable name in raw data for case definition;}
 #' \item{\code{case_def_val}}{: The value for case definition;}
 #' \item{\code{ctrl_def}}{: variable name in raw data for control definition;}
@@ -109,23 +108,23 @@ clean_perch_data <- function(clean_options){
           pathogen_SSonly   <- clean_options$pathogen_SSonly
   }
 
-  # check if the data specified in 'raw_meas_dir' has been cleaned by the pacakge:
-  # Here "prepared" means revoming X_ from the colmn names and combined Bangladesh and
-  # Thailand subsites. The final output of this whole function will be called "cleaned".
-  raw_data <- read.csv(raw_meas_dir)
-  if (is.null(attr(raw_data,"prepared_by_package"))){
-    do_prepare <- TRUE
-  } else{
-    if (attr(raw_data,"prepared_by_package")== TRUE){
-      do_prepare <- FALSE
-      meas_dir <- raw_meas_dir
-    } else{
-      do_prepare <- TRUE
-    }
-  }
-  rm(raw_data)
-  
-  if (do_prepare){
+#   # check if the data specified in 'raw_meas_dir' has been cleaned by the pacakge:
+#   # Here "prepared" means revoming X_ from the colmn names and combined Bangladesh and
+#   # Thailand subsites. The final output of this whole function will be called "cleaned".
+#   raw_data <- read.csv(raw_meas_dir)
+#   if (is.null(attr(raw_data,"prepared_by_package"))){
+#     do_prepare <- TRUE
+#   } else{
+#     if (attr(raw_data,"prepared_by_package")== TRUE){
+#       do_prepare <- FALSE
+#       meas_dir <- raw_meas_dir
+#     } else{
+#       do_prepare <- TRUE
+#     }
+#   }
+#   rm(raw_data)
+#   
+#   if (do_prepare){
     # combine two sub-sites:
     # 06NTH and 07STH  --> THA,
     # 08MBA and 09DBA  --> BAN:
@@ -137,13 +136,13 @@ clean_perch_data <- function(clean_options){
     cleanName  <- delete_start_with("X_",names(PERCH_data_with_newSITE))
     colnames(PERCH_data_with_newSITE) <- cleanName
     
-    attr(PERCH_data_with_newSITE,"prepared_by_package") <- TRUE
+    #attr(PERCH_data_with_newSITE,"prepared_by_package") <- TRUE
     
     # write cleaned data into working directory:
-    meas_dir <- file.path(dirname(raw_meas_dir),paste0("cleaned_",basename(raw_meas_dir)))
+    meas_dir <- file.path(dirname(raw_meas_dir),paste0("prepared_",basename(raw_meas_dir)))
     write.csv(PERCH_data_with_newSITE, meas_dir, row.names=FALSE)
     rm(PERCH_data_with_newSITE)
-  }
+  #}
   
   # create the pathogen category lookup table:
   pathogen_cat_lookup <- read.csv(patho_taxo_dir,stringsAsFactors=FALSE)

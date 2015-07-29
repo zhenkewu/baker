@@ -15,7 +15,7 @@ is not available, please specify it as, e.g., \code{MGS=NA} or \code{MGS=NULL}
 \itemize{
 \item \code{MBS} a data frame of bronze-standard (BrS) measurements.
 Rows are subjects, columns are pathogens.
-They have imperfect sensitivity/specificity (e.g. nasalpharyngeal PCR). These mesaurements have imperfect sensitivity/specificty.
+They have imperfect sensitivity/specificity (e.g. nasalpharyngeal PCR).
 \item \code{MSS} a data frame of silver-standard (SS) measurements.
 Rows are subjects, columns are pathogens measured in specimen (e.g. blood culture).
 These measurements have perfect specificity but imperfect sensitivity.
@@ -25,7 +25,8 @@ These measurements have perfect sensitivity and specificity.
 }
 
 \item \code{Y} Vector of disease status: 1 for case, 0 for control.
-\item \code{X} Design matrix. For regression modeling.
+\item \code{X} Covariate matrix for regression modeling. It contains raw covariate
+data, not design matrix for regression models.
 }}
 
 \item{model_options}{A list of model options.
