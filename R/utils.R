@@ -1211,7 +1211,7 @@ delete_start_with = function(s,vec){
 #' y <- 2
 #' z <- "hello"
 #' #display the results
-#' makeList( x , y , z )
+#' make_list( x , y , z )
 #' @export
 
 #create the function

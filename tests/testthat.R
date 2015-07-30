@@ -1,4 +1,4 @@
 library(testthat)
-library(nplcm)
+library(baker)
 
-test_check("nplcm")
+test_check("baker")

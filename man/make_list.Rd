@@ -24,6 +24,6 @@ x <- 1
 y <- 2
 z <- "hello"
 #display the results
-makeList( x , y , z )
+make_list( x , y , z )
 }
 
