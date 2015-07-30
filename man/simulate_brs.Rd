@@ -8,6 +8,9 @@ simulate_brs(set_parameter, latent_samples)
 }
 \arguments{
 \item{set_parameter}{parameters for BrS measurements}
+
+\item{latent_samples}{sampled latent status for all the subjects, for use in simulate
+BrS measurements.}
 }
 \value{
 a data frame with first column being case-control status (case at top) and

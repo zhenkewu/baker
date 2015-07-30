@@ -26,9 +26,11 @@ A list of measurements, true latent statues:
 }
 \description{
 Use different case and control subclass mixing weights. Eta is of
-dimension J times K. DN: document the elements in \code{set_parameter}.
+dimension J times K. NB: document the elements in \code{set_parameter}. Also, current
+function is written in a way to facilitate adding more measurement components.
 }
 \examples{
+\dontrun{
 K.true  <- 2   # no. of latent subclasses in actual simulation.
 J       <- 5   # no. of pathogens.
 N      <- 10000
@@ -61,7 +63,7 @@ set_parameter <- list(
   Nu      =     N, # control size.
   Nd      =     N  # case size.
 )
-\dontrun{
+
  pathogen_display <- data_nplcm$Mname$Mname_BrS
  plot_logORmat(data_nplcm,pathogen_display)
 }

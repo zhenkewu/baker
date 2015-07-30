@@ -1,7 +1,8 @@
 #' Simulation data from nested partially-latent class model (npLCM) family
 #'
 #' Use different case and control subclass mixing weights. Eta is of
-#' dimension J times K. DN: document the elements in \code{set_parameter}.
+#' dimension J times K. NB: document the elements in \code{set_parameter}. Also, current
+#' function is written in a way to facilitate adding more measurement components.
 #' 
 #' @param set_parameter True model parameters in the npLCM specification
 #' 
@@ -21,6 +22,7 @@
 #'  }
 #'  
 #' @examples 
+#' \dontrun{
 #' K.true  <- 2   # no. of latent subclasses in actual simulation.
 #' J       <- 5   # no. of pathogens.
 #' N      <- 10000
@@ -53,7 +55,7 @@
 #'   Nu      =     N, # control size.
 #'   Nd      =     N  # case size.
 #' )
-#' \dontrun{
+#' 
 #'  pathogen_display <- data_nplcm$Mname$Mname_BrS
 #'  plot_logORmat(data_nplcm,pathogen_display)
 #' }
@@ -136,6 +138,8 @@ simulate_latent <- function(set_parameter){
 #' 
 #' simulate BrS measurements:
 #' @param set_parameter parameters for BrS measurements
+#' @param latent_samples sampled latent status for all the subjects, for use in simulate
+#' BrS measurements.
 #' 
 #' @return a data frame with first column being case-control status (case at top) and
 #' columns of bronze-standard measurements
