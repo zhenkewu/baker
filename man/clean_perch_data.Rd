@@ -4,7 +4,7 @@
 \alias{clean_perch_data}
 \title{Clean PERCH data}
 \usage{
-clean_perch_data(clean_options)
+clean_perch_data(clean_options, silent = TRUE)
 }
 \arguments{
 \item{clean_options}{The list of options for cleaning PERCH data.
@@ -45,6 +45,9 @@ set to \code{TRUE}.}
 \item{\code{extra_meas_nm}}{: a list of (pathogen,specimen,test) names, each of which
 is considered extra measurements informative for etiology.}
 }}
+
+\item{silent}{Default is \code{TRUE} for not printing observations with missing
+measurements. Set to \code{FALSE} will print those observations.}
 }
 \value{
 A List: \code{list(Mobs,Y,X,JSS,pathogen_BrS_ordered_by_MSS,pathogen_BrS_cat)}, or

@@ -9,6 +9,17 @@ simulate_nplcm(set_parameter)
 \arguments{
 \item{set_parameter}{True model parameters in the npLCM specification}
 }
+\value{
+A list of measurements, true latent statues:
+\itemize{
+ \item{\code{template}} a matrix: rows for causes, columns for measurements; generated
+ as a lookup table to match mixture component parmeters for every type (a particular cause) of indiviuals.
+ \item{\code{datres}} all measurements along with true latent statuses
+ \item{\code{dat_meas}} measurement data;
+ \item{\code{dat_case}} cases' measurement data;
+ \item{\code{dat_ctrl}} controls' measurement data.
+ }
+}
 \description{
 Use different case and control subclass mixing weights. Eta is of
 dimension J times K. DN: document the elements in \code{set_parameter}.

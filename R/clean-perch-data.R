@@ -48,6 +48,9 @@
 #' is considered extra measurements informative for etiology.}
 #'}
 #'
+#' @param silent Default is \code{TRUE} for not printing observations with missing
+#' measurements. Set to \code{FALSE} will print those observations.
+#'
 #' @return A List: \code{list(Mobs,Y,X,JSS,pathogen_BrS_ordered_by_MSS,pathogen_BrS_cat)}, or
 #' with additional \code{JSSonly, pathogen_SSonly_cat} if silver-
 #' standard only pathogens are supplied.
@@ -80,7 +83,7 @@
 #' @seealso \link[lubridate]{parse_date_time}
 #' @export
 
-clean_perch_data <- function(clean_options){
+clean_perch_data <- function(clean_options, silent=TRUE){
 
   raw_meas_dir <- clean_options$raw_meas_dir
   case_def     <- clean_options$case_def
@@ -201,8 +204,10 @@ clean_perch_data <- function(clean_options){
   if (flag_BCX_in_datacase){
     # get pathogens that have many BcX measurements:
     SS_index  <- which(colMeans(is.na(datacase$BCX))<.9)
-    cat("==Pathogens with both 'blood culture' and 'NPPCR' measures:==","\n",
-        pathogen_BrS_anyorder[SS_index],"\n")
+    if (!silent){
+      cat("==Pathogens with both 'blood culture' and 'NPPCR' measures:==","\n",
+          pathogen_BrS_anyorder[SS_index],"\n")
+    }
     JSS       <- length(SS_index)  
     JBrS      <- length(pathogen_BrS_anyorder)
     # order pathogens based on BcX+NPPCR --> NPPCR:
@@ -233,8 +238,10 @@ clean_perch_data <- function(clean_options){
     }else{
       SSonly_index <- which(mean(is.na(datacase_SSonly$BCX))<.9)
     }
-    cat("==Pathogens with ONLY blood culture measure:==","\n",
-        pathogen_SSonly[SSonly_index],"\n")
+    if (!silent){
+      cat("==Pathogens with ONLY blood culture measure:==","\n",
+          pathogen_SSonly[SSonly_index],"\n")
+    }
     JSSonly       <- length(SSonly_index)
   }
 
@@ -252,27 +259,33 @@ clean_perch_data <- function(clean_options){
                                                  rowMeans(is.na(datacase$BCX[,SS_index,drop=FALSE]))>0)
     # print incomplete indices:
     if (length(case_index_complete_NP_incomp_BCX)>0){
-      cat("==Case indices with complete NP, incomplete BCX:==","\n",
-          case_index_complete_NP_incomp_BCX,"\n")
-      print(data.frame(datacase$patid,datacase$NPPCR)[case_index_complete_NP_incomp_BCX,])
-      cat("==","\n")
-      print(data.frame(datacase$patid,datacase$BCX)[case_index_complete_NP_incomp_BCX,])
+      if (!silent){
+          cat("==Case indices with complete NP, incomplete BCX:==","\n",
+              case_index_complete_NP_incomp_BCX,"\n")
+          print(data.frame(datacase$patid,datacase$NPPCR)[case_index_complete_NP_incomp_BCX,])
+          cat("==","\n")
+          print(data.frame(datacase$patid,datacase$BCX)[case_index_complete_NP_incomp_BCX,])
+      }
     }
     
     if (length(case_index_complete_BCX_incomp_NP)>0){
-      cat("==Case indices with complete BCX, incomplete NP:==","\n",
-          case_index_complete_BCX_incomp_NP,"\n")
-      print(data.frame(datacase$patid,datacase$NPPCR)[case_index_complete_BCX_incomp_NP,])
-      cat("==","\n")
-      print(data.frame(datacase$patid,datacase$BCX)[case_index_complete_BCX_incomp_NP,])
+      if (!silent){
+          cat("==Case indices with complete BCX, incomplete NP:==","\n",
+              case_index_complete_BCX_incomp_NP,"\n")
+          print(data.frame(datacase$patid,datacase$NPPCR)[case_index_complete_BCX_incomp_NP,])
+          cat("==","\n")
+          print(data.frame(datacase$patid,datacase$BCX)[case_index_complete_BCX_incomp_NP,])
+      }
     }
     
     if (length(case_index_incomplete)>0){
-      cat("==Case indices with incomplete NP, incomplete BCX:==","\n",
-          case_index_incomplete,"\n")
-      print(data.frame(datacase$patid,datacase$BCX)[case_index_incomplete,])
-      cat("==","\n")
-      print(data.frame(datacase$patid,datacase$NPPCR)[case_index_incomplete,])
+      if (!silent){
+          cat("==Case indices with incomplete NP, incomplete BCX:==","\n",
+              case_index_incomplete,"\n")
+          print(data.frame(datacase$patid,datacase$BCX)[case_index_incomplete,])
+          cat("==","\n")
+          print(data.frame(datacase$patid,datacase$NPPCR)[case_index_incomplete,])
+      }
     }
   }else{
     complete_case_index <- which(rowMeans(is.na(datacase$NPPCR))==0)
@@ -280,9 +293,11 @@ clean_perch_data <- function(clean_options){
     # print incomplete indices:
 
     if (length(case_index_incomplete)>0){
-      cat("==Case indices with incomplete NP:==","\n",
-          case_index_incomplete,"\n")
-      print(data.frame(datacase$patid,datacase$NPPCR)[case_index_incomplete,])
+      if (!silent){
+          cat("==Case indices with incomplete NP:==","\n",
+              case_index_incomplete,"\n")
+          print(data.frame(datacase$patid,datacase$NPPCR)[case_index_incomplete,])
+      }
     }
   }
   complete_ctrl_index <- which(rowMeans(is.na(datactrl$NPPCR))==0)
@@ -380,7 +395,9 @@ clean_perch_data <- function(clean_options){
   # look for pathogens that have more than one positives in BCX:
   if (!is.null(pathogen_SSonly)){
     # if some SSonly pathogen is supplied:
-    cat("==Total positives in silver-standard:==","\n")
+    if (!silent){
+        cat("==Total positives in silver-standard:==","\n")
+    }
     if (flag_BCX_in_datacase){
       SS_index_all <- sapply(paste(c(pathogen_BrS_anyorder[SS_index],pathogen_SSonly),"BCX",sep="_"),
                              grep,names(datobs))
@@ -389,7 +406,9 @@ clean_perch_data <- function(clean_options){
                              grep,names(datobs))
     }
 
-    print(table(rowSums(datobs[1:Nd,SS_index_all,drop=FALSE])))
+    if (!silent){
+        print(table(rowSums(datobs[1:Nd,SS_index_all,drop=FALSE])))
+    }
     BCX_more_than_one_index <- which(rowSums(datobs[1:Nd,SS_index_all,drop=FALSE])>1)
     if (length(BCX_more_than_one_index)>0){
       cat("==Removed case(s) with >1 positive in BCX:==","\n")

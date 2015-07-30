@@ -2,9 +2,20 @@
 #'
 #' Use different case and control subclass mixing weights. Eta is of
 #' dimension J times K. DN: document the elements in \code{set_parameter}.
-#'
+#' 
 #' @param set_parameter True model parameters in the npLCM specification
-#'
+#' 
+#'  
+#' @return A list of measurements, true latent statues:
+#' \itemize{ 
+#'  \item{\code{template}} a matrix: rows for causes, columns for measurements; generated
+#'  as a lookup table to match mixture component parmeters for every type (a particular cause) of indiviuals. 
+#'  \item{\code{datres}} all measurements along with true latent statuses
+#'  \item{\code{dat_meas}} measurement data;
+#'  \item{\code{dat_case}} cases' measurement data;
+#'  \item{\code{dat_ctrl}} controls' measurement data.
+#'  }
+#'  
 #' @export
 
 simulate_nplcm <- function(set_parameter){
@@ -70,8 +81,12 @@ simulate_nplcm <- function(set_parameter){
   template <- as.matrix(rbind(symb2I(cause_list,pathogen_BrS),rep(0,J_BrS)))
   colnames(template) <- pathogen_BrS
   rownames(template) <- c(cause_list,"control")
-  return(list(template = template,
-              dat     = datres))
+  
+  dat_meas <- datres[,rev(rev(1:ncol(datres))[1:J_BrS])]
+  dat_case <- as.matrix(dat_meas[(1:set_parameter$Nd),])
+  dat_ctrl <- as.matrix(dat_meas[-(1:set_parameter$Nd),])
+  
+  make_list(template, datres, dat_meas,dat_case, dat_ctrl)
 }
 
 
