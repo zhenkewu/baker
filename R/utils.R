@@ -162,7 +162,7 @@ I2symb <- function(binary_code,pathogen_list){
 #' Convert a matrix of binary indicators to categorial variables
 #'
 #' @param binary_mat The matrix of binary indicators. Rows for subjects, columns for pathogens in the \code{"pathogen.list"}
-#' @param allowed_list The list of allowed single pathogen or pathogen combination
+#' @param cause_list The list of causes
 #' @param pathogen_list The complete list of pathogen names
 #'
 #' @return A vector of categorical variables. Its length equals the length of \code{"allowed.list"}
@@ -171,13 +171,13 @@ I2symb <- function(binary_code,pathogen_list){
 #'
 #' Imat2cat(rbind(diag(3),c(1,1,0),c(0,0,0)),c("A","B","C","A+B","NoA"),c("A","B","C"))
 #' @export
-Imat2cat <- function(binary_mat,allowed_list,pathogen_list){
+Imat2cat <- function(binary_mat,cause_list,pathogen_list){
   known_code = apply(binary_mat,1,function(v) paste(v,collapse=""))
   known_symb = sapply(known_code,I2symb,pathogen_list)
-  if (sum(known_symb %in% allowed_list==FALSE)>0){
-  stop("Some binary pattern in 'binary_mat' is not included by 'allowed_list'.")
+  if (sum(known_symb %in% cause_list==FALSE)>0){
+  stop("Some binary pattern in 'binary_mat' is not included by 'cause_list'.")
   }else {
-  known_Icat = sapply(known_symb,function(s) which(allowed_list==s))
+  known_Icat = sapply(known_symb,function(s) which(cause_list==s))
   return(known_Icat)
   }
 }

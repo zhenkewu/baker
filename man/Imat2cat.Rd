@@ -4,12 +4,12 @@
 \alias{Imat2cat}
 \title{Convert a matrix of binary indicators to categorial variables}
 \usage{
-Imat2cat(binary_mat, allowed_list, pathogen_list)
+Imat2cat(binary_mat, cause_list, pathogen_list)
 }
 \arguments{
 \item{binary_mat}{The matrix of binary indicators. Rows for subjects, columns for pathogens in the \code{"pathogen.list"}}
 
-\item{allowed_list}{The list of allowed single pathogen or pathogen combination}
+\item{cause_list}{The list of causes}
 
 \item{pathogen_list}{The complete list of pathogen names}
 }

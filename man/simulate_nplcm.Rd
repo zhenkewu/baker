@@ -12,15 +12,16 @@ simulate_nplcm(set_parameter)
 \value{
 A list of measurements, true latent statues:
 \itemize{
- \item{\code{template}} a matrix: rows for causes, columns for measurements; generated
- as a lookup table to match mixture component parmeters for every type (a particular cause) of indiviuals.
- \item{\code{datres}} all measurements along with true latent statuses
- \item{\code{dat_meas}} measurement data;
- \item{\code{dat_case}} cases' measurement data;
- \item{\code{dat_ctrl}} controls' measurement data.
+ \item{\code{template}} a matrix: rows for causes, columns for measurements;
+ generated as a lookup table to match mixture component parmeters for every type
+  (a particular cause) of indiviuals.
  \item{\code{data_nplcm}} a list of structured data (see \code{\link{nplcm}} for
  description) for use in visualization
- e.g., \code{\link{plot_logORmat}} or model fitting, e.g., \code{\link{nplcm}}
+ e.g., \code{\link{plot_logORmat}} or model fitting, e.g., \code{\link{nplcm}}.
+ The pathogen taxonomy is set to default "B".
+ \item{\code{latent_cat}} integer values to indicate the latent category. The integer
+ code corresponds to the order specified in \code{set_parameter$etiology}.
+ Controls are coded as \code{length(set_parameter$etiology)+1}.)
  }
 }
 \description{
@@ -30,17 +31,19 @@ dimension J times K. DN: document the elements in \code{set_parameter}.
 \examples{
 K.true  <- 2   # no. of latent subclasses in actual simulation.
 J       <- 5   # no. of pathogens.
-N      <- 1000
+N      <- 10000
 eta_seq      <- seq(0,0.5,by=0.05)
 
-eta <- eta_seq[2]
+eta <- 0
 
 set_parameter <- list(
   pathogen_BrS    = LETTERS[1:J],
-  cause_list      = c(LETTERS[1:J]),
-  etiology        = c(0.5,0.2,0.15,0.1,0.05), #same length as cause_list
- Lambda          = c(1-eta,eta), #ctrl mix
+  cause_list      = c(LETTERS[1:J],"A+B","D+E"),
+  etiology        = c(0.5,0.1,0.15,0.1,0.05,0.05,0.05), #same length as cause_list
+  Lambda          = c(1-eta,eta), #ctrl mix
   Eta             = rbind(c(1-eta,eta),
+                          c(1-eta,eta),
+                          c(1-eta,eta),
                           c(1-eta,eta),
                           c(1-eta,eta),
                           c(1-eta,eta),
@@ -50,7 +53,7 @@ set_parameter <- list(
                           0.1,0.3,
                           0.1,0.3,
                           0.1,0.3),nrow=J,ncol=K.true,byrow=TRUE),
-  ThetaBS         =  matrix(c(0.9,0.1,
+ ThetaBS         =  matrix(c(0.9,0.1,
                               0.9,0.1,
                               0.9,0.1,
                               0.9,0.1,
@@ -58,9 +61,6 @@ set_parameter <- list(
   Nu      =     N, # control size.
   Nd      =     N  # case size.
 )
-
-data_nplcm <- simulate_nplcm(set_parameter)$data_nplcm
-# pairwise log odds ratio:
 \dontrun{
  pathogen_display <- data_nplcm$Mname$Mname_BrS
  plot_logORmat(data_nplcm,pathogen_display)
