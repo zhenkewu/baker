@@ -62,7 +62,6 @@
 #'  
 #' @export
 
-
 simulate_nplcm <- function(set_parameter){
   # simulate latent status  
   latent <- simulate_latent(set_parameter)

@@ -499,4 +499,13 @@ clean_perch_data <- function(clean_options, silent=TRUE){
     res$extra_Mobs <- extra_Mobs
   }
   res
+  
+  data_nplcm <- list(Mobs     = res$Mobs, 
+                     Y        = res$Y, 
+                     X        = res$X, 
+                     Mname    = list(Mname_BrS = res$pathogen_BrS_ordered_by_MSS,
+                                     Mname_SSonly = pathogen_SSonly),
+                     taxonomy = list(taxo_BrS    = res$pathogen_BrS_cat,
+                                     taxo_SSonly = res$pathogen_SSonly_cat))
+  list(data_nplcm = data_nplcm, JSS=res$JSS,JSSonly = res$JSSonly)
 }
