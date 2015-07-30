@@ -18,10 +18,52 @@ A list of measurements, true latent statues:
  \item{\code{dat_meas}} measurement data;
  \item{\code{dat_case}} cases' measurement data;
  \item{\code{dat_ctrl}} controls' measurement data.
+ \item{\code{data_nplcm}} a list of structured data (see \code{\link{nplcm}} for
+ description) for use in visualization
+ e.g., \code{\link{plot_logORmat}} or model fitting, e.g., \code{\link{nplcm}}
  }
 }
 \description{
 Use different case and control subclass mixing weights. Eta is of
 dimension J times K. DN: document the elements in \code{set_parameter}.
+}
+\examples{
+K.true  <- 2   # no. of latent subclasses in actual simulation.
+J       <- 5   # no. of pathogens.
+N      <- 1000
+eta_seq      <- seq(0,0.5,by=0.05)
+
+eta <- eta_seq[2]
+
+set_parameter <- list(
+  pathogen_BrS    = LETTERS[1:J],
+  cause_list      = c(LETTERS[1:J]),
+  etiology        = c(0.5,0.2,0.15,0.1,0.05), #same length as cause_list
+ Lambda          = c(1-eta,eta), #ctrl mix
+  Eta             = rbind(c(1-eta,eta),
+                          c(1-eta,eta),
+                          c(1-eta,eta),
+                          c(1-eta,eta),
+                          c(1-eta,eta)), #case mix, row number equal to Jcause.
+  PsiBS 		  =    matrix(c(0.1,0.3,
+                          0.1,0.3,
+                          0.1,0.3,
+                          0.1,0.3,
+                          0.1,0.3),nrow=J,ncol=K.true,byrow=TRUE),
+  ThetaBS         =  matrix(c(0.9,0.1,
+                              0.9,0.1,
+                              0.9,0.1,
+                              0.9,0.1,
+                              0.9,0.1),nrow=J,ncol=K.true,byrow=TRUE),
+  Nu      =     N, # control size.
+  Nd      =     N  # case size.
+)
+
+data_nplcm <- simulate_nplcm(set_parameter)$data_nplcm
+# pairwise log odds ratio:
+\dontrun{
+ pathogen_display <- data_nplcm$Mname$Mname_BrS
+ plot_logORmat(data_nplcm,pathogen_display)
+}
 }
 
