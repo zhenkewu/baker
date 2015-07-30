@@ -15,7 +15,7 @@ I2symb(binary_code, pathogen_list)
 The name of pathogen or pathogen combination indicated by "code"
 }
 \description{
-Reverse to \code{\link[nplcm]{symb2I}}
+Reverse to \code{\link{symb2I}}
 }
 \examples{
 I2symb("001",c("A","B","C"))

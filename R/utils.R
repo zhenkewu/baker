@@ -138,7 +138,7 @@ function(pathogen_name,pathogen_list){
 
 #' Convert 0/1 coding to pathogen/combinations
 #'
-#' Reverse to \code{\link[nplcm]{symb2I}}
+#' Reverse to \code{\link{symb2I}}
 #' @param binary_code Binary indictors for pathogens
 #' @param pathogen_list The complete list of pathogen names
 #'
