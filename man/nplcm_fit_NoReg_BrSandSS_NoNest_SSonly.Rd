@@ -13,13 +13,14 @@ should include \code{MBS}, \code{MSS}, and \code{MGS}. If any of the component
 is not available, please specify it as, e.g., \code{MGS=NA} or \code{MGS=NULL}
 (effectively deleting \code{MGS} from \code{Mobs}).
 \itemize{
-\item \code{MBS} a data frame of bronze-standard (BrS) measurements.
-Rows are subjects, columns are pathogens.
+\item \code{MBS} a list of data frame of bronze-standard (BrS) measurements.
+Rows are subjects, columns are pathogens. We use list here to accommodate
+the possibility of multiple sets of BrS data.
 They have imperfect sensitivity/specificity (e.g. nasalpharyngeal PCR).
-\item \code{MSS} a data frame of silver-standard (SS) measurements.
+\item \code{MSS} a list of data frame of silver-standard (SS) measurements.
 Rows are subjects, columns are pathogens measured in specimen (e.g. blood culture).
 These measurements have perfect specificity but imperfect sensitivity.
-\item \code{MGS} a data frame of gold-standard (GS) measurements.
+\item \code{MGS} a list of data frame of gold-standard (GS) measurements.
 Rows are subject, columns are pathogen measurements.
 These measurements have perfect sensitivity and specificity.
 }

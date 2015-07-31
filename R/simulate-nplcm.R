@@ -63,15 +63,16 @@
 #' @export
 
 simulate_nplcm <- function(set_parameter){
+  pathogen_BrS <- set_parameter$pathogen_BrS
+  
   # simulate latent status  
   latent <- simulate_latent(set_parameter)
   # simulate BrS measurements:
-  MBS   <- simulate_brs(set_parameter,latent)
+  out_brs   <- simulate_brs(set_parameter,latent)
   
-  pathogen_BrS <- set_parameter$pathogen_BrS
-  
+  MBS_list <- list(MBS_1 = out_brs[,-grep("Y",colnames(out_brs)),drop=FALSE])
   # construct a list for visualization and model fitting:
-  Mobs <- list(MBS = MBS[,-grep("Y",colnames(MBS)),drop=FALSE],MSS=NULL,MGS=NULL)
+  Mobs <- list(MBS = MBS_list ,MSS=NULL,MGS=NULL)
   Y    <- MBS$Y
   X    <- NULL
   Mname<- list(Mname_BrS    = pathogen_BrS,

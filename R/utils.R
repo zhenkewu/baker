@@ -1234,3 +1234,31 @@ make_list <- function(...) {
   argument_values
 }
 
+#' Make a list with numbered names 
+#' 
+#' To collect multiple measurements within the same category, e.g., bronze-standard.
+#' 
+#' @param ... any R object
+#' 
+#' @return a list with names numbered
+#' 
+#' @export
+#' 
+#' 
+make_numbered_list <- function(...) {
+  
+  #put all values into a list
+  argument_values <- list(...)
+  
+  #save all argument names into another list
+  argument_names <- as.list(sys.call())
+  
+  #cycle through the first list and label with the second, ignoring the function itself
+  for ( i in 2:length(argument_names) ){
+    names(argument_values)[i-1] <- paste0(argument_names[i],"_",i-1)
+  }
+  
+  #return the newly-labeled function
+  argument_values
+}
+
