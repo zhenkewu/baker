@@ -56,6 +56,8 @@
 #'   Nd      =     N  # case size.
 #' )
 #' 
+#'  simu_out <- simulate_nplcm(set_parameter)
+#'  data_nplcm <- simu_out$data_nplcm
 #'  pathogen_display <- data_nplcm$Mname$Mname_BrS
 #'  plot_logORmat(data_nplcm,pathogen_display)
 #' }
@@ -70,10 +72,10 @@ simulate_nplcm <- function(set_parameter){
   # simulate BrS measurements:
   out_brs   <- simulate_brs(set_parameter,latent)
   
+  # organize data:
   MBS_list <- list(MBS_1 = out_brs[,-grep("Y",colnames(out_brs)),drop=FALSE])
-  # construct a list for visualization and model fitting:
   Mobs <- list(MBS = MBS_list ,MSS=NULL,MGS=NULL)
-  Y    <- MBS$Y
+  Y    <- out_brs$Y
   X    <- NULL
   Mname<- list(Mname_BrS    = pathogen_BrS,
                Mname_SSonly = NULL)
@@ -126,9 +128,7 @@ simulate_latent <- function(set_parameter){
   iLall <- rbind(iL,matrix(0,nrow=Nu,ncol=J_BrS))
   iLcatAllnumeric    <- c(iLcat.case.numeric,rep(Jcause+1,Nu))
   
-  template <- as.matrix(rbind(symb2I(cause_list,pathogen_BrS),rep(0,J_BrS)))
-  colnames(template) <- pathogen_BrS
-  rownames(template) <- c(cause_list,"control")
+  template <- make_template(cause_list,pathogen_BrS)
   
   make_list(iLall,iLcatAllnumeric,iLcat.case.numeric,iL,template)
 }

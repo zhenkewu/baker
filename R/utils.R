@@ -1262,3 +1262,46 @@ make_numbered_list <- function(...) {
   argument_values
 }
 
+
+#' make template for fitting nplcm model
+#' 
+#' template is a function of a cause list and measurement list
+#' 
+#' @param cause_lista a vector of strings representing latent status
+#' @param pathogen_BrS a vector of strings of all possible pathogen measurements. If 
+#' there are multiple BrS measurements, this vector should be the one with the finest
+#' labeling of pathogens
+#' @param pathogen_BrS_combined Default is \code{NULL}. It is a vector of strings of extra measurements. It maybe 
+#' consisted of some exact names from \code{pathogen_BrS} or it has a new name that combine
+#' some names in \code{pathogen_BrS}. See example.
+#' @param combined_causes2meas Default is \code{NULL}. It is a list with two elements. The first
+#' is the indices of measurments to combine in the finer vector \code{pathogen_BrS}; the second element
+#' is the position in \code{pathogen_BrS_combined} that represents the combined measurement names. It currently
+#' assumes that the two elements have the same first index. See example.
+#' @return a matrix with rows being latent status, columns being measured biomarkers (pathogens)
+#' 
+#' @examples 
+#' cause_list <- c("A","B1","B2","C","D","E")
+#' pathogen_BrS_1 <- c("A","B1","B2","C","D","E")
+#' pathogen_BrS_2 <- c("A","B","C","D","E")
+#' combined_causes2meas <- list(comb_cause = c(2,3),comb_meas = 2)
+#' make_template(cause_list,pathogen_BrS_1)
+#' make_template(cause_list,pathogen_BrS_1, pathogen_BrS_2,combined_causes2meas)
+#' @export
+make_template <- function(cause_list, pathogen_BrS, 
+                          pathogen_BrS_combined = NULL, combined_causes2meas = NULL){
+
+  Jcause     <- length(cause_list)
+  J_BrS  <- length(pathogen_BrS)
+  template <- as.matrix(rbind(symb2I(cause_list,pathogen_BrS),rep(0,J_BrS)))
+  colnames(template) <- pathogen_BrS
+  rownames(template) <- c(cause_list,"control")
+  if (!is.null(pathogen_BrS_combined)){
+    template[,combined_causes2meas[[2]]] <- matrix(rowSums(template[,combined_causes2meas[[1]],drop=FALSE]),nrow=nrow(template))
+    template <- template[,-setdiff(combined_causes2meas[[1]],combined_causes2meas[[2]]),drop=FALSE]
+    colnames(template)[combined_causes2meas[[2]]] <- pathogen_BrS_combined[combined_causes2meas[[2]],drop=FALSE]
+  }
+  template
+}
+
+

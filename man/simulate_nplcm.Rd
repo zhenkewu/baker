@@ -64,6 +64,8 @@ set_parameter <- list(
   Nd      =     N  # case size.
 )
 
+ simu_out <- simulate_nplcm(set_parameter)
+ data_nplcm <- simu_out$data_nplcm
  pathogen_display <- data_nplcm$Mname$Mname_BrS
  plot_logORmat(data_nplcm,pathogen_display)
 }

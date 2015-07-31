@@ -5,7 +5,8 @@
 \title{Visualize pairwise log odds ratios (LOR) for data that are available in
 both cases and controls}
 \usage{
-plot_logORmat(data_nplcm, pathogen_display, logOR_rounding = 2)
+plot_logORmat(data_nplcm, pathogen_display, logOR_rounding = 2,
+  brs_slice = 1)
 }
 \arguments{
 \item{data_nplcm}{See \code{\link{assign_model}}.}
@@ -14,6 +15,8 @@ plot_logORmat(data_nplcm, pathogen_display, logOR_rounding = 2)
 It can be of larger length than that of \code{pathogen_BrS}.}
 
 \item{logOR_rounding}{Rounding number of the log odds ratio. Default is 2.}
+
+\item{brs_slice}{Default is 1 - the set of BrS data to visualize.}
 }
 \value{
 Figure of LOR matrix and relavent s.e. and significance information.
