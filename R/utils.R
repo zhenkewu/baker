@@ -1263,45 +1263,42 @@ make_numbered_list <- function(...) {
 }
 
 
-#' make template for fitting nplcm model
+#' make a mapping template for model fitting
+#'
+#' \code{make_template} creates a mapping matrix so that a measurement is mapped
+#' to inform a particular latent status. Crucial for model fitting.
 #' 
-#' template is a function of a cause list and measurement list
-#' 
-#' @param cause_lista a vector of strings representing latent status
-#' @param pathogen_BrS a vector of strings of all possible pathogen measurements. If 
-#' there are multiple BrS measurements, this vector should be the one with the finest
-#' labeling of pathogens
-#' @param pathogen_BrS_combined Default is \code{NULL}. It is a vector of strings of extra measurements. It maybe 
-#' consisted of some exact names from \code{pathogen_BrS} or it has a new name that combine
-#' some names in \code{pathogen_BrS}. See example.
-#' @param combined_causes2meas Default is \code{NULL}. It is a list with two elements. The first
-#' is the indices of measurments to combine in the finer vector \code{pathogen_BrS}; the second element
-#' is the position in \code{pathogen_BrS_combined} that represents the combined measurement names. It currently
-#' assumes that the two elements have the same first index. See example.
-#' @return a matrix with rows being latent status, columns being measured biomarkers (pathogens)
+#' @param patho a vector of pathogen names. \code{patho}
+#'  must be substring of some \code{cause_list} elements, e.g., 
+#'  "PNEU" is a substring of "PNEU_VT13". Also see examples.
+#' @param cause_list the list of potential latent status
 #' 
 #' @examples 
-#' cause_list <- c("A","B1","B2","C","D","E")
-#' pathogen_BrS_1 <- c("A","B1","B2","C","D","E")
-#' pathogen_BrS_2 <- c("A","B","C","D","E")
-#' combined_causes2meas <- list(comb_cause = c(2,3),comb_meas = 2)
-#' make_template(cause_list,pathogen_BrS_1)
-#' make_template(cause_list,pathogen_BrS_1, pathogen_BrS_2,combined_causes2meas)
+#' 
+#' cause_list <- c("HINF","PNEU_VT13","PNEU_NOVT13","SAUR","HMPV_A_B","FLU_A",
+#' "PARA_1","PARA_3","PARA_4","PV_EV","RHINO","RSV", "ENTRB","TB")
+#' 
+#' patho_BrS_NPPCR <- c("HINF","PNEU","SAUR","HMPV_A_B","FLU_A","PARA_1",
+#' "PARA_3","PARA_4","PV_EV","RHINO","RSV")
+#' make_template(patho_BrS_NPPCR,cause_list)
+#' 
+#' @return a mapping from \code{patho} to \code{cause_list}. 
+#'\code{NROW = length(cause_list)+1};
+#'\code{NCOL = length(patho)}. This value is crucial in model fitting to determine
+#'which measurements are informative of a particular category of latent status.
+#'
 #' @export
-make_template <- function(cause_list, pathogen_BrS, 
-                          pathogen_BrS_combined = NULL, combined_causes2meas = NULL){
-
-  Jcause     <- length(cause_list)
-  J_BrS  <- length(pathogen_BrS)
-  template <- as.matrix(rbind(symb2I(cause_list,pathogen_BrS),rep(0,J_BrS)))
-  colnames(template) <- pathogen_BrS
-  rownames(template) <- c(cause_list,"control")
-  if (!is.null(pathogen_BrS_combined)){
-    template[,combined_causes2meas[[2]]] <- matrix(rowSums(template[,combined_causes2meas[[1]],drop=FALSE]),nrow=nrow(template))
-    template <- template[,-setdiff(combined_causes2meas[[1]],combined_causes2meas[[2]]),drop=FALSE]
-    colnames(template)[combined_causes2meas[[2]]] <- pathogen_BrS_combined[combined_causes2meas[[2]],drop=FALSE]
+#' 
+make_template <- function(patho,cause_list){
+  # patho must be substring of some cause_list elements, e.g., "PNEU" is a substring of "PNEU_VT13".
+  res <- list()
+  for (i in seq_along(patho)){
+    res[[i]] <- as.numeric(grepl(patho[i],cause_list))
   }
+  template <- t(do.call(rbind,res))
+  template <- rbind(template,rep(0,ncol(template)))
+  rownames(template) <- c(cause_list,"control")
+  colnames(template) <- patho
+  
   template
 }
-
-

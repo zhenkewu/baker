@@ -2,39 +2,33 @@
 % Please edit documentation in R/utils.R
 \name{make_template}
 \alias{make_template}
-\title{make template for fitting nplcm model}
+\title{make a mapping template for model fitting}
 \usage{
-make_template(cause_list, pathogen_BrS, pathogen_BrS_combined = NULL,
-  combined_causes2meas = NULL)
+make_template(patho, cause_list)
 }
 \arguments{
-\item{pathogen_BrS}{a vector of strings of all possible pathogen measurements. If
-there are multiple BrS measurements, this vector should be the one with the finest
-labeling of pathogens}
+\item{patho}{a vector of pathogen names. \code{patho}
+must be substring of some \code{cause_list} elements, e.g.,
+"PNEU" is a substring of "PNEU_VT13". Also see examples.}
 
-\item{pathogen_BrS_combined}{Default is \code{NULL}. It is a vector of strings of extra measurements. It maybe
-consisted of some exact names from \code{pathogen_BrS} or it has a new name that combine
-some names in \code{pathogen_BrS}. See example.}
-
-\item{combined_causes2meas}{Default is \code{NULL}. It is a list with two elements. The first
-is the indices of measurments to combine in the finer vector \code{pathogen_BrS}; the second element
-is the position in \code{pathogen_BrS_combined} that represents the combined measurement names. It currently
-assumes that the two elements have the same first index. See example.}
-
-\item{cause_lista}{a vector of strings representing latent status}
+\item{cause_list}{the list of potential latent status}
 }
 \value{
-a matrix with rows being latent status, columns being measured biomarkers (pathogens)
+a mapping from \code{patho} to \code{cause_list}.
+\code{NROW = length(cause_list)+1};
+\code{NCOL = length(patho)}. This value is crucial in model fitting to determine
+which measurements are informative of a particular category of latent status.
 }
 \description{
-template is a function of a cause list and measurement list
+\code{make_template} creates a mapping matrix so that a measurement is mapped
+to inform a particular latent status. Crucial for model fitting.
 }
 \examples{
-cause_list <- c("A","B1","B2","C","D","E")
-pathogen_BrS_1 <- c("A","B1","B2","C","D","E")
-pathogen_BrS_2 <- c("A","B","C","D","E")
-combined_causes2meas <- list(comb_cause = c(2,3),comb_meas = 2)
-make_template(cause_list,pathogen_BrS_1)
-make_template(cause_list,pathogen_BrS_1, pathogen_BrS_2,combined_causes2meas)
+cause_list <- c("HINF","PNEU_VT13","PNEU_NOVT13","SAUR","HMPV_A_B","FLU_A",
+"PARA_1","PARA_3","PARA_4","PV_EV","RHINO","RSV", "ENTRB","TB")
+
+patho_BrS_NPPCR <- c("HINF","PNEU","SAUR","HMPV_A_B","FLU_A","PARA_1",
+"PARA_3","PARA_4","PV_EV","RHINO","RSV")
+make_template(patho_BrS_NPPCR,cause_list)
 }
 
