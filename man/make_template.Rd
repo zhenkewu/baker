@@ -30,5 +30,14 @@ cause_list <- c("HINF","PNEU_VT13","PNEU_NOVT13","SAUR","HMPV_A_B","FLU_A",
 patho_BrS_NPPCR <- c("HINF","PNEU","SAUR","HMPV_A_B","FLU_A","PARA_1",
 "PARA_3","PARA_4","PV_EV","RHINO","RSV")
 make_template(patho_BrS_NPPCR,cause_list)
+
+
+ cause = c("A","B1","B2","C","A+C","B+C")
+ patho = c("A","B","C")
+ make_template(patho,cause)
+
+ cause = c("A","B1","B2","C","A+C","B+C","other")
+ patho = c("A","B","C")
+ make_template(patho,cause)
 }
 

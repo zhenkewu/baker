@@ -12,13 +12,13 @@ simulate_nplcm(set_parameter)
 \value{
 A list of measurements, true latent statues:
 \itemize{
- \item{\code{template}} a matrix: rows for causes, columns for measurements;
- generated as a lookup table to match mixture component parmeters for every type
-  (a particular cause) of indiviuals.
  \item{\code{data_nplcm}} a list of structured data (see \code{\link{nplcm}} for
  description) for use in visualization
  e.g., \code{\link{plot_logORmat}} or model fitting, e.g., \code{\link{nplcm}}.
  The pathogen taxonomy is set to default "B".
+ \item{\code{template}} a matrix: rows for causes, columns for measurements;
+ generated as a lookup table to match mixture component parmeters for every type
+  (a particular cause) of indiviuals.
  \item{\code{latent_cat}} integer values to indicate the latent category. The integer
  code corresponds to the order specified in \code{set_parameter$etiology}.
  Controls are coded as \code{length(set_parameter$etiology)+1}.)
@@ -30,10 +30,9 @@ dimension J times K. NB: document the elements in \code{set_parameter}. Also, cu
 function is written in a way to facilitate adding more measurement components.
 }
 \examples{
-\dontrun{
 K.true  <- 2   # no. of latent subclasses in actual simulation.
 J       <- 5   # no. of pathogens.
-N      <- 10000
+N      <- 1000 # no. of cases or controls.
 eta_seq      <- seq(0,0.5,by=0.05)
 
 eta <- 0
@@ -66,8 +65,12 @@ set_parameter <- list(
 
  simu_out <- simulate_nplcm(set_parameter)
  data_nplcm <- simu_out$data_nplcm
- pathogen_display <- data_nplcm$Mname$Mname_BrS
+
+ pathogen_display <- rev(set_parameter$pathogen_BrS)
  plot_logORmat(data_nplcm,pathogen_display)
 }
+\seealso{
+\link{simulate_latent} for simulating discrete latent status, given
+which \link{simulate_brs} simulates bronze-standard data.
 }
 

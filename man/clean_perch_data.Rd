@@ -54,6 +54,9 @@ for variable - usually \code{\{pathogen name\}_\{specimen\}_\{test\}} and other 
 names) into a list. It is specific for PERCH data format.
 }
 \seealso{
-\link[lubridate]{parse_date_time}
+\link{make_meas_object} for wrapping information about a particular
+type of measurement; \link{extract_data_raw} for reading raw data table
+and organizing them into \code{data_nplcm} format. Also see \link{clean_combine_subsites}
+for combining subsites and \link[lubridate]{parse_date_time} for parsing date.
 }
 

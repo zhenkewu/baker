@@ -13,21 +13,23 @@
 #' @param data_nplcm See \code{\link{assign_model}}.
 #' @param pathogen_display The pathogen vector in desired order for display.
 #' It can be of larger length than that of \code{pathogen_BrS}.
+#' @param BrS_slice Default is 1 - the set of BrS data to visualize.
 #' @param logOR_rounding Rounding number of the log odds ratio. Default is 2.
-#' @param brs_slice Default is 1 - the set of BrS data to visualize.
 #' 
 #' @return Figure of LOR matrix and relavent s.e. and significance information.
 #' @export
 
 plot_logORmat = function(data_nplcm,
                          pathogen_display,
-                         logOR_rounding = 2,
-                         brs_slice = 1){
+                         BrS_slice = 1,
+                         logOR_rounding = 2){
   Y <- data_nplcm$Y
-  cat("== Visualizing pairwise log odds ratios for bronze-standard data set: ", brs_slice,". ==")
-  MBS.case <- as.matrix(data_nplcm$Mobs$MBS[[brs_slice]][Y==1,,drop=FALSE])
-  MBS.ctrl <- as.matrix(data_nplcm$Mobs$MBS[[brs_slice]][Y==0,,drop=FALSE])
-  pathogen_BrS <- data_nplcm$Mname$Mname_BrS
+  cat("== Visualizing pairwise log odds ratios for bronze-standard data set: ", BrS_slice, ": ",names(data_nplcm$Mobs$MBS[BrS_slice]) ,". ==")
+  MBS.case <- as.matrix(data_nplcm$Mobs$MBS[[BrS_slice]][Y==1,,drop=FALSE])
+  MBS.ctrl <- as.matrix(data_nplcm$Mobs$MBS[[BrS_slice]][Y==0,,drop=FALSE])
+  pathogen_BrS <- colnames(MBS.case)
+  
+  if(length(pathogen_BrS)){stop("== Cannot do log odds ratio plot with only one measurement! ==")}
   
   if (is.null(data_nplcm$Mobs$MBS) || is.na(data_nplcm$Mobs["MBS"])){
     stop("==No bronze-standard data!==")
