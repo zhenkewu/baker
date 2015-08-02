@@ -29,7 +29,7 @@ plot_logORmat = function(data_nplcm,
   MBS.ctrl <- as.matrix(data_nplcm$Mobs$MBS[[BrS_slice]][Y==0,,drop=FALSE])
   pathogen_BrS <- colnames(MBS.case)
   
-  if(length(pathogen_BrS)){stop("== Cannot do log odds ratio plot with only one measurement! ==")}
+  if(length(pathogen_BrS)==1){stop("== Cannot do log odds ratio plot with only one measurement! ==")}
   
   if (is.null(data_nplcm$Mobs$MBS) || is.na(data_nplcm$Mobs["MBS"])){
     stop("==No bronze-standard data!==")

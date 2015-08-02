@@ -33,35 +33,39 @@ data, not design matrix for regression models.
 \item{model_options}{A list of model options.
 
 \itemize{
-\item \code{M_use} List of measurements to be used in the model;
-\item \code{k_subclass}The number of nested subclasses. 1 for conditional independence,
+
+\item \code{likelihood}{
+    \itemize{
+         \item{cause_list}The vector of latent status;
+         \item{k_subclass} The number of nested subclasses. 1 for conditional independence,
 >1 for conditional dependence;
-\item \code{TPR_prior} Description of priors for the measurements
-(e.g., informative vs non-informative).
-Its length should be the same with \code{M_use};
-\item \code{Eti_prior} Description of etiology prior
-(e.g., \code{overall_uniform} - all hyperparameters are 1; or \code{0_1} - all hyperparameters
-are 0.1);
-\item \code{pathogen_BrS_list} The vector of pathogen names with BrS measure;
-\item \code{cause_list} The vector of causes that are either singleton or
-combinations of items in \code{pathogen_BrS_list}; 'NoA' can also be included
-at the end, meaning 'None-of-Above';
-\item \code{X_reg_FPR} formula for false positive rates (FPR) regressions; see
+         \item{Eti_formula} formula for etiology regressions. You can use
+\code{\link{dm_Rdate_Eti}} to specify the design matrix for R format enrollment date;
+it will produce natural cubic splines for every date. Specify \code{~0} if no
+regression is intended.
+         \item{FPR_formula}formula for false positive rates (FPR) regressions; see
 \code{\link{formula}}. You can use \code{\link{dm_Rdate_FPR}} to specify part
 of the design matrix for R format enrollment date; it will produce thin-plate
 regression spline basis for every date (if \code{effect="random"} and \code{num_knots_FPR} is
 specified to a positive integer, e.g., 10.). If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
 will just specify a design matrix with appropirately standardized dates. Specify \code{~0} if no
 regression is intended.
-\item \code{X_reg_Eti} formula for etiology regressions. You can use
-\code{\link{dm_Rdate_Eti}} to specify the design matrix for R format enrollment date;
-it will produce natural cubic splines for every date. Specify \code{~0} if no
-regression is intended.
-\item \code{pathogen_BrS_cat} The two-column data frame that has category of pathogens: virus (V), bacteria (B)
-and fungi (F);
-\item \code{pathogen_SSonly_list} The vector of pathogens with only
-SS measure;
-\item \code{pathogen_SSonly_cat} The category of pathogens with only SS measure.
+    }
+}
+\item \code{use_measurements}{
+     a vector of characters strings; can be any singleton or combinaitons of "BrS", "SS", "GS".
+}
+
+\item \code{prior}{
+    \itemize{
+         \item{Eti_prior}Description of etiology prior
+(e.g., \code{overall_uniform} - all hyperparameters are 1; or \code{0_1} - all hyperparameters
+are 0.1);
+         \item{TPR_prior}Description of priors for the measurements
+(e.g., informative vs non-informative).
+Its length should be the same with \code{M_use};
+    }
+}
 }}
 
 \item{mcmc_options}{A list of Markov chain Monte Carlo (MCMC) options.

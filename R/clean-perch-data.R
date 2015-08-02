@@ -257,26 +257,6 @@ extract_data_raw <- function(meas_dir,strat_nm,strat_val,
   }
   dat = dat_prepared[ind_this_strat,]
   
-  
-  #' get position to store in data_nplcm$Mobs:
-  #' @examples
-  #' \dontrun{
-  #' lookup_quality("BrS")
-  #' lookup_quality("HH")
-  #' }
-  lookup_quality <- function(quality_nm) {
-    if (quality_nm == "BrS") {
-      return(1)
-    }
-    if (quality_nm == "SS") {
-      return(2)
-    }
-    if (quality_nm == "GS") {
-      return(3)
-    }
-    stop("== Please provide measurement quality names within (\"BrS\",\"SS\",\"GS\")! ==")
-  }
-  
   read_meas_object <- function(object,data) {
     position <- lookup_quality(object$quality)
     meas <- data[,object$name_in_data,drop = FALSE]
@@ -329,7 +309,7 @@ extract_data_raw <- function(meas_dir,strat_nm,strat_val,
 
 #' get an individual's data from the output of \code{\link{clean_perch_data}}
 #'
-#' @param data_nplcm
+#' @param data_nplcm data for fitting nplcm; See \link{nplcm}
 #' @param ID patient id: \code{patid}.
 #'
 #' @return a list with the inquired patient's data

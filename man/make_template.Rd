@@ -23,6 +23,10 @@ which measurements are informative of a particular category of latent status.
 \code{make_template} creates a mapping matrix so that a measurement is mapped
 to inform a particular latent status. Crucial for model fitting.
 }
+\details{
+The first argument has to be character substrings from the second argument. The
+second argument can have character strings not matched in the first argument.
+}
 \examples{
 cause_list <- c("HINF","PNEU_VT13","PNEU_NOVT13","SAUR","HMPV_A_B","FLU_A",
 "PARA_1","PARA_3","PARA_4","PV_EV","RHINO","RSV", "ENTRB","TB")

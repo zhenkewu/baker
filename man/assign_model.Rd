@@ -4,25 +4,12 @@
 \alias{assign_model}
 \title{Choose a model to fit}
 \usage{
-assign_model(data_nplcm, model_options, silent = TRUE)
+assign_model(model_options, data_nplcm)
 }
 \arguments{
-\item{data_nplcm}{Data for model fitting. Details are
-\itemize{
-\item \code{Mobs} See \code{\link{nplcm}} function.
-\item \code{Y} See \code{\link{nplcm}} function.
-\item \code{X} See \code{\link{nplcm}} function.
-\item \code{Mname} A list of pathogen names. \code{Mname_BrS} for BrS only pathogens,
-and \code{Mname_SSonly} for pathogens with only SS measures.
-\item \code{taxonomy} A list of pathogen taxonomy. The elements include
-\code{taxo_BrS} and \code{taxo_SSonly}. It can be used to represent biological
-classifications, such as bacteria (\code{B}) versus virus (\code{V}).
-}}
-
 \item{model_options}{See \code{\link{nplcm}} function.}
 
-\item{silent}{Default is \code{TRUE}: print assigned
-model descriptions on screen; otherwise, \code{FALSE}.}
+\item{data_nplcm}{Data for model fitting.}
 }
 \value{
 A list of information for the selected model:

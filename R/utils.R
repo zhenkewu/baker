@@ -1366,8 +1366,7 @@ make_list <- function(...) {
 #' @return a list with names numbered
 #'
 #' @export
-#'
-#'
+
 make_numbered_list <- function(...) {
   #put all values into a list
   argument_values <- list(...)
@@ -1390,6 +1389,9 @@ make_numbered_list <- function(...) {
 #' \code{make_template} creates a mapping matrix so that a measurement is mapped
 #' to inform a particular latent status. Crucial for model fitting.
 #'
+#' @details The first argument has to be character substrings from the second argument. The
+#' second argument can have character strings not matched in the first argument.
+#' 
 #' @param patho a vector of pathogen names. \code{patho}
 #'  must be substring of some \code{cause_list} elements, e.g.,
 #'  "PNEU" is a substring of "PNEU_VT13". Also see examples.
@@ -1418,7 +1420,7 @@ make_numbered_list <- function(...) {
 #'which measurements are informative of a particular category of latent status.
 #'
 #' @export
-#'
+
 make_template <- function(patho, cause_list) {
   # patho must be substring of some cause_list elements, e.g., "PNEU" is a substring of "PNEU_VT13".
   res <- list()
@@ -1437,4 +1439,72 @@ make_template <- function(patho, cause_list) {
   colnames(template) <- nm_col
   
   template
+}
+
+#' get position to store in data_nplcm$Mobs:
+#' 
+#' @details  also works for a vector
+#' 
+#' @param quality_nm names of quality: can be "BrS", "SS" or "GS"
+#' 
+#' @return position of the quality name: "BrS"-1; "SS"-2; "GS"-3.
+#' 
+#' @examples
+#' \dontrun{
+#' lookup_quality("BrS")
+#' lookup_quality("HH")
+#' }
+
+lookup_quality <- function(quality_nm) {
+  res_pos <- list()
+  for (i in seq_along(quality_nm)){
+    if (quality_nm[i] == "BrS") {
+      res_pos[i] <- 1
+    }
+    if (quality_nm[i] == "SS") {
+      res_pos[i] <- 2
+    }
+    if (quality_nm[i] == "GS") {
+      res_pos[i] <- 3
+    }
+    if (! (quality_nm[i] %in% c("BrS","SS","GS"))){
+      stop("== Please provide measurement quality names within (\"BrS\",\"SS\",\"GS\")! ==")
+    }
+  }
+  unlist(res_pos)
+}
+
+#' parse regression components (either false positive rate or etiology regression)
+#' for fitting nplcm
+#' 
+#' @param form regression formula
+#' @param data_nplcm data object for nplcm; must contain covariates X and outcome Y.
+#' 
+#' @return TURE for doing regression; FALSE otherwise.
+parse_nplcm_reg <- function(form,data_nplcm){
+  res <-
+    try(model.matrix(form,data.frame(data_nplcm$X,Y = data_nplcm$Y)))
+  if (is.error(res)) {
+    stop()
+  }
+  if (is.empty.model(form)) {
+    return(FALSE)
+  } else{
+    return(TRUE)
+  }
+}
+
+
+#' convert one column dataframe to a vector
+#' 
+#' @param x an one-column data.frame
+#' 
+#' @return a vector
+#' 
+#' @export
+as.matrix_or_vec <- function(x){
+  if (ncol(x)==1){
+    return(c(as.matrix(x)))
+  }  
+  as.matrix(x)
 }

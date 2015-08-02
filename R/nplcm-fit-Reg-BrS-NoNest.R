@@ -252,9 +252,9 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
               }")
              
              
-            paste0("model{\n",
+            paste0("model{#BEGIN OF MODEL:\n",
                    chunk1,"\n",chunk2,"\n",chunk3,"\n",
-                   "}")
+                   "}#END OF MODEL.")
     }
     
     #-----------------END OF MODELS----------------------------------#

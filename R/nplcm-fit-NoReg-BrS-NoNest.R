@@ -16,7 +16,6 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("equals","Icat","thetaBS"
 #' @inheritParams nplcm
 #' @return WinBUGS fit results.
 #'
-#' @export
 
 nplcm_fit_NoReg_BrS_NoNest<-
   function(data_nplcm,model_options,mcmc_options){
