@@ -74,15 +74,6 @@ set_prior_tpr_BrS <- function(model_options,data_nplcm){
   }
 }
   
-# what1 <- set_prior_tpr_BrS(m_opt,data_nplcm)
-# what2 <- set_prior_tpr_BrS(m_opt2,data_nplcm)
-
-
-
-
-
-
-
 #' Set true positive rate (TPR) prior ranges for silver-standard data
 #'
 #' Current prior assignment let bacteria NPPCR to have uniform range, viral NPPCR
@@ -124,14 +115,14 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
     prior_SS <- model_options$prior$TPR_prior$SS
     
     if (!is.null(prior_SS$grp)){GSS_TPR <- length(unique(prior_SS$grp))}
-    if (is.null(prior_SS$grp)){GSS_TPR <- 1}
+    if (is.null(prior_SS$grp)) {GSS_TPR <- 1}
       res_all_grp <- list()
       
       for (g in 1:GSS_TPR){ # iterate over TPR split groups:
         res_alpha <- list()
         res_beta <- list()
         
-        if (prior_SS$info == "non-informative"){
+        if (prior_SS$info == "non-informative"){ # <------ not correct; also need to stratify by group.
           for (s in seq_along(Mobs$MSS)){
             res_alpha[[s]] <- res_beta[[s]] <- rep(1,ncol(Mobs$MSS[[s]]))
           }
@@ -172,9 +163,5 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
     return(res_all_grp)
   }
 }
-# 
-# what3 <- set_prior_tpr_SS(m_opt3,data_nplcm)
-# what4 <- set_prior_tpr_SS(m_opt4,data_nplcm)
-
 
 

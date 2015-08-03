@@ -20,5 +20,4 @@ write_model_NoReg_NoNest <- function(Mobs,prior,cause_list,use_measurements){
          chunk1,"\n",
          chunk2,"\n",
          "}#END OF MODEL.")
-  
 }
