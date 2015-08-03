@@ -1,6 +1,7 @@
 #' Read data and other model information from a folder that stores model results.
 #'
 #' @param DIR_NPLCM File path to the folder containing posterior samples
+#' 
 #' @return A list with data, options and posterior samples.
 #'
 #' @export
@@ -28,9 +29,37 @@ nplcm_read_folder <- function(DIR_NPLCM){
   Nu <- bugs.dat$Nu
   Y  <- c(rep(1,Nd),rep(0,Nu))
   
-  Mobs <- list(MBS = bugs.dat$MBS,
-               MSS = bugs.dat$MSS,
-               MGS = bugs.dat$MGS)
+  
+  get_MBS <- function(){
+      MBS_nm <- (names(bugs.dat)[grep("MBS_",names(bugs.dat))])
+      MBS_nm <- MBS_nm[order(MBS_nm)]
+      res <- list()
+      for (s in seq_along(MBS_nm)){
+        res[[s]] <- as.data.frame(bugs.dat[[MBS_nm[s]]])
+        colnames(res[[s]]) <- clean_options$BrS_objects[[s]]$patho
+      }
+      names(res) <- unlist(lapply(clean_options$BrS_objects,"[[","nm_spec_test"))
+      res
+  }
+  
+  get_MSS <- function(){
+    MSS_nm <- (names(bugs.dat)[grep("MSS_",names(bugs.dat))])
+    MSS_nm <- MSS_nm[order(MSS_nm)]
+    res <- list()
+    for (s in seq_along(MSS_nm)){
+      res[[s]] <- as.data.frame(bugs.dat[[MSS_nm[s]]])
+      colnames(res[[s]]) <- clean_options$SS_objects[[s]]$patho
+    }
+    names(res) <- unlist(lapply(clean_options$SS_objects,"[[","nm_spec_test"))
+    res
+  }
+  
+  MBS <- MSS <- MGS <- NULL
+  
+  if ("BrS" %in% model_options$use_measurements){MBS <- get_MBS()}
+  if ("SS" %in% model_options$use_measurements){MSS <- get_MSS()}
+  
+  Mobs <- make_list(MBS, MSS, MGS)
   
   res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"coda1.txt"),
                          file.path(DIR_NPLCM,"codaIndex.txt"),

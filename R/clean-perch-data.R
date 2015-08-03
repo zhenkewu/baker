@@ -65,7 +65,7 @@ clean_perch_data <- function(clean_options) {
   BrS_objects  <- clean_options$BrS_objects
   SS_objects   <- clean_options$SS_objects
   X_extra      <- clean_options$X_extra
-  patho_taxo_dir    <- clean_options$patho_taxo_dir
+  #patho_taxo_dir    <- clean_options$patho_taxo_dir
   allow_missing     <- clean_options
   
   # clean dates: use specified date format; if not specified, try the formats
@@ -357,3 +357,44 @@ clean_combine_subsites <-
       return(tmp.dat)
     }
   }
+
+#' assign taxonomy information to every slice of measurements
+#' 
+#' @param meas_object measurement object constructed by \link{make_meas_object}
+#' @param dir_taxo file path to the .csv file storing two columns of information:
+#' \code{pathogen}, and \code{pathogen_type}.
+#' 
+#' @return a vector of factors of taxonomy information (currently for "B","F","V"). 
+#' The names of the vector are pathogen names.
+#' 
+#' @export 
+
+assign_taxo <- function(meas_object, dir_taxo){
+  patho_taxo_dir    <- clean_options$patho_taxo_dir
+  patho_taxo <- read.csv(patho_taxo_dir,header=TRUE,stringsAsFactors = FALSE)
+  patho_taxo$pathogen_type <- factor(patho_taxo$pathogen_type,levels=c("B","F","V"))
+  res_taxo   <- patho_taxo$pathogen_type[match(meas_object$patho,patho_taxo[,1])]
+  names(res_taxo) <- meas_object$patho
+  res_taxo
+}
+
+#' assign taxonomy information to cause list
+#' 
+#' @param cause_list cause_list in model_options$likelihood
+#' @param dir_taxo file path to the .csv file storing two columns of information:
+#' \code{pathogen}, and \code{pathogen_type}.
+#' 
+#' @return a vector of factors of taxonomy information (currently for "B","F","V"). 
+#' The names of the vector are pathogen names.
+#' 
+#' @export
+
+
+assign_taxo_cause_list <- function(cause_list, dir_taxo){
+  patho_taxo_dir    <- clean_options$patho_taxo_dir
+  patho_taxo <- read.csv(patho_taxo_dir,header=TRUE,stringsAsFactors = FALSE)
+  patho_taxo$pathogen_type <- factor(patho_taxo$pathogen_type,levels=c("B","F","V"))
+  res_taxo   <- patho_taxo$pathogen_type[match(cause_list,patho_taxo[,1])]
+  names(res_taxo) <- cause_list
+  res_taxo
+}

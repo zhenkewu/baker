@@ -53,13 +53,13 @@ assign_model <- function(model_options,data_nplcm){
   
   
   # specify regression for FPR:
-  do_reg_FPR <- list()
+  do_reg_FPR <- list() #  <---- a regression for each measurement slice?
   for (i in seq_along(Mobs$MBS)) {
     ind_tmp <-
       which(names(likelihood$FPR_formula) == names(Mobs$MBS)[i])
-    if (!length(ind_tmp)) {
+    if (!length(ind_tmp)) { # don't do regression if no regression formula is found:
       do_reg_FPR[[i]] <- FALSE
-    } else{
+    } else{ # do regression if there is matched regression formula:
       do_reg_FPR[[i]] <-
         parse_nplcm_reg(as.formula(likelihood$FPR_formula[[ind_tmp]]),data_nplcm)
     }
@@ -67,7 +67,7 @@ assign_model <- function(model_options,data_nplcm){
   names(do_reg_FPR) <- names(Mobs$MBS)
   
   # specify regression for etiology:
-  form_tmp <- as.formula(likelihood$Eti_formula)
+  form_tmp   <- as.formula(likelihood$Eti_formula)
   do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm)
   regression <- make_list(do_reg_Eti, do_reg_FPR)
   make_list(num_slice, nested, regression)

@@ -1483,10 +1483,11 @@ lookup_quality <- function(quality_nm) {
 #' @param data_nplcm data object for nplcm; must contain covariates X and outcome Y.
 #' 
 #' @return TURE for doing regression; FALSE otherwise.
+#' 
 #' @export
 parse_nplcm_reg <- function(form,data_nplcm){
   if (is.null(data_nplcm$X)) {
-    print("== There are no covariate data in `data_nplcm` =="); 
+    print("\n == There are no covariate data in `data_nplcm` =="); 
     return(FALSE)
   }
   

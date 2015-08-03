@@ -2,8 +2,8 @@
 % Please edit documentation in R/plot-group-etiology.R
 \name{plot_group_etiology}
 \alias{plot_group_etiology}
-\title{Plot viral etiology posterior and distribution within bacterial and viral
-etiologies}
+\title{Plot grouped (two groups) posterior and cascade distributions (next top-three)
+within each group}
 \usage{
 plot_group_etiology(DIR_NPLCM, ksFrac = 1, levellabel = 5)
 }
