@@ -1,5 +1,3 @@
-if(getRversion() >= "2.15.1") utils::globalVariables(c("equals","Icat","thetaBS",
-                                                       "Icat.new","psiBS"))
 #' Fit nested partially-latent class model (low-level)
 #'
 #' Features:
@@ -11,7 +9,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("equals","Icat","thetaBS"
 #' @inheritParams nplcm
 #' @return WinBUGS fit results.
 #' 
-#' @seealso \link{write_model_NoReg_plcm} for writing .bug model file; 
+#' @seealso \link{write_model_NoReg_NoNest} for writing .bug model file; 
 #' 
 #' @export
 nplcm_fit_NoReg_NoNest<-
@@ -30,7 +28,7 @@ nplcm_fit_NoReg_NoNest<-
     # read in options:
     likelihood       <- model_options$likelihood
     use_measurements <- model_options$use_measurements
-    prior            <- model_options
+    prior            <- model_options$prior
     
     # define generic function to call WinBUGS:
     call.bugs <- function(data, inits, parameters,m.file,
@@ -106,11 +104,13 @@ nplcm_fit_NoReg_NoNest<-
           assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))   
         }
       
+        BrS_tpr_prior <- set_prior_tpr_BrS(model_options,data_nplcm)
+        
         # set BrS measurement priors: (need to add informative specification!)
         # hyperparameter for sensitivity (can add for specificity if necessary): 
         for(i in seq_along(JBrS_list)){
-          assign(paste("alphaB", i, sep = "_"), rep(1,JBrS_list[[i]]))    
-          assign(paste("betaB", i, sep = "_"),  rep(1,JBrS_list[[i]]))    
+          assign(paste("alphaB", i, sep = "_"), BrS_tpr_prior$alpha[[i]])     # <---- input BrS TPR prior here.
+          assign(paste("betaB", i, sep = "_"),  BrS_tpr_prior$beta[[i]])    
         }
         
         if (length(single_column_MBS)==0){
@@ -157,30 +157,99 @@ nplcm_fit_NoReg_NoNest<-
           assign(paste("templateSS", i, sep = "_"), as.matrix_or_vec(template_SS_list[[i]]))   
         }
         
+        # setup groupwise TPR for SS:
+        SS_TPR_strat <- FALSE
+        prior_SS <- model_options$prior$TPR_prior$SS
+        if (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 ){
+          SS_TPR_strat <- TRUE
+          for(i in seq_along(JSS_list)){
+            assign(paste("GSS_TPR", i, sep = "_"),  length(unique(prior_SS$grp)))    
+            assign(paste("SS_TPR_grp", i, sep = "_"),  prior_SS$grp)    
+          }
+        }
+        
+        # add GSS_TPR_1, or 2 if we want to index by slices:
+        for (i in seq_along(JSS_list)){
+          if (!is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
+            assign(paste("GSS_TPR", i, sep = "_"), length(unique(prior_SS$grp)))
+          }
+          if (is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
+            assign(paste("GSS_TPR", i, sep = "_"), 1)
+          }
+        }
+
+        
+        SS_tpr_prior <- set_prior_tpr_SS(model_options,data_nplcm)
+        
+        
         # set SS measurement priors: (need to add informative specification!)
         # hyper parameters for sensitivity:
         for(i in seq_along(JSS_list)){
-          assign(paste("alphaS", i, sep = "_"), rep(1,JSS_list[[i]]))    
-          assign(paste("betaS", i, sep = "_"),  rep(1,JSS_list[[i]]))    
+          
+          GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
+          alpha_mat <- list() # dimension for slices.
+          beta_mat  <- list()
+          alpha_mat[[i]] <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+          beta_mat[[i]]  <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+          
+          colnames(alpha_mat[[i]]) <- patho_SS_list[[i]]
+          colnames(beta_mat[[i]]) <- patho_SS_list[[i]]
+          
+          for (g in 1:GSS_TPR_curr){
+            alpha_mat[[i]][g,] <- unlist(lapply(SS_tpr_prior,"[[","alpha")[g][[i]])
+            beta_mat[[i]][g,]  <- unlist(lapply(SS_tpr_prior,"[[","beta")[g][[i]])
+          }
+          names(alpha_mat) <- names(beta_mat) <- names(Mobs$MSS)
+          
+          if (GSS_TPR_curr>1){
+            assign(paste("alphaS", i, sep = "_"), alpha_mat[[i]])    # <---- input SS TPR prior here.
+            assign(paste("betaS", i, sep = "_"),  beta_mat[[i]])    
+          }else{
+            assign(paste("alphaS", i, sep = "_"), c(alpha_mat[[i]]))   # <---- input SS TPR prior here.
+            assign(paste("betaS", i, sep = "_"),  c(beta_mat[[i]]))    
+          }
         }
         
-        if (length(single_column_MSS)==0){
-          # summarize into one name (for all measurements):
-          in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
-                             paste("JSS",1:length(JSS_list),sep="_"),
-                             paste("MSS",1:length(JSS_list),sep="_"),
-                             paste("templateSS",1:length(JSS_list),sep="_"),
-                             paste("alphaS",1:length(JSS_list),sep="_"),
-                             paste("betaS",1:length(JSS_list),sep="_")))
-        } else{
-          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
-                                  paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
-                                  paste("MSS",1:length(JSS_list),sep="_"),
-                                  paste("templateSS",1:length(JSS_list),sep="_"),
-                                  paste("alphaS",1:length(JSS_list),sep="_"),
-                                  paste("betaS",1:length(JSS_list),sep="_")))
-        }
-        
+        if (!SS_TPR_strat){
+            if (length(single_column_MSS)==0){
+              # summarize into one name (for all measurements):
+              in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
+                                 paste("JSS",1:length(JSS_list),sep="_"),
+                                 paste("MSS",1:length(JSS_list),sep="_"),
+                                 paste("templateSS",1:length(JSS_list),sep="_"),
+                                 paste("alphaS",1:length(JSS_list),sep="_"),   
+                                 paste("betaS",1:length(JSS_list),sep="_")))
+            } else{
+              in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
+                                      paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
+                                      paste("MSS",1:length(JSS_list),sep="_"),
+                                      paste("templateSS",1:length(JSS_list),sep="_"),
+                                      paste("alphaS",1:length(JSS_list),sep="_"),
+                                      paste("betaS",1:length(JSS_list),sep="_")))
+            }
+        }else {
+            if (length(single_column_MSS)==0){
+              # summarize into one name (for all measurements):
+              in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
+                                        paste("JSS",1:length(JSS_list),sep="_"),
+                                        paste("GSS_TPR",1:length(JSS_list),sep="_"),
+                                        paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
+                                        paste("MSS",1:length(JSS_list),sep="_"),
+                                        paste("templateSS",1:length(JSS_list),sep="_"),
+                                        paste("alphaS",1:length(JSS_list),sep="_"),   
+                                        paste("betaS",1:length(JSS_list),sep="_")))
+            } else{
+              in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
+                                        paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
+                                        paste("GSS_TPR",1:length(JSS_list),sep="_"),
+                                        paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
+                                        paste("MSS",1:length(JSS_list),sep="_"),
+                                        paste("templateSS",1:length(JSS_list),sep="_"),
+                                        paste("alphaS",1:length(JSS_list),sep="_"),
+                                        paste("betaS",1:length(JSS_list),sep="_")))
+            }
+          
+          }
         out_parameter <- unique(c(out_parameter, paste("thetaSS", seq_along(JSS_list), sep = "_"),
                            "pEti"))
     }
@@ -208,7 +277,12 @@ nplcm_fit_NoReg_NoNest<-
         tmp_thetaSS <- list()
         tmp_psiSS <- list()
         for(i in seq_along(JSS_list)){
-          tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+          GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
+          if (GSS_TPR_curr==1){
+            tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+          } else{
+            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+          }
         }
         res <- c(tmp_thetaSS,tmp_psiSS)
         names(res) <- c(paste("thetaSS", seq_along(JSS_list), sep = "_"))
@@ -232,18 +306,23 @@ nplcm_fit_NoReg_NoNest<-
         tmp_thetaSS <- list()
         tmp_psiSS <- list()
         for(i in seq_along(JSS_list)){
-          tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+          GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
+          if (GSS_TPR_curr==1){
+            tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+          } else{
+            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+          }
         }
         res2 <- c(tmp_thetaSS,tmp_psiSS)
         names(res2) <- c(paste("thetaSS", seq_along(JSS_list), sep = "_"))
-        
+        #print(res2)
         c(res,res2)
       }
     }
 
     
     # etiology (measurement independent)
-    alpha          <- rep(1,Jcause)
+    alpha          <- prior$Eti_prior    # <-------- input etiology prior here.
     
     #
     # fit model :
@@ -265,8 +344,9 @@ nplcm_fit_NoReg_NoNest<-
     if (mcmc_options$ppd==TRUE){
       stop("not done.")
     } else {
-      model_func         <- write_model_NoReg_plcm(data_nplcm$Mobs,model_options$likelihood$cause_list,model_options$use_measurements)
-      model_bugfile_name <- "model_NoReg_plcm.bug"
+      model_func         <- write_model_NoReg_NoNest(data_nplcm$Mobs,model_options$prior,
+                                                     model_options$likelihood$cause_list,model_options$use_measurements)
+      model_bugfile_name <- "model_NoReg_NoNest.bug"
     }
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)

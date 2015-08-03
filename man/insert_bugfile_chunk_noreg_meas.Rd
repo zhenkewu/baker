@@ -2,21 +2,27 @@
 % Please edit documentation in R/insert-bugfile-chunk.R
 \name{insert_bugfile_chunk_noreg_meas}
 \alias{insert_bugfile_chunk_noreg_meas}
-\title{insert bronze-standard measurements code chunks into .bug file}
+\title{Insert measurement likelihood (without regression) code chunk into .bug model file}
 \usage{
-insert_bugfile_chunk_noreg_meas(Mobs, cause_list, meas = "BrS")
+insert_bugfile_chunk_noreg_meas(Mobs, prior, cause_list,
+  use_measurements = "BrS")
 }
 \arguments{
 \item{Mobs}{measurement data in the form of \code{data_nplcm}}
 
+\item{prior}{prior information from \code{model_options}}
+
 \item{cause_list}{a list of latent status (crucial for building templates)}
 
-\item{meas}{"BrS", or "SS"}
+\item{use_measurements}{"BrS", or "SS"}
 }
 \value{
 a long character string to be inserted into target .bug model file
 }
 \description{
-insert bronze-standard measurements code chunks into .bug file
+Insert measurement likelihood (without regression) code chunk into .bug model file
+}
+\seealso{
+\link{write_model_NoReg_NoNest} for constructing a .bug file
 }
 

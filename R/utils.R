@@ -1454,6 +1454,8 @@ make_template <- function(patho, cause_list) {
 #' lookup_quality("BrS")
 #' lookup_quality("HH")
 #' }
+#' 
+#' @export
 
 lookup_quality <- function(quality_nm) {
   res_pos <- list()
@@ -1481,6 +1483,7 @@ lookup_quality <- function(quality_nm) {
 #' @param data_nplcm data object for nplcm; must contain covariates X and outcome Y.
 #' 
 #' @return TURE for doing regression; FALSE otherwise.
+#' @export
 parse_nplcm_reg <- function(form,data_nplcm){
   res <-
     try(model.matrix(form,data.frame(data_nplcm$X,Y = data_nplcm$Y)))

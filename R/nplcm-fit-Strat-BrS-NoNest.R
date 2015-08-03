@@ -1,3 +1,5 @@
+if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prior_eti","thetaBS","psiBS"))
+
 #' Fit nested partially-latent class model with stratification (low-level)
 #'
 #' Use it when one wants manually split data analyses - it requires discrete

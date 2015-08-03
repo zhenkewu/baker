@@ -1,3 +1,5 @@
+if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prior_eti"))
+
 #' Fit nested partially-latent class model with regression (low-level)
 #'
 #' \code{nplcm_fit_Reg_BrS_NoNest} use design matrix to perform etiology 

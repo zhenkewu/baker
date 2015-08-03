@@ -1,4 +1,4 @@
-#' Set true positive rate (TPR) prior ranges
+#' Set true positive rate (TPR) prior ranges for bronze-standard data
 #'
 #' Current prior assignment let bacteria NPPCR to have uniform range, viral NPPCR
 #' to have .5-1.0 range. The PCP (a fungus) NPPCR TPR is also set to be .5-1.0; PCP
@@ -6,138 +6,175 @@
 #' measurments. One question is whether to use informative NPPCR range or non-informative
 #' NPPCR range (0-100%).
 #'
-#' DN: 1.make the assignment of prior dependent on the BCX data availability
-#' or species (bacteria)?
 #'
 #' @param model_options See \code{\link{nplcm}} function.
 #' @param data_nplcm See \code{\link{assign_model}} function.
-#' @return Parameters for the TPR priors, separately for BrS and SS
+#' 
+#' @return Parameters for the TPR priors for BrS data. It is a list of two lists (alpha and beta).
+#' Alpha or beta is of the same length as the number of BrS measurement slices; each element of the list
+#' is a numeric vector for alpha or beta parameters to specify Beta prior for TPRs.
 #'
 #' @export
 
-set_prior_tpr <- function(model_options,data_nplcm){
-      
-      Mobs <- data_nplcm$Mobs
-      Y    <- data_nplcm$Y
-      X    <- data_nplcm$X
+set_prior_tpr_BrS <- function(model_options,data_nplcm){
+
+  parsed_model <- assign_model(model_options,data_nplcm)
+  if (parsed_model$num_slice["MBS"] == 0){stop("== No BrS data! ==")}
+    
+  Mobs <- data_nplcm$Mobs
+  Y    <- data_nplcm$Y
+  X    <- data_nplcm$X
   
-      pathogen_BrS_list <- model_options$pathogen_BrS_list
-      JBrS         <- length(pathogen_BrS_list)#note that here JBrS=JBrS_BrS in nplcm_fit.
-
-      parsing <- assign_model(data_nplcm,model_options)
-
-      # only BrS data is used:
-      if (parsing$measurement$quality=="BrS"){
-        temp_cat_ind <- sapply(model_options$pathogen_BrS_list,
-                               function(path) {which(model_options$pathogen_BrS_cat$X==path)})
-        temp_cat     <- model_options$pathogen_BrS_cat[temp_cat_ind,]
-
-        if (model_options$TPR_prior=="noninformative"){
-           alphaB = rep(1,JBrS)
-           betaB  = rep(1,JBrS)
-        }else if (model_options$TPR_prior=="informative"){
-              #virus have BrS measurement sensitivity in the range of 50-100%.
-              # currently use beta (6,2). bacterial use 0-100%. currently we use beta(1,1).
-              alphaB <- rep(NA,JBrS)
-              betaB  <- rep(NA,JBrS)
-
-              for (t in 1:nrow(temp_cat)){
-                if (temp_cat$pathogen_type[t]=="B"){
-                  alphaB[t] <- 1
-                  betaB[t]  <- 1
-                }
-                if (temp_cat$pathogen_type[t]=="V" | temp_cat$pathogen_type[t]=="F"){
-                  alphaB[t] <- 6
-                  betaB[t]  <- 2
-                }
-              }
+  Nd <- sum(Y)
+  
+  if (parsed_model$num_slice["MBS"] > 0){
+    
+    #
+    # 1. BrS data:
+    #
+    # mapping template (by `make_template` function):
+    patho_BrS_list <- lapply(Mobs$MBS,colnames)
+    template_BrS_list <-
+      lapply(patho_BrS_list,make_template,model_options$likelihood$cause_list) # key.
+    
+    prior_BrS <- model_options$prior$TPR_prior$BrS
+    res_alpha <- list()
+    res_beta <- list()
+    
+    if (prior_BrS$info == "non-informative"){
+        for (s in seq_along(Mobs$MBS)){
+            res_alpha[[s]] <- res_beta[[s]] <- rep(1,ncol(Mobs$MBS[[s]]))
         }
-        res <- list (alphaB = alphaB, betaB = betaB,
-                     used_cat = temp_cat)
-      }
-
-      # both BrS and SS data are used:
-      if (parsing$measurement$quality=="BrS+SS"){
-              ## get JSS:----------
-              MSS.case <- Mobs$MSS[Y==1,1:JBrS]
-              MSS.case <- as.matrix(MSS.case)
-
-              SS_index <- which(colMeans(is.na(MSS.case))<0.9)#.9 is arbitrary; any number <1 will work.
-              JSS      <- length(SS_index)
-              ##------------------------------
-
-              temp_cat_ind <- sapply(model_options$pathogen_BrS_list,
-                                     function(path) {which(model_options$pathogen_BrS_cat$X==path)})
-              temp_cat     <- model_options$pathogen_BrS_cat[temp_cat_ind,]
-
-              if (model_options$TPR_prior[1]=="noninformative"){
-                   alphaB <- rep(1,JBrS)
-                   betaB  <- rep(1,JBrS)
-                }else if (model_options$TPR_prior[1]=="informative"){
-                  #virus have BrS measurement sensitivity in the range of 50-100%.
-                  # currently use beta (6,2). bacterial use 0-100%. currently we use beta(1,1).
-                  alphaB <- rep(NA,JBrS)
-                  betaB  <- rep(NA,JBrS)
-
-                  for (t in 1:nrow(temp_cat)){
-                    if (temp_cat$pathogen_type[t]=="B"){
-                      alphaB[t] <- 1
-                      betaB[t]  <- 1
-                    }
-                    if (temp_cat$pathogen_type[t]=="V" | temp_cat$pathogen_type[t]=="F"){
-                      alphaB[t] <- 6
-                      betaB[t]  <- 2
-                    }
-                  }
-              }
-
-              #need to define JSS here, which is the number of BrS+SS available
-              # bacteria. It is not the same as the JSS used in nplcm_three_panel_plot.
-              if (model_options$TPR_prior[2]=="noninformative"){
-                  alphaS <- rep(1,JSS)
-                  betaS  <- rep(1,JSS)
-                  if (!is.null(model_options$SSonly) && model_options$SSonly==TRUE){
-                          JSS_only    <- length(model_options$pathogen_SSonly_list)
-                          alphaS.only <- rep(1,JSS_only)
-                          betaS.only  <- rep(1,JSS_only)
-                  }
-                } else if (model_options$TPR_prior[2]=="informative"){
-                  #For bacteria, informative sensitivities lie in the range of
-                  # (.05,.15):
-                  alphaS <- rep(NA,JSS)
-                  betaS  <- rep(NA,JSS)
-                  temp_cat_ind <- sapply(model_options$pathogen_BrS_list,
-                                         function(path) {which(model_options$pathogen_BrS_cat$X==path)})
-                  temp_cat     <- model_options$pathogen_BrS_cat[temp_cat_ind,]
-                  for (t in 1:JSS){
-                      temp_param <- beta_parms_from_quantiles(c(.05,.15),p=c(0.025,.975),plot=FALSE)
-                      alphaS[t] <- temp_param$a
-                      betaS[t] <- temp_param$b
-                  }
-                  if (!is.null(model_options$pathogen_SSonly_list)){
-                              JSS_only    <- length(model_options$pathogen_SSonly_list)
-                              alphaS.only <- rep(NA,JSS_only)
-                              betaS.only  <- rep(NA,JSS_only)
-                              for (t in 1:JSS_only){
-                                    temp_param_SSonly <- beta_parms_from_quantiles(c(.05,.15),p=c(0.025,.975),plot=FALSE)
-                                    alphaS.only[t] <- temp_param_SSonly$a
-                                    betaS.only[t] <- temp_param_SSonly$b
-                              }
-                  }
-               }
-              if (!is.null(model_options$pathogen_SSonly_list)){
-                      res <- list(alphaB = alphaB, betaB = betaB,
-                              alphaS = alphaS, betaS = betaS,
-                              alphaS.only = alphaS.only,
-                              betaS.only  = betaS.only,
-                              used_cat = temp_cat)
-              }else{
-                       res <- list(alphaB = alphaB, betaB = betaB,
-                              alphaS = alphaS, betaS = betaS,
-                              used_cat = temp_cat)
-              }
-       }
-
-       res
+      return(list(alpha = res_alpha,beta = res_beta))
+    }
+    
+    if (prior_BrS$info == "informative"){
+      if (prior_BrS$input == "match_range"){# begin match range:
+        for (s in seq_along(Mobs$MBS)){ #iterate over slices:
+            tmp_ab <- matrix(NA,nrow=2,ncol(Mobs$MBS[[s]]))
+            rownames(tmp_ab) <- c("alpha","beta")
+            colnames(tmp_ab) <- colnames(Mobs$MBS[[s]])
+            for (j in 1:ncol(Mobs$MBS[[s]]) ){ # iterate over dimensions:
+              low_tmp <- prior_BrS$val[[s]]$low[j]
+              up_tmp <- prior_BrS$val[[s]]$up[j]
+              tmp <- beta_parms_from_quantiles(c(low_tmp,up_tmp),p=c(0.025,.975),plot=FALSE)
+              tmp_ab [,j] <- c(tmp$a,tmp$b)
+            }# end iterate over dimensions.
+            res_alpha[[s]] <- tmp_ab[1,]
+            res_beta[[s]]  <- tmp_ab[2,]
+        }# end iterate over slices.
+        return(list(alpha = res_alpha,beta = res_beta))
+      } # end match range.
+      
+      if (prior_BrS$input == "direct_beta_param"){
+          return(list(alpha = lapply(prior_BrS$val,"[[","alpha"),
+                      beta  = lapply(prior_BrS$val,"[[","beta")))
+        }
+    } # end informative.
+  }
 }
+  
+# what1 <- set_prior_tpr_BrS(m_opt,data_nplcm)
+# what2 <- set_prior_tpr_BrS(m_opt2,data_nplcm)
+
+
+
+
+
+
+
+#' Set true positive rate (TPR) prior ranges for silver-standard data
+#'
+#' Current prior assignment let bacteria NPPCR to have uniform range, viral NPPCR
+#' to have .5-1.0 range. The PCP (a fungus) NPPCR TPR is also set to be .5-1.0; PCP
+#' has no blood culture measurements. Also, not all the bacteria have blood culture
+#' measurments. One question is whether to use informative NPPCR range or non-informative
+#' NPPCR range (0-100%).
+#'
+#'
+#' @param model_options See \code{\link{nplcm}} function.
+#' @param data_nplcm See \code{\link{assign_model}} function.
+#' 
+#' @return Parameters for the TPR priors for SS data. It is a list of two lists (alpha and beta).
+#' Alpha or beta is of the same length as the number of BrS measurement slices; each element of the list
+#' is a numeric vector for alpha or beta parameters to specify Beta prior for TPRs.
+#'
+#' @export
+set_prior_tpr_SS <- function(model_options,data_nplcm){
+  
+  parsed_model <- assign_model(model_options,data_nplcm)
+  if (parsed_model$num_slice["MSS"] == 0){stop("== No SS data! ==")}
+  
+  Mobs <- data_nplcm$Mobs
+  Y    <- data_nplcm$Y
+  X    <- data_nplcm$X
+  
+  Nd <- sum(Y)
+  
+  if (parsed_model$num_slice["MSS"] > 0){
+    
+    #
+    # 2. SS data:
+    #
+    # mapping template (by `make_template` function):
+    patho_SS_list <- lapply(Mobs$MSS,colnames)
+    template_SS_list <-
+      lapply(patho_SS_list,make_template,model_options$likelihood$cause_list) # key.
+    
+    prior_SS <- model_options$prior$TPR_prior$SS
+    
+    if (!is.null(prior_SS$grp)){GSS_TPR <- length(unique(prior_SS$grp))}
+    if (is.null(prior_SS$grp)){GSS_TPR <- 1}
+      res_all_grp <- list()
+      
+      for (g in 1:GSS_TPR){ # iterate over TPR split groups:
+        res_alpha <- list()
+        res_beta <- list()
+        
+        if (prior_SS$info == "non-informative"){
+          for (s in seq_along(Mobs$MSS)){
+            res_alpha[[s]] <- res_beta[[s]] <- rep(1,ncol(Mobs$MSS[[s]]))
+          }
+          res_tmp <- (list(alpha = res_alpha,beta = res_beta))
+        }
+        
+        if (prior_SS$info == "informative"){
+          if (GSS_TPR == 1){ # ad hoc solution to non-list problem when GSS_TPR==1.
+            curr_val <- list(prior_SS$val)[g]
+          } else{
+            curr_val <- prior_SS$val[g]
+          }
+          if (prior_SS$input == "match_range"){# begin match range:
+            for (s in seq_along(Mobs$MSS)){ #iterate over slices:
+              tmp_ab <- matrix(NA,nrow=2,ncol(Mobs$MSS[[s]]))
+              rownames(tmp_ab) <- c("alpha","beta")
+              colnames(tmp_ab) <- colnames(Mobs$MSS[[s]])
+              for (j in 1:ncol(Mobs$MSS[[s]]) ){ # iterate over dimensions:
+                low_tmp <- curr_val[[s]]$low[j]
+                up_tmp <- curr_val[[s]]$up[j]
+                tmp <- beta_parms_from_quantiles(c(low_tmp,up_tmp),p=c(0.025,.975),plot=FALSE)
+                tmp_ab [,j] <- c(tmp$a,tmp$b)
+              }# end iterate over dimensions.
+              res_alpha[[s]] <- tmp_ab[1,]
+              res_beta[[s]]  <- tmp_ab[2,]
+            }# end iterate over slices.
+            res_tmp <- (list(alpha = res_alpha,beta = res_beta))
+          } # end match range.
+          
+          if (prior_SS$input == "direct_beta_param"){
+            res_tmp <- (list(alpha = lapply(curr_val,"[[","alpha"),
+                             beta  = lapply(curr_val,"[[","beta")))
+          }
+        } # end informative.
+        res_all_grp[[g]] <- res_tmp
+      } # end iteration over group split.
+    
+    return(res_all_grp)
+  }
+}
+# 
+# what3 <- set_prior_tpr_SS(m_opt3,data_nplcm)
+# what4 <- set_prior_tpr_SS(m_opt4,data_nplcm)
+
+
 

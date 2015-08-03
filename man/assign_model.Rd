@@ -2,7 +2,7 @@
 % Please edit documentation in R/assign-model.R
 \name{assign_model}
 \alias{assign_model}
-\title{Choose a model to fit}
+\title{Interpret the model specified by user}
 \usage{
 assign_model(model_options, data_nplcm)
 }
@@ -14,34 +14,24 @@ assign_model(model_options, data_nplcm)
 \value{
 A list of information for the selected model:
 \itemize{
-\item \code{measurement}
-\itemize{
-\item \code{quality} e.g. "BrS+SS" indicates both BrS and SS measures are
-available
-\item \code{SSonly} \code{TRUE} for existence of pathogens with only SS measures;
-otherwise, \code{FALSE};
-\item \code{nest} \code{TRUE} for conditional dependent model; \code{FALSE}
-for conditional independent model;
-}
-\item \code{reg}
-\itemize{
-\item \code{do_FPR_reg} \code{TRUE} for allowing FPR to be covariate-dependent; \code{FALSE} otherwise;
-\item \code{do_Eti_reg} \code{TRUE} for allowing etiology to be covariate-dependent; \code{FALSE} otherwise;
-}
+   \item \code{num_slice} a vector counting the no. of measurement slices for every
+   level of measurement quality
+   \item \code{nested} TRUE for nested models (conditional dependence);
+   FALSE for non-nested models (conditional independence).
+   \item \code{regression}
+       \itemize{
+           \item \code{do_reg_Eti} TRUE for doing regression on etiology (latent status);
+           FALSE otherwise
+           \item \code{do_reg_FPR} TRUE for doing regression on false positive rates
+           (for every slice of bronze-standard); FALSE otherwise
+       }
 }
 }
 \description{
 \code{assign_model} recognizes the model to fit from user input.
 }
 \details{
-\code{assign_model} will also inspect the actual data supplied
- and check if the data conform to user's requested model. The following
- features of data and user inputs are checked against each other:
-\enumerate{
-\item Available types of measurement quality,
-i.e., gold-, silver- or bronze-standard or any combinations;
-\item Model for false positive rates: covariate-dependent or not;
-\item Model for etiology: covariate-dependent or not.
-}
+\code{assign_model} will be modified to check if data are conformable
+to specified model.
 }
 

@@ -1,37 +1,23 @@
-#' Set the etiology prior
-#'
-#' Assign etiology prior to the pathogens entering the model.
-#'
-#'
-#' @param model_options See \code{nplcm_fit} function argument list.
-#'
-#'
-#' @return The vector of etiology prior parameters
-#'
-#'
+#' specify overall uniform (symmetric Dirichlet distribution) for etiology prior
+#' 
+#' @param alpha any positive number, usually 1s.
+#' 
+#' @param cause_list a list of latent status
+#' 
+#' @return a vector of length \code{length(cause_list)}
+#' 
 #' @export
-
-set_prior_eti <- function(model_options){
-        Jcause <- length(model_options$cause_list)
-        cat("==Etiology priors: ==" ,"\n",model_options$Eti_prior,"\n")
-        if (model_options$Eti_prior=="overall_uniform"){
-#                 if (is.null(model_options$SSonly)||model_options$SSonly==FALSE){
-                  alpha    <-  rep(1,Jcause)
-#                 }else {
-#                   JSS_only <- length(model_options$pathogen_SSonly_list)
-#                   alpha    <-  rep(1,Jcause+JSS_only)
-#                 }
-        }
-
-        if (model_options$Eti_prior=="0_1"){
-#           if (is.null(model_options$SSonly)||model_options$SSonly==FALSE){
-            alpha    <-  rep(.1,Jcause)
-#           }else {
-#             JSS_only <- length(model_options$pathogen_SSonly_list)
-#             alpha    <-  rep(.1,Jcause+JSS_only)
-#           }
-        }
-
-        alpha
+#'
+overall_uniform <- function(alpha,cause_list) {
+  if (length(alpha) == 1) {
+    res <- rep(alpha, length(cause_list)); return(res)
+  }
+  if (length(alpha) > 1 &&
+      length(alpha) < length(cause_list)) {
+    stop("== not enough hyperparameters for etiology! ==")
+  }
+  alpha
 }
 
+
+# can add: taxonomy and others.
