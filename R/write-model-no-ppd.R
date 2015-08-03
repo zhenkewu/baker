@@ -15,7 +15,7 @@ write_model_NoReg_NoNest <- function(Mobs,prior,cause_list,use_measurements){
   
   chunk1 <- insert_bugfile_chunk_noreg_meas(Mobs,prior,cause_list,use_measurements)
   chunk2 <- insert_bugfile_chunk_noreg_etiology()
-
+  
   paste0("model{#BEGIN OF MODEL:\n",
          chunk1,"\n",
          chunk2,"\n",

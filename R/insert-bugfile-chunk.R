@@ -29,7 +29,7 @@ insert_bugfile_chunk_noreg_meas <-
       
       # index measurement slices by numbers:
       JBrS_nm  <- paste("JBrS",seq_along(BrS_nm),sep = "_")
-      MBS_nm  <- paste("MBS",seq_along(BrS_nm),sep = "_")
+      MBS_nm   <- paste("MBS",seq_along(BrS_nm),sep = "_")
       mu_bs_nm   <- paste("mu_bs",seq_along(BrS_nm),sep = "_")
       thetaBS_nm <- paste("thetaBS",seq_along(BrS_nm),sep = "_")
       psiBS.cut_nm <- paste("psiBS.cut",seq_along(BrS_nm),sep = "_")
@@ -58,7 +58,7 @@ insert_bugfile_chunk_noreg_meas <-
                 ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
                 ",mu_bs_nm[s],"[i,j]<-", indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm[s],"[i,j])*",psiBS.cut_nm[s],"[j]
                 }","\n"
-)
+               )
           } else{
             res[s] <-
               paste0(
@@ -93,7 +93,7 @@ insert_bugfile_chunk_noreg_meas <-
             ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
             ",mu_bs_nm[s],"[i]<- ",psiBS_nm[s],"\n"
           )
-        }
+         }
         }
         
         paste0(res,collapse = "")
@@ -187,7 +187,7 @@ insert_bugfile_chunk_noreg_meas <-
                     ",MSS_nm[s],"[i,j] ~ dbern(",mu_ss_nm[s],"[i,j])
                     ",mu_ss_nm[s],"[i,j]<-", indSS_nm[s],"[i,j]*",thetaSS_nm[s],"[j]+(1-", indSS_nm[s],"[i,j])*",psiSS_nm[s],"[j]
                     }","\n"
-    )
+                    )
               } else{
                 res[s] <-
                   paste0(
@@ -195,7 +195,7 @@ insert_bugfile_chunk_noreg_meas <-
                     
                     ",indSS_nm[s],"[i] <- equals(1,",templateSS_nm[s],"[Icat[i]])
                     ",MSS_nm[s],"[i] ~ dbern(",mu_ss_nm[s],"[i])
-                    ",mu_ss_nm[s],"[i]<-", indSS_nm[s],"[i]*",thetaSS_nm[s],"+(1-", indSS_nm[s],"[i])*",psiSS_nm[s],"\n"
+                    ",mu_ss_nm[s],"[i]<-", indSS_nm[s],"[i]*",thetaSS_nm[s],"+(1-",indSS_nm[s],"[i])*",psiSS_nm[s],"\n"
                   )
               }
           } else{# WITH stratified TPR in SS:

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{as.matrix_or_vec}
 \alias{as.matrix_or_vec}
-\title{convert one column dataframe to a vector}
+\title{convert one column data frame to a vector}
 \usage{
 as.matrix_or_vec(x)
 }
@@ -13,6 +13,6 @@ as.matrix_or_vec(x)
 a vector
 }
 \description{
-convert one column dataframe to a vector
+convert one column data frame to a vector
 }
 

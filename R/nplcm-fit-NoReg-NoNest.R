@@ -12,6 +12,8 @@
 #' @seealso \link{write_model_NoReg_NoNest} for writing .bug model file; 
 #' 
 #' @export
+#' 
+#' 
 nplcm_fit_NoReg_NoNest<-
   function(data_nplcm,model_options,mcmc_options){
     # Record the settings of current analysis:

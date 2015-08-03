@@ -1485,6 +1485,11 @@ lookup_quality <- function(quality_nm) {
 #' @return TURE for doing regression; FALSE otherwise.
 #' @export
 parse_nplcm_reg <- function(form,data_nplcm){
+  if (is.null(data_nplcm$X)) {
+    print("== There are no covariate data in `data_nplcm` =="); 
+    return(FALSE)
+  }
+  
   res <-
     try(model.matrix(form,data.frame(data_nplcm$X,Y = data_nplcm$Y)))
   if (is.error(res)) {
@@ -1498,7 +1503,7 @@ parse_nplcm_reg <- function(form,data_nplcm){
 }
 
 
-#' convert one column dataframe to a vector
+#' convert one column data frame to a vector
 #' 
 #' @param x an one-column data.frame
 #' 
