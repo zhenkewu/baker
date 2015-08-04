@@ -1,318 +1,290 @@
 #' Plot bronze-standard (BrS) panel
 #' 
-#' Now only works for singleton etiologies.
 #' 
-#' @param MBS Matrix of bronze-standard measurements. Rows for subjects (cases at
-#' the top, controls at the bottom), columns for pathogen-specimen combination.
+#' @param slice the index of measurement slice for BrS.
+#' @param data_nplcm See \code{\link{nplcm}}
 #' @param model_options See \code{\link{nplcm}}
 #' @param clean_options See \code{\link{clean_perch_data}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
 #' @param top_BrS Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the BrS panel.
-#' @param prior_shape \code{interval} or \code{boxplot} - for how to represent
-#' prior/posteriors of the TPR/FPRs of measurements.
 #' @param cexval Default is 1 - size of text of the BrS percentages.
 #' @param srtval Default is 0 - the direction of the text for the BrS percentages.
-#' 
+#' @param prior_shape \code{interval} or \code{boxplot} - for how to represent
+#' prior/posteriors of the TPR/FPRs of measurements.
+#' @param silent Default is TRUE to not print any warning messages; FALSE otherwise.
 #' @importFrom binom binom.confint
 #' 
 #' @export
 
-plot_BrS_panel <- function(MBS,model_options,clean_options,res_nplcm,
-                                 bugs.dat,
-                                 top_BrS = 1.3,prior_shape = "boxplot",
-                                 cexval = 1,
-                                 srtval = 0){
-  #
-  # now only deal with singleton etiologies:
-  # 
-  
-  # total no. of causes:
-  Jcause     <- length(model_options$cause_list)
-  # extract and process some data and posterior samples:
-  SubVarName <- rep(NA,Jcause)
-  for (j in 1:Jcause){
-    SubVarName[j] = paste("pEti","[",j,"]",sep="")
+plot_BrS_panel <- function(slice,data_nplcm,model_options,
+                           clean_options,bugs.dat,res_nplcm,
+                           top_BrS = 1.3, 
+                           cexval = 1,
+                           srtval = 0,
+                           prior_shape="interval",silent=TRUE){
+  template_BrS    <- NULL
+  check_combo_BrS <- NULL
+  if ("BrS" %in% model_options$use_measurements){
+    template_BrS <- lapply(clean_options$BrS_objects,"[[","template")
+    names(template_BrS) <- lapply(clean_options$BrS_objects,"[[","nm_spec_test")
+    check_combo_BrS <- any(unlist(lapply(template_BrS,rowSums))>1)
   }
+  # order cause_list by posterior means:
+  ord <- order_post_eti(res_nplcm,model_options)$ord
+  pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
   
-  # get etiology fraction MCMC samples:
-  pEti_mat   <- res_nplcm[,SubVarName]
-  pEti_mean  <- colMeans(pEti_mat)
-  pEti_mean0 <- pEti_mean
+  template_ord <- template_BrS[[slice]][ord,,drop=FALSE]
   
-  # order the causes by posterior mean:
-  ord <- order(pEti_mean)
+  thetaBS_nm <- paste0("thetaBS_",slice)
+  psiBS_nm   <- paste0("psiBS_",slice)
+  alphaB_nm   <- paste0("alphaB_",slice)
+  betaB_nm   <- paste0("betaB_",slice)
+  # which model was fitted:
+  parsed_model <- assign_model(model_options, data_nplcm)
   
-  pEti_mean_ord <- pEti_mean[ord]
-  pEti_mat_ord  <- pEti_mat[,ord]
-  
-  # quantiles for etiology: outer is 97.5% CI, inner is 50% CI
-  pEti_q1   <- apply(pEti_mat,2,quantile,probs=0.025)[ord]
-  pEti_q2   <- apply(pEti_mat,2,quantile,probs=0.975)[ord]
-  pEti_innerq1   <- apply(pEti_mat,2,quantile,probs=0.25)[ord]
-  pEti_innerq2   <- apply(pEti_mat,2,quantile,probs=0.75)[ord]
-  
-  # complete list of pathogens:
-  if (is.null(model_options$SSonly) || model_options$SSonly==FALSE){
-     pathogen_list     <- model_options$pathogen_BrS_list
-  } else{
-     pathogen_list     <- c(model_options$pathogen_BrS_list,
-                                     model_options$pathogen_SSonly_list)
-  }
-  
-  Jfull               <- length(pathogen_list)
-  
-  if (Jfull != Jcause){
-    stop("== The number of causes is different from the total number of pathogens.
-         The multiple-cause visualization, including NoA, is being developed.
-         Please contact developer. Thanks. ==")
-  }
-  JBrS                <- length(model_options$pathogen_BrS_list)
-  pathogens_ord       <- pathogen_list[ord]
-  
-  Nd <- bugs.dat$Nd
-  Nu <- bugs.dat$Nu
-  
-  
-  colnames(MBS) <-model_options$pathogen_BrS_list
-  if (is.null(clean_options$allow_missing)||
-        clean_options$allow_missing==FALSE){
-    tmp.case <- binom.confint(colSums(MBS[1:Nu,]),
-                              Nd, conf.level = 0.95, methods = "ac")[ord,]
-    tmp.ctrl <- binom.confint(colSums(MBS[-(1:Nd),]),
-                              Nu, conf.level = 0.95, methods = "ac")[ord,]
-  }else{
-    ind_case_BrS_dat_not_na <- which(rowSums(is.na(MBS[1:Nd,]))==0)
-    ind_ctrl_BrS_dat_not_na <- which(rowSums(is.na(MBS[-(1:Nd),]))==0)
-    
-    tmp.case <- binom.confint(colSums(MBS[(1:Nd)[ind_case_BrS_dat_not_na],]),
-                              Nd, conf.level = 0.95, methods = "ac")[ord,]
-    tmp.ctrl <- binom.confint(colSums(MBS[(Nd+(1:Nu))[ind_ctrl_BrS_dat_not_na],]),
-                              Nu, conf.level = 0.95, methods = "ac")[ord,]
-  }
-
-  # case and control positive rate, lower and upper limit
-  Bcomp    <- rbind(round(tmp.case$mean,5),round(tmp.ctrl$mean,5))
-  Bcomp_q1 <- rbind(tmp.case[,c("lower")],tmp.ctrl[,c("lower")])
-  Bcomp_q2 <- rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")])
-  
-  
-  # sensitivity (TPR) and 1-specificity (FPR) information
-  if (model_options$k_subclass==1){
+  if (!parsed_model$nested & !any(unlist(parsed_model$regression))){
     #
     # plcm (just obtain TPR and FPR estimates):
     #
-    if (is.null(model_options$SSonly)|| model_options$SSonly==FALSE){
-      theta_mat <- (res_nplcm[,grep("thetaBS",colnames(res_nplcm))])[,ord]
-    }else {
-      theta_mat <- cbind(res_nplcm[,grep("thetaBS",colnames(res_nplcm))],
-                         matrix(NA,nrow=nrow(res_nplcm),ncol=Jfull-JBrS))[,ord]
-    }
+    theta_mat <- res_nplcm[,grep(thetaBS_nm,colnames(res_nplcm)),drop=FALSE]
     theta_mean <- colMeans(theta_mat)
     
     #posterior distribution of FPR:
-    if (is.null(model_options$SSonly)||model_options$SSonly==FALSE){
-      psi_mat  <- (res_nplcm[,grep("psiBS",colnames(res_nplcm))])[,ord]
-    }else{
-      psi_mat  <- cbind(res_nplcm[,grep("psiBS",colnames(res_nplcm))],
-                        matrix(NA,nrow=nrow(res_nplcm),ncol=Jfull-JBrS))[,ord]
-    }
+    psi_mat  <- res_nplcm[,grep(psiBS_nm,colnames(res_nplcm)),drop=FALSE]
     psi_mean   <- colMeans(psi_mat)
     
     ## model fitted postive rate for each pathogen
-    fittedmean_case <- sapply(1:Jcause,
-                              function(s) mean(pEti_mat_ord[,s]*theta_mat[,s]+
-                                                 (1-pEti_mat_ord[,s])*psi_mat[,s]))
-    fittedmean_control <- psi_mean
-  
-  } else {
-    #
-    # nplcm (need to marginalize over subclasses to calculate marginal TPR):
-    #
-    if (is.null(model_options$SSonly)|| model_options$SSonly==FALSE){
-      theta_mat  <- (res_nplcm[,grep("ThetaBS.marg",colnames(res_nplcm))])[,ord]
-    }else{
-      theta_mat <- cbind(res_nplcm[,grep("ThetaBS.marg",colnames(res_nplcm))],
-                         matrix(NA,nrow=nrow(res_nplcm),ncol=Jfull-JBrS))[,ord]
-    }
-    theta_mean <- colMeans(theta_mat)
+    fittedmean_case    <- rep(NA,ncol(template_ord))
+    names(fittedmean_case) <- colnames(template_ord)
     
-    #posterior distribution of FPR
-    if (is.null(model_options$SSonly)||model_options$SSonly==FALSE){
-       psi_mat  <- (res_nplcm[,grep("PsiBS.marg",colnames(res_nplcm))])[,ord]
-    }else{
-       psi_mat  <- cbind(res_nplcm[,grep("PsiBS.marg",colnames(res_nplcm))],
-                        matrix(NA,nrow=nrow(res_nplcm),ncol=Jfull-JBrS))[,ord]
-    }
-    psi_mean <- colMeans(psi_mat)
-    
-    psi_mat.case = array(NA,c(nrow(res_nplcm),Jfull,Jcause),
-                         dimnames = list(NULL,1:Jfull,1:Jcause))
-    
-    psi_mat.case.tmp = (res_nplcm[,grep("PsiBS.case",colnames(res_nplcm))])
-    
-    for (j in 1:JBrS){
-      for (s in 1:Jcause){
-        tmp.nm  <- paste0("PsiBS.case","[",j,",",s,"]")
-        ind.tmp <- which(colnames(psi_mat.case.tmp)==tmp.nm)
-        psi_mat.case[,j,s] = psi_mat.case.tmp[,ind.tmp]
-      }
+    fitted_margin_case <- function(pEti_ord,theta,psi,template){
+      mixture <-  pEti_ord
+      tpr     <-  t(t(template)*theta)
+      fpr     <- t(t(1-template)*psi)
+      colSums(tpr*mixture + fpr*mixture)
     }
     
-    psi_mat.case.ord = psi_mat.case[,ord,ord]
-    
-    # model fitted postive rate for each pathogen
-    fittedmean_case    <- sapply(1:Jfull,function(s) 
-                            mean(pEti_mat_ord[,s]*theta_mat[,s]+
-                              rowSums(pEti_mat_ord[,-s]*psi_mat.case.ord[,s,-s])))
+    fittedmean_case  <- colMeans(t(sapply(1:nrow(pEti_mat_ord),
+                                          function(iter)
+                                            fitted_margin_case(pEti_mat_ord[iter,], theta_mat[iter,],
+                                                               psi_mat[iter,],template_ord))))
     fittedmean_control <- psi_mean
     
+    #plot_pos <- get_plot_pos(template_ord)  # 1 at the 5th means for the fifth smallest etiology, we should plot 1st dimension in this slice.
   }
   
+  # get observed rates' summaries:
+  Nd <- bugs.dat$Nd
+  Nu <- bugs.dat$Nu
+  
+  MBS_curr <- data_nplcm$Mobs$MBS[[slice]]
+  
+  # positive rates and confidence intervals:
+  #cases:
+  MBS_case_curr <- MBS_curr[1:Nd,,drop=FALSE]
+  count    <- do.call(cbind,lapply(MBS_case_curr,table))["1",]
+  NA_count <- apply(MBS_case_curr,2,function(v) sum(is.na(v)))
+  tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
+  
+  #controls:
+  MBS_ctrl_curr <- MBS_curr[-(1:Nd),,drop=FALSE]
+  count    <- do.call(cbind,lapply(MBS_ctrl_curr,table))["1",]
+  NA_count <- apply(MBS_ctrl_curr,2,function(v) sum(is.na(v)))
+  tmp.ctrl <- binom.confint(count, Nu-NA_count, conf.level = 0.95, methods = "ac")
+  
+  # case and control positive rate, lower and upper limit
+  MBS_mean  <- rbind(round(tmp.case$mean,5),round(tmp.ctrl$mean,5))
+  MBS_q1 <- rbind(tmp.case[,c("lower")],tmp.ctrl[,c("lower")])
+  MBS_q2 <- rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")])
+  
+  # prior parameters:
+  alphaB         <- bugs.dat[[alphaB_nm]]
+  betaB          <- bugs.dat[[betaB_nm]]
+  
   #
-  # start plotting:
+  # plotting:
   #
+  #op <- par(mar=c(5.1,4.1,4.1,0))
+  op <- par(mar=c(5.1,0,4.1,0))
   
-  op <- par(mar=c(5.1,4.1,4.1,0))
+  pos_vec <- get_plot_pos(template_ord)
   
-  plotat <- seq(0.5,Jfull+0.5,by=1/4)[-(c(1,(1:Jfull)*4+1))]
-  #plot case control positive rates, and fitted case rates
-  plot(c(rbind(fittedmean_case,Bcomp)),plotat,yaxt="n",
-       xlim=c(0,top_BrS),
-       ylim=c(0.5,Jfull+.5),xaxt="n",
-       ylab="",xlab="probability",
-       pch = c(rbind(rep(2,Jfull),rep(20,Jfull),rep(20,Jfull))),
-       col=c(rbind(rbind(rep(1,Jfull),rep("dodgerblue2",Jfull),rep("dodgerblue2",Jfull)))),
-       cex = c(rbind(rep(1,Jfull),rep(2,Jfull),rep(2,Jfull))))
-  
-  #add axis labels on the left:
-  axis(2,at = plotat,labels=rep(c("","case","ctrl"),Jfull),las=2)
-  #add ticks from 0 to 1 for x-bar:
-  axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
-  
-  #plot TPR posterior mean, and upper CI bound for case/control rates:
-  points(c(rbind(theta_mean,Bcomp_q2)),plotat,
-         pch=c(rbind(rep("+",Jfull),rep("|",Jfull),rep("|",Jfull))),
-         cex=c(rbind(rep(2,Jfull),rep(1,Jfull),rep(1,Jfull))),
-         col=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))))
-  #plot FPR posterior mean, and lower CI bound for case/control rates:
-  points(c(rbind(psi_mean,Bcomp_q1)),plotat,
-         pch=c(rbind(rep("*",Jfull),rep("|",Jfull),rep("|",Jfull))),
-         cex=c(rbind(rep(2,Jfull),rep(1,Jfull),rep(1,Jfull))),
-         col=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))))
-  abline(h=seq(1.5,Jfull-.5,by=1),lty=2,lwd=0.5,col="blue")
-  abline(v=1,lty=2,lwd=.5)
-  
-  ## conditional odds ratios
-  COR = function(brs.data,nd,pathogens){
-    y = rep(c(1,0),times=c(nd,nrow(brs.data)-nd))
-    #X = matrix(NA,nrow=nrow(brs.data),ncol=length(pathogens))
-    x.nm   = paste(pathogens)
-    #colnames(X) = x.nm
-    #for (j in 1:length(pathogens)){
-    #  X[,j] = brs.data[,x.nm[j]]
-    #}
+  get_COR <- function(pos){
+    y <- c(rep(1,Nd), rep(0,Nu))
+    brs.data <- as.data.frame(rbind(MBS_case_curr,MBS_ctrl_curr))
     dat.reg = as.data.frame(cbind(y,brs.data))
-    form = as.formula(paste0("y~",paste(x.nm,collapse="+")))
-    
-    fit = glm(form,data=dat.reg,family=binomial,na.action="na.omit")
+    fit = glm(y~.,data=dat.reg,family=binomial,na.action="na.omit")
     
     if (sum(is.na(coef(fit)))==0 & sum(diag(vcov(fit))>100)==0){
       res0 = cbind(exp(suppressMessages(confint(fit))),exp(fit$coef))[-1,]
       res = list(ORinterval = res0,label = "conditional OR")
     }else{
-      print("Conditional OR not calculatable. Switch to mariginal OR.")
-      res0 = matrix(NA,nrow=length(pathogens),ncol=3)
+      if (!silent){
+       print("Conditional OR not calculatable. Switch to mariginal OR.")
+      }
+      res0 = matrix(NA,nrow=1,ncol=3)
       res0 = data.frame(res0)
-      for (l in 1:nrow(res0)){
-        tb <- table(dat.reg$y,dat.reg[,x.nm[l]])
-        form_tmp <- as.formula(paste0("y~",x.nm[l]))
-        fit_tmp  <- glm(form_tmp,data=dat.reg,family=binomial,na.action = "na.omit")
-        if (length(vcov(fit_tmp))>1 && vcov(fit_tmp)[2,2]<100 && ncol(tb)==2){
-          #print(l)
-          res0[l,] <- cbind(exp(suppressMessages(confint(fit_tmp))),exp(fit_tmp$coef))[-1,]
-        }
+      tb <- table(dat.reg$y,brs.data[,pos])
+      fit_tmp  <- glm(y~brs.data[,pos],family=binomial,na.action = "na.omit")
+      if (length(vcov(fit_tmp))>1 && vcov(fit_tmp)[2,2]<100 && ncol(tb)==2){
+        #print(l)
+        res0 <- cbind(exp(suppressMessages(confint(fit_tmp))),exp(fit_tmp$coef))[-1,]
       }
       res = list(ORinterval=res0,label="marginal OR")
     }
+    res
   }
   
-  tmp0 <- COR(MBS,Nd,pathogens_ord[ord<=JBrS])
-  tmp  <- tmp0$ORinterval
-  
-  #plot conditional odds ratio on the right:
-  incre = 0
-  for (s in (1:Jfull)){
-    if (s %in% which(ord<=JBrS)){
-      incre = incre + 1
-      L=round(tmp[incre,1],1)
-      C=round(tmp[incre,3],1)
-      R=round(tmp[incre,2],1)
-      text(top_BrS-0.12,s+1/(2*Jfull),C,cex=1.5)
-      text(top_BrS-0.12,s-.2,paste(c(L,"   ",R),collapse=" "),cex=1.2)
-    }
-  }
-  legend("topright",tmp0$label,bty="n")
-  
-  counter = 0
-  #each row, connect FPR and TPR posterior means
-  for (s in 1:(3*Jfull)){
-    segments(y0=plotat[s],x0=c(rbind(psi_mean,Bcomp_q1))[s],
-             y1=plotat[s],x1=c(rbind(theta_mean,Bcomp_q2))[s],
-             lty=ifelse((s-1)%%3<1,4,1))
-    if ((s-1)%%3>=1){
-      counter=counter+1
-      tmp.hpos = ifelse(c(Bcomp_q2)[counter]+0.15>0.95,c(Bcomp_q1)[counter]-0.2,c(Bcomp_q2)[counter]+0.15 )
-      text(tmp.hpos,plotat[s],paste0(round(100*c(Bcomp),1)[counter],"%"),
-           srt=srtval,cex=cexval)
-    }
+  plot_BrS_cell_first <- function(lat_pos, pos, height){
+    plotat <- get_plot_num(lat_pos,height)
+    plot(c(fittedmean_case[pos],MBS_mean[,pos]),
+         plotat,
+         xlim=c(0,top_BrS),
+         ylim=c(0.5, height+0.5),
+         xaxt="n",xlab="positive rate",
+         ylab="",yaxt="n",
+         pch = c(2,20,20),
+         col = c(1,"dodgerblue2", "dodgerblue2"),
+         cex = c(1,2,2))
   }
   
-  for (s in 1:(Jfull)){
-    segments(y0=plotat[3*s-1],x0=c(rbind(fittedmean_case,Bcomp))[3*s-1],
-             y1=plotat[3*s],x1=c(rbind(fittedmean_case,Bcomp))[3*s],col="dodgerblue2",lwd=2)
-  }
-  # put prior shapes on bronze-standard sensitivity
-  
-  alphaB         <- bugs.dat$alphaB
-  betaB          <- bugs.dat$betaB
-  
-  for (s in 1:Jfull){
-    if (s %in% which(ord<=JBrS)){
-      if (prior_shape == "interval"){
-          # prior of TPR:
-          tmp = rbeta(10000,alphaB[ord[s]],betaB[ord[s]])
-          
-          points(quantile(tmp,0.025),s-.45,pch="|")
-          points(quantile(tmp,0.975),s-.45,pch="|")
-          points(quantile(tmp,0.25),s-.45,pch="[")
-          points(quantile(tmp,0.75),s-.45,pch="]")
-          segments(quantile(tmp,0.025),s-.45,
-                   quantile(tmp,0.975),s-.45,lty=1)
-          
-          # posterior of TPR:
-          tmp.post = as.matrix(theta_mat)[,s]
-          points(quantile(tmp.post,0.025),s-.35,pch="|")
-          points(quantile(tmp.post,0.975),s-.35,pch="|")
-          points(quantile(tmp.post,0.25),s-.35,pch="[")
-          points(quantile(tmp.post,0.75),s-.35,pch="]")
-          segments(quantile(tmp.post,0.025),s-.35,
-                   quantile(tmp.post,0.975),s-.35,lty=1)
-      } else if (prior_shape == "boxplot"){
-          tmp = rbeta(10000,alphaB[ord[s]],betaB[ord[s]])
-          boxplot(tmp,at = s-0.45, boxwex=1/10 , col="gray",
-                  add=TRUE,horizontal=TRUE,outline=FALSE,xaxt="n")
-          tmp.post = as.matrix(theta_mat)[,s]
-          boxplot(tmp.post,at = s-0.35,boxwex=1/10,add=TRUE,
-                  horizontal=TRUE,outline=FALSE,xaxt="n")
-      }
-    }
-  }
-  axis(2,at=(1:Jfull)-.45,labels=rep("",Jfull),las=2,cex.axis=.5)
-  axis(2,at=(1:Jfull)-.35,labels=rep("",Jfull),las=2,cex.axis=.5)
-  
-  mtext(expression(underline("BrS")),line=1,cex=1.8)
-
+  points_BrS_cell <- function(lat_pos,pos,height){ # pos for the measurement dimension, usually used as pos_vec[e].
+    plotat <- get_plot_num(lat_pos,height)
     
+    if (lat_pos>1){
+      points(c(fittedmean_case[pos],MBS_mean[,pos]),
+             plotat,
+             pch = c(2,20,20),
+             col = c("purple","dodgerblue2", "dodgerblue2"),
+             cex = c(1,2,2))
+    }
+    points(c(theta_mean[pos],MBS_q2[,pos]),
+           plotat,
+           pch = c("+","|","|"),
+           col = c("purple",1,1),
+           cex = c(2,1,1))
+    points(c(psi_mean[pos],MBS_q1[,pos]),
+           plotat,
+           pch = c("*","|","|"),
+           col = c("purple",1,1),
+           cex = c(2,1,1))
+    # connect case and control rates:
+    segments(
+      x0 = MBS_mean[1,pos],x1 = MBS_mean[2,pos],
+      y0 = plotat[2],y1 = plotat[3],
+      lty = 1,
+      col = "dodgerblue2",
+      lwd = 2
+    )
+    # case: rates
+    segments(
+      x0 = MBS_q1[1,pos],x1 = MBS_q2[1,pos],
+      y0 = plotat[2], y1 = plotat[2],
+      lty = 1
+    )
+    tmp.hpos <- ifelse(MBS_q2[1,pos]+0.15>0.95,MBS_q1[1,pos]-0.2,MBS_q2[1,pos]+0.15 )
+    text(tmp.hpos, plotat[2], paste0(round(100*MBS_mean[1,pos],1),"%"),
+         srt=srtval,cex=cexval)
+    # control:rates
+    segments(
+      x0 = MBS_q1[2,pos],x1 = MBS_q2[2,pos],
+      y0 = plotat[3], y1 = plotat[3],
+      lty = 1
+    )
+    tmp.hpos <- ifelse(MBS_q2[2,pos]+0.15>0.95,MBS_q1[2,pos]-0.2,MBS_q2[2,pos]+0.15 )
+    text(tmp.hpos, plotat[3], paste0(round(100*MBS_mean[2,pos],1),"%"),
+         srt=srtval,cex=cexval)
+    # poster means of TPR, FPR and fitted marginal rate:
+    segments(
+      x0 = theta_mean[pos],x1 = psi_mean[pos],
+      y0 = plotat[1], y1 = plotat[1],
+      lty = 4,col="gray"
+    )
+    
+    if (!is.na(pos)){#some pos can be NA: because certain cause has no measurements.
+      # prior and posterior of TPR:
+      if (prior_shape == "interval") {
+        # prior of TPR:
+        tmp = qbeta(c(0.025,0.975,0.25,0.75),alphaB[pos],betaB[pos])
+        points(tmp,rep(lat_pos - .45,4),pch = c("|","|","[","]"),col="gray")
+        segments(tmp[1],lat_pos - .45,
+                 tmp[2],lat_pos - .45,lty = 1,col="gray")
+        segments(tmp[3],lat_pos - .45,
+                 tmp[4],lat_pos - .45,lty = 1,col="gray",lwd=2)
+        
+        # posterior of TPR:
+        tmp.post = as.matrix(theta_mat)[,pos]
+        tmp  = quantile(tmp.post, c(0.025,0.975,0.25,0.75))
+        points(tmp,rep(lat_pos - .35,4),pch = c("|","|","[","]"),col = "purple")
+        segments(tmp[1],lat_pos - .35,
+                 tmp[2],lat_pos - .35,lty = 1)
+        segments(tmp[3],lat_pos - .35,
+                 tmp[4],lat_pos - .35,lty = 1,lwd=2)
+      } else if (prior_shape == "boxplot") {
+        tmp = rbeta(10000,alphaB[pos],betaB[pos])
+        boxplot(
+          tmp,at = lat_pos - 0.45, boxwex = 1 / 10 , col = "gray",
+          add = TRUE,horizontal = TRUE,outline = FALSE,xaxt =
+            "n"
+        )
+        tmp.post = as.matrix(theta_mat)[,pos]
+        boxplot(
+          tmp.post,at = lat_pos - 0.35,boxwex = 1 / 10,add = TRUE,
+          horizontal = TRUE,outline = FALSE,xaxt = "n"
+        )
+      }
+      
+      #plot conditional odds ratio on the right:
+      tmp0 <- get_COR(pos)
+      tmp  <- tmp0$ORinterval
+      
+      L <-  round(tmp[1],1)
+      C <-  round(tmp[3],1)
+      R <-  round(tmp[2],1)
+      text(top_BrS - 0.12,lat_pos + .3, colnames(MBS_case_curr)[pos],cex=1 )
+      text(top_BrS - 0.12,lat_pos + 1 / (2 * Jcause),C,cex = 1.5)
+      text(top_BrS - 0.12,lat_pos - .2,paste(c(L,"   ",R),collapse = " "),
+           cex = 1.2)
+      legend("topright",tmp0$label,bty = "n")
+    }
+    
+    # x-axis for each cell:
+    if (lat_pos>1){
+      axis(1, seq(0,1,by = .05), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
+           pos = seq(.625,Jcause +.625,by = 1)[lat_pos], cex.axis = 0.8,
+           lty = 2,col = "blue"
+      )
+    }
+  }
+  
+  Jcause <- length(model_options$likelihood$cause_list)
+  first  <- TRUE
+  cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
+  for (e in 1:nrow(template_ord)){
+    if (!is.na(pos_vec[e])){
+      if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause)}
+      points_BrS_cell(e,pos_vec[e],Jcause)
+      first <- FALSE
+    }
+  }
+  
+#   #add axis labels on the left:
+#   axis(2,at = c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+#        labels=rep(c("","case","ctrl"),Jcause),las=2)
+#   axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
+#   axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
+#   
+  #add ticks from 0 to 1 for x-bar:
+  axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
+  
+  #add dashed lines to separate cells:
+  abline(h=seq(1.5,Jcause-.5,by=1),lty=2,lwd=0.5,col="gray")
+  abline(v=1,lty=2,lwd=.5,col="gray")
+  
+  #add some texts:
+  mtext(eval(paste0("BrS: ", names(data_nplcm$Mobs$MBS)[slice])),
+                   line=1,cex=1.8)
 }
+

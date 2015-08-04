@@ -4,12 +4,14 @@
 \alias{assign_model}
 \title{Interpret the model specified by user}
 \usage{
-assign_model(model_options, data_nplcm)
+assign_model(model_options, data_nplcm, silent = TRUE)
 }
 \arguments{
 \item{model_options}{See \code{\link{nplcm}} function.}
 
 \item{data_nplcm}{Data for model fitting.}
+
+\item{silent}{Default is TRUE for no messages; FALSE otherwise.}
 }
 \value{
 A list of information for the selected model:

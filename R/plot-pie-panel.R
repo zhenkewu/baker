@@ -1,6 +1,5 @@
 #' Plot etiology (pie) panel
 #' 
-#' Now only works for singleton etiologies.
 #' 
 #' @param model_options See \code{\link{nplcm}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
@@ -13,105 +12,92 @@
 #' @export
 
 plot_pie_panel <- function(model_options,res_nplcm,
-                                 bugs.dat,
-                                 top_pie = 1){
-  #
-  # now only deal with singleton etiologies:
-  # 
-  
-  # total no. of causes:
-  Jcause     <- length(model_options$cause_list)
-  # extract and process some data and posterior samples:
-  SubVarName <- rep(NA,Jcause)
-  for (j in 1:Jcause){
-    SubVarName[j] = paste("pEti","[",j,"]",sep="")
-  }
-  
-  # get etiology fraction MCMC samples:
-  pEti_mat   <- res_nplcm[,SubVarName]
-  pEti_mean  <- colMeans(pEti_mat)
-  pEti_mean0 <- pEti_mean
-  
-  # order the causes by posterior mean:
-  ord <- order(pEti_mean)
-  
-  pEti_mean_ord <- pEti_mean[ord]
-  pEti_mat_ord  <- pEti_mat[,ord]
+                           bugs.dat,
+                           top_pie = 1){
+
+  # order cause_list by posterior means:
+  ord <- order_post_eti(res_nplcm,model_options)$ord
+  pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
+  pEti_mean_ord <- colMeans(pEti_mat_ord)
   
   # quantiles for etiology: outer is 97.5% CI, inner is 50% CI
-  pEti_q1   <- apply(pEti_mat,2,quantile,probs=0.025)[ord]
-  pEti_q2   <- apply(pEti_mat,2,quantile,probs=0.975)[ord]
-  pEti_innerq1   <- apply(pEti_mat,2,quantile,probs=0.25)[ord]
-  pEti_innerq2   <- apply(pEti_mat,2,quantile,probs=0.75)[ord]
+  pEti_q   <- apply(pEti_mat_ord,2,quantile,probs=c(0.025,0.975,0.25,0.75))
   
-  # complete list of pathogens:
-  if (is.null(model_options$SSonly) || model_options$SSonly==FALSE){
-    pathogen_list     <- model_options$pathogen_BrS_list
-  } else{
-    pathogen_list     <- c(model_options$pathogen_BrS_list,
-                           model_options$pathogen_SSonly_list)
-  }
-  
-  Jfull               <- length(pathogen_list)
-  
-  if (Jfull != Jcause){
-    stop("== The number of causes is different from the total number of pathogens.
-         The multiple-cause visualization, including NoA, is being developed.
-         Please contact developer. Thanks. ==")
-  }
-  JBrS                <- length(model_options$pathogen_BrS_list)
-  pathogens_ord       <- pathogen_list[ord]
+  cause_list <- model_options$likelihood$cause_list
+  cause_list_ord <- cause_list[ord]
   
   Nd <- bugs.dat$Nd
   Nu <- bugs.dat$Nu
   
+  Jcause <- length(model_options$likelihood$cause_list)
+  alpha_ord <- bugs.dat$alpha[ord]
+  
+  plot_pie_cell_first <- function(lat_pos,height,dotcolor="black"){
+    # posterior mean of etiology:
+    plot(pEti_mean_ord[lat_pos],lat_pos,
+         yaxt="n",
+         xlim=c(0,top_pie),ylim=c(0.5,Jcause+0.5),
+         col="purple",
+         ylab="",xlab="probability",
+         pch= 20,cex=2)
+  }
+  
+  points_pie_cell <- function(lat_pos,height,dotcolor="black"){
+    if (lat_pos > 1){
+      # posterior mean of etiology:
+      points(pEti_mean_ord[lat_pos],lat_pos,
+           yaxt="n",
+           xlim=c(0,top_pie),ylim=c(lat_pos-0.5,lat_pos+0.5),
+           col="purple",
+           ylab="",xlab="probability",
+           pch= 20,cex=2)
+    }
+    # x-axis for each cell:
+    if (lat_pos>1){
+      axis(1, seq(0,1,by = .2), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
+           pos = seq(.625,Jcause +.625,by = 1)[lat_pos], cex.axis = 0.8,lty =
+             2,col = "blue"
+      )
+    }
+    
+    points(pEti_q[,lat_pos],rep(lat_pos,4),pch=c("|","|","[","]"),cex=1,col="purple")
+    
+    pgrid = seq(0,1,by=0.01)
+    segments(y0=lat_pos,x0=pEti_q[1,lat_pos],y1=lat_pos,x1=pEti_q[2,lat_pos],col=dotcolor)
+    segments(y0=lat_pos,x0=pEti_q[3,lat_pos],y1=lat_pos,x1=pEti_q[4,lat_pos],col=dotcolor, lwd=2)
+    text(.8,lat_pos,paste0("=",paste0(round(100*c(pEti_mean_ord),1)[lat_pos],"%")),srt=0,cex=2)
+    text(.65,lat_pos,bquote(hat(pi)[.(ord[lat_pos])]),srt=0,cex=2)
+    #prior density:
+    tmp.density = dbeta(pgrid,alpha_ord[lat_pos],sum(alpha_ord[-lat_pos]))
+    points(pgrid,tmp.density/(3*max(tmp.density))+lat_pos-0.45,type="l",col="gray",lwd=4,lty=2)
+    #posterior density:
+    tmp.post.density = density(pEti_mat_ord[,lat_pos],from=0,to=1)
+    tmp.x = tmp.post.density$x
+    tmp.y = tmp.post.density$y
+    points(tmp.x,tmp.y/(3*max(tmp.y))+lat_pos-0.45,lwd=4,type="l",col="purple")
+    
+  }
+  
   #
   # plot etiology information:
   #
-  dotcolor = "black"
-  #op <- par(mar=c(5.1,6,4.1,1.1))
   op <- par(mar=c(5.1,0,4.1,10))
-  plot(c(pEti_mean_ord),1:(Jfull),
-       yaxt="n",#xaxt="n",
-       xlim=c(0,top_pie),ylim=c(0.5,Jfull+0.5),col=c("black"),
-       ylab="",xlab="probability",
-       pch=c(20),cex=2)
-  axis(4,at=1:Jfull,labels=paste(paste(pathogens_ord,ord,sep=" ("),")",sep=""),las=2,cex.axis=1.5)
-  abline(h=seq(1.5,Jfull-.5,by=1),lty=2,lwd=0.5,col="blue")
-  #draw axis within plot:
-  for (s in 1:(Jfull-1)){
-    axis(1, seq(0,1,by=.2), lwd=0,lwd.ticks=1,#labels=rep("",length(seq(0,1,by=.2))),
-         pos = seq(1.5,Jfull-.5,by=1)[s], cex.axis = 0.8,lty=2,col="blue")
-    # axis(1, seq(0,1,by=.2), lwd=0,lwd.ticks=0,#labels=rep("",length(seq(0,1,by=.2))),
-    #      pos = seq(1.5,Jfull-.5,by=1)[s]+0.3, cex.axis = 0.8,lty=2,col="blue")
+  first <- TRUE
+  for (e in 1:Jcause){
+    if (first){plot_pie_cell_first(e,Jcause)}
+    points_pie_cell(e,Jcause)
+    first <- FALSE
   }
-  points(c(pEti_q1),1:(Jfull),pch="|",cex=1)
-  points(c(pEti_q2),1:(Jfull),pch="|",cex=1)
-  points(c(pEti_innerq1),1:(Jfull),pch="[",cex=1)
-  points(c(pEti_innerq2),1:(Jfull),pch="]",cex=1)
+  
+  # cause names on the right edge:
+  axis(4,at=1:Jcause,labels=paste(paste(cause_list_ord,ord,sep=" ("),")",sep=""),
+       las=2,cex.axis=2)
+  # cell bottom axis:
+  abline(h=seq(1.5,Jcause-.5,by=1),lty=2,lwd=0.5,col="gray")
   
   mtext(expression(underline(hat(pi))),line=1,cex=1.8)
-  #mtext(c(expression(bold("--")),":prior","-",":posterior"),col=c("gray","black","black","black"),
-  #      adj=c(0,0.1,0.3,0.4),line=.8,cex=.8,lwd=2)
   legend("topright",c("prior","posterior"),lty=c(2,1),col=c("gray","black"),
          lwd = 4,horiz=TRUE,cex=1,bty="n")
-  pgrid = seq(0,1,by=0.01)
   
-  alpha <- bugs.dat$alpha#eti_prior_set(model_options)
-  
-  for (s in 1:(Jfull)){
-    segments(y0=s,x0=c(pEti_q1)[s],y1=s,x1=c(pEti_q2)[s],col=dotcolor)
-    segments(y0=s,x0=c(pEti_innerq1)[s],y1=s,x1=c(pEti_innerq2)[s],col = dotcolor,lwd=2)
-    text(.8,s,paste0("=",paste0(round(100*c(pEti_mean_ord),1)[s],"%")),srt=0,cex=2)
-    text(.65,s,bquote(hat(pi)[.(ord[s])]),srt=0,cex=2)
-    tmp.density = dbeta(pgrid,alpha[ord[s]],sum(alpha[-ord[s]]))
-    points(pgrid,tmp.density/(3*max(tmp.density))+s-0.45,type="l",col="gray",lwd=4,lty=2)
-    ##posterior density
-    tmp.post.density = density(pEti_mat_ord[,s],from=0,to=1)
-    tmp.x = tmp.post.density$x
-    tmp.y = tmp.post.density$y
-    points(tmp.x,tmp.y/(3*max(tmp.y))+s-0.45,col="black",lwd=4,type="l")
-    
-  }
   
 }

@@ -4,32 +4,36 @@
 \alias{plot_BrS_panel}
 \title{Plot bronze-standard (BrS) panel}
 \usage{
-plot_BrS_panel(MBS, model_options, clean_options, res_nplcm, bugs.dat,
-  top_BrS = 1.3, prior_shape = "boxplot", cexval = 1, srtval = 0)
+plot_BrS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
+  res_nplcm, top_BrS = 1.3, cexval = 1, srtval = 0,
+  prior_shape = "interval", silent = TRUE)
 }
 \arguments{
-\item{MBS}{Matrix of bronze-standard measurements. Rows for subjects (cases at
-the top, controls at the bottom), columns for pathogen-specimen combination.}
+\item{slice}{the index of measurement slice for BrS.}
+
+\item{data_nplcm}{See \code{\link{nplcm}}}
 
 \item{model_options}{See \code{\link{nplcm}}}
 
 \item{clean_options}{See \code{\link{clean_perch_data}}}
 
-\item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
-
 \item{bugs.dat}{Data input for the model fitting.}
+
+\item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
 
 \item{top_BrS}{Numerical value to specify the rightmost limit
 on the horizontal axis for the BrS panel.}
 
-\item{prior_shape}{\code{interval} or \code{boxplot} - for how to represent
-prior/posteriors of the TPR/FPRs of measurements.}
-
 \item{cexval}{Default is 1 - size of text of the BrS percentages.}
 
 \item{srtval}{Default is 0 - the direction of the text for the BrS percentages.}
+
+\item{prior_shape}{\code{interval} or \code{boxplot} - for how to represent
+prior/posteriors of the TPR/FPRs of measurements.}
+
+\item{silent}{Default is TRUE to not print any warning messages; FALSE otherwise.}
 }
 \description{
-Now only works for singleton etiologies.
+Plot bronze-standard (BrS) panel
 }
 

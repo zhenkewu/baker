@@ -5,12 +5,14 @@
 \title{parse regression components (either false positive rate or etiology regression)
 for fitting nplcm}
 \usage{
-parse_nplcm_reg(form, data_nplcm)
+parse_nplcm_reg(form, data_nplcm, silent = TRUE)
 }
 \arguments{
 \item{form}{regression formula}
 
 \item{data_nplcm}{data object for nplcm; must contain covariates X and outcome Y.}
+
+\item{silent}{Default is TRUE for no message about covariates; FALSE otherwise.}
 }
 \value{
 TURE for doing regression; FALSE otherwise.

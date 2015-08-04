@@ -17,6 +17,6 @@ plot_pie_panel(model_options, res_nplcm, bugs.dat, top_pie = 1)
 on the horizontal axis for the pie panel.}
 }
 \description{
-Now only works for singleton etiologies.
+Plot etiology (pie) panel
 }
 

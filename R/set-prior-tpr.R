@@ -91,6 +91,8 @@ set_prior_tpr_BrS <- function(model_options,data_nplcm){
 #' is a numeric vector for alpha or beta parameters to specify Beta prior for TPRs.
 #'
 #' @export
+#' 
+#' 
 set_prior_tpr_SS <- function(model_options,data_nplcm){
   
   parsed_model <- assign_model(model_options,data_nplcm)

@@ -4,33 +4,34 @@
 \alias{plot_SS_panel}
 \title{Plot silver-standard (SS) panel}
 \usage{
-plot_SS_panel(MSS, model_options, clean_options, res_nplcm, bugs.dat,
-  top_SS = 0.3, cexval = 1, srtval = 0)
+plot_SS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
+  res_nplcm, top_SS = 1, cexval = 1, srtval = 0,
+  prior_shape = "interval")
 }
 \arguments{
-\item{MSS}{Matrix of silver-standard measurements. Rows for subjects (cases at
-the top, controls at the bottom), columns for pathogen-specimen combination.
-\code{MSS} has fewer columns than MBS and those pathogens with both BrS and SS
-measurements should be arranged in the first several columns. This should
-have been done by \code{\link{clean_perch_data}}.}
+\item{slice}{the index of measurement slice for SS.}
+
+\item{data_nplcm}{See \code{\link{nplcm}}}
 
 \item{model_options}{See \code{\link{nplcm}}}
 
 \item{clean_options}{See \code{\link{clean_perch_data}}}
 
-\item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
-
 \item{bugs.dat}{Data input for the model fitting.}
 
-\item{top_SS}{Default is \code{0.3}. Numerical value to specify the rightmost limit
+\item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
+
+\item{top_SS}{Numerical value to specify the rightmost limit
 on the horizontal axis for the SS panel.}
 
-\item{cexval}{Default is 1 - size of text of the BrS percentages.}
+\item{cexval}{Default is 1 - size of text of the SS percentages.}
 
-\item{srtval}{Default is 0 - the direction of the text for the BrS percentages.}
+\item{srtval}{Default is 0 - the direction of the text for the SS percentages.}
+
+\item{prior_shape}{\code{interval} or \code{boxplot} - for how to represent
+prior/posteriors of the TPR/FPRs of measurements.}
 }
 \description{
-Now only works for singleton etiologies. Current the prior shape can only be
-represented by intervals.
+Plot silver-standard (SS) panel
 }
 

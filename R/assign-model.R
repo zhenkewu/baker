@@ -6,7 +6,7 @@
 #' to specified model.
 #' @param data_nplcm Data for model fitting.
 #' @param model_options See \code{\link{nplcm}} function.
-#' 
+#' @param silent Default is TRUE for no messages; FALSE otherwise.
 #' @return A list of information for the selected model:
 #' \itemize{
 #'    \item \code{num_slice} a vector counting the no. of measurement slices for every
@@ -24,7 +24,7 @@
 #'
 #' @export
 
-assign_model <- function(model_options,data_nplcm){
+assign_model <- function(model_options,data_nplcm, silent=TRUE){
   # load options:
   likelihood       <- model_options$likelihood
   use_measurements <- model_options$use_measurements
@@ -61,20 +61,34 @@ assign_model <- function(model_options,data_nplcm){
       do_reg_FPR[[i]] <- FALSE
     } else{ # do regression if there is matched regression formula:
       do_reg_FPR[[i]] <-
-        parse_nplcm_reg(as.formula(likelihood$FPR_formula[[ind_tmp]]),data_nplcm)
+        parse_nplcm_reg(as.formula(likelihood$FPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
     }
   }
   names(do_reg_FPR) <- names(Mobs$MBS)
   
   # specify regression for etiology:
   form_tmp   <- as.formula(likelihood$Eti_formula)
-  do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm)
+  do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
   regression <- make_list(do_reg_Eti, do_reg_FPR)
   make_list(num_slice, nested, regression)
 }
 
 
-
-
+#' check if SS measurements have stratified TPRs
+#' 
+#' @param model_options See \link{nplcm}
+#' 
+#' 
+#' @return TRUE for stratified TPRs; FALSE otherwise
+#' 
+#' @export
+check_SS_grp <- function(model_options){
+  res <- FALSE
+  prior_SS <- model_options$prior$TPR_prior$SS
+  if (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 ){
+    res <- TRUE
+  }
+  res
+}
 
 

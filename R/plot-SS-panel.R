@@ -1,240 +1,211 @@
 #' Plot silver-standard (SS) panel
 #' 
-#' Now only works for singleton etiologies. Current the prior shape can only be
-#' represented by intervals.
 #' 
-#' @param MSS Matrix of silver-standard measurements. Rows for subjects (cases at
-#' the top, controls at the bottom), columns for pathogen-specimen combination.
-#' \code{MSS} has fewer columns than MBS and those pathogens with both BrS and SS
-#' measurements should be arranged in the first several columns. This should
-#' have been done by \code{\link{clean_perch_data}}.
+#' @param slice the index of measurement slice for SS.
+#' @param data_nplcm See \code{\link{nplcm}}
 #' @param model_options See \code{\link{nplcm}}
 #' @param clean_options See \code{\link{clean_perch_data}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
-#' @param top_SS Default is \code{0.3}. Numerical value to specify the rightmost limit 
+#' @param top_SS Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the SS panel.
-#' @param cexval Default is 1 - size of text of the BrS percentages.
-#' @param srtval Default is 0 - the direction of the text for the BrS percentages.
+#' @param cexval Default is 1 - size of text of the SS percentages.
+#' @param srtval Default is 0 - the direction of the text for the SS percentages.
+#' @param prior_shape \code{interval} or \code{boxplot} - for how to represent
+#' prior/posteriors of the TPR/FPRs of measurements.
 #' 
 #' @importFrom binom binom.confint
 #' 
 #' @export
 
-plot_SS_panel <- function(MSS,model_options,clean_options,res_nplcm,
-                                bugs.dat,
-                                 top_SS = 0.3,
-                                 cexval = 1,
-                                 srtval = 0){
-  #
-  # now only deal with singleton etiologies:
-  # 
+
+plot_SS_panel <- function(slice,data_nplcm,model_options,
+                           clean_options,bugs.dat,res_nplcm,
+                           top_SS = 1, 
+                           cexval = 1,
+                           srtval = 0,
+                           prior_shape="interval"){
+  template_SS    <- NULL
+  check_combo_SS <- NULL
+  if ("SS" %in% model_options$use_measurements){
+    template_SS <- lapply(clean_options$SS_objects,"[[","template")
+    names(template_SS) <- lapply(clean_options$SS_objects,"[[","nm_spec_test")
+    check_combo_SS <- any(unlist(lapply(template_SS,rowSums))>1)
+  }
+  # order cause_list by posterior means:
+  ord <- order_post_eti(res_nplcm,model_options)$ord
+  pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
   
-  # total no. of causes:
-  Jcause     <- length(model_options$cause_list)
-  # extract and process some data and posterior samples:
-  SubVarName <- rep(NA,Jcause)
-  for (j in 1:Jcause){
-    SubVarName[j] = paste("pEti","[",j,"]",sep="")
+  template_ord <- template_SS[[slice]][ord,,drop=FALSE]
+  
+  thetaSS_nm <- paste0("thetaSS_",slice)
+  alphaS_nm   <- paste0("alphaS_",slice)
+  betaS_nm   <- paste0("betaS_",slice)
+  # which model was fitted:
+  parsed_model <- assign_model(model_options, data_nplcm)
+  
+  
+  if (!parsed_model$nested & !any(unlist(parsed_model$regression))){
+    
+    if (check_SS_grp(model_options)){stop("== Panel plot not available for stratified SS TPRs. Please contact maintainer. ==")}
+    #
+    # plcm (just obtain TPR and FPR estimates):
+    #
+    theta_mat <- res_nplcm[,grep(thetaSS_nm,colnames(res_nplcm)),drop=FALSE]
+    theta_mean <- colMeans(theta_mat)
+    
+    ## model fitted postive rate for each pathogen
+    fittedmean_case    <- rep(NA,ncol(template_ord))
+    names(fittedmean_case) <- colnames(template_ord)
+    
+    #fitted_margin_case(pEti_ord,theta,template)
+    fitted_margin_case <- function(pEti_ord,theta,template){
+      psi = 0
+      mixture <-  pEti_ord
+      if (ncol(template)!=length(theta)){
+        cat(theta,": ",length(theta),",ncol_tmp=",ncol(template),"\n")
+      }
+      tpr     <-  t(t(template)*theta)
+      fpr     <-  t(t(1-template)*psi)
+      colSums(tpr*mixture + fpr*mixture)
+    }
+    
+    fittedmean_case  <- colMeans(t(sapply(1:nrow(pEti_mat_ord),
+                                          function(iter)
+                                            fitted_margin_case(pEti_mat_ord[iter,], 
+                                                               theta_mat[iter,],
+                                                               template_ord))))
+    fittedmean_control <- 0
+    
+    #plot_pos <- get_plot_pos(template_ord)  # 1 at the 5th means for the fifth smallest etiology, we should plot 1st dimension in this slice.
   }
   
-  # get etiology fraction MCMC samples:
-  pEti_mat   <- res_nplcm[,SubVarName]
-  pEti_mean  <- colMeans(pEti_mat)
-  pEti_mean0 <- pEti_mean
-  
-  # order the causes by posterior mean:
-  ord <- order(pEti_mean)
-  
-  pEti_mean_ord <- pEti_mean[ord]
-  pEti_mat_ord  <- pEti_mat[,ord]
-  
-  # quantiles for etiology: outer is 97.5% CI, inner is 50% CI
-  pEti_q1   <- apply(pEti_mat,2,quantile,probs=0.025)[ord]
-  pEti_q2   <- apply(pEti_mat,2,quantile,probs=0.975)[ord]
-  pEti_innerq1   <- apply(pEti_mat,2,quantile,probs=0.25)[ord]
-  pEti_innerq2   <- apply(pEti_mat,2,quantile,probs=0.75)[ord]
-  
-  # complete list of pathogens:
-  if (is.null(model_options$SSonly) || model_options$SSonly==FALSE){
-    pathogen_list     <- model_options$pathogen_BrS_list
-  } else{
-    pathogen_list     <- c(model_options$pathogen_BrS_list,
-                           model_options$pathogen_SSonly_list)
-  }
-  
-  Jfull               <- length(pathogen_list)
-  
-  if (Jfull != Jcause){
-    stop("== The number of causes is different from the total number of pathogens.
-         The multiple-cause visualization, including NoA, is being developed.
-         Please contact developer. Thanks. ==")
-  }
-  JBrS                <- length(model_options$pathogen_BrS_list)
-  pathogens_ord       <- pathogen_list[ord]
-  
+  # get observed rates' summaries:
   Nd <- bugs.dat$Nd
   Nu <- bugs.dat$Nu
   
-  #
-  # prepare information for SS panel:
-  #
-  SS_index  <- which(colMeans(is.na(MSS))<.9)
-  JSS       <- length(SS_index)
+  MSS_curr <- data_nplcm$Mobs$MSS[[slice]]
   
-  ind.SS = rep(NA,JSS) # tells where the the SS row should go.
-  for (j in 1:JSS){
-    ind.SS[j] = which(ord==j)
-  }
-  if (!is.null(model_options$SSonly) && model_options$SSonly==TRUE){
-    SSonlydat = bugs.dat$MSS.only
-    JSS_only   = Jfull-JBrS
-    ind.SSonly = rep(NA,JSS_only)
-    for (j in 1:(JSS_only)){
-      ind.SSonly[j] = which(ord == j+JBrS)
-    }
-    MSS = cbind(bugs.dat$MSS,SSonlydat)
-    SS_index = which(colMeans(is.na(MSS))<.9)
-    JSS      = length(SS_index)
-    
-    ind.SS = rep(NA,JSS)
-    for (j in 1:JSS){
-      ind.SS[j] = which(ord==ifelse(j<=JSS-JSS_only,j,
-                                    j-JSS+JSS_only+JBrS))
-    }
-  }
-  
-  if (is.null(clean_options$allow_missing)||
-        clean_options$allow_missing==FALSE){
-    tmpSS.case = binom.confint(colSums(MSS[,1:JSS]), nrow(MSS),
-                               conf.level = 0.95, methods = "ac")
-  }else{
-    ind_MSS_not_na <- which(rowSums(is.na(MSS[,1:JSS]))==0)
-    tmpSS.case = binom.confint(colSums(MSS[ind_MSS_not_na,1:JSS]),
-                               length(ind_MSS_not_na),
-                               conf.level = 0.95, methods = "ac")
-  }
-  
-  SScomp = rbind(round(tmpSS.case$mean,5),rep(NA,JSS))
-  SScomp_q1 = rbind(tmpSS.case[,c("lower")],rep(NA,JSS))
-  SScomp_q2 = rbind(tmpSS.case[,c("upper")],rep(NA,JSS))
-  
-  
-  theta_matSS = (res_nplcm[,grep("thetaSS",colnames(res_nplcm))])
-  theta_meanSS = colMeans(theta_matSS)
-  
-  theta_matSS_q1=apply(theta_matSS,2,quantile,0.025)
-  theta_matSS_q2=apply(theta_matSS,2,quantile,0.975)
-  
-  fittedmean_SS_pos = sapply(1:JSS, function(s)
-    mean(pEti_mat_ord[,ind.SS[s]]*theta_matSS[,s]))
-  # note that here we used ind.SS[] to map back to the compelte
-  # vector of pathogens.
-  
-  #
-  # plotting SS panel:
-  #
-  par(mar=c(5.1,0,4.1,0))
-  
-  plotat = seq(0.5,Jfull+0.5,by=1/4)[-(c(1,(1:Jfull)*4+1))]
-  #plotat.short = plotat[1:length(c(rbind(thetameanG,Gcomp)))]
-  plotat.calc = function(j) {c(3*j-2,3*j-1,3*j)}
-  plotat.short = rep(NA,JSS*3)
-  for (j in 1:JSS){
-    plotat.short[c(3*j-2,3*j-1,3*j)] = plotat[plotat.calc(ind.SS[j])]
-  }
- 
-  
-  # collect prior information on SS TPRs:
-  alphaS <- bugs.dat$alphaS
-  betaS  <- bugs.dat$betaS
-  if (!is.null(model_options$SSonly) && model_options$SSonly==TRUE){
-    alphaS.only <- bugs.dat$alphaS.only
-    betaS.only  <- bugs.dat$betaS.only
-    alphaS      <- c(bugs.dat$alphaS,alphaS.only)
-    betaS       <- c(bugs.dat$betaS,betaS.only)
-  }
+  # positive rates and confidence intervals:
+  #cases:
+  MSS_case_curr <- MSS_curr[1:Nd,,drop=FALSE]
+  count    <- do.call(cbind,lapply(MSS_case_curr,table))["1",]
+  NA_count <- apply(MSS_case_curr,2,function(v) sum(is.na(v)))
+  tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
 
+  # case and control positive rate, lower and upper limit
+  MSS_mean  <- rbind(round(tmp.case$mean,5))
+  MSS_q1 <- rbind(tmp.case[,c("lower")])
+  MSS_q2 <- rbind(tmp.case[,c("upper")])
+  
+  # prior parameters:
+  alphaS         <- bugs.dat[[alphaS_nm]]
+  betaS          <- bugs.dat[[betaS_nm]]
+  
   #
   # plotting:
   #
-  plot(c(rbind(theta_meanSS,SScomp)),plotat.short,yaxt="n",xlim=c(0,top_SS),
-       ylim=c(0.5,Jfull+.5),#xaxt="n",
-       ylab="",xlab="probability",
-       pch = c(rbind(rep(20,Jfull),rep(20,Jfull),rep(20,Jfull))),
-       col=c(rbind(rbind(rep(1,Jfull),rep("blue",Jfull),rep(1,Jfull)))),
-       cex = c(rbind(rep(1,Jfull),rep(2,Jfull),rep(2,Jfull))))
+  op <- par(mar=c(5.1,0,4.1,0))
   
-  points(c(rbind(fittedmean_SS_pos,matrix("",nrow=2,ncol=JSS))),plotat.short,
-         yaxt="n",xlim=c(0,top_SS),
-         ylim=c(0.5,Jfull+.5),xaxt="n",
-         ylab="",#xlab="Gold Positive Rate",
-         pch = c(rbind(rep(2,Jfull),rep(NA,Jfull),rep(NA,Jfull))),
-         col=c(rbind(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull)))),
-         cex = c(rbind(rep(1,Jfull),rep(2,Jfull),rep(2,Jfull))))
+  pos_vec <- get_plot_pos(template_ord)
   
-  points(c(rbind(theta_matSS_q2,SScomp_q2)),plotat.short,
-         pch=c(rbind(rep("|",Jfull),rep("|",Jfull),rep("|",Jfull))),
-         cex=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))),
-         col=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))))
-  points(c(rbind(theta_matSS_q1,SScomp_q1)),plotat.short,
-         pch=c(rbind(rep("|",Jfull),rep("|",Jfull),rep("|",Jfull))),
-         cex=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))),
-         col=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))))
-  
-  #inner 25%-75%
-  theta_matSS_innerq1=apply(theta_matSS,2,quantile,0.25)
-  theta_matSS_innerq2=apply(theta_matSS,2,quantile,0.75)
-  points(c(rbind(theta_matSS_innerq1,SScomp_q1)),plotat.short,
-         pch=c(rbind(rep("[",Jfull),rep("|",Jfull),rep("|",Jfull))),
-         cex=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))),
-         col=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))))
-  points(c(rbind(theta_matSS_innerq2,SScomp_q1)),plotat.short,
-         pch=c(rbind(rep("]",Jfull),rep("|",Jfull),rep("|",Jfull))),
-         cex=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))),
-         col=c(rbind(rep(1,Jfull),rep(1,Jfull),rep(1,Jfull))))
-  counter = 0
-  for (s in 1:length(plotat.short)){
-    segments(y0=plotat.short[s],x0=c(rbind(theta_matSS_innerq1,SScomp_q1))[s],
-             y1=plotat.short[s],x1=c(rbind(theta_matSS_innerq2,SScomp_q2))[s],
-             col="black",
-             lwd=1)
+  plot_SS_cell_first <- function(lat_pos, pos, height){
+    plotat <- get_plot_num(lat_pos,height)
+    plot(c(fittedmean_case[pos],MSS_mean[,pos]),
+         plotat[-3],
+         xlim=c(0,top_SS),
+         ylim=c(0.5, height+0.5),
+         xaxt="n",xlab="positive rate",
+         ylab="",yaxt="n",
+         pch = c(2,20),
+         col = c(1, "dodgerblue2"),
+         cex = c(1,2))
   }
   
-  # row separation lines
-  abline(h=seq(1.5,Jfull-.5,by=1)[ind.SS],lty=2,lwd=0.5,col="blue")
-  abline(h=seq(1.5,Jfull-.5,by=1)[ind.SS]-1,lty=2,lwd=0.5,col="blue")
-  
-  
-  counter = 0
-  for (s in 1:length(plotat.short)){
-    segments(y0=plotat.short[s],x0=c(rbind(theta_matSS_q1,SScomp_q1))[s],
-             y1=plotat.short[s],x1=c(rbind(theta_matSS_q2,SScomp_q2))[s],col="black",
-             lty=ifelse((s-1)%%3<2,1,1))
-    if ((s-1)%%3>=1){
-      counter=counter+1
-      text(c(SScomp)[counter],plotat.short[s]+0.125,
-           paste0(round(100*c(SScomp),1)[counter],"%"),srt=srtval,cex=cexval)
+  points_SS_cell <- function(lat_pos, pos, height){ # pos for the measurement dimension, usually used as pos_vec[e].
+    plotat <- get_plot_num(lat_pos,height)
+    if (lat_pos>1){
+      points(c(fittedmean_case[pos],MSS_mean[,pos]),
+             plotat[-3],
+             pch = c(2,20),
+             col = c("purple", "dodgerblue2"),
+             cex = c(1,2))
+    }
+    points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
+           plotat[c(1,2,2)],
+           pch = c("+","|","|"),
+           col = c("purple",1,1),
+           cex = c(2,1,1))
+    # label posterior mean of TPR:
+    tmp.post <- as.matrix(theta_mat)[,pos]
+    tmp.hpos <- quantile(tmp.post,0.975) + 0.15
+    text(tmp.hpos, lat_pos-0.35, paste0(round(100*theta_mean[pos],1),"%"),
+         srt=srtval,cex=cexval,col="purple")
+    
+    # case: rates
+    segments(
+      x0 = MSS_q1[1,pos],x1 = MSS_q2[1,pos],
+      y0 =plotat[2], y1 = plotat[2],
+      lty = 1
+    )
+    tmp.hpos <- ifelse(MSS_q2[1,pos]+0.15>0.95,MSS_q1[1,pos]-0.2,MSS_q2[1,pos]+0.15 )
+    text(tmp.hpos, plotat[2], paste0(round(100*MSS_mean[1,pos],1),"%"),
+         srt=srtval,cex=cexval)
+
+    if (!is.na(pos)){#some pos can be NA: because certain cause has no measurements.
+      # prior and posterior of TPR:
+      if (prior_shape == "interval") {
+        # prior of TPR:
+        tmp = qbeta(c(0.025,0.975,0.25,0.75),alphaS[pos],betaS[pos])
+        points(tmp,rep(lat_pos - .45,4),pch = c("|","|","[","]"),col="gray")
+        segments(tmp[1],lat_pos - .45,
+                 tmp[2],lat_pos - .45,lty = 1,col="gray")
+        segments(tmp[3],lat_pos - .45,
+                 tmp[4],lat_pos - .45,lty = 1,col="gray",lwd=2)
+        
+        # posterior of TPR:
+        tmp.post = as.matrix(theta_mat)[,pos]
+        tmp  = quantile(tmp.post, c(0.025,0.975,0.25,0.75))
+        points(tmp,rep(lat_pos - .35,4),pch = c("|","|","[","]"),col = "purple")
+        segments(tmp[1],lat_pos - .35,
+                 tmp[2],lat_pos - .35,lty = 1,col = "purple")
+        segments(tmp[3],lat_pos - .35,
+                 tmp[4],lat_pos - .35,lty = 1,col = "purple",lwd=2)
+      } else if (prior_shape == "boxplot") {
+        tmp = rbeta(10000,alphaS[pos],betaS[pos])
+        boxplot(
+          tmp,at = lat_pos - 0.45, boxwex = 1 / 10 , col = "gray",
+          add = TRUE,horizontal = TRUE,outline = FALSE,xaxt =
+            "n"
+        )
+        tmp.post = as.matrix(theta_mat)[,pos]
+        boxplot(
+          tmp.post,at = lat_pos - 0.35,boxwex = 1 / 10,add = TRUE,
+          horizontal = TRUE,outline = FALSE,xaxt = "n"
+        )
+      }
     }
   }
   
-  for (s in 1:JSS){
-    text(theta_meanSS[s],plotat.short[3*s-2]+.125,paste(round(100*theta_meanSS[s],2),"%"))
-    
-    # put prior shapes on gold sensitivity
-    tmp = rbeta(10000,alphaS[s],betaS[s])
-    points(quantile(tmp,0.025),ind.SS[s]-.45,pch="|")
-    points(quantile(tmp,0.975),ind.SS[s]-.45,pch="|")
-    points(quantile(tmp,0.25),ind.SS[s]-.45,pch="[")
-    points(quantile(tmp,0.75),ind.SS[s]-.45,pch="]")
-    segments(quantile(tmp,0.025),ind.SS[s]-.45,
-             quantile(tmp,0.975),ind.SS[s]-.45,lty=1)
-    
-    #boxplot(tmp,at = ind.SS[s]-0.45, boxwex=1/8 ,col="gray",
-    #        add=TRUE,horizontal=TRUE,outline=FALSE,xaxt="n")
-    
+  Jcause <- length(model_options$likelihood$cause_list)
+  first <- TRUE
+  cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
+  for (e in 1:nrow(template_ord)){
+    if (!is.na(pos_vec[e])){
+      if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause)}
+      points_SS_cell(e, pos_vec[e],Jcause)
+      first <- FALSE
+    }
   }
   
-  mtext(expression(underline("SS")),line=1,cex=1.8)
-
+  #add ticks from 0 to 1 for x-bar:
+  axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
+  
+  #add dashed lines to separate cells:
+  abline(h=seq(1.5,Jcause-.5,by=1),lty=2,lwd=0.5,col="gray")
+  
+  #add some texts:
+  mtext(eval(paste0("SS: ", names(data_nplcm$Mobs$MSS)[slice])),
+        line=1,cex=1.8)
 }
+
