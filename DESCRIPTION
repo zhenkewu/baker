@@ -1,6 +1,6 @@
 Package: baker
 Type: Package
-Title: Bayesian Analytic Kit for Etiology Research
+Title: Bayesian Analysis Kit for Etiology Research
 Version: 0.1
 Date: 2015-07-29
 Authors@R: as.person(c(

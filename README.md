@@ -1,4 +1,4 @@
-**baker**: Bayesian Analytic Kit for Etiology Research
+**baker**: Bayesian Analysis Kit for Etiology Research
 ------
 > An R Package for Fitting Bayesian [Nested Partially Latent Class Models](http://biostats.bepress.com/jhubiostat/paper276/) 
 
