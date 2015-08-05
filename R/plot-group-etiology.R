@@ -6,6 +6,8 @@
 #' table, but based on the order of pathogens that enter the analysis.
 #'
 #' @param DIR_NPLCM The file path to the result folder
+#' @param dir_taxo File path to taxonomy information (.csv). Specifying this directory
+#' will overide information in \code{clean_options} read from \code{DIR_NPLCM}.
 #' @param ksFrac A number between 0 and 1, which is the fraction of samples used to
 #' calculate kernel density
 #' @param levellabel The contour line to be drawn in the final plot. Default is
@@ -14,7 +16,7 @@
 #'
 #' @export
 
-plot_group_etiology <- function(DIR_NPLCM,ksFrac = 1,levellabel = 5){
+plot_group_etiology <- function(DIR_NPLCM,dir_taxo,ksFrac = 1,levellabel = 5){
 
   # read NPLCM outputs:
   out           <- nplcm_read_folder(DIR_NPLCM)
@@ -48,8 +50,13 @@ plot_group_etiology <- function(DIR_NPLCM,ksFrac = 1,levellabel = 5){
     stop("== Grouped visualziation not implemented for combo latent status. ==")
   }
   
-  taxo_cause_list <- assign_taxo_cause_list(model_options$likelihood$cause_list,
+  if (is.null(dir_taxo)){
+   taxo_cause_list <- assign_taxo_cause_list(model_options$likelihood$cause_list,
                                             clean_options$patho_taxo_dir)
+  } else{
+    taxo_cause_list <- assign_taxo_cause_list(model_options$likelihood$cause_list,
+                                              dir_taxo)
+  }
   
   bacteria_index <- which(taxo_cause_list=="B")
   virus_index <- which(taxo_cause_list=="V")

@@ -10,7 +10,7 @@ nplcm_read_folder <- function(DIR_NPLCM){
   #
   # Read data from DIR_NPLCM:
   #
-  bugs.dat <- dget(paste(DIR_NPLCM,"data.txt",sep="/"))
+  bugs.dat <- dget(file.path(DIR_NPLCM,"data.txt"))
   for (bugs.variable.name in names(bugs.dat)) {
     if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
       dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))

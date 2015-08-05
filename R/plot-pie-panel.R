@@ -4,6 +4,7 @@
 #' @param model_options See \code{\link{nplcm}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
+#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param top_pie Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the pie panel.
 #' 
@@ -13,6 +14,7 @@
 
 plot_pie_panel <- function(model_options,res_nplcm,
                            bugs.dat,
+                           bg_color,
                            top_pie = 1){
 
   # order cause_list by posterior means:
@@ -32,14 +34,25 @@ plot_pie_panel <- function(model_options,res_nplcm,
   Jcause <- length(model_options$likelihood$cause_list)
   alpha_ord <- bugs.dat$alpha[ord]
   
-  plot_pie_cell_first <- function(lat_pos,height,dotcolor="black"){
+  plot_pie_cell_first <- function(lat_pos,height,dotcolor="black",add=FALSE){
     # posterior mean of etiology:
+    if (!add){
     plot(pEti_mean_ord[lat_pos],lat_pos,
          yaxt="n",
          xlim=c(0,top_pie),ylim=c(0.5,Jcause+0.5),
          col="purple",
          ylab="",xlab="probability",
          pch= 20,cex=2)
+    }
+    if (add){
+      points(pEti_mean_ord[lat_pos],lat_pos,
+           yaxt="n",
+           xlim=c(0,top_pie),ylim=c(0.5,Jcause+0.5),
+           col="purple",
+           ylab="",xlab="probability",
+           pch= 20,cex=2)
+      
+    }
   }
   
   points_pie_cell <- function(lat_pos,height,dotcolor="black"){
@@ -82,9 +95,20 @@ plot_pie_panel <- function(model_options,res_nplcm,
   # plot etiology information:
   #
   op <- par(mar=c(5.1,0,4.1,10))
+  
   first <- TRUE
   for (e in 1:Jcause){
     if (first){plot_pie_cell_first(e,Jcause)}
+    points_pie_cell(e,Jcause)
+    first <- FALSE
+  }
+  
+  rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+         bg_color$pie)
+  
+  first <- TRUE
+  for (e in 1:Jcause){
+    if (first){plot_pie_cell_first(e,Jcause,add=TRUE)}
     points_pie_cell(e,Jcause)
     first <- FALSE
   }
@@ -96,7 +120,7 @@ plot_pie_panel <- function(model_options,res_nplcm,
   abline(h=seq(1.5,Jcause-.5,by=1),lty=2,lwd=0.5,col="gray")
   
   mtext(expression(underline(hat(pi))),line=1,cex=1.8)
-  legend("topright",c("prior","posterior"),lty=c(2,1),col=c("gray","black"),
+  legend("topright",c("prior","posterior"),lty=c(2,1),col=c("gray","purple"),
          lwd = 4,horiz=TRUE,cex=1,bty="n")
   
   

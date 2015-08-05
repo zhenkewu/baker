@@ -7,6 +7,7 @@
 #' @param clean_options See \code{\link{clean_perch_data}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
+#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param top_SS Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the SS panel.
 #' @param cexval Default is 1 - size of text of the SS percentages.
@@ -21,6 +22,7 @@
 
 plot_SS_panel <- function(slice,data_nplcm,model_options,
                            clean_options,bugs.dat,res_nplcm,
+                           bg_color,
                            top_SS = 1, 
                            cexval = 1,
                            srtval = 0,
@@ -102,15 +104,13 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   alphaS         <- bugs.dat[[alphaS_nm]]
   betaS          <- bugs.dat[[betaS_nm]]
   
-  #
-  # plotting:
-  #
-  op <- par(mar=c(5.1,0,4.1,0))
+
   
   pos_vec <- get_plot_pos(template_ord)
   
-  plot_SS_cell_first <- function(lat_pos, pos, height){
+  plot_SS_cell_first <- function(lat_pos, pos, height,add=FALSE){
     plotat <- get_plot_num(lat_pos,height)
+    if (!add){
     plot(c(fittedmean_case[pos],MSS_mean[,pos]),
          plotat[-3],
          xlim=c(0,top_SS),
@@ -120,6 +120,18 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
          pch = c(2,20),
          col = c(1, "dodgerblue2"),
          cex = c(1,2))
+    }
+    if (add){
+      points(c(fittedmean_case[pos],MSS_mean[,pos]),
+           plotat[-3],
+           xlim=c(0,top_SS),
+           ylim=c(0.5, height+0.5),
+           xaxt="n",xlab="positive rate",
+           ylab="",yaxt="n",
+           pch = c(2,20),
+           col = c(1, "dodgerblue2"),
+           cex = c(1,2))
+    }
   }
   
   points_SS_cell <- function(lat_pos, pos, height){ # pos for the measurement dimension, usually used as pos_vec[e].
@@ -168,9 +180,9 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
         tmp  = quantile(tmp.post, c(0.025,0.975,0.25,0.75))
         points(tmp,rep(lat_pos - .35,4),pch = c("|","|","[","]"),col = "purple")
         segments(tmp[1],lat_pos - .35,
-                 tmp[2],lat_pos - .35,lty = 1,col = "purple")
+                 tmp[2],lat_pos - .35,lty = 1,col = "black")
         segments(tmp[3],lat_pos - .35,
-                 tmp[4],lat_pos - .35,lty = 1,col = "purple",lwd=2)
+                 tmp[4],lat_pos - .35,lty = 1,col = "black",lwd=2)
       } else if (prior_shape == "boxplot") {
         tmp = rbeta(10000,alphaS[pos],betaS[pos])
         boxplot(
@@ -188,11 +200,29 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   }
   
   Jcause <- length(model_options$likelihood$cause_list)
+  #
+  # plotting:
+  #
+  op <- par(mar=c(5.1,0,4.1,0))
+  
+  first <- TRUE
+  #cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
+  for (e in 1:nrow(template_ord)){
+    if (!is.na(pos_vec[e])){
+      if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause)}
+      points_SS_cell(e, pos_vec[e],Jcause)
+      first <- FALSE
+    }
+  }
+  
+  rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+         bg_color$SS)
+  
   first <- TRUE
   cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
   for (e in 1:nrow(template_ord)){
     if (!is.na(pos_vec[e])){
-      if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause)}
+      if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause,add=TRUE)}
       points_SS_cell(e, pos_vec[e],Jcause)
       first <- FALSE
     }

@@ -7,6 +7,7 @@
 #' @param clean_options See \code{\link{clean_perch_data}}
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
+#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param top_BrS Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the BrS panel.
 #' @param cexval Default is 1 - size of text of the BrS percentages.
@@ -20,10 +21,12 @@
 
 plot_BrS_panel <- function(slice,data_nplcm,model_options,
                            clean_options,bugs.dat,res_nplcm,
+                           bg_color,
                            top_BrS = 1.3, 
                            cexval = 1,
                            srtval = 0,
-                           prior_shape="interval",silent=TRUE){
+                           prior_shape="interval",
+                           silent=TRUE){
   template_BrS    <- NULL
   check_combo_BrS <- NULL
   if ("BrS" %in% model_options$use_measurements){
@@ -102,13 +105,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   # prior parameters:
   alphaB         <- bugs.dat[[alphaB_nm]]
   betaB          <- bugs.dat[[betaB_nm]]
-  
-  #
-  # plotting:
-  #
-  #op <- par(mar=c(5.1,4.1,4.1,0))
-  op <- par(mar=c(5.1,0,4.1,0))
-  
+
   pos_vec <- get_plot_pos(template_ord)
   
   get_COR <- function(pos){
@@ -137,8 +134,9 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     res
   }
   
-  plot_BrS_cell_first <- function(lat_pos, pos, height){
+  plot_BrS_cell_first <- function(lat_pos, pos, height,add=FALSE){
     plotat <- get_plot_num(lat_pos,height)
+    if (!add){
     plot(c(fittedmean_case[pos],MBS_mean[,pos]),
          plotat,
          xlim=c(0,top_BrS),
@@ -148,6 +146,18 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
          pch = c(2,20,20),
          col = c(1,"dodgerblue2", "dodgerblue2"),
          cex = c(1,2,2))
+    }
+    if (add){
+    points(c(fittedmean_case[pos],MBS_mean[,pos]),
+         plotat,
+         xlim=c(0,top_BrS),
+         ylim=c(0.5, height+0.5),
+         xaxt="n",xlab="positive rate",
+         ylab="",yaxt="n",
+         pch = c(2,20,20),
+         col = c(1,"dodgerblue2", "dodgerblue2"),
+         cex = c(1,2,2))
+    }
   }
   
   points_BrS_cell <- function(lat_pos,pos,height){ # pos for the measurement dimension, usually used as pos_vec[e].
@@ -260,11 +270,32 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   }
   
   Jcause <- length(model_options$likelihood$cause_list)
+  #
+  # plotting:
+  #
+  #op <- par(mar=c(5.1,4.1,4.1,0))
+  op <- par(mar=c(5.1,0,4.1,0))
+  
+  
+  first  <- TRUE
+  #cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
+  for (e in 1:nrow(template_ord)){
+    if (!is.na(pos_vec[e])){
+      if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause)}
+      points_BrS_cell(e,pos_vec[e],Jcause)
+      first <- FALSE
+    }
+  }
+  
+  
+  rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+         bg_color$BrS)
+
   first  <- TRUE
   cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
   for (e in 1:nrow(template_ord)){
     if (!is.na(pos_vec[e])){
-      if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause)}
+      if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause,add=TRUE)}
       points_BrS_cell(e,pos_vec[e],Jcause)
       first <- FALSE
     }

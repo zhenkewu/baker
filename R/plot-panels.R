@@ -16,6 +16,7 @@
 #' @param slices DEFAULT is "all" - to plot all measurements; Otherwise, one can
 #' specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
 #' 3rd slice of BrS measurements and 1st of SS measurement.
+#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param SS_upperlimit The upper limit of horizontal bar for the silver-standard
 #' subpanel (the middle panel). The default value is .25.
 #'
@@ -26,7 +27,9 @@
 #'
 #' @export
 
-plot_panels <- function(DIR_NPLCM,slices = "all",SS_upperlimit=1,eti_upperlimit=1,silent=TRUE){#BEGIN function
+plot_panels <- function(DIR_NPLCM,slices = "all",
+                        bg_color = list(BrS = "lavenderblush", SS = "mistyrose",pie="antiquewhite"),
+                        SS_upperlimit=1,eti_upperlimit=1,silent=TRUE){#BEGIN function
   old_par <- par(no.readonly=TRUE)
   on.exit(par(old_par))
   
@@ -74,43 +77,19 @@ plot_panels <- function(DIR_NPLCM,slices = "all",SS_upperlimit=1,eti_upperlimit=
   it <- layout(matrix(1:(n_total_meas+2),1,n_total_meas+1+1,byrow = TRUE),
                widths=c(1.5,rep(2.5,n_total_meas),3),heights=c(8))
   # layout.show(it)
-  
-  Jcause <- length(model_options$likelihood$cause_list)
-  op <- par(mar=c(5.1,4,4.1,0))
-  plot(rep(0,3*Jcause),
-       c(sapply(1:Jcause,get_plot_num,height=Jcause)),
-       xlim=c(0,0.1),
-       ylim=c(0.5, Jcause+0.5),
-       xaxt="n",pch="",xlab="",bty="l",axes=FALSE,
-       ylab="",yaxt="n")
-  #add axis labels on the left:
-  #axis(2,at = c(sapply(1:Jcause,get_plot_num,height=Jcause)),
-  #     labels=rep(c("","case","control"),Jcause),las=2)
-  # axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
-  # axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
-  
-  text(0.1,c(sapply(1:Jcause,get_plot_num,height=Jcause)),
-       labels=rep(c(expression(paste(symbol("\052"),"(FPR)--",Delta,"(fitted)--+(TPR)")),
-                    "case","control"),Jcause),adj=1,cex=c(1,2,2),
-       col=c("purple",1,1))
-  text(0.1,c(sapply(1:Jcause,get_plot_num,height=Jcause))+0.1,
-       labels=rep(c(expression(italic("posterior mean:")),"",
-                    expression(italic("data:"))),Jcause),col=c("purple",1,1),adj=1)
-  text(0.1,(1:Jcause)-.35,labels=rep("posterior CI: '|'-95%;'[]'-50%",Jcause),col="purple",adj=1)
-  text(0.1,(1:Jcause)-.45,labels=rep("prior: '|'-95%;'[]'-50%",Jcause),adj=1)
-  
+  plot_leftmost(model_options)
   # bronze-standard
   for (s in slices$MBS){
     plot_BrS_panel(s,data_nplcm,model_options,
-                   clean_options,bugs.dat,res_nplcm,silent=silent)
+                   clean_options,bugs.dat,res_nplcm,bg_color = bg_color, silent=silent)
   }
   # silver-standard
   for (s in slices$MSS){
     plot_SS_panel(s,data_nplcm,model_options,
-                  clean_options,bugs.dat,res_nplcm)
+                  clean_options,bugs.dat,res_nplcm,bg_color = bg_color)
   }
   
-  plot_pie_panel(model_options,res_nplcm,bugs.dat)
+  plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color=bg_color)
   
   
   
@@ -204,4 +183,31 @@ get_plot_num <- function(e, height){
   x <- seq(0.5,height+0.5,by=1/4)[-(c(1,(1:height)*4+1))]
   tmp <- length(x)/height*e
   x[c(tmp-2,tmp-1,tmp)]
+}
+
+
+plot_leftmost <- function(model_options){
+  Jcause <- length(model_options$likelihood$cause_list)
+  op <- par(mar=c(5.1,4,4.1,0))
+  plot(rep(0,3*Jcause),
+       c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+       xlim=c(0,0.1),
+       ylim=c(0.5, Jcause+0.5),
+       xaxt="n",pch="",xlab="",bty="l",axes=FALSE,
+       ylab="",yaxt="n")
+  #add axis labels on the left:
+  #axis(2,at = c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+  #     labels=rep(c("","case","control"),Jcause),las=2)
+  # axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
+  # axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
+  
+  text(0.1,c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+       labels=rep(c(expression(paste(symbol("\052"),"(FPR)--",Delta,"(fitted)--+(TPR)")),
+                    "case","control"),Jcause),adj=1,cex=c(1,2,2),
+       col=c("purple",1,1))
+  text(0.1,c(sapply(1:Jcause,get_plot_num,height=Jcause))+0.1,
+       labels=rep(c(expression(italic("posterior mean:")),"",
+                    expression(italic("data:"))),Jcause),col=c("purple",1,1),adj=1)
+  text(0.1,(1:Jcause)-.35,labels=rep("posterior CI: '|'-95%;'[]'-50%",Jcause),col="purple",adj=1)
+  text(0.1,(1:Jcause)-.45,labels=rep("prior: '|'-95%;'[]'-50%",Jcause),adj=1)
 }
