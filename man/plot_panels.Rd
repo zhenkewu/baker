@@ -32,16 +32,11 @@ posterior subpanel (the rightmost panel). The default value is .4}
 A figure with two or three columns
 }
 \description{
-Visualize the model outputs for communicating how does data inform final
-etiology. Current code only works for single etiologies. Multiple etiology
-has not been coded, because we need special handling of pathogen ordering.
-Also, because multiple etiology has a different formula for model-based observed
-rate.
-DN: 1. current implementation: nplcm, BrS and SS.
-"Jfull" here is not the same as in other functions: it refers to the number of
-pathogens even if there are pathogens with only silver-standard data;
-in other functions, "Jfull" refers to the number of pathogens that have BrS data.
-2. Missing data for BrS or SS are dropped when calculating observed measurement
-prevalences
+`plot_panels()` visualizes the model outputs for communicating how the data inform final
+latent disease status (etiology). It works for singleton or combo etiologies.
+}
+\details{
+Missing data for BrS or SS are dropped when calculating observed measurement
+positive rates
 }
 
