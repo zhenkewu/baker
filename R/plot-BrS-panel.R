@@ -278,7 +278,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   
   first  <- TRUE
-  #cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
+  cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
   for (e in 1:nrow(template_ord)){
     if (!is.na(pos_vec[e])){
       if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause)}
@@ -287,17 +287,18 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     }
   }
   
+  if (!is.null(bg_color) && !is.null(bg_color$BrS)){
+    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+           bg_color$BrS)
   
-  rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
-         bg_color$BrS)
-
-  first  <- TRUE
-  cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
-  for (e in 1:nrow(template_ord)){
-    if (!is.na(pos_vec[e])){
-      if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause,add=TRUE)}
-      points_BrS_cell(e,pos_vec[e],Jcause)
-      first <- FALSE
+    first  <- TRUE
+    #cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
+    for (e in 1:nrow(template_ord)){
+      if (!is.na(pos_vec[e])){
+        if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause,add=TRUE)}
+        points_BrS_cell(e,pos_vec[e],Jcause)
+        first <- FALSE
+      }
     }
   }
   

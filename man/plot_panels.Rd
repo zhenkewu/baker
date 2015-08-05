@@ -4,7 +4,8 @@
 \alias{plot_panels}
 \title{Plot three-panel figures for nested partially-latent model results}
 \usage{
-plot_panels(DIR_NPLCM, slices = "all", SS_upperlimit = 1,
+plot_panels(DIR_NPLCM, slices = "all", bg_color = list(BrS =
+  "lavenderblush", SS = "mistyrose", pie = "antiquewhite"), SS_upperlimit = 1,
   eti_upperlimit = 1, silent = TRUE)
 }
 \arguments{
@@ -13,6 +14,11 @@ plot_panels(DIR_NPLCM, slices = "all", SS_upperlimit = 1,
 \item{slices}{DEFAULT is "all" - to plot all measurements; Otherwise, one can
 specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
 3rd slice of BrS measurements and 1st of SS measurement.}
+
+\item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors<U+9286><U+FFFD>
+The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose",
+pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
+measurement, e.g., \code{BrS = NULL}.}
 
 \item{SS_upperlimit}{The upper limit of horizontal bar for the silver-standard
 subpanel (the middle panel). The default value is .25.}

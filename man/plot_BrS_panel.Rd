@@ -5,7 +5,7 @@
 \title{Plot bronze-standard (BrS) panel}
 \usage{
 plot_BrS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
-  res_nplcm, top_BrS = 1.3, cexval = 1, srtval = 0,
+  res_nplcm, bg_color, top_BrS = 1.3, cexval = 1, srtval = 0,
   prior_shape = "interval", silent = TRUE)
 }
 \arguments{
@@ -20,6 +20,8 @@ plot_BrS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
 \item{bugs.dat}{Data input for the model fitting.}
 
 \item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
+
+\item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors}
 
 \item{top_BrS}{Numerical value to specify the rightmost limit
 on the horizontal axis for the BrS panel.}

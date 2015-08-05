@@ -12,7 +12,8 @@
 #' 
 #' @export
 
-plot_pie_panel <- function(model_options,res_nplcm,
+plot_pie_panel <- function(model_options,
+                           res_nplcm,
                            bugs.dat,
                            bg_color,
                            top_pie = 1){
@@ -96,6 +97,8 @@ plot_pie_panel <- function(model_options,res_nplcm,
   #
   op <- par(mar=c(5.1,0,4.1,10))
   
+  cat("\n == Plotting pies == ")
+  
   first <- TRUE
   for (e in 1:Jcause){
     if (first){plot_pie_cell_first(e,Jcause)}
@@ -103,16 +106,17 @@ plot_pie_panel <- function(model_options,res_nplcm,
     first <- FALSE
   }
   
-  rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
-         bg_color$pie)
-  
-  first <- TRUE
-  for (e in 1:Jcause){
-    if (first){plot_pie_cell_first(e,Jcause,add=TRUE)}
-    points_pie_cell(e,Jcause)
-    first <- FALSE
+  if (!is.null(bg_color) && !is.null(bg_color$pie)){
+    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+           bg_color$pie)
+    
+    first <- TRUE
+    for (e in 1:Jcause){
+      if (first){plot_pie_cell_first(e,Jcause,add=TRUE)}
+      points_pie_cell(e,Jcause)
+      first <- FALSE
+    }
   }
-  
   # cause names on the right edge:
   axis(4,at=1:Jcause,labels=paste(paste(cause_list_ord,ord,sep=" ("),")",sep=""),
        las=2,cex.axis=2)

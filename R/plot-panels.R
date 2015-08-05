@@ -16,7 +16,10 @@
 #' @param slices DEFAULT is "all" - to plot all measurements; Otherwise, one can
 #' specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
 #' 3rd slice of BrS measurements and 1st of SS measurement.
-#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
+#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors。
+#' The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose", 
+#' pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
+#' measurement, e.g., \code{BrS = NULL}.
 #' @param SS_upperlimit The upper limit of horizontal bar for the silver-standard
 #' subpanel (the middle panel). The default value is .25.
 #'
@@ -28,7 +31,9 @@
 #' @export
 
 plot_panels <- function(DIR_NPLCM,slices = "all",
-                        bg_color = list(BrS = "lavenderblush", SS = "mistyrose",pie="antiquewhite"),
+                        bg_color = list(BrS = "lavenderblush", 
+                                        SS = "mistyrose",
+                                        pie="antiquewhite"),
                         SS_upperlimit=1,eti_upperlimit=1,silent=TRUE){#BEGIN function
   old_par <- par(no.readonly=TRUE)
   on.exit(par(old_par))

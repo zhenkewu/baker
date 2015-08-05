@@ -206,7 +206,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   op <- par(mar=c(5.1,0,4.1,0))
   
   first <- TRUE
-  #cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
+  cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
   for (e in 1:nrow(template_ord)){
     if (!is.na(pos_vec[e])){
       if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause)}
@@ -215,17 +215,19 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
     }
   }
   
-  rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
-         bg_color$SS)
-  
-  first <- TRUE
-  cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
-  for (e in 1:nrow(template_ord)){
-    if (!is.na(pos_vec[e])){
-      if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause,add=TRUE)}
-      points_SS_cell(e, pos_vec[e],Jcause)
-      first <- FALSE
-    }
+  if (!is.null(bg_color) && !is.null(bg_color$SS)){
+      rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+             bg_color$SS)
+      
+      first <- TRUE
+      #cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
+      for (e in 1:nrow(template_ord)){
+        if (!is.na(pos_vec[e])){
+          if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause,add=TRUE)}
+          points_SS_cell(e, pos_vec[e],Jcause)
+          first <- FALSE
+        }
+      }
   }
   
   #add ticks from 0 to 1 for x-bar:

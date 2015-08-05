@@ -4,7 +4,7 @@
 \alias{plot_pie_panel}
 \title{Plot etiology (pie) panel}
 \usage{
-plot_pie_panel(model_options, res_nplcm, bugs.dat, top_pie = 1)
+plot_pie_panel(model_options, res_nplcm, bugs.dat, bg_color, top_pie = 1)
 }
 \arguments{
 \item{model_options}{See \code{\link{nplcm}}}
@@ -12,6 +12,8 @@ plot_pie_panel(model_options, res_nplcm, bugs.dat, top_pie = 1)
 \item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
 
 \item{bugs.dat}{Data input for the model fitting.}
+
+\item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors}
 
 \item{top_pie}{Numerical value to specify the rightmost limit
 on the horizontal axis for the pie panel.}

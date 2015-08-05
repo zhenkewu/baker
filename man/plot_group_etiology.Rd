@@ -5,10 +5,13 @@
 \title{Plot grouped (two groups) posterior and cascade distributions (next top-three)
 within each group}
 \usage{
-plot_group_etiology(DIR_NPLCM, ksFrac = 1, levellabel = 5)
+plot_group_etiology(DIR_NPLCM, dir_taxo, ksFrac = 1, levellabel = 5)
 }
 \arguments{
 \item{DIR_NPLCM}{The file path to the result folder}
+
+\item{dir_taxo}{File path to taxonomy information (.csv). Specifying this directory
+will overide information in \code{clean_options} read from \code{DIR_NPLCM}.}
 
 \item{ksFrac}{A number between 0 and 1, which is the fraction of samples used to
 calculate kernel density}

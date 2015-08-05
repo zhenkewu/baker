@@ -5,7 +5,7 @@
 \title{Plot silver-standard (SS) panel}
 \usage{
 plot_SS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
-  res_nplcm, top_SS = 1, cexval = 1, srtval = 0,
+  res_nplcm, bg_color, top_SS = 1, cexval = 1, srtval = 0,
   prior_shape = "interval")
 }
 \arguments{
@@ -20,6 +20,8 @@ plot_SS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
 \item{bugs.dat}{Data input for the model fitting.}
 
 \item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
+
+\item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors}
 
 \item{top_SS}{Numerical value to specify the rightmost limit
 on the horizontal axis for the SS panel.}
