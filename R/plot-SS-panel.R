@@ -64,9 +64,9 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
     fitted_margin_case <- function(pEti_ord,theta,template){
       psi = 0
       mixture <-  pEti_ord
-      if (ncol(template)!=length(theta)){
-        cat(theta,": ",length(theta),",ncol_tmp=",ncol(template),"\n")
-      }
+      #if (ncol(template)!=length(theta)){
+      #  cat(theta,": ",length(theta),",ncol_tmp=",ncol(template),"\n")
+      #}
       tpr     <-  t(t(template)*theta)
       fpr     <-  t(t(1-template)*psi)
       colSums(tpr*mixture + fpr*mixture)
@@ -118,7 +118,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
          xaxt="n",xlab="positive rate",
          ylab="",yaxt="n",
          pch = c(2,20),
-         col = c(1, "dodgerblue2"),
+         col = c("purple", "dodgerblue2"),
          cex = c(1,2))
     }
     if (add){
@@ -129,20 +129,20 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
            xaxt="n",xlab="positive rate",
            ylab="",yaxt="n",
            pch = c(2,20),
-           col = c(1, "dodgerblue2"),
+           col = c("purple", "dodgerblue2"),
            cex = c(1,2))
     }
   }
   
   points_SS_cell <- function(lat_pos, pos, height){ # pos for the measurement dimension, usually used as pos_vec[e].
     plotat <- get_plot_num(lat_pos,height)
-    if (lat_pos>1){
+    #if (lat_pos>1){
       points(c(fittedmean_case[pos],MSS_mean[,pos]),
              plotat[-3],
              pch = c(2,20),
              col = c("purple", "dodgerblue2"),
              cex = c(1,2))
-    }
+    #}
     points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
            plotat[c(1,2,2)],
            pch = c("+","|","|"),
@@ -164,7 +164,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
     text(tmp.hpos, plotat[2], paste0(round(100*MSS_mean[1,pos],1),"%"),
          srt=srtval,cex=cexval)
 
-    if (!is.na(pos)){#some pos can be NA: because certain cause has no measurements.
+    if (!is.null(pos) && !is.na(pos)){#some pos can be NA: because certain cause has no measurements.
       # prior and posterior of TPR:
       if (prior_shape == "interval") {
         # prior of TPR:
@@ -196,6 +196,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
           horizontal = TRUE,outline = FALSE,xaxt = "n"
         )
       }
+      text(top_SS - 0.12,lat_pos + .3, colnames(MSS_case_curr)[pos],cex=1 )
     }
   }
   
@@ -205,13 +206,20 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   #
   op <- par(mar=c(5.1,0,4.1,0))
   
+  if (!is_length_all_one(pos_vec)){
+    #stop("== Not implemented for combo latent status.==")
+    warning("== Combo latent status implemented with measurements overlapping in SS columns! ==")
+  }
+  
   first <- TRUE
   cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
   for (e in 1:nrow(template_ord)){
-    if (!is.na(pos_vec[e])){
-      if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause)}
-      points_SS_cell(e, pos_vec[e],Jcause)
-      first <- FALSE
+    for (pos_curr in pos_vec[[e]]){
+      if (!is.na(pos_curr)){
+        if (first) {plot_SS_cell_first(e, pos_curr,Jcause)}
+        points_SS_cell(e, pos_curr,Jcause)
+        first <- FALSE
+      }
     }
   }
   
@@ -222,10 +230,12 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
       first <- TRUE
       #cat("\n == Plotting SS Slice: ", slice, ": ",  unlist(names(data_nplcm$Mobs$MSS))[slice])
       for (e in 1:nrow(template_ord)){
-        if (!is.na(pos_vec[e])){
-          if (first) {plot_SS_cell_first(e, pos_vec[e],Jcause,add=TRUE)}
-          points_SS_cell(e, pos_vec[e],Jcause)
-          first <- FALSE
+        for (pos_curr in pos_vec[[e]]){
+          if (!is.na(pos_curr)){
+            if (first) {plot_SS_cell_first(e, pos_curr,Jcause,add=TRUE)}
+            points_SS_cell(e, pos_curr,Jcause)
+            first <- FALSE
+          }
         }
       }
   }

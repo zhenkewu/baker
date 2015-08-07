@@ -92,3 +92,14 @@ check_SS_grp <- function(model_options){
 }
 
 
+# #' check the compatibility of model and parameter specification
+# #' 
+# #' 
+# #' 
+# check_spec <- function(data_nplcm, model_options, clean_options){
+#   
+# }
+# 
+
+
+

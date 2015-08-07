@@ -109,14 +109,16 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   pos_vec <- get_plot_pos(template_ord)
   
   get_COR <- function(pos){
+    if (is.null(pos) || is.na(pos)){return(NULL)}
     y <- c(rep(1,Nd), rep(0,Nu))
     brs.data <- as.data.frame(rbind(MBS_case_curr,MBS_ctrl_curr))
-    dat.reg = as.data.frame(cbind(y,brs.data))
-    fit = glm(y~.,data=dat.reg,family=binomial,na.action="na.omit")
+    dat.reg  <- as.data.frame(cbind(y,brs.data))
+    fit      <- glm(y~.,data=dat.reg,family=binomial,na.action="na.omit")
     
     if (sum(is.na(coef(fit)))==0 & sum(diag(vcov(fit))>100)==0){
       res0 = cbind(exp(suppressMessages(confint(fit))),exp(fit$coef))[-1,]
-      res = list(ORinterval = res0,label = "conditional OR")
+      res  = list(ORinterval = matrix(res0,nrow = ncol(brs.data),ncol=3)[pos,],
+                  label = "conditional OR")
     }else{
       if (!silent){
        print("Conditional OR not calculatable. Switch to mariginal OR.")
@@ -144,7 +146,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
          xaxt="n",xlab="positive rate",
          ylab="",yaxt="n",
          pch = c(2,20,20),
-         col = c(1,"dodgerblue2", "dodgerblue2"),
+         col = c("purple","dodgerblue2", "dodgerblue2"),
          cex = c(1,2,2))
     }
     if (add){
@@ -155,7 +157,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
          xaxt="n",xlab="positive rate",
          ylab="",yaxt="n",
          pch = c(2,20,20),
-         col = c(1,"dodgerblue2", "dodgerblue2"),
+         col = c("purple","dodgerblue2", "dodgerblue2"),
          cex = c(1,2,2))
     }
   }
@@ -163,13 +165,13 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   points_BrS_cell <- function(lat_pos,pos,height){ # pos for the measurement dimension, usually used as pos_vec[e].
     plotat <- get_plot_num(lat_pos,height)
     
-    if (lat_pos>1){
+    #if (lat_pos>1){
       points(c(fittedmean_case[pos],MBS_mean[,pos]),
              plotat,
              pch = c(2,20,20),
              col = c("purple","dodgerblue2", "dodgerblue2"),
              cex = c(1,2,2))
-    }
+    #}
     points(c(theta_mean[pos],MBS_q2[,pos]),
            plotat,
            pch = c("+","|","|"),
@@ -213,7 +215,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       lty = 4,col="gray"
     )
     
-    if (!is.na(pos)){#some pos can be NA: because certain cause has no measurements.
+    if (!is.null(pos) && !is.na(pos)){#some pos can be NA: because certain cause has no measurements.
       # prior and posterior of TPR:
       if (prior_shape == "interval") {
         # prior of TPR:
@@ -276,14 +278,20 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   #op <- par(mar=c(5.1,4.1,4.1,0))
   op <- par(mar=c(5.1,0,4.1,0))
   
+  if (!is_length_all_one(pos_vec)){
+    #stop("== Not implemented for combo latent status.==")
+    warning("== Combo latent status implemented with measurements overlapping in BrS columns! ==")
+  }
   
   first  <- TRUE
   cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
   for (e in 1:nrow(template_ord)){
-    if (!is.na(pos_vec[e])){
-      if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause)}
-      points_BrS_cell(e,pos_vec[e],Jcause)
-      first <- FALSE
+    for (pos_curr in pos_vec[[e]]){
+      if (!is.na(pos_curr)){
+        if (first) {plot_BrS_cell_first(e,pos_curr,Jcause)}
+        points_BrS_cell(e,pos_curr,Jcause)
+        first <- FALSE
+      }
     }
   }
   
@@ -294,10 +302,12 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     first  <- TRUE
     #cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
     for (e in 1:nrow(template_ord)){
-      if (!is.na(pos_vec[e])){
-        if (first) {plot_BrS_cell_first(e,pos_vec[e],Jcause,add=TRUE)}
-        points_BrS_cell(e,pos_vec[e],Jcause)
-        first <- FALSE
+      for (pos_curr in pos_vec[[e]]){
+        if (!is.na(pos_curr)){
+          if (first) {plot_BrS_cell_first(e,pos_curr,Jcause,add=TRUE)}
+          points_BrS_cell(e,pos_curr,Jcause)
+          first <- FALSE
+        }
       }
     }
   }

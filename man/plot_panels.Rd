@@ -15,7 +15,7 @@ plot_panels(DIR_NPLCM, slices = "all", bg_color = list(BrS =
 specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
 3rd slice of BrS measurements and 1st of SS measurement.}
 
-\item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors<U+9286><U+FFFD>
+\item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors.
 The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose",
 pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
 measurement, e.g., \code{BrS = NULL}.}

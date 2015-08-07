@@ -10,7 +10,7 @@
 #' @param slices DEFAULT is "all" - to plot all measurements; Otherwise, one can
 #' specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
 #' 3rd slice of BrS measurements and 1st of SS measurement.
-#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors。
+#' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors.
 #' The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose", 
 #' pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
 #' measurement, e.g., \code{BrS = NULL}.
@@ -75,13 +75,17 @@ plot_panels <- function(DIR_NPLCM,slices = "all",
   n_total_meas <- sum(parsed_model$num_slice)
   it <- layout(matrix(1:(n_total_meas+2),1,n_total_meas+1+1,byrow = TRUE),
                widths=c(1.5,rep(2.5,n_total_meas),3),heights=c(8))
-  # layout.show(it)
+  ## layout.show(it)
+
+  # the labels on the left margin:
   plot_leftmost(model_options)
+  
   # bronze-standard
   for (s in slices$MBS){
     plot_BrS_panel(s,data_nplcm,model_options,
                    clean_options,bugs.dat,res_nplcm,bg_color = bg_color, silent=silent)
   }
+  
   # silver-standard
   for (s in slices$MSS){
     plot_SS_panel(s,data_nplcm,model_options,
@@ -147,7 +151,14 @@ plot_panels <- function(DIR_NPLCM,slices = "all",
 #   }
 }# END function
 
-
+#' order latent status by posterior mean
+#' 
+#' @param res_nplcm result from model fits
+#' @param model_options model specification
+#' 
+#' @return a list with order (\code{ord}) and ordered posterior samples (by column)
+#' 
+#' @export
 order_post_eti <- function(res_nplcm,model_options){
   cause_list <- model_options$likelihood$cause_list
   # total no. of causes:
@@ -167,23 +178,56 @@ order_post_eti <- function(res_nplcm,model_options){
   make_list(ord,pEti_mat_ord)
 }
 
+#' check if a list has elements all of length one
+#' 
+#' @param x a list
+#' 
+#' @return TRUE or FALSE
+#' @export
+is_length_all_one <- function(x){
+   len_vec <-  unlist(lapply(x,length))
+   all(len_vec==1)
+}
+
+#' get a list of measurement index where to look for data
+#' 
+#' @param template See \code{\link{template}}
+#' 
+#' @return a list of index vectors
+#' @export
+
+
 get_plot_pos <- function(template){
-  if (max(rowSums(template))>1){stop("== Not implemented for combo latent status.==")}
-  pos <- rep(NA,nrow(template))
+  pos <- vector("list",nrow(template))
   for (i in 1:nrow(template)){
     if (sum(template[i,])>0){
-      pos[i] <- which(template[i,] == 1)
+      pos[[i]] <- which(template[i,] == 1)
     }
   }
   pos
 }
 
+#' get the plotting positions (numeric) for the fitted means; 3 positions for each cell
+#' 
+#' @param e Integer index from 1 to length(cause_list)
+#' @param height the total number of causes
+#' 
+#' @return a triple with numerical plotting positions
+#' @export
+#'
+#'
 get_plot_num <- function(e, height){
   x <- seq(0.5,height+0.5,by=1/4)[-(c(1,(1:height)*4+1))]
   tmp <- length(x)/height*e
   x[c(tmp-2,tmp-1,tmp)]
 }
 
+#' plotting the labels on the left margin for panels plot
+#' 
+#' @param model_options See \code{\link{model_options}}
+#' 
+#' @return a plot
+#' @export
 
 plot_leftmost <- function(model_options){
   Jcause <- length(model_options$likelihood$cause_list)
