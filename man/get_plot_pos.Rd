@@ -7,7 +7,7 @@
 get_plot_pos(template)
 }
 \arguments{
-\item{template}{See \code{\link{template}}}
+\item{template}{See \code{\link{nplcm}}}
 }
 \value{
 a list of index vectors

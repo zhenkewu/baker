@@ -7,7 +7,7 @@
 plot_leftmost(model_options)
 }
 \arguments{
-\item{model_options}{See \code{\link{model_options}}}
+\item{model_options}{See \code{\link{nplcm}}}
 }
 \value{
 a plot

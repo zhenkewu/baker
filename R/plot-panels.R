@@ -191,9 +191,10 @@ is_length_all_one <- function(x){
 
 #' get a list of measurement index where to look for data
 #' 
-#' @param template See \code{\link{template}}
+#' @param template See \code{\link{nplcm}}
 #' 
 #' @return a list of index vectors
+#' 
 #' @export
 
 
@@ -213,9 +214,9 @@ get_plot_pos <- function(template){
 #' @param height the total number of causes
 #' 
 #' @return a triple with numerical plotting positions
+#' 
 #' @export
-#'
-#'
+
 get_plot_num <- function(e, height){
   x <- seq(0.5,height+0.5,by=1/4)[-(c(1,(1:height)*4+1))]
   tmp <- length(x)/height*e
@@ -224,7 +225,7 @@ get_plot_num <- function(e, height){
 
 #' plotting the labels on the left margin for panels plot
 #' 
-#' @param model_options See \code{\link{model_options}}
+#' @param model_options See \code{\link{nplcm}}
 #' 
 #' @return a plot
 #' @export
