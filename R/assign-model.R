@@ -70,26 +70,42 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   form_tmp   <- as.formula(likelihood$Eti_formula)
   do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
   regression <- make_list(do_reg_Eti, do_reg_FPR)
-  make_list(num_slice, nested, regression)
-}
-
-
-#' check if SS measurements have stratified TPRs
-#' 
-#' @param model_options See \link{nplcm}
-#' 
-#' 
-#' @return TRUE for stratified TPRs; FALSE otherwise
-#' 
-#' @export
-check_SS_grp <- function(model_options){
-  res <- FALSE
+  
+  # check SS group:
+  SS_grp <- FALSE
   prior_SS <- model_options$prior$TPR_prior$SS
-  if (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 ){
-    res <- TRUE
-  }
-  res
+  grp_spec <- (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 )
+  if (grp_spec) {SS_grp <- TRUE}
+  ## <-------- the following are more strict grp specifications (may cause error when running old folders):
+#   val_spec <- (num_slice["MSS"]>0 && any(lapply(prior_SS$val,length)>1))
+#   
+#   if (grp_spec && val_spec){SS_grp <- TRUE}
+#   if (grp_spec && !val_spec){stop("==Specified TPR group in 'grp' of 'model_options$prior$TPR_prior$SS',
+#                                   but either there is no SS data or the length of 'val' does not match the no. of TPR groups. ==")}
+#   if (!grp_spec && val_spec){stop("==No 'grp' specified in 'model_options$prior$TPR_prior$SS',
+#                                   but we have >1 sets of TPRs. ==")}
+  
+  # return results:
+  make_list(num_slice, nested, regression,SS_grp)
 }
+
+# 
+# #' check if SS measurements have stratified TPRs
+# #' 
+# #' @param model_options See \link{nplcm}
+# #' 
+# #' 
+# #' @return TRUE for stratified TPRs; FALSE otherwise
+# #' 
+# #' @export
+# check_SS_grp <- function(model_options){
+#   res <- FALSE
+#   prior_SS <- model_options$prior$TPR_prior$SS
+#   if (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 ){
+#     res <- TRUE
+#   }
+#   res
+# }
 
 
 # #' check the compatibility of model and parameter specification

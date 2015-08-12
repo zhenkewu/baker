@@ -2,7 +2,7 @@
 % Please edit documentation in R/set-prior-tpr.R
 \name{set_prior_tpr_BrS}
 \alias{set_prior_tpr_BrS}
-\title{Set true positive rate (TPR) prior ranges for bronze-standard data}
+\title{Set true positive rate (TPR) prior ranges for bronze-standard data.}
 \usage{
 set_prior_tpr_BrS(model_options, data_nplcm)
 }
@@ -13,14 +13,11 @@ set_prior_tpr_BrS(model_options, data_nplcm)
 }
 \value{
 Parameters for the TPR priors for BrS data. It is a list of two lists (alpha and beta).
-Alpha or beta is of the same length as the number of BrS measurement slices; each element of the list
-is a numeric vector for alpha or beta parameters to specify Beta prior for TPRs.
+Alpha and beta is of the same length, the number of BrS measurement slices.
+Each element of the alpha (beta) list is a numeric vector for alpha (beta)
+parameters to specify Beta prior for TPRs.
 }
 \description{
-Current prior assignment let bacteria NPPCR to have uniform range, viral NPPCR
-to have .5-1.0 range. The PCP (a fungus) NPPCR TPR is also set to be .5-1.0; PCP
-has no blood culture measurements. Also, not all the bacteria have blood culture
-measurments. One question is whether to use informative NPPCR range or non-informative
-NPPCR range (0-100%).
+Set true positive rate (TPR) prior ranges for bronze-standard data.
 }
 

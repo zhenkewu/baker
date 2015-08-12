@@ -75,203 +75,207 @@ nplcm_fit_NoReg_NoNest<-
     # get sample sizes:
     Nd      <- sum(Y==1)
     Nu      <- sum(Y==0)
-
+    
     # get lengths of vectors:
     cause_list  <- likelihood$cause_list
     Jcause      <- length(cause_list)
-
-    in_data = in_init = out_parameter <- NULL
+    
+    in_data <- in_init <-  out_parameter <- NULL
+    
     #
     # 1. BrS measurement data: 
     #
     if ("BrS" %in% use_measurements){
-        JBrS_list  <- lapply(Mobs$MBS,ncol)
-        
-        # mapping template (by `make_template` function):
-        patho_BrS_list <- lapply(Mobs$MBS,colnames)
-        template_BrS_list <- lapply(patho_BrS_list,make_template,cause_list)
-        
-        MBS.case_list <- lapply(Mobs$MBS,"[",which(Y==1),TRUE,drop=FALSE)
-        MBS.ctrl_list <- lapply(Mobs$MBS,"[",which(Y==0),TRUE,drop=FALSE)
-        MBS_list <- list()
-        for (i in seq_along(MBS.case_list)){
-          MBS_list[[i]]      <- rbind(MBS.case_list[[i]],MBS.ctrl_list[[i]])
-        }
-        names(MBS_list) <- names(MBS.case_list)
-        
-        single_column_MBS <- which(lapply(MBS_list,ncol)==1)
-        for(i in seq_along(JBrS_list)){
-          assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
-          assign(paste("MBS", i, sep = "_"), as.matrix_or_vec(MBS_list[[i]])) 
-          assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))   
-        }
+      JBrS_list  <- lapply(Mobs$MBS,ncol)
       
-        BrS_tpr_prior <- set_prior_tpr_BrS(model_options,data_nplcm)
-        
-        # set BrS measurement priors: (need to add informative specification!)
-        # hyperparameter for sensitivity (can add for specificity if necessary): 
-        for(i in seq_along(JBrS_list)){
-          assign(paste("alphaB", i, sep = "_"), BrS_tpr_prior$alpha[[i]])     # <---- input BrS TPR prior here.
-          assign(paste("betaB", i, sep = "_"),  BrS_tpr_prior$beta[[i]])    
-        }
-        
-        if (length(single_column_MBS)==0){
-            # summarize into one name (for all measurements):
-            in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
-                               paste("JBrS",1:length(JBrS_list),sep="_"),
-                               paste("MBS",1:length(JBrS_list),sep="_"),
-                               paste("templateBS",1:length(JBrS_list),sep="_"),
-                               paste("alphaB",1:length(JBrS_list),sep="_"),
-                               paste("betaB",1:length(JBrS_list),sep="_")
-                               )
-        } else {
-            # summarize into one name (for all measurements):
-            in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
-                               paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS],
-                               paste("MBS",1:length(JBrS_list),sep="_"),
-                               paste("templateBS",1:length(JBrS_list),sep="_"),
-                               paste("alphaB",1:length(JBrS_list),sep="_"),
-                               paste("betaB",1:length(JBrS_list),sep="_")
-            )
-        }
-        out_parameter <- c(out_parameter, paste("thetaBS", seq_along(JBrS_list), sep = "_"),
-                           paste("psiBS", seq_along(JBrS_list), sep = "_"),
-                           "pEti")
+      # mapping template (by `make_template` function):
+      patho_BrS_list    <- lapply(Mobs$MBS,colnames)
+      template_BrS_list <- lapply(patho_BrS_list,make_template,cause_list)
+      
+      MBS.case_list <- lapply(Mobs$MBS,"[",which(Y==1),TRUE,drop=FALSE)
+      MBS.ctrl_list <- lapply(Mobs$MBS,"[",which(Y==0),TRUE,drop=FALSE)
+      MBS_list <- list()
+      for (i in seq_along(MBS.case_list)){
+        MBS_list[[i]]      <- rbind(MBS.case_list[[i]],MBS.ctrl_list[[i]])
+      }
+      names(MBS_list) <- names(MBS.case_list)
+      
+      single_column_MBS <- which(lapply(MBS_list,ncol)==1)
+      for(i in seq_along(JBrS_list)){
+        assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
+        assign(paste("MBS", i, sep = "_"), as.matrix_or_vec(MBS_list[[i]])) 
+        assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))   
+      }
+      
+      BrS_tpr_prior <- set_prior_tpr_BrS(model_options,data_nplcm)
+      
+      # set BrS measurement priors: (need to add informative specification!)
+      # hyperparameter for sensitivity (can add for specificity if necessary): 
+      alphaB_list <- lapply(BrS_tpr_prior,"[[","alpha")
+      betaB_list <- lapply(BrS_tpr_prior,"[[","beta")
+      for(i in seq_along(JBrS_list)){
+        assign(paste("alphaB", i, sep = "_"), alphaB_list[[i]])     # <---- input BrS TPR prior here.
+        assign(paste("betaB", i, sep = "_"),  betaB_list[[i]])    
+      }
+      
+      if (length(single_column_MBS)==0){
+        # summarize into one name (for all measurements):
+        in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
+                           paste("JBrS",1:length(JBrS_list),sep="_"),
+                           paste("MBS",1:length(JBrS_list),sep="_"),
+                           paste("templateBS",1:length(JBrS_list),sep="_"),
+                           paste("alphaB",1:length(JBrS_list),sep="_"),
+                           paste("betaB",1:length(JBrS_list),sep="_")
+        )
+      } else {
+        # summarize into one name (for all measurements):
+        in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
+                           paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS],
+                           paste("MBS",1:length(JBrS_list),sep="_"),
+                           paste("templateBS",1:length(JBrS_list),sep="_"),
+                           paste("alphaB",1:length(JBrS_list),sep="_"),
+                           paste("betaB",1:length(JBrS_list),sep="_")
+        )
+      }
+      out_parameter <- c(out_parameter, paste("thetaBS", seq_along(JBrS_list), sep = "_"),
+                         paste("psiBS", seq_along(JBrS_list), sep = "_"),
+                         "pEti")
     }
     
     #
     # 2. SS measurement data: 
     #
     if ("SS" %in% use_measurements){
-        JSS_list   <- lapply(Mobs$MSS,ncol)
-        
-        # mapping template (by `make_template` function):
-        patho_SS_list <- lapply(Mobs$MSS,colnames)
-        template_SS_list <- lapply(patho_SS_list,make_template,cause_list)
-        
-        MSS_list <- lapply(Mobs$MSS,"[",which(Y==1),TRUE,drop=FALSE)
-        
-        single_column_MSS <- which(lapply(MSS_list,ncol)==1)
-        
+      JSS_list   <- lapply(Mobs$MSS,ncol)
+      
+      # mapping template (by `make_template` function):
+      patho_SS_list <- lapply(Mobs$MSS,colnames)
+      template_SS_list <- lapply(patho_SS_list,make_template,cause_list)
+      
+      MSS_list <- lapply(Mobs$MSS,"[",which(Y==1),TRUE,drop=FALSE)
+      
+      single_column_MSS <- which(lapply(MSS_list,ncol)==1)
+      
+      for(i in seq_along(JSS_list)){
+        assign(paste("JSS", i, sep = "_"), JSS_list[[i]])    
+        assign(paste("MSS", i, sep = "_"), as.matrix_or_vec(MSS_list[[i]])) 
+        assign(paste("templateSS", i, sep = "_"), as.matrix_or_vec(template_SS_list[[i]]))   
+      }
+      
+      # setup groupwise TPR for SS:
+      SS_TPR_strat <- FALSE
+      prior_SS <- model_options$prior$TPR_prior$SS
+      parsed_model <- assign_model(model_options,data_nplcm)
+      if (parsed_model$SS_grp){
+        SS_TPR_strat <- TRUE
         for(i in seq_along(JSS_list)){
-          assign(paste("JSS", i, sep = "_"), JSS_list[[i]])    
-          assign(paste("MSS", i, sep = "_"), as.matrix_or_vec(MSS_list[[i]])) 
-          assign(paste("templateSS", i, sep = "_"), as.matrix_or_vec(template_SS_list[[i]]))   
+          assign(paste("GSS_TPR", i, sep = "_"),  length(unique(prior_SS$grp)))    
+          assign(paste("SS_TPR_grp", i, sep = "_"),  prior_SS$grp)    
+        }
+      }
+      
+      # add GSS_TPR_1, or 2 if we want to index by slices:
+      for (i in seq_along(JSS_list)){
+        if (!is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
+          assign(paste("GSS_TPR", i, sep = "_"), length(unique(prior_SS$grp)))
+        }
+        if (is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
+          assign(paste("GSS_TPR", i, sep = "_"), 1)
+        }
+      }
+      
+      
+      SS_tpr_prior <- set_prior_tpr_SS(model_options,data_nplcm)
+      
+      
+      # set SS measurement priors: 
+      # hyper parameters for sensitivity:
+      for(i in seq_along(JSS_list)){
+        
+        GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
+        alpha_mat <- list() # dimension for slices.
+        beta_mat  <- list()
+        alpha_mat[[i]] <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+        beta_mat[[i]]  <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+        
+        colnames(alpha_mat[[i]]) <- patho_SS_list[[i]]
+        colnames(beta_mat[[i]]) <- patho_SS_list[[i]]
+        
+        for (g in 1:GSS_TPR_curr){
+          alpha_mat[[i]][g,] <- unlist(SS_tpr_prior[[i]][[g]]$alpha)
+          beta_mat[[i]][g,]  <- unlist(SS_tpr_prior[[i]][[g]]$beta)
+        }
+        names(alpha_mat) <- names(beta_mat) <- names(Mobs$MSS)
+        
+        if (GSS_TPR_curr>1){
+          assign(paste("alphaS", i, sep = "_"), alpha_mat[[i]])    # <---- input SS TPR prior here.
+          assign(paste("betaS", i, sep = "_"),  beta_mat[[i]])    
+        }else{
+          assign(paste("alphaS", i, sep = "_"), c(alpha_mat[[i]]))   # <---- input SS TPR prior here.
+          assign(paste("betaS", i, sep = "_"),  c(beta_mat[[i]]))    
+        }
+      }
+      
+      if (!SS_TPR_strat){
+        if (length(single_column_MSS)==0){
+          # summarize into one name (for all measurements):
+          in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
+                                    paste("JSS",1:length(JSS_list),sep="_"),
+                                    paste("MSS",1:length(JSS_list),sep="_"),
+                                    paste("templateSS",1:length(JSS_list),sep="_"),
+                                    paste("alphaS",1:length(JSS_list),sep="_"),   
+                                    paste("betaS",1:length(JSS_list),sep="_")))
+        } else{
+          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
+                                    paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
+                                    paste("MSS",1:length(JSS_list),sep="_"),
+                                    paste("templateSS",1:length(JSS_list),sep="_"),
+                                    paste("alphaS",1:length(JSS_list),sep="_"),
+                                    paste("betaS",1:length(JSS_list),sep="_")))
+        }
+      }else {
+        if (length(single_column_MSS)==0){
+          # summarize into one name (for all measurements):
+          in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
+                                    paste("JSS",1:length(JSS_list),sep="_"),
+                                    paste("GSS_TPR",1:length(JSS_list),sep="_"),
+                                    paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
+                                    paste("MSS",1:length(JSS_list),sep="_"),
+                                    paste("templateSS",1:length(JSS_list),sep="_"),
+                                    paste("alphaS",1:length(JSS_list),sep="_"),   
+                                    paste("betaS",1:length(JSS_list),sep="_")))
+        } else{
+          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
+                                    paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
+                                    paste("GSS_TPR",1:length(JSS_list),sep="_"),
+                                    paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
+                                    paste("MSS",1:length(JSS_list),sep="_"),
+                                    paste("templateSS",1:length(JSS_list),sep="_"),
+                                    paste("alphaS",1:length(JSS_list),sep="_"),
+                                    paste("betaS",1:length(JSS_list),sep="_")))
         }
         
-        # setup groupwise TPR for SS:
-        SS_TPR_strat <- FALSE
-        prior_SS <- model_options$prior$TPR_prior$SS
-        if (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 ){
-          SS_TPR_strat <- TRUE
-          for(i in seq_along(JSS_list)){
-            assign(paste("GSS_TPR", i, sep = "_"),  length(unique(prior_SS$grp)))    
-            assign(paste("SS_TPR_grp", i, sep = "_"),  prior_SS$grp)    
-          }
-        }
-        
-        # add GSS_TPR_1, or 2 if we want to index by slices:
-        for (i in seq_along(JSS_list)){
-          if (!is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
-            assign(paste("GSS_TPR", i, sep = "_"), length(unique(prior_SS$grp)))
-          }
-          if (is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
-            assign(paste("GSS_TPR", i, sep = "_"), 1)
-          }
-        }
-
-        
-        SS_tpr_prior <- set_prior_tpr_SS(model_options,data_nplcm)
-        
-        
-        # set SS measurement priors: (need to add informative specification!)
-        # hyper parameters for sensitivity:
-        for(i in seq_along(JSS_list)){
-          
-          GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
-          alpha_mat <- list() # dimension for slices.
-          beta_mat  <- list()
-          alpha_mat[[i]] <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
-          beta_mat[[i]]  <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
-          
-          colnames(alpha_mat[[i]]) <- patho_SS_list[[i]]
-          colnames(beta_mat[[i]]) <- patho_SS_list[[i]]
-          
-          for (g in 1:GSS_TPR_curr){
-            alpha_mat[[i]][g,] <- unlist(lapply(SS_tpr_prior,"[[","alpha")[g][[i]])
-            beta_mat[[i]][g,]  <- unlist(lapply(SS_tpr_prior,"[[","beta")[g][[i]])
-          }
-          names(alpha_mat) <- names(beta_mat) <- names(Mobs$MSS)
-          
-          if (GSS_TPR_curr>1){
-            assign(paste("alphaS", i, sep = "_"), alpha_mat[[i]])    # <---- input SS TPR prior here.
-            assign(paste("betaS", i, sep = "_"),  beta_mat[[i]])    
-          }else{
-            assign(paste("alphaS", i, sep = "_"), c(alpha_mat[[i]]))   # <---- input SS TPR prior here.
-            assign(paste("betaS", i, sep = "_"),  c(beta_mat[[i]]))    
-          }
-        }
-        
-        if (!SS_TPR_strat){
-            if (length(single_column_MSS)==0){
-              # summarize into one name (for all measurements):
-              in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
-                                 paste("JSS",1:length(JSS_list),sep="_"),
-                                 paste("MSS",1:length(JSS_list),sep="_"),
-                                 paste("templateSS",1:length(JSS_list),sep="_"),
-                                 paste("alphaS",1:length(JSS_list),sep="_"),   
-                                 paste("betaS",1:length(JSS_list),sep="_")))
-            } else{
-              in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
-                                      paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
-                                      paste("MSS",1:length(JSS_list),sep="_"),
-                                      paste("templateSS",1:length(JSS_list),sep="_"),
-                                      paste("alphaS",1:length(JSS_list),sep="_"),
-                                      paste("betaS",1:length(JSS_list),sep="_")))
-            }
-        }else {
-            if (length(single_column_MSS)==0){
-              # summarize into one name (for all measurements):
-              in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
-                                        paste("JSS",1:length(JSS_list),sep="_"),
-                                        paste("GSS_TPR",1:length(JSS_list),sep="_"),
-                                        paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
-                                        paste("MSS",1:length(JSS_list),sep="_"),
-                                        paste("templateSS",1:length(JSS_list),sep="_"),
-                                        paste("alphaS",1:length(JSS_list),sep="_"),   
-                                        paste("betaS",1:length(JSS_list),sep="_")))
-            } else{
-              in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
-                                        paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
-                                        paste("GSS_TPR",1:length(JSS_list),sep="_"),
-                                        paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
-                                        paste("MSS",1:length(JSS_list),sep="_"),
-                                        paste("templateSS",1:length(JSS_list),sep="_"),
-                                        paste("alphaS",1:length(JSS_list),sep="_"),
-                                        paste("betaS",1:length(JSS_list),sep="_")))
-            }
-          
-          }
-        out_parameter <- unique(c(out_parameter, paste("thetaSS", seq_along(JSS_list), sep = "_"),
-                           "pEti"))
+      }
+      out_parameter <- unique(c(out_parameter, paste("thetaSS", seq_along(JSS_list), sep = "_"),
+                                "pEti"))
     }
     
     # set up initializing function:
     if ("BrS" %in% use_measurements & !("SS" %in% use_measurements)){
-        in_init       <-   function(){
-          tmp_thetaBS <- list()
-          tmp_psiBS <- list()
-          for(i in seq_along(JBrS_list)){
-            tmp_thetaBS[[i]] <- rbeta(JBrS_list[[i]],1,1)
-          }
-          for(i in seq_along(JBrS_list)){
-            tmp_psiBS[[i]] <- rbeta(JBrS_list[[i]],1,1)       
-          }
-          res <- c(tmp_thetaBS,tmp_psiBS)
-          names(res) <- c(paste("thetaBS", seq_along(JBrS_list), sep = "_"),
-                          paste("psiBS", seq_along(JBrS_list), sep = "_"))
-          res
+      in_init       <-   function(){
+        tmp_thetaBS <- list()
+        tmp_psiBS <- list()
+        for(i in seq_along(JBrS_list)){
+          tmp_thetaBS[[i]] <- rbeta(JBrS_list[[i]],1,1)
         }
+        for(i in seq_along(JBrS_list)){
+          tmp_psiBS[[i]] <- rbeta(JBrS_list[[i]],1,1)       
+        }
+        res <- c(tmp_thetaBS,tmp_psiBS)
+        names(res) <- c(paste("thetaBS", seq_along(JBrS_list), sep = "_"),
+                        paste("psiBS", seq_along(JBrS_list), sep = "_"))
+        res
+      }
     }
     
     if (!("BrS" %in% use_measurements) & "SS" %in% use_measurements){
@@ -321,7 +325,7 @@ nplcm_fit_NoReg_NoNest<-
         c(res,res2)
       }
     }
-
+    
     
     # etiology (measurement independent)
     alpha          <- prior$Eti_prior    # <-------- input etiology prior here.
@@ -353,8 +357,8 @@ nplcm_fit_NoReg_NoNest<-
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
     writeLines(model_func, filename)
-
-
+    
+    
     #
     # run the model:
     #
