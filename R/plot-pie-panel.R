@@ -7,6 +7,7 @@
 #' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param top_pie Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the pie panel.
+#' @param label_size the size of latent status labels on the right margin
 #' 
 #' @importFrom binom binom.confint
 #' 
@@ -16,7 +17,8 @@ plot_pie_panel <- function(model_options,
                            res_nplcm,
                            bugs.dat,
                            bg_color,
-                           top_pie = 1){
+                           top_pie = 1,
+                           label_size = 1 ){
 
   # order cause_list by posterior means:
   ord <- order_post_eti(res_nplcm,model_options)$ord
@@ -119,7 +121,7 @@ plot_pie_panel <- function(model_options,
   }
   # cause names on the right edge:
   axis(4,at=1:Jcause,labels=paste(paste(cause_list_ord,ord,sep=" ("),")",sep=""),
-       las=2,cex.axis=2)
+       las=2,cex.axis=label_size)
   # cell bottom axis:
   abline(h=seq(1.5,Jcause-.5,by=1),lty=2,lwd=0.5,col="gray")
   
