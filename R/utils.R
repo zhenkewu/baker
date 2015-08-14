@@ -1390,7 +1390,10 @@ make_numbered_list <- function(...) {
 #' to inform a particular latent status. Crucial for model fitting.
 #'
 #' @details The first argument has to be character substrings from the second argument. The
-#' second argument can have character strings not matched in the first argument.
+#' second argument can have character strings not matched in the first argument. 
+#' For each element of \code{patho}, the function matches from the start of the strings
+#' of \code{cause_list}. So, make sure that latent statuses from the same family 
+#' need to start with the same family name followed by subcategories.
 #' 
 #' @param patho a vector of pathogen names. \code{patho}
 #'  must be substring of some \code{cause_list} elements, e.g.,
@@ -1414,6 +1417,12 @@ make_numbered_list <- function(...) {
 #'  cause = c("A","B1","B2","C","A+C","B+C","other")
 #'  patho = c("A","B","C")
 #'  make_template(patho,cause)
+#'  
+#'  
+#'  cause = c("A","B1","B2","X_B","Y_B","C","A+C","B+C","other")
+#'  patho = c("A","B","C","X_B","Y_B")
+#'  make_template(patho,cause)
+#'  
 #' @return a mapping from \code{patho} to \code{cause_list}.
 #'\code{NROW = length(cause_list)+1};
 #'\code{NCOL = length(patho)}. This value is crucial in model fitting to determine
@@ -1425,7 +1434,8 @@ make_template <- function(patho, cause_list) {
   # patho must be substring of some cause_list elements, e.g., "PNEU" is a substring of "PNEU_VT13".
   res <- list()
   for (i in seq_along(patho)) {
-    res[[i]] <- as.numeric(grepl(patho[i],cause_list))
+    pat <- eval(paste0("^",patho[i]))
+    res[[i]] <- as.numeric(grepl(pat,cause_list))
   }
   template <- t(do.call(rbind,res))
   

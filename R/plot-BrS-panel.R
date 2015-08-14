@@ -47,7 +47,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   # which model was fitted:
   parsed_model <- assign_model(model_options, data_nplcm)
   
-  if (!parsed_model$nested & !any(unlist(parsed_model$regression))){
+  if (!any(parsed_model$nested) & !any(unlist(parsed_model$regression))){
     #
     # plcm (just obtain TPR and FPR estimates):
     #
@@ -94,7 +94,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   #controls:
   MBS_ctrl_curr <- MBS_curr[-(1:Nd),,drop=FALSE]
-  count    <- as.integer(do.call(cbind,lapply(MBS_case_curr,sum,na.rm=TRUE)))
+  count    <- as.integer(do.call(cbind,lapply(MBS_ctrl_curr,sum,na.rm=TRUE)))
   NA_count <- apply(MBS_ctrl_curr,2,function(v) sum(is.na(v)))
   tmp.ctrl <- binom.confint(count, Nu-NA_count, conf.level = 0.95, methods = "ac")
   

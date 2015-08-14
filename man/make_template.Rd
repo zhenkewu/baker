@@ -26,6 +26,9 @@ to inform a particular latent status. Crucial for model fitting.
 \details{
 The first argument has to be character substrings from the second argument. The
 second argument can have character strings not matched in the first argument.
+For each element of \code{patho}, the function matches from the start of the strings
+of \code{cause_list}. So, make sure that latent statuses from the same family
+need to start with the same family name followed by subcategories.
 }
 \examples{
 cause_list <- c("HINF","PNEU_VT13","PNEU_NOVT13","SAUR","HMPV_A_B","FLU_A",
@@ -42,6 +45,11 @@ make_template(patho_BrS_NPPCR,cause_list)
 
  cause = c("A","B1","B2","C","A+C","B+C","other")
  patho = c("A","B","C")
+ make_template(patho,cause)
+
+
+ cause = c("A","B1","B2","X_B","Y_B","C","A+C","B+C","other")
+ patho = c("A","B","C","X_B","Y_B")
  make_template(patho,cause)
 }
 
