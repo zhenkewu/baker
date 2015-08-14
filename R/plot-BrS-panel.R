@@ -86,14 +86,15 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   # positive rates and confidence intervals:
   #cases:
+
   MBS_case_curr <- MBS_curr[1:Nd,,drop=FALSE]
-  count    <- do.call(cbind,lapply(MBS_case_curr,table))["1",]
+  count    <- as.integer(do.call(cbind,lapply(MBS_case_curr,sum,na.rm=TRUE)))
   NA_count <- apply(MBS_case_curr,2,function(v) sum(is.na(v)))
   tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
   
   #controls:
   MBS_ctrl_curr <- MBS_curr[-(1:Nd),,drop=FALSE]
-  count    <- do.call(cbind,lapply(MBS_ctrl_curr,table))["1",]
+  count    <- as.integer(do.call(cbind,lapply(MBS_case_curr,sum,na.rm=TRUE)))
   NA_count <- apply(MBS_ctrl_curr,2,function(v) sum(is.na(v)))
   tmp.ctrl <- binom.confint(count, Nu-NA_count, conf.level = 0.95, methods = "ac")
   
@@ -230,7 +231,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       
       #plot conditional odds ratio on the right:
       tmp0 <- get_COR(pos)
-      tmp  <- tmp0$ORinterval
+      tmp  <- as.numeric(tmp0$ORinterval) # <--- used as.numeric() here because if tmp0 = NAs, then the code will fail.
       
       L <-  round(tmp[1],1)
       C <-  round(tmp[3],1)
@@ -346,7 +347,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       
       #plot conditional odds ratio on the right:
       tmp0 <- get_COR(pos)
-      tmp  <- tmp0$ORinterval
+      tmp  <- as.numeric(tmp0$ORinterval)
       
       L <-  round(tmp[1],1)
       C <-  round(tmp[3],1)

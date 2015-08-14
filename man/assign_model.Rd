@@ -18,8 +18,8 @@ A list of information for the selected model:
 \itemize{
    \item \code{num_slice} a vector counting the no. of measurement slices for every
    level of measurement quality
-   \item \code{nested} TRUE for nested models (conditional dependence);
-   FALSE for non-nested models (conditional independence).
+   \item \code{nested} TRUE for nested models in BrS data (conditional dependence);
+   FALSE for non-nested models (conditional independence). One for each slice.
    \item \code{regression}
        \itemize{
            \item \code{do_reg_Eti} TRUE for doing regression on etiology (latent status);

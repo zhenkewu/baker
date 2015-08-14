@@ -91,7 +91,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   # positive rates and confidence intervals:
   #cases:
   MSS_case_curr <- MSS_curr[1:Nd,,drop=FALSE]
-  count    <- do.call(cbind,lapply(MSS_case_curr,table))["1",]
+  count    <- as.integer(do.call(cbind,lapply(MSS_case_curr,sum,na.rm=TRUE))) #<-- added 'as.integer' to make pathogens appear by rows.
   NA_count <- apply(MSS_case_curr,2,function(v) sum(is.na(v)))
   tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
 

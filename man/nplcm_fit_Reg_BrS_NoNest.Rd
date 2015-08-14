@@ -38,7 +38,8 @@ data, not design matrix for regression models.
     \itemize{
          \item{cause_list}The vector of latent status;
          \item{k_subclass} The number of nested subclasses. 1 for conditional independence,
->1 for conditional dependence;
+>1 for conditional dependence; It is a vector of length equal to the number of slices
+of BrS measurements;
          \item{Eti_formula} formula for etiology regressions. You can use
 \code{\link{dm_Rdate_Eti}} to specify the design matrix for R format enrollment date;
 it will produce natural cubic splines for every date. Specify \code{~0} if no

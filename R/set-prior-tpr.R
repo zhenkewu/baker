@@ -1,7 +1,7 @@
-#' Set true positive rate (TPR) prior ranges for bronze-standard data.
-#'
-#'
-#'
+#' Set true positive rate (TPR) prior ranges for bronze-standard data
+#' (for conditional independence models - currently also used for conditional dependence model).
+#' 
+#' @param slice the index of BrS measurement under consideration
 #' @param model_options See \code{\link{nplcm}} function.
 #' @param data_nplcm See \code{\link{assign_model}} function.
 #' 
@@ -12,7 +12,7 @@
 #'
 #' @export
 
-set_prior_tpr_BrS <- function(model_options,data_nplcm){
+set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
 
   parsed_model <- assign_model(model_options,data_nplcm)
   if (parsed_model$num_slice["MBS"] == 0){stop("== No BrS data! ==")}
@@ -24,10 +24,6 @@ set_prior_tpr_BrS <- function(model_options,data_nplcm){
   Nd <- sum(Y)
   
   if (parsed_model$num_slice["MBS"] > 0){
-    
-    #
-    # 1. BrS data:
-    #
     
     # mapping template (by `make_template` function):
     patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -43,7 +39,7 @@ set_prior_tpr_BrS <- function(model_options,data_nplcm){
             res_all_slice[[s]] <- list(alpha = rep(1,ncol(Mobs$MBS[[s]])),
                                        beta = rep(1,ncol(Mobs$MBS[[s]])))
         }
-      return(res_all_slice)
+      return(res_all_slice[slice])
     }
     
     if (prior_BrS$info == "informative"){
@@ -62,7 +58,7 @@ set_prior_tpr_BrS <- function(model_options,data_nplcm){
             beta_vec  <- tmp_ab[2,]; names(beta_vec) <- colnames(Mobs$MBS[[s]])
             res_all_slice[[s]] <- list(alpha = alpha_vec,beta = beta_vec)
         }# end iterate over slices.
-        return(res_all_slice)
+        return(res_all_slice[slice])
       }# end match range.
       
       # begin direct parameters for Beta:
@@ -73,14 +69,13 @@ set_prior_tpr_BrS <- function(model_options,data_nplcm){
           tmp_beta  <- curr_val$beta; names(tmp_beta) <- colnames(Mobs$MBS[[s]])
           res_all_slice[[s]] <- list(alpha =  tmp_alpha, beta = tmp_beta)
         }
-        return(res_all_slice)
+        return(res_all_slice[slice])
       }
     } # end informative.
   }
 }
   
 #' Set true positive rate (TPR) prior ranges for silver-standard data. 
-#'
 #'
 #' @param model_options See \code{\link{nplcm}} function.
 #' @param data_nplcm See \code{\link{assign_model}} function.
@@ -104,8 +99,6 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
   
   Nd <- sum(Y)
   
-  if (parsed_model$num_slice["MSS"] == 0){stop("==No SS data!==")}
-    
   # mapping template (by `make_template` function):
   patho_SS_list <- lapply(Mobs$MSS,colnames)
   template_SS_list <-

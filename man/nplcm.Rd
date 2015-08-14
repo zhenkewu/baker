@@ -38,7 +38,8 @@ data, not design matrix for regression models.
     \itemize{
          \item{cause_list}The vector of latent status;
          \item{k_subclass} The number of nested subclasses. 1 for conditional independence,
->1 for conditional dependence;
+>1 for conditional dependence; It is a vector of length equal to the number of slices
+of BrS measurements;
          \item{Eti_formula} formula for etiology regressions. You can use
 \code{\link{dm_Rdate_Eti}} to specify the design matrix for R format enrollment date;
 it will produce natural cubic splines for every date. Specify \code{~0} if no
@@ -87,11 +88,7 @@ model fitting;
 A WinBUGS result, fitted by function \code{bugs()} from
 the \code{\link{R2WinBUGS}} package. Current implemented models follow the hierarchy below:
 \itemize{
-\item no regression:
-      \itemize{
-         \item independence model: \link{nplcm_fit_NoReg_NoNest}
-         \item dependence model
-       }
+\item no regression:  \link{write_model_NoReg}
 
 \item regression: [NOT DONE.]
       \itemize{

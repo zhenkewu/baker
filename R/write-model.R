@@ -1,4 +1,4 @@
-#' Write .bug model file for no regression, conditional independence
+#' Write .bug model file for no regression
 #' 
 #' 
 #' @inheritParams insert_bugfile_chunk_noreg_meas
@@ -9,11 +9,11 @@
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @export
-write_model_NoReg_NoNest <- function(Mobs,prior,cause_list,use_measurements){
+write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,use_measurements){
   ## 1) accommodates singletons, combos, and NoA;
   ## 2) check-bit to prevent case data informing FPR;
   
-  chunk1 <- insert_bugfile_chunk_noreg_meas(Mobs,prior,cause_list,use_measurements)
+  chunk1 <- insert_bugfile_chunk_noreg_meas(k_subclass,Mobs,prior,cause_list,use_measurements)
   chunk2 <- insert_bugfile_chunk_noreg_etiology()
   
   paste0("model{#BEGIN OF MODEL:\n",
@@ -21,3 +21,4 @@ write_model_NoReg_NoNest <- function(Mobs,prior,cause_list,use_measurements){
          chunk2,"\n",
          "}#END OF MODEL.")
 }
+

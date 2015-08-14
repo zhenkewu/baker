@@ -4,10 +4,13 @@
 \alias{insert_bugfile_chunk_noreg_meas}
 \title{Insert measurement likelihood (without regression) code chunk into .bug model file}
 \usage{
-insert_bugfile_chunk_noreg_meas(Mobs, prior, cause_list,
+insert_bugfile_chunk_noreg_meas(k_subclass, Mobs, prior, cause_list,
   use_measurements = "BrS")
 }
 \arguments{
+\item{k_subclass}{the number of subclasses for the slices that require conditional dependence modeling; its length is
+of the same value as the number of BrS slices.}
+
 \item{Mobs}{measurement data in the form of \code{data_nplcm}}
 
 \item{prior}{prior information from \code{model_options}}
@@ -23,6 +26,6 @@ a long character string to be inserted into target .bug model file
 Insert measurement likelihood (without regression) code chunk into .bug model file
 }
 \seealso{
-\link{write_model_NoReg_NoNest} for constructing a .bug file
+\link{write_model_NoReg} for constructing a .bug file
 }
 
