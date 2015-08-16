@@ -26,8 +26,8 @@
 
 plot_panels <- function(DIR_NPLCM,slices = "all",
                         bg_color = list(BrS = "lavenderblush", 
-                                        SS = "mistyrose",
-                                        pie="antiquewhite"),
+                                        SS  = "mistyrose",
+                                        pie = "antiquewhite"),
                         SS_upperlimit=1,eti_upperlimit=1,silent=TRUE){#BEGIN function
   old_par <- par(no.readonly=TRUE)
   on.exit(par(old_par))
@@ -67,10 +67,10 @@ plot_panels <- function(DIR_NPLCM,slices = "all",
   if (is.null(template_BrS) && is.null(template_SS)){stop("== No BrS or SS used in the fit. ==")}
   
   #
-  # Plot - put layout in place for three panels:
+  # Plot - setup layout for panels:
   #
   
-  if (slices=="all") {slices <- lapply(Mobs,seq_along)}
+  if (slices=="all") {slices <- lapply(Mobs,seq_along)} # <-- converts slices to a list if it is specified as "all".
   
   n_total_meas <- sum(parsed_model$num_slice)
   it <- layout(matrix(1:(n_total_meas+2),1,n_total_meas+1+1,byrow = TRUE),
@@ -80,29 +80,23 @@ plot_panels <- function(DIR_NPLCM,slices = "all",
   # the labels on the left margin:
   plot_leftmost(model_options)
   
-  # bronze-standard
-  for (s in slices$MBS){
-    plot_BrS_panel(s,data_nplcm,model_options,
-                   clean_options,bugs.dat,res_nplcm,bg_color = bg_color, silent=silent)
+  if (!is.null(slices$MSS)){
+    # bronze-standard
+    for (s in slices$MBS){
+      plot_BrS_panel(s,data_nplcm,model_options,
+                     clean_options,bugs.dat,res_nplcm,bg_color = bg_color, silent=silent)
+    }
   }
   
-  # silver-standard
-  for (s in slices$MSS){
-    plot_SS_panel(s,data_nplcm,model_options,
-                  clean_options,bugs.dat,res_nplcm,bg_color = bg_color)
+  if (!is.null(slices$MSS)){
+    # silver-standard
+    for (s in slices$MSS){
+      plot_SS_panel(s,data_nplcm,model_options,
+                    clean_options,bugs.dat,res_nplcm,bg_color = bg_color)
+    }
   }
+  plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color = bg_color)
   
-  plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color=bg_color)
-  
-  
-  
-  
-  
-#   
-#   
-#   
-#   
-#   
 #   
 #   if (!any(unlist(parsing$reg))){
 #     # if no stratification or regression:

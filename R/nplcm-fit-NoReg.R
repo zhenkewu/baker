@@ -151,8 +151,7 @@ nplcm_fit_NoReg<-
          assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
          in_data       <- c(in_data,paste0("K_",s)) # <---- not prior, but data about the subclasses for this slice.
          out_parameter <- c(out_parameter,
-                            paste(c("ThetaBS","PsiBS","Lambda","Eta","alphadp0",
-                                    "ThetaBS.marg","PsiBS.marg","PsiBS.case"),s,sep="_")
+                            paste(c("ThetaBS","PsiBS","Lambda","Eta","alphadp0"),s,sep="_")
                             )
         }
       }
@@ -303,9 +302,11 @@ nplcm_fit_NoReg<-
           if (likelihood$k_subclass[s] > 1){
             K_curr <- likelihood$k_subclass[s]
             res_curr[[1]] <- c(rep(.5,K_curr-1),NA)
-            res_curr[[2]] <- cbind(matrix(rep(.5,Jcause*(K_curr-1)),
-                                          nrow=Jcause,ncol=K_curr-1),
-                                   rep(NA,Jcause))
+            res_curr[[2]] <- c(rep(.5,K_curr-1),NA)
+            # for different Eta's:
+            #             res_curr[[2]] <- cbind(matrix(rep(.5,Jcause*(K_curr-1)),
+            #                                           nrow=Jcause,ncol=K_curr-1),
+            #                                    rep(NA,Jcause))
             res_curr[[3]] <- 1
             
             names(res_curr) <- paste(c("r0","r1","alphadp0"),s,sep="_")
@@ -348,9 +349,11 @@ nplcm_fit_NoReg<-
           if (likelihood$k_subclass[s] > 1){
             K_curr <- likelihood$k_subclass[s]
             res_curr[[1]] <- c(rep(.5,K_curr-1),NA)
-            res_curr[[2]] <- cbind(matrix(rep(.5,Jcause*(K_curr-1)),
-                                          nrow=Jcause,ncol=K_curr-1),
-                                   rep(NA,Jcause))
+            res_curr[[2]] <- c(rep(.5,K_curr-1),NA)
+            # for different Eta's:
+            # res_curr[[2]] <- cbind(matrix(rep(.5,Jcause*(K_curr-1)),
+            #                               nrow=Jcause,ncol=K_curr-1),
+            #                              rep(NA,Jcause))
             res_curr[[3]] <- 1
             
             names(res_curr) <- paste(c("r0","r1","alphadp0"),s,sep="_")

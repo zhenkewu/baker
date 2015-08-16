@@ -47,7 +47,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   parsed_model <- assign_model(model_options, data_nplcm)
   
   
-  if (!parsed_model$nested & !any(unlist(parsed_model$regression))){
+  if (!any(unlist(parsed_model$regression))){
     
     if (parsed_model$SS_grp){stop("== Panel plot not available for stratified SS TPRs. Please contact maintainer. ==")}
     #
@@ -77,7 +77,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
                                             fitted_margin_case(pEti_mat_ord[iter,], 
                                                                theta_mat[iter,],
                                                                template_ord))))
-    fittedmean_control <- 0
+    fittedmean_ctrl <- 0
     
     #plot_pos <- get_plot_pos(template_ord)  # 1 at the 5th means for the fifth smallest etiology, we should plot 1st dimension in this slice.
   }

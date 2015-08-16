@@ -217,7 +217,6 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list){
   make_list(plug,parameters)
 }
 
-
 #' add likelihood for a BrS measurement slice among controls (conditional independence)
 #' 
 #' 
@@ -274,6 +273,8 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list) {
 #' 
 #' @export
 #' 
+
+
 add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -296,9 +297,6 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
   Eta_nm <- paste("Eta",seq_along(BrS_nm),sep="_")#
   alphaB_nm     <- paste("alphaB",seq_along(BrS_nm),sep = "_")#
   betaB_nm     <- paste("betaB",seq_along(BrS_nm),sep = "_")#
-  ThetaBS.marg_nm <- paste("ThetaBS.marg",seq_along(BrS_nm),sep = "_")#
-  PsiBS.marg_nm <- paste("PsiBS.marg",seq_along(BrS_nm),sep="_")#
-  PsiBS.case_nm <- paste("PsiBS.case",seq_along(BrS_nm),sep="_")#
   K_nm <- paste("K",seq_along(BrS_nm),sep="_")#
   
   templateBS_nm  <-
@@ -318,6 +316,7 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
     ####################################
     ### stick-breaking prior specification
     ####################################
+    # control subclass mixing weights:
     ",Lambda0_nm[s],"[1]<-",r0_nm[s],"[1]
     ",r0_nm[s],"[",K_nm[s],"]<-1
     for(j in 2:",K_nm[s],") {",Lambda0_nm[s],"[j]<-",r0_nm[s],"[j]*(1-",r0_nm[s],"[j-1])*",Lambda0_nm[s],"[j-1]/",r0_nm[s],"[j-1]}
@@ -328,19 +327,16 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
     for (k in 1:",K_nm[s],"-1){",Lambda_nm[s],"[k]<-max(0.000001,min(0.999999,",Lambda0_nm[s],"[k]))}
     ",Lambda_nm[s],"[",K_nm[s],"]<-1-sum(",Lambda_nm[s],"[1:(",K_nm[s],"-1)])
     
-    for (s in 1:Jcause){
-      ",Eta0_nm[s],"[s,1]<-",r1_nm[s],"[s,1]
-      ",r1_nm[s],"[s,",K_nm[s],"]<-1
-      for(j in 2:",K_nm[s],") {",Eta0_nm[s],"[s,j]<-",r1_nm[s],"[s,j]*(1-",r1_nm[s],"[s,j-1])*",Eta0_nm[s],"[s,j-1]/",r1_nm[s],"[s,j-1]}
-        for(k in 1:",K_nm[s],"-1){
-          ",r1_nm[s],"[s,k]~dbeta(1,",alphadp0_nm[s],")I(0.000001,0.999999)
-        }
+    # case subclass mixing weights:
+    ",Eta0_nm[s],"[1]<-",r1_nm[s],"[1]
+    ",r1_nm[s],"[",K_nm[s],"]<-1
+    for(j in 2:",K_nm[s],") {",Eta0_nm[s],"[j]<-",r1_nm[s],"[j]*(1-",r1_nm[s],"[j-1])*",Eta0_nm[s],"[j-1]/",r1_nm[s],"[j-1]}
+    for(k in 1:",K_nm[s],"-1){
+          ",r1_nm[s],"[k]~dbeta(1,",alphadp0_nm[s],")I(0.000001,0.999999)
     }
     
-    for (s in 1:Jcause){
-      for (k in 1:",K_nm[s],"-1){",Eta_nm[s],"[s,k]<-max(0.000001,min(0.999999,",Eta0_nm[s],"[s,k]))}
-      ",Eta_nm[s],"[s,",K_nm[s],"]<-1-sum(",Eta_nm[s],"[s,1:(",K_nm[s],"-1)])
-    }
+    for (k in 1:",K_nm[s],"-1){",Eta_nm[s],"[k]<-max(0.000001,min(0.999999,",Eta0_nm[s],"[k]))}
+    ",Eta_nm[s],"[",K_nm[s],"]<-1-sum(",Eta_nm[s],"[1:(",K_nm[s],"-1)])
     
     ",alphadp0_nm[s],"~dgamma(.25,.25)I(0.001,20)
     
@@ -354,20 +350,11 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
         #ThetaBS[j,s]~dbeta(1,1)
         ",ThetaBS_nm[s],"[j,s]~dbeta(",alphaB_nm[s],"[j],",betaB_nm[s],"[j])
       }
-      ",ThetaBS.marg_nm[s],"[j]<-inprod2(",ThetaBS_nm[s],"[j,1:",K_nm[s],"],",Eta_nm[s],"[j,1:",K_nm[s],"])
-      ",PsiBS.marg_nm[s],"[j]<-inprod2(",PsiBS_nm[s],"[j,1:",K_nm[s],"],",Lambda_nm[s],"[1:",K_nm[s],"])
-      
-      for (l in 1:Jcause){
-        ",PsiBS.case_nm[s],"[j,l]<-inprod2(",PsiBS_nm[s],"[j,1:",K_nm[s],"],",Eta_nm[s],"[l,1:",K_nm[s],"])
-        # for calculating predicted positive rate from cases:
-        # ThetaBS.case[j,l]<-inprod2(ThetaBS[j,1:",K_nm[s],"],Eta[l,1:",K_nm[s],"])
-      }
     }
     "
   )
   
-  parameters <- c(PsiBS_nm[s], ThetaBS_nm[s], Lambda_nm[s],Eta_nm[s],alphaB_nm[s],betaB_nm[s],ThetaBS.marg_nm[s],
-                  PsiBS.marg_nm[s],PsiBS.case_nm[s])
+  parameters <- c(PsiBS_nm[s], ThetaBS_nm[s], Lambda_nm[s],Eta_nm[s],alphaB_nm[s],betaB_nm[s])
   make_list(plug,parameters)
 }
 
@@ -400,7 +387,7 @@ add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list){
     " 
       # cases' subclass indicators:
       for (i in 1:Nd){
-        ",Z_nm[s],"[i] ~ dcat(",Eta_nm[s],"[Icat[i],1:",K_nm[s],"])
+        ",Z_nm[s],"[i] ~ dcat(",Eta_nm[s],"[1:",K_nm[s],"])
       }
       # controls' subclass indicators:
       for (i in (Nd+1):(Nd+Nu)){
@@ -412,6 +399,8 @@ add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list){
   parameters <- c("Icat",Eta_nm[s],Lambda_nm[s])
   make_list(plug,parameters)
 }
+
+
 
 
 

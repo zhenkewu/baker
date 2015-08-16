@@ -39,42 +39,27 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
   
   template_ord <- template_BrS[[slice]][ord,,drop=FALSE]
-  
-  thetaBS_nm <- paste0("thetaBS_",slice)
-  psiBS_nm   <- paste0("psiBS_",slice)
-  alphaB_nm   <- paste0("alphaB_",slice)
-  betaB_nm   <- paste0("betaB_",slice)
+
   # which model was fitted:
   parsed_model <- assign_model(model_options, data_nplcm)
+  this_slice_nest <- parsed_model$nested[slice]
   
-  if (!any(parsed_model$nested) & !any(unlist(parsed_model$regression))){
-    #
-    # plcm (just obtain TPR and FPR estimates):
-    #
-    theta_mat <- res_nplcm[,grep(thetaBS_nm,colnames(res_nplcm)),drop=FALSE]
-    theta_mean <- colMeans(theta_mat)
+  if (!any(unlist(parsed_model$regression))){
+    if (!this_slice_nest){ marginal_rates <- get_marginal_rates_no_nested(slice,res_nplcm,model_options,data_nplcm)}
+    if (this_slice_nest){marginal_rates <- get_marginal_rates_nested(slice,res_nplcm,model_options,data_nplcm)}
     
-    #posterior distribution of FPR:
-    psi_mat  <- res_nplcm[,grep(psiBS_nm,colnames(res_nplcm)),drop=FALSE]
+    # TPR and FPR rates:
+    theta_mat <- as.matrix(marginal_rates$res_tpr)
+    theta_mean <- colMeans(theta_mat)
+
+    psi_mat   <- as.matrix(marginal_rates$res_fpr)
     psi_mean   <- colMeans(psi_mat)
     
     ## model fitted postive rate for each pathogen
-    fittedmean_case    <- rep(NA,ncol(template_ord))
-    names(fittedmean_case) <- colnames(template_ord)
-    
-    fitted_margin_case <- function(pEti_ord,theta,psi,template){
-      mixture <-  pEti_ord
-      tpr     <-  t(t(template)*theta)
-      fpr     <- t(t(1-template)*psi)
-      colSums(tpr*mixture + fpr*mixture)
-    }
-    
-    fittedmean_case  <- colMeans(t(sapply(1:nrow(pEti_mat_ord),
-                                          function(iter)
-                                            fitted_margin_case(pEti_mat_ord[iter,], theta_mat[iter,],
-                                                               psi_mat[iter,],template_ord))))
-    fittedmean_control <- psi_mean
-    
+    if (!this_slice_nest){fitted_mean <- get_fitted_mean_no_nested(slice,res_nplcm,model_options,data_nplcm,clean_options)}
+    if (this_slice_nest){fitted_mean <- get_fitted_mean_nested(slice,res_nplcm,model_options,data_nplcm,clean_options)}
+    fittedmean_case    <- colMeans(fitted_mean$res_case)
+    fittedmean_ctrl    <- colMeans(fitted_mean$res_ctrl)
     #plot_pos <- get_plot_pos(template_ord)  # 1 at the 5th means for the fifth smallest etiology, we should plot 1st dimension in this slice.
   }
   
@@ -86,7 +71,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   # positive rates and confidence intervals:
   #cases:
-
+  
   MBS_case_curr <- MBS_curr[1:Nd,,drop=FALSE]
   count    <- as.integer(do.call(cbind,lapply(MBS_case_curr,sum,na.rm=TRUE)))
   NA_count <- apply(MBS_case_curr,2,function(v) sum(is.na(v)))
@@ -104,9 +89,11 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   MBS_q2 <- rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")])
   
   # prior parameters:
+  alphaB_nm   <- paste0("alphaB_",slice)
+  betaB_nm   <- paste0("betaB_",slice)
   alphaB         <- bugs.dat[[alphaB_nm]]
   betaB          <- bugs.dat[[betaB_nm]]
-
+  
   pos_vec <- get_plot_pos(template_ord)
   
   get_COR <- function(pos){
@@ -122,7 +109,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
                   label = "conditional OR")
     }else{
       if (!silent){
-       print("Conditional OR not calculatable. Switch to mariginal OR.")
+        print("Conditional OR not calculatable. Switch to mariginal OR.")
       }
       res0 = matrix(NA,nrow=1,ncol=3)
       res0 = data.frame(res0)
@@ -141,14 +128,14 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     plotat <- get_plot_num(lat_pos,height) + gap
     
     plot(c(fittedmean_case[pos],MBS_mean[,pos]),
-           plotat,
-           xlim=c(0,top_BrS),
-           ylim=c(0.5, height+0.5),
-           xaxt="n",xlab="positive rate",
-           ylab="",yaxt="n",
-           pch = c(2,20,20),
-           col = c("purple","dodgerblue2", "dodgerblue2"),
-           cex = c(1,2,2))
+         plotat,
+         xlim=c(0,top_BrS),
+         ylim=c(0.5, height+0.5),
+         xaxt="n",xlab="positive rate",
+         ylab="",yaxt="n",
+         pch = c(2,20,20),
+         col = c("purple","dodgerblue2", "dodgerblue2"),
+         cex = c(1,2,2))
     
     
     points(c(theta_mean[pos],MBS_q2[,pos]),
@@ -156,7 +143,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
            pch = c("+","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
-    points(c(psi_mean[pos],MBS_q1[,pos]),
+    points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
            plotat,
            pch = c("*","|","|"),
            col = c("purple",1,1),
@@ -272,7 +259,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
            pch = c("+","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
-    points(c(psi_mean[pos],MBS_q1[,pos]),
+    points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
            plotat,
            pch = c("*","|","|"),
            col = c("purple",1,1),
@@ -401,7 +388,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   if (!is.null(bg_color) && !is.null(bg_color$BrS)){
     rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
            bg_color$BrS)
-  
+    
     for (e in 1:nrow(template_ord)){
       gap_seq <- 0
       if (!is.null(pos_vec[[e]]) && length(pos_vec[[e]])>1){
@@ -418,12 +405,12 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     }
   }
   
-#   #add axis labels on the left:
-#   axis(2,at = c(sapply(1:Jcause,get_plot_num,height=Jcause)),
-#        labels=rep(c("","case","ctrl"),Jcause),las=2)
-#   axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
-#   axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
-#   
+  #   #add axis labels on the left:
+  #   axis(2,at = c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+  #        labels=rep(c("","case","ctrl"),Jcause),las=2)
+  #   axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
+  #   axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
+  #   
   #add ticks from 0 to 1 for x-bar:
   axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
   
@@ -433,6 +420,206 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   #add some texts:
   mtext(eval(paste0("BrS: ", names(data_nplcm$Mobs$MBS)[slice])),
-                   line=1,cex=1.8)
+        line=1,cex=1.8)
 }
 
+
+#' get model fitted mean for conditional independence model
+#' 
+#' @inheritParams get_fitted_mean_nested
+#' 
+#' @return a list with model fitted means
+#' @export
+
+get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
+                                    clean_options){
+  
+  # order cause_list by posterior means:
+  ord <- order_post_eti(res_nplcm,model_options)$ord
+  pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
+  template_BrS <- lapply(clean_options$BrS_objects,"[[","template")
+  names(template_BrS) <- lapply(clean_options$BrS_objects,"[[","nm_spec_test")
+  template_ord <- template_BrS[[slice]][ord,,drop=FALSE]
+  
+  JBrS_curr <- ncol(data_nplcm$Mobs$MBS[[slice]])
+  Jcause    <- length(model_options$likelihood$cause_list)
+  
+  thetaBS_nm <- paste0("^thetaBS_",slice)
+  psiBS_nm   <- paste0("^psiBS_",slice)
+  
+  #posterior distribution of FPR:
+  theta_mat    <- res_nplcm[,grep(thetaBS_nm,colnames(res_nplcm)),drop=FALSE]
+  #posterior distribution of FPR:
+  psi_mat    <- res_nplcm[,grep(psiBS_nm,colnames(res_nplcm)),drop=FALSE]
+  
+  ## model fitted postive rate for each pathogen
+  fittedmean_case    <- rep(NA,JBrS_curr)
+  names(fittedmean_case) <- colnames(data_nplcm$Mobs$MBS[[slice]])
+  
+  fitted_margin_case <- function(pEti_ord,theta,psi,template){
+    mixture <-  pEti_ord
+    tpr     <-  t(t(template)*theta)
+    fpr     <- t(t(1-template)*psi)
+    colSums(tpr*mixture + fpr*mixture)
+  }
+  
+  res_case  <- colMeans(t(sapply(1:nrow(pEti_mat_ord),
+                                        function(iter)
+                                          fitted_margin_case(pEti_mat_ord[iter,], theta_mat[iter,],
+                                                             psi_mat[iter,],template_ord))))
+  res_case <- as.matrix(res_case)
+  res_ctrl <- as.matrix(psi_mat)
+  
+  make_list(res_case,res_ctrl)
+}
+
+
+#' get fitted mean for nested model with the same subclass mixing weights
+#' 
+#' 
+#' @param slice the slice of BrS data that are modeled
+#' @param res_nplcm matrix of MCMC samples
+#' @param model_options see \code{\link{nplcm}}
+#' @param data_nplcm see \code{\link{nplcm}}
+#' @param clean_options see \code{\link{clean_perch_data}}
+#' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
+#' equal to the no. of measurement dimensions within a slice.
+#' 
+#' @export
+#' 
+
+get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
+                                   data_nplcm,clean_options){
+  
+  # order cause_list by posterior means:
+  ord <- order_post_eti(res_nplcm,model_options)$ord
+  pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
+  template_BrS <- lapply(clean_options$BrS_objects,"[[","template")
+  names(template_BrS) <- lapply(clean_options$BrS_objects,"[[","nm_spec_test")
+  template_ord <- template_BrS[[slice]][ord,,drop=FALSE]
+  
+  JBrS_curr <- ncol(data_nplcm$Mobs$MBS[[slice]])
+  Jcause    <- length(model_options$likelihood$cause_list)
+  K_curr    <- model_options$likelihood$k_subclass[slice]  
+  
+  res_case <- matrix(NA,nrow = nrow(res_nplcm),ncol=JBrS_curr)
+  res_ctrl <- matrix(0,nrow = nrow(res_nplcm),ncol=JBrS_curr)
+  # formula: fittedmean_case[j] = \sum_e pEti[e]*\sum_k {Eta[e,k]*Theta[j,k]*templateBS[e,j]+Eta[e,k]*Psi[j,k]*(1-templateBS[e,j])}
+  for (j in 1:JBrS_curr){
+    term_e <- matrix(0,nrow = nrow(res_nplcm),ncol=Jcause)
+    for (e in 1:Jcause){
+      # get templateBS[e,j]:
+      indBS <- template_ord[e,j]
+      # get pEti[e]:
+      ind_pEti_tmp <- grep(paste0("^pEti\\[",e,"\\]$"),colnames(res_nplcm))
+      if (length(ind_pEti_tmp)!=1){stop("== Error in extracting etiology! ==")}
+      pEti_tmp <- res_nplcm[,ind_pEti_tmp]
+      # get ThetaBS[j,k]:
+      ind_ThetaBS_tmp <- grep(paste0("^ThetaBS_",slice,"\\[",j,","),colnames(res_nplcm))
+      if (length(ind_ThetaBS_tmp)!=K_curr){stop("== Check `ThetaBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+      ThetaBS_tmp <- res_nplcm[,ind_ThetaBS_tmp]
+      # get PsiBS[j,k]:
+      ind_PsiBS_tmp <- grep(paste0("^PsiBS_",slice,"\\[",j,","),colnames(res_nplcm))
+      if (length(ind_PsiBS_tmp)!=K_curr){stop("== Check `PsiBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+      PsiBS_tmp <- res_nplcm[,ind_PsiBS_tmp]
+      # get Eta[e,k]:
+      ind_Eta_tmp <- grep(paste0("^Eta_",slice),colnames(res_nplcm))
+      if (length(ind_Eta_tmp)!=K_curr){stop("== Check `Eta` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+      Eta_tmp <- res_nplcm[,ind_Eta_tmp]
+      # calculate by formula:
+      for (k in 1:K_curr){
+        if (indBS == 1){term_e[,e] <- term_e[,e] + Eta_tmp[,k]*ThetaBS_tmp[,k]}
+        if (indBS == 0){term_e[,e] <- term_e[,e] + Eta_tmp[,k]*PsiBS_tmp[,k]}
+      }
+      term_e[,e] <- term_e[,e]*pEti_tmp
+    }
+    res_case[,j] <- rowSums(term_e)
+    ## now handle controls:
+    # get Lambda[k]:
+    ind_Lambda_tmp <- grep(paste0("^Lambda_",slice),colnames(res_nplcm))
+    if (length(ind_Lambda_tmp)!=K_curr){stop("== Check `Lambda` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    Lambda_tmp <- res_nplcm[,ind_Lambda_tmp]
+    
+    for (k in 1:K_curr){
+      res_ctrl[,j] <- res_ctrl[,j] + Lambda_tmp[,k]*PsiBS_tmp[,k]
+    }
+  }
+  res_case <- as.matrix(res_case)
+  res_ctrl <- as.matrix(res_ctrl)
+  make_list(res_case,res_ctrl)
+} 
+
+
+#' get marginal TPR and FPR for no nested model
+#' 
+#' @param slice the slice of BrS data that are modeled
+#' @param res_nplcm matrix of MCMC samples
+#' @param model_options see \code{\link{nplcm}}
+#' @param data_nplcm see \code{\link{nplcm}}
+#' 
+#' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
+#' equal to the no. of measurement dimensions within a slice.
+#' 
+#' @export
+#' 
+#' 
+#' 
+get_marginal_rates_no_nested <- function(slice, res_nplcm, model_options,data_nplcm){
+
+  thetaBS_nm <- paste0("^thetaBS_",slice)
+  psiBS_nm   <- paste0("^psiBS_",slice)
+  
+  res_tpr  <- res_nplcm[,grep(thetaBS_nm,colnames(res_nplcm)),drop=FALSE]
+  
+  #posterior distribution of FPR:
+  res_fpr  <- res_nplcm[,grep(psiBS_nm,colnames(res_nplcm)),drop=FALSE]
+  
+  make_list(res_tpr,res_fpr)
+}
+
+#' get marginal TPR and FPR for nested model
+#' 
+#' @param slice the slice of BrS data that are modeled
+#' @param res_nplcm matrix of MCMC samples
+#' @param model_options see \code{\link{nplcm}}
+#' @param data_nplcm see \code{\link{nplcm}}
+#' 
+#' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
+#' equal to the no. of measurement dimensions within a slice.
+#' 
+#' @export
+#' 
+get_marginal_rates_nested <- function(slice, res_nplcm, model_options,data_nplcm){
+  JBrS_curr <- ncol(data_nplcm$Mobs$MBS[[slice]])
+  Jcause    <- length(model_options$likelihood$cause_list)
+  K_curr    <- model_options$likelihood$k_subclass[slice]  
+  
+  res_tpr <- matrix(0,nrow = nrow(res_nplcm),ncol=JBrS_curr)
+  res_fpr <- matrix(0,nrow = nrow(res_nplcm),ncol=JBrS_curr)
+  # formula: fittedmean_case[j] = \sum_e pEti[e]*\sum_k {Eta[e,k]*Theta[j,k]*templateBS[e,j]+Eta[e,k]*Psi[j,k]*(1-templateBS[e,j])}
+  for (j in 1:JBrS_curr){
+    # get ThetaBS[j,k]:
+    ind_ThetaBS_tmp <- grep(paste0("^ThetaBS_",slice,"\\[",j,","),colnames(res_nplcm))
+    if (length(ind_ThetaBS_tmp)!=K_curr){stop("== Check `ThetaBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    ThetaBS_tmp <- res_nplcm[,ind_ThetaBS_tmp]
+    # get PsiBS[j,k]:
+    ind_PsiBS_tmp <- grep(paste0("^PsiBS_",slice,"\\[",j,","),colnames(res_nplcm))
+    if (length(ind_PsiBS_tmp)!=K_curr){stop("== Check `PsiBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    PsiBS_tmp <- res_nplcm[,ind_PsiBS_tmp]
+    # get Eta[e,k]:
+    ind_Eta_tmp <- grep(paste0("^Eta_",slice),colnames(res_nplcm))
+    if (length(ind_Eta_tmp)!=K_curr){stop("== Check `Eta` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    Eta_tmp <- res_nplcm[,ind_Eta_tmp]
+    # get Lambda[k]:
+    ind_Lambda_tmp <- grep(paste0("^Lambda_",slice),colnames(res_nplcm))
+    if (length(ind_Lambda_tmp)!=K_curr){stop("== Check `Lambda` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    Lambda_tmp <- res_nplcm[,ind_Lambda_tmp]
+    
+    # calculate by formula:
+    for (k in 1:K_curr){
+      res_tpr[,j] <- res_tpr[,j] + Eta_tmp[,k]*ThetaBS_tmp[,k]
+      res_fpr[,j] <- res_fpr[,j] + Lambda_tmp[,k]*PsiBS_tmp[,k]
+    }
+  }
+  make_list(res_tpr,res_fpr)
+}
