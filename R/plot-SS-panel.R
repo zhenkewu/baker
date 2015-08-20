@@ -297,6 +297,20 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
     }
   }
   
+  if (sum(template_ord)==0){
+    warning(paste0("== Silver-standard slice ", names(data_nplcm$Mobs$MSS)[slice], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+    plotat <- c(sapply(1:Jcause,get_plot_num,Jcause))
+    points(rep(0,length(plotat)),
+           plotat,
+           xlim=c(0,top_SS),
+           ylim=c(0.5, Jcause+0.5),
+           xaxt="n",xlab="positive rate",
+           ylab="",yaxt="n",
+           pch = c(2,20),
+           col = c("purple", "dodgerblue2"),
+           cex = c(1,2))
+  }
+  
   #add ticks from 0 to 1 for x-bar:
   axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
   

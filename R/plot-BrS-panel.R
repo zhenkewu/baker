@@ -411,6 +411,20 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   #   axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
   #   axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
   #   
+  
+  if (sum(template_ord)==0){
+    warning(paste0("== Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[slice], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+    plotat <- c(sapply(1:Jcause,get_plot_num,Jcause))
+    plot(rep(0,length(plotat)),
+         plotat,
+         xlim=c(0,top_BrS),
+         ylim=c(0.5, Jcause+0.5),
+         xaxt="n",xlab="positive rate",
+         ylab="",yaxt="n",
+         pch = c("","",""),
+         col = c("purple","dodgerblue2", "dodgerblue2"),
+         cex = c(1,2,2))
+  }
   #add ticks from 0 to 1 for x-bar:
   axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
   

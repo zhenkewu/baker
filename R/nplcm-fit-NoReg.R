@@ -93,6 +93,9 @@ nplcm_fit_NoReg<-
       # mapping template (by `make_template` function):
       patho_BrS_list    <- lapply(Mobs$MBS,colnames)
       template_BrS_list <- lapply(patho_BrS_list,make_template,cause_list)
+      for (s in seq_along(template_BrS_list)){
+       warning(paste0("== Bronze-standard slice ", names(data_nplcm$Mobs$MSS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+      }
       
       MBS.case_list <- lapply(Mobs$MBS,"[",which(Y==1),TRUE,drop=FALSE)
       MBS.ctrl_list <- lapply(Mobs$MBS,"[",which(Y==0),TRUE,drop=FALSE)
@@ -177,6 +180,10 @@ nplcm_fit_NoReg<-
       # mapping template (by `make_template` function):
       patho_SS_list <- lapply(Mobs$MSS,colnames)
       template_SS_list <- lapply(patho_SS_list,make_template,cause_list)
+      
+      for (s in seq_along(template_SS_list)){
+        warning(paste0("== Silver-standard slice ", names(data_nplcm$Mobs$MSS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+      }
       
       MSS_list <- lapply(Mobs$MSS,"[",which(Y==1),TRUE,drop=FALSE)
       

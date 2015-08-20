@@ -80,7 +80,7 @@ plot_panels <- function(DIR_NPLCM,slices = "all",
   # the labels on the left margin:
   plot_leftmost(model_options)
   
-  if (!is.null(slices$MSS)){
+  if (!is.null(slices$MBS)){
     # bronze-standard
     for (s in slices$MBS){
       plot_BrS_panel(s,data_nplcm,model_options,
