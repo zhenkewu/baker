@@ -4,8 +4,8 @@
 \alias{plot_pie_panel}
 \title{Plot etiology (pie) panel}
 \usage{
-plot_pie_panel(model_options, res_nplcm, bugs.dat, bg_color, top_pie = 1,
-  label_size = 1)
+plot_pie_panel(model_options, res_nplcm, bugs.dat, bg_color,
+  select_latent = NULL, exact = TRUE, top_pie = 1, label_size = 1)
 }
 \arguments{
 \item{model_options}{See \code{\link{nplcm}}}
@@ -15,6 +15,13 @@ plot_pie_panel(model_options, res_nplcm, bugs.dat, bg_color, top_pie = 1,
 \item{bugs.dat}{Data input for the model fitting.}
 
 \item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors}
+
+\item{select_latent}{a vector of character strings representing latent status. It is used for
+just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}}
+
+\item{exact}{Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
+specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.
+to plot all latent status information relevant to \code{"HINF"}.}
 
 \item{top_pie}{Numerical value to specify the rightmost limit
 on the horizontal axis for the pie panel.}

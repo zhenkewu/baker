@@ -5,7 +5,8 @@
 \title{Plot three-panel figures for nested partially-latent model results}
 \usage{
 plot_panels(DIR_NPLCM, slices = "all", bg_color = list(BrS =
-  "lavenderblush", SS = "mistyrose", pie = "antiquewhite"), SS_upperlimit = 1,
+  "lavenderblush", SS = "mistyrose", pie = "antiquewhite"),
+  select_latent = NULL, exact = TRUE, SS_upperlimit = 1,
   eti_upperlimit = 1, silent = TRUE)
 }
 \arguments{
@@ -19,6 +20,13 @@ specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
 The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose",
 pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
 measurement, e.g., \code{BrS = NULL}.}
+
+\item{select_latent}{a vector of character strings representing latent status. It is used for
+just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
+to plot all latent status information relevant to \code{"HINF"}.}
+
+\item{exact}{Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
+specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.}
 
 \item{SS_upperlimit}{The upper limit of horizontal bar for the silver-standard
 subpanel (the middle panel). The default value is .25.}

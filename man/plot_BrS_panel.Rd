@@ -5,8 +5,8 @@
 \title{Plot bronze-standard (BrS) panel}
 \usage{
 plot_BrS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
-  res_nplcm, bg_color, top_BrS = 1.3, cexval = 1, srtval = 0,
-  prior_shape = "interval", silent = TRUE)
+  res_nplcm, bg_color, select_latent = NULL, exact = TRUE, top_BrS = 1.3,
+  cexval = 1, srtval = 0, prior_shape = "interval", silent = TRUE)
 }
 \arguments{
 \item{slice}{the index of measurement slice for BrS.}
@@ -22,6 +22,13 @@ plot_BrS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
 \item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
 
 \item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors}
+
+\item{select_latent}{a vector of character strings representing latent status. It is used for
+just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
+to plot all latent status information relevant to \code{"HINF"}.}
+
+\item{exact}{Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
+specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.}
 
 \item{top_BrS}{Numerical value to specify the rightmost limit
 on the horizontal axis for the BrS panel.}

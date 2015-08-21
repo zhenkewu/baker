@@ -1423,6 +1423,7 @@ make_numbered_list <- function(...) {
 #'  patho = c("A","B","C","X_B","Y_B")
 #'  make_template(patho,cause)
 #'  
+#'  
 #' @return a mapping from \code{patho} to \code{cause_list}.
 #'\code{NROW = length(cause_list)+1};
 #'\code{NCOL = length(patho)}. This value is crucial in model fitting to determine
@@ -1434,7 +1435,7 @@ make_template <- function(patho, cause_list) {
   # patho must be substring of some cause_list elements, e.g., "PNEU" is a substring of "PNEU_VT13".
   res <- list()
   for (i in seq_along(patho)) {
-    pat <- eval(paste0("^",patho[i]))
+    pat <- eval(paste0("(^|\\+)",patho[i]))
     res[[i]] <- as.numeric(grepl(pat,cause_list))
   }
   template <- t(do.call(rbind,res))
@@ -1526,4 +1527,32 @@ as.matrix_or_vec <- function(x){
     return(c(as.matrix(x)))
   }  
   as.matrix(x)
+}
+
+#' get index of latent status
+#' 
+#' @param cause_list see mode_options in \link{nplcm}
+#' @param ord order of cause_list according to posterior mean
+#' @param select_latent Defaut is NULL
+#' @param exact Default is TRUE
+#' 
+#' @return a vector of indices
+#' @export
+get_latent_seq <- function(cause_list, ord,select_latent=NULL,exact=TRUE){
+  cause_list_ord <- cause_list[ord]
+  latent_seq <- 1:length(cause_list)
+  original_num <- ord
+  if (!is.null(select_latent)){
+    original_index <- sapply(paste("^",select_latent,"$",sep=""),grep,cause_list)
+    original_num   <- original_index[my_reorder(cause_list_ord,select_latent)]
+    latent_seq <- sapply(paste("^",select_latent,"$",sep=""),grep,cause_list_ord)[my_reorder(cause_list[ord],select_latent)]
+    if (!exact){
+      original_index <- which(rowSums(make_template(select_latent,cause_list))>0)
+      original_num <- original_index[my_reorder(cause_list_ord,cause_list[original_index])]
+      latent_seq <- which(rowSums(make_template(select_latent,cause_list_ord))>0)
+    }
+    
+    if (length(latent_seq)!=length(select_latent)){warning("==Some of `select_latent` are not matched by `cause_list` in `model_options$likelihood` ! Please check you supplied correct names in `select_latent`.==")}
+  }
+  return(make_list(latent_seq,original_num))
 }

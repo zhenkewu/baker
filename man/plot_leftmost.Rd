@@ -4,15 +4,20 @@
 \alias{plot_leftmost}
 \title{plotting the labels on the left margin for panels plot}
 \usage{
-plot_leftmost(model_options)
+plot_leftmost(model_options, height)
 }
 \arguments{
 \item{model_options}{See \code{\link{nplcm}}}
+
+\item{height}{no. of rows in the panels plot; commonly set as \code{length(select_latent)}}
 }
 \value{
 a plot
 }
 \description{
 plotting the labels on the left margin for panels plot
+}
+\seealso{
+\link{plot_panels}
 }
 

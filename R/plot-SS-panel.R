@@ -8,6 +8,11 @@
 #' @param res_nplcm See \code{\link{nplcm_read_folder}}
 #' @param bugs.dat Data input for the model fitting.
 #' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
+#' @param select_latent a vector of character strings representing latent status. It is used for
+#' just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
+#' to plot all latent status information relevant to \code{"HINF"}.
+#' @param exact Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
+#' specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.
 #' @param top_SS Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the SS panel.
 #' @param cexval Default is 1 - size of text of the SS percentages.
@@ -23,6 +28,8 @@
 plot_SS_panel <- function(slice,data_nplcm,model_options,
                            clean_options,bugs.dat,res_nplcm,
                            bg_color,
+                           select_latent = NULL,
+                           exact = TRUE,
                            top_SS = 1, 
                            cexval = 1,
                            srtval = 0,
@@ -39,6 +46,13 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
   
   template_ord <- template_SS[[slice]][ord,,drop=FALSE]
+  cause_list <- model_options$likelihood$cause_list
+  cause_list_ord <- cause_list[ord]
+  
+  # focus on selected latent status:
+  latent_seq <- get_latent_seq(cause_list,ord,select_latent,exact)$latent_seq
+  template_ord <- template_ord[latent_seq,,drop = FALSE]
+  
   
   thetaSS_nm <- paste0("thetaSS_",slice)
   alphaS_nm   <- paste0("alphaS_",slice)
@@ -74,7 +88,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
     
     fittedmean_case  <- colMeans(t(sapply(1:nrow(pEti_mat_ord),
                                           function(iter)
-                                            fitted_margin_case(pEti_mat_ord[iter,], 
+                                            fitted_margin_case(pEti_mat_ord[iter,latent_seq], 
                                                                theta_mat[iter,],
                                                                template_ord))))
     fittedmean_ctrl <- 0
@@ -94,7 +108,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   count    <- as.integer(do.call(cbind,lapply(MSS_case_curr,sum,na.rm=TRUE))) #<-- added 'as.integer' to make pathogens appear by rows.
   NA_count <- apply(MSS_case_curr,2,function(v) sum(is.na(v)))
   tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
-
+  
   # case and control positive rate, lower and upper limit
   MSS_mean  <- rbind(round(tmp.case$mean,5))
   MSS_q1 <- rbind(tmp.case[,c("lower")])
@@ -104,21 +118,19 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   alphaS         <- bugs.dat[[alphaS_nm]]
   betaS          <- bugs.dat[[betaS_nm]]
   
-
-  
   pos_vec <- get_plot_pos(template_ord)
   
   plot_SS_cell <- function(lat_pos, pos, height,gap = 0){
     plotat <- get_plot_num(lat_pos,height) + gap
     plot(c(fittedmean_case[pos],MSS_mean[,pos]),
-           plotat[-3],
-           xlim=c(0,top_SS),
-           ylim=c(0.5, height+0.5),
-           xaxt="n",xlab="positive rate",
-           ylab="",yaxt="n",
-           pch = c(2,20),
-           col = c("purple", "dodgerblue2"),
-           cex = c(1,2))
+         plotat[-3],
+         xlim=c(0,top_SS),
+         ylim=c(0.5, height+0.5),
+         xaxt="n",xlab="positive rate",
+         ylab="",yaxt="n",
+         pch = c(2,20),
+         col = c("purple", "dodgerblue2"),
+         cex = c(1,2))
     points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
            plotat[c(1,2,2)],
            pch = c("+","|","|"),
@@ -182,14 +194,14 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   points_SS_cell <- function(lat_pos, pos, height,gap=0){ # pos for the measurement dimension, usually used as pos_vec[e].
     plotat <- get_plot_num(lat_pos,height) +gap
     points(c(fittedmean_case[pos],MSS_mean[,pos]),
-         plotat[-3],
-         xlim=c(0,top_SS),
-         ylim=c(0.5, height+0.5),
-         xaxt="n",xlab="positive rate",
-         ylab="",yaxt="n",
-         pch = c(2,20),
-         col = c("purple", "dodgerblue2"),
-         cex = c(1,2))
+           plotat[-3],
+           xlim=c(0,top_SS),
+           ylim=c(0.5, height+0.5),
+           xaxt="n",xlab="positive rate",
+           ylab="",yaxt="n",
+           pch = c(2,20),
+           col = c("purple", "dodgerblue2"),
+           cex = c(1,2))
     points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
            plotat[c(1,2,2)],
            pch = c("+","|","|"),
@@ -271,8 +283,8 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
     for (pos_curr in pos_vec[[e]]){
       if (!is.na(pos_curr)){
         ct <- ct +1
-        if (first) {plot_SS_cell(e,pos_curr,Jcause,gap = gap_seq[ct]);first <- FALSE}
-        if (!first) {points_SS_cell(e,pos_curr,Jcause,gap=gap_seq[ct])}
+        if (first) {plot_SS_cell(e,pos_curr,length(latent_seq),gap = gap_seq[ct]);first <- FALSE}
+        if (!first) {points_SS_cell(e,pos_curr,length(latent_seq),gap=gap_seq[ct])}
       }
     }
   }
@@ -291,7 +303,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
       for (pos_curr in pos_vec[[e]]){
         if (!is.na(pos_curr)){
           ct <- ct +1
-          points_SS_cell(e,pos_curr,Jcause,gap=gap_seq[ct])
+          points_SS_cell(e,pos_curr,length(latent_seq),gap=gap_seq[ct])
         }
       }
     }
@@ -299,23 +311,23 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   
   if (sum(template_ord)==0){
     warning(paste0("== Silver-standard slice ", names(data_nplcm$Mobs$MSS)[slice], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
-    plotat <- c(sapply(1:Jcause,get_plot_num,Jcause))
-    points(rep(0,length(plotat)),
+    plotat <- c(sapply(seq_along(latent_seq),get_plot_num,length(latent_seq)))
+    plot(rep(0,length(plotat)),
            plotat,
            xlim=c(0,top_SS),
-           ylim=c(0.5, Jcause+0.5),
+           ylim=c(0.5, length(latent_seq)+0.5),
            xaxt="n",xlab="positive rate",
            ylab="",yaxt="n",
-           pch = c(2,20),
-           col = c("purple", "dodgerblue2"),
-           cex = c(1,2))
+           pch = c("",""))
   }
   
   #add ticks from 0 to 1 for x-bar:
   axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
   
   #add dashed lines to separate cells:
-  abline(h=seq(1.5,Jcause-.5,by=1),lty=2,lwd=0.5,col="gray")
+  if (length(latent_seq) > 1){
+    abline(h=seq(1.5,length(latent_seq)-.5,by=1),lty=2,lwd=0.5,col="gray")
+  }
   
   #add some texts:
   mtext(eval(paste0("SS: ", names(data_nplcm$Mobs$MSS)[slice])),

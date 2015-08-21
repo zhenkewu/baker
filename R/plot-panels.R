@@ -14,6 +14,11 @@
 #' The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose", 
 #' pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
 #' measurement, e.g., \code{BrS = NULL}.
+#' @param select_latent a vector of character strings representing latent status. It is used for
+#' just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
+#' to plot all latent status information relevant to \code{"HINF"}.
+#' @param exact Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
+#' specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.
 #' @param SS_upperlimit The upper limit of horizontal bar for the silver-standard
 #' subpanel (the middle panel). The default value is .25.
 #'
@@ -24,11 +29,16 @@
 #'
 #' @export
 
-plot_panels <- function(DIR_NPLCM,slices = "all",
+plot_panels <- function(DIR_NPLCM,
+                        slices = "all",
                         bg_color = list(BrS = "lavenderblush", 
                                         SS  = "mistyrose",
                                         pie = "antiquewhite"),
-                        SS_upperlimit=1,eti_upperlimit=1,silent=TRUE){#BEGIN function
+                        select_latent = NULL,
+                        exact = TRUE,
+                        SS_upperlimit=1,
+                        eti_upperlimit=1,
+                        silent=TRUE){#BEGIN function
   old_par <- par(no.readonly=TRUE)
   on.exit(par(old_par))
   
@@ -78,13 +88,21 @@ plot_panels <- function(DIR_NPLCM,slices = "all",
   ## layout.show(it)
 
   # the labels on the left margin:
-  plot_leftmost(model_options)
+  height_leftmost <- length(model_options$likelihood$cause_list)
+  if (!is.null(select_latent)){
+    height_leftmost <- length(select_latent)
+    if (!exact){
+      height_leftmost <- sum(rowSums(make_template(select_latent,model_options$likelihood$cause_list))>0)
+    }    
+  }
+  plot_leftmost(model_options,height_leftmost)
   
   if (!is.null(slices$MBS)){
     # bronze-standard
     for (s in slices$MBS){
       plot_BrS_panel(s,data_nplcm,model_options,
-                     clean_options,bugs.dat,res_nplcm,bg_color = bg_color, silent=silent)
+                     clean_options,bugs.dat,res_nplcm,bg_color = bg_color, 
+                     select_latent, exact, silent=silent)
     }
   }
   
@@ -92,10 +110,11 @@ plot_panels <- function(DIR_NPLCM,slices = "all",
     # silver-standard
     for (s in slices$MSS){
       plot_SS_panel(s,data_nplcm,model_options,
-                    clean_options,bugs.dat,res_nplcm,bg_color = bg_color)
+                    clean_options,bugs.dat,res_nplcm,bg_color = bg_color,
+                    select_latent,exact)
     }
   }
-  plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color = bg_color)
+  plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color = bg_color,select_latent,exact)
   
 #   
 #   if (!any(unlist(parsing$reg))){
@@ -220,17 +239,18 @@ get_plot_num <- function(e, height){
 #' plotting the labels on the left margin for panels plot
 #' 
 #' @param model_options See \code{\link{nplcm}}
-#' 
+#' @param height no. of rows in the panels plot; commonly set as \code{length(select_latent)}
 #' @return a plot
+#' @seealso \link{plot_panels}
 #' @export
 
-plot_leftmost <- function(model_options){
-  Jcause <- length(model_options$likelihood$cause_list)
+plot_leftmost <- function(model_options,height){
+  
   op <- par(mar=c(5.1,4,4.1,0))
-  plot(rep(0,3*Jcause),
-       c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+  plot(rep(0,3*height),
+       c(sapply(1:height,get_plot_num,height)),
        xlim=c(0,0.1),
-       ylim=c(0.5, Jcause+0.5),
+       ylim=c(0.5, height+0.5),
        xaxt="n",pch="",xlab="",bty="l",axes=FALSE,
        ylab="",yaxt="n")
   #add axis labels on the left:
@@ -239,13 +259,13 @@ plot_leftmost <- function(model_options){
   # axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
   # axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
   
-  text(0.1,c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+  text(0.1,c(sapply(1:height,get_plot_num,height)),
        labels=rep(c(expression(paste(symbol("\052"),"(FPR)--",Delta,"(fitted)--+(TPR)")),
-                    "case","control"),Jcause),adj=1,cex=c(1,2,2),
+                    "case","control"),height),adj=1,cex=c(1,2,2),
        col=c("purple",1,1))
-  text(0.1,c(sapply(1:Jcause,get_plot_num,height=Jcause))+0.1,
+  text(0.1,c(sapply(1:height,get_plot_num,height))+0.1,
        labels=rep(c(expression(italic("posterior mean:")),"",
-                    expression(italic("data:"))),Jcause),col=c("purple",1,1),adj=1)
-  text(0.1,(1:Jcause)-.35,labels=rep("posterior CI: '|'-95%;'[]'-50%",Jcause),col="purple",adj=1)
-  text(0.1,(1:Jcause)-.45,labels=rep("prior: '|'-95%;'[]'-50%",Jcause),adj=1)
+                    expression(italic("data:"))),height),col=c("purple",1,1),adj=1)
+  text(0.1,(1:height)-.35,labels=rep("posterior CI: '|'-95%;'[]'-50%",height),col="purple",adj=1)
+  text(0.1,(1:height)-.45,labels=rep("prior: '|'-95%;'[]'-50%",height),adj=1)
 }

@@ -94,7 +94,9 @@ nplcm_fit_NoReg<-
       patho_BrS_list    <- lapply(Mobs$MBS,colnames)
       template_BrS_list <- lapply(patho_BrS_list,make_template,cause_list)
       for (s in seq_along(template_BrS_list)){
-       warning(paste0("== Bronze-standard slice ", names(data_nplcm$Mobs$MSS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+        if (sum(template_BrS_list[[s]])==0){
+          warning(paste0("== Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+        }
       }
       
       MBS.case_list <- lapply(Mobs$MBS,"[",which(Y==1),TRUE,drop=FALSE)
@@ -182,7 +184,9 @@ nplcm_fit_NoReg<-
       template_SS_list <- lapply(patho_SS_list,make_template,cause_list)
       
       for (s in seq_along(template_SS_list)){
-        warning(paste0("== Silver-standard slice ", names(data_nplcm$Mobs$MSS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+        if (sum(template_SS_list[[s]])==0){
+          warning(paste0("== Silver-standard slice ", names(data_nplcm$Mobs$MSS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+        }
       }
       
       MSS_list <- lapply(Mobs$MSS,"[",which(Y==1),TRUE,drop=FALSE)
@@ -221,7 +225,7 @@ nplcm_fit_NoReg<-
       SS_tpr_prior <- set_prior_tpr_SS(model_options,data_nplcm)
       
       # set SS measurement priors: 
-      # hyper parameters for sensitivity:
+      # hyper-parameters for sensitivity:
       for(i in seq_along(JSS_list)){
         
         GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
