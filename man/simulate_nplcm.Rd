@@ -31,38 +31,47 @@ function is written in a way to facilitate adding more measurement components.
 }
 \examples{
 K.true  <- 2   # no. of latent subclasses in actual simulation.
-J       <- 5   # no. of pathogens.
-N      <- 1000 # no. of cases or controls.
-eta_seq      <- seq(0,0.5,by=0.05)
+               # If eta = c(1,0), effectively, it is K.true=1.
+J       <- 21   # no. of pathogens.
+N       <- 600 # no. of cases/controls.
 
-eta <- 0
 
+eta <- c(1,0)
+# if it is c(1,0),then it is conditional independence model, and
+# only the first column of parameters in PsiBS, ThetaBS matter!
+
+seed_start <- 20150202
+print(eta)
+
+# set fixed simulation sequence:
+set.seed(seed_start)
+
+ThetaBS_withNA <- c(.75,rep(c(.75,.75,.75,NA),5))
+PsiBS_withNA <- c(.15,rep(c(.05,.05,.05,NA),5))
+
+ThetaSS_withNA <- c(NA,rep(c(0.15,NA,0.15,0.15),5))
+PsiSS_withNA <- c(NA,rep(c(0,NA,0,0),5))
+
+# the following paramter names are set using names in the 'baker' package:
 set_parameter <- list(
-  pathogen_BrS    = LETTERS[1:J],
-  cause_list      = c(LETTERS[1:J],"A+B","D+E"),
-  etiology        = c(0.5,0.1,0.15,0.1,0.05,0.05,0.05), #same length as cause_list
-  Lambda          = c(1-eta,eta), #ctrl mix
-  Eta             = rbind(c(1-eta,eta),
-                          c(1-eta,eta),
-                          c(1-eta,eta),
-                          c(1-eta,eta),
-                          c(1-eta,eta),
-                          c(1-eta,eta),
-                          c(1-eta,eta)), #case mix, row number equal to Jcause.
-  PsiBS 		  =    matrix(c(0.1,0.3,
-                          0.1,0.3,
-                          0.1,0.3,
-                          0.1,0.3,
-                          0.1,0.3),nrow=J,ncol=K.true,byrow=TRUE),
- ThetaBS         =  matrix(c(0.9,0.1,
-                              0.9,0.1,
-                              0.9,0.1,
-                              0.9,0.1,
-                              0.9,0.1),nrow=J,ncol=K.true,byrow=TRUE),
+  cause_list      = c(LETTERS[1:J]),
+  etiology        = c(c(0.36,0.1,0.1,0.1,0.1,0.05,0.05,0.05,
+                 0.05,0.01,0.01,0.01,0.01),rep(0.00,8)),
+                 #same length as cause_list.
+  pathogen_BrS    = LETTERS[1:J][!is.na(ThetaBS_withNA)],
+  pathogen_SS     = LETTERS[1:J][!is.na(ThetaSS_withNA)],
+  meas_nm         = list(MBS = c("MBS1"),MSS="MSS1"),
+  Lambda          = eta, #ctrl mix
+  Eta             = t(replicate(J,eta)), #case mix, row number equal to Jcause.
+  PsiBS           = cbind(PsiBS_withNA[!is.na(PsiBS_withNA)],
+                          rep(0,sum(!is.na(PsiBS_withNA)))),
+  ThetaBS         = cbind(ThetaBS_withNA[!is.na(ThetaBS_withNA)],
+                          rep(0,sum(!is.na(ThetaBS_withNA)))),
+  PsiSS           = PsiSS_withNA[!is.na(PsiSS_withNA)],
+  ThetaSS         = ThetaSS_withNA[!is.na(ThetaSS_withNA)],
   Nu      =     N, # control size.
   Nd      =     N  # case size.
 )
-
  simu_out <- simulate_nplcm(set_parameter)
  data_nplcm <- simu_out$data_nplcm
 

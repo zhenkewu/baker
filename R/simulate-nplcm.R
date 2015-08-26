@@ -25,39 +25,48 @@
 #' which \link{simulate_brs} simulates bronze-standard data.
 #'
 #' @examples
-#' K.true  <- 2   # no. of latent subclasses in actual simulation.
-#' J       <- 5   # no. of pathogens.
-#' N      <- 1000 # no. of cases or controls.
-#' eta_seq      <- seq(0,0.5,by=0.05)
-#'
-#' eta <- 0
-#'
+#' K.true  <- 2   # no. of latent subclasses in actual simulation. 
+#'                # If eta = c(1,0), effectively, it is K.true=1.
+#' J       <- 21   # no. of pathogens.
+#' N       <- 600 # no. of cases/controls.
+#' 
+#' 
+#' eta <- c(1,0) 
+#' # if it is c(1,0),then it is conditional independence model, and
+#' # only the first column of parameters in PsiBS, ThetaBS matter!
+#' 
+#' seed_start <- 20150202
+#' print(eta)
+#' 
+#' # set fixed simulation sequence:
+#' set.seed(seed_start)
+#' 
+#' ThetaBS_withNA <- c(.75,rep(c(.75,.75,.75,NA),5))
+#' PsiBS_withNA <- c(.15,rep(c(.05,.05,.05,NA),5))
+#' 
+#' ThetaSS_withNA <- c(NA,rep(c(0.15,NA,0.15,0.15),5))
+#' PsiSS_withNA <- c(NA,rep(c(0,NA,0,0),5))
+#' 
+#' # the following paramter names are set using names in the 'baker' package:
 #' set_parameter <- list(
-#'   pathogen_BrS    = LETTERS[1:J],
-#'   cause_list      = c(LETTERS[1:J],"A+B","D+E"),
-#'   etiology        = c(0.5,0.1,0.15,0.1,0.05,0.05,0.05), #same length as cause_list
-#'   Lambda          = c(1-eta,eta), #ctrl mix
-#'   Eta             = rbind(c(1-eta,eta),
-#'                           c(1-eta,eta),
-#'                           c(1-eta,eta),
-#'                           c(1-eta,eta),
-#'                           c(1-eta,eta),
-#'                           c(1-eta,eta),
-#'                           c(1-eta,eta)), #case mix, row number equal to Jcause.
-#'   PsiBS 		  =    matrix(c(0.1,0.3,
-#'                           0.1,0.3,
-#'                           0.1,0.3,
-#'                           0.1,0.3,
-#'                           0.1,0.3),nrow=J,ncol=K.true,byrow=TRUE),
-#'  ThetaBS         =  matrix(c(0.9,0.1,
-#'                               0.9,0.1,
-#'                               0.9,0.1,
-#'                               0.9,0.1,
-#'                               0.9,0.1),nrow=J,ncol=K.true,byrow=TRUE),
+#'   cause_list      = c(LETTERS[1:J]),
+#'   etiology        = c(c(0.36,0.1,0.1,0.1,0.1,0.05,0.05,0.05,
+#'                  0.05,0.01,0.01,0.01,0.01),rep(0.00,8)), 
+#'                  #same length as cause_list.
+#'   pathogen_BrS    = LETTERS[1:J][!is.na(ThetaBS_withNA)],
+#'   pathogen_SS     = LETTERS[1:J][!is.na(ThetaSS_withNA)],
+#'   meas_nm         = list(MBS = c("MBS1"),MSS="MSS1"),
+#'   Lambda          = eta, #ctrl mix
+#'   Eta             = t(replicate(J,eta)), #case mix, row number equal to Jcause.
+#'   PsiBS           = cbind(PsiBS_withNA[!is.na(PsiBS_withNA)],
+#'                           rep(0,sum(!is.na(PsiBS_withNA)))),
+#'   ThetaBS         = cbind(ThetaBS_withNA[!is.na(ThetaBS_withNA)],
+#'                           rep(0,sum(!is.na(ThetaBS_withNA)))),
+#'   PsiSS           = PsiSS_withNA[!is.na(PsiSS_withNA)],
+#'   ThetaSS         = ThetaSS_withNA[!is.na(ThetaSS_withNA)],
 #'   Nu      =     N, # control size.
 #'   Nd      =     N  # case size.
 #' )
-#'
 #'  simu_out <- simulate_nplcm(set_parameter)
 #'  data_nplcm <- simu_out$data_nplcm
 #'  
@@ -68,24 +77,31 @@
 #' @export
 
 simulate_nplcm <- function(set_parameter) {
-  pathogen_BrS <- set_parameter$pathogen_BrS
-  
   # simulate latent status
   latent <- simulate_latent(set_parameter)
   # simulate BrS measurements:
   out_brs   <- simulate_brs(set_parameter,latent)
-
+  # simulate SS measurements:
+  out_ss   <- simulate_ss(set_parameter,latent)
+  
   # organize data:
+  # bronze-standard data:
   MBS_list <-
-    list(MBS_1 = out_brs[,-grep("Y",colnames(out_brs)),drop = FALSE])
-  Mobs <- list(MBS = MBS_list ,MSS = NULL,MGS = NULL)
-  Y    <- out_brs$Y
+    list(out_brs$datres[,-grep("case",colnames(out_brs$datres)),drop = FALSE])
+  names(MBS_list) <- set_parameter$meas_nm$MBS
+  # silver-standard data:
+  MSS_list <-
+    list(out_ss$datres[,-grep("case",colnames(out_ss$datres)),drop = FALSE])
+  names(MSS_list) <- set_parameter$meas_nm$MSS
+  
+  Mobs <- list(MBS = MBS_list, MSS = MSS_list, MGS = NULL)
+  Y    <- out_brs$datres$case
   X    <- NULL
   
   data_nplcm <- make_list(Mobs, Y, X)
-  template   <- latent$template
+  #template   <- out_brs$template
   latent_cat <- latent$iLcatAllnumeric
-  make_list(data_nplcm,template,latent_cat)
+  make_list(data_nplcm,latent_cat)
   
 }
 
@@ -108,29 +124,29 @@ simulate_latent <- function(set_parameter) {
   
   # simulate latent status (common to all measurements):
   iLcat <- rep(NA,Nd)
-  iLall <- matrix(NA,nrow = Nd + Nu,ncol = Jcause)
+  #iLall <- matrix(NA,nrow = Nd + Nu,ncol = Jcause)
   etiologyMat <- matrix(NA,nrow = Nd,ncol = Jcause)
   
   # sample cause for cases:
   for (i in 1:Nd) {
     etiologyMat[i,] <- etiology
-    iLcat[i]        <- sample(cause_list,1,prob = etiologyMat[i,])
+    iLcat[i]        <- sample(1:length(cause_list),1,prob = etiologyMat[i,])
   }
   
-  pathogen_BrS    <- set_parameter$pathogen_BrS
-  J_BrS  <- length(pathogen_BrS)
+  iLnm <- cause_list[iLcat]
+  # pathogen_BrS    <- set_parameter$pathogen_BrS
+  # J_BrS  <- length(pathogen_BrS)
   
   # convert categorical to template (cases):
-  iL    <- symb2I(iLcat,pathogen_BrS)
+  #iL    <- symb2I(iLcat,cause_list)
   # convert back to categorical (cases):
-  iLcat.case.numeric <- Imat2cat(iL,cause_list,pathogen_BrS)
+  #iLcat.case.numeric <- Imat2cat(iL,cause_list,cause_list)
   # create
-  iLall <- rbind(iL,matrix(0,nrow = Nu,ncol = J_BrS))
-  iLcatAllnumeric    <- c(iLcat.case.numeric,rep(Jcause + 1,Nu))
+  #iLall <- rbind(iL,matrix(0,nrow = Nu,ncol = Jcause))
+  #iLcatAllnumeric    <- c(iLcat.case.numeric,rep(Jcause + 1,Nu))
   
-  template <- make_template(pathogen_BrS, cause_list)
-  
-  make_list(iLall,iLcatAllnumeric,iLcat.case.numeric,iL,template)
+  #make_list(iLall,iLcatAllnumeric,iLcat.case.numeric,iL)
+  make_list(iLcat,iLnm)
 }
 
 #' Simulate Bronze-Standard Data
@@ -146,16 +162,16 @@ simulate_latent <- function(set_parameter) {
 #' @export
 simulate_brs <- function(set_parameter,latent_samples) {
   pathogen_BrS    <- set_parameter$pathogen_BrS
+  cause_list      <- set_parameter$cause_list
+  template    <- make_template(pathogen_BrS,cause_list)
+  
   J_BrS           <- length(pathogen_BrS)
   PsiBS           <- set_parameter$PsiBS
   ThetaBS         <- set_parameter$ThetaBS
   Lambda          <- set_parameter$Lambda
   Eta             <- set_parameter$Eta
   
-  iLall              <- latent_samples$iLall
-  iLcatAllnumeric    <- latent_samples$iLcatAllnumeric
-  iLcat.case.numeric <- latent_samples$iLcat.case.numeric
-  iL <- latent_samples$iL
+  iLcat <- latent_samples$iLcat
   # sample size:
   Nd       <- set_parameter$Nd
   Nu       <- set_parameter$Nu
@@ -164,9 +180,10 @@ simulate_brs <- function(set_parameter,latent_samples) {
   Md <- matrix(NA,nrow = Nd,ncol = J_BrS)
   MdP <- Md
   for (i in 1:Nd) {
-    Zd[i] = sample(1:ncol(Eta),1,prob = Eta[iLcat.case.numeric[i],])
+    Zd[i] = sample(1:ncol(Eta),1,prob = Eta[iLcat[i],])
     for (j in 1:J_BrS) {
-      MdP[i,j]  = PsiBS[j,Zd[i]] * (1 - iL[i,j]) + iL[i,j] * ThetaBS[j,Zd[i]]
+      tmp <- template[iLcat[i],j]
+      MdP[i,j]  = PsiBS[j,Zd[i]] * (1 - tmp) + tmp * ThetaBS[j,Zd[i]]
     }
   }
   Md <- rvbern(MdP)
@@ -183,7 +200,7 @@ simulate_brs <- function(set_parameter,latent_samples) {
   Mu <- rvbern(MuP)
   
   ## organize case/control status, iL, BS, GS data into dataframes
-  datacolnames    <- c("Y", pathogen_BrS)
+  datacolnames    <- c("case", pathogen_BrS)
   #   datres <- data.frame(Y = c(rep(1,Nd),rep(0,Nu)),
   #                        iLcat = iLcatAllnumeric,
   #                        iL = iLall,
@@ -194,8 +211,74 @@ simulate_brs <- function(set_parameter,latent_samples) {
   #dat_case <- as.matrix(dat_meas[(1:set_parameter$Nd),])
   #dat_ctrl <- as.matrix(dat_meas[-(1:set_parameter$Nd),])
   
+  # template <- make_template(pathogen_BrS, cause_list)
+  
   datres <-
-    data.frame(Y = c(rep(1,Nd),rep(0,Nu)), MBS = rbind(Md,Mu))
+    data.frame(case = c(rep(1,Nd),rep(0,Nu)), MBS = rbind(Md,Mu))
   colnames(datres) <- datacolnames
-  datres
+  make_list(datres,template)
+}
+
+#' Simulate Silver-Standard Data
+#'
+#'
+#' simulate SS measurements:
+#' @param set_parameter parameters for SS measurements
+#' @param latent_samples sampled latent status for all the subjects, for use in simulate
+#' BrS measurements.
+#'
+#' @return a data frame with first column being case-control status (case at top) and
+#' columns of silver-standard measurements
+#' @export
+simulate_ss <- function(set_parameter,latent_samples) {
+  pathogen_SS    <- set_parameter$pathogen_SS
+  cause_list      <- set_parameter$cause_list
+  template   <- make_template(pathogen_SS,cause_list)
+  J_SS           <- length(pathogen_SS)
+  PsiSS           <- set_parameter$PsiSS
+  ThetaSS         <- set_parameter$ThetaSS
+  
+  iLcat <- latent_samples$iLcat
+  
+  # sample size:
+  Nd       <- set_parameter$Nd
+  Nu       <- set_parameter$Nu
+  
+  Md <- matrix(NA,nrow = Nd,ncol = J_SS)
+  MdP <- Md
+  for (i in 1:Nd) {
+    for (j in 1:J_SS) {
+      tmp <- template[iLcat[i],j]
+      MdP[i,j]  = PsiSS[j] * (1 - tmp) + tmp * ThetaSS[j]
+    }
+  }
+  Md <- rvbern(MdP)
+  
+  Mu  <- matrix(NA,nrow = Nu,ncol = J_SS)
+  MuP <- matrix(NA,nrow = Nu,ncol = J_SS)
+  for (i in 1:Nu) {
+    for (j in 1:J_SS) {
+      MuP[i,j]  <- PsiSS[j]
+    }
+  }
+  Mu <- rvbern(MuP)
+  
+  ## organize case/control status, iL, BS, GS data into dataframes
+  datacolnames    <- c("case", pathogen_SS)
+  #   datres <- data.frame(Y = c(rep(1,Nd),rep(0,Nu)),
+  #                        iLcat = iLcatAllnumeric,
+  #                        iL = iLall,
+  #                        MBS = rbind(Md,Mu))
+  #  colnames(datres) <- datacolnames
+  
+  # dat_meas <- datres[,rev(rev(1:ncol(datres))[1:J_BrS]),drop=FALSE]
+  #dat_case <- as.matrix(dat_meas[(1:set_parameter$Nd),])
+  #dat_ctrl <- as.matrix(dat_meas[-(1:set_parameter$Nd),])
+  
+  #template <- make_template(pathogen_SS, cause_list)
+  
+  datres <-
+    data.frame(case = c(rep(1,Nd),rep(0,Nu)), MSS = rbind(Md,Mu))
+  colnames(datres) <- datacolnames
+  make_list(datres,template)
 }

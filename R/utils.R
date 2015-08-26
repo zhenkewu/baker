@@ -1556,3 +1556,31 @@ get_latent_seq <- function(cause_list, ord,select_latent=NULL,exact=TRUE){
   }
   return(make_list(latent_seq,original_num))
 }
+
+
+
+# #' check simulation is correct
+# #' 
+# #' @details check actual realized positive rates vs theoretical rates
+# #' 
+# #' 
+# #' @param set_parameter
+# #' 
+# #' @return TRUE for okay; FALSE means problems in simulated data.
+# #' 
+# #' 
+# #' 
+# check_simu <- function(set_parameter,data_nplcm){
+#   
+#   if (!is.null(data_nplcm$Mobs$MBS)){
+#     rate_case <- colMeans(data_nplcm$Mobs$MBS$MBS1[1:set_parameter$Nd,])
+#     _rate_case <- set_parameter$etiology*ThetaBS_withNA+(1-set_parameter$etiology)*PsiBS_withNA
+#     b = b[!is.na(b)]
+#   }
+#   
+#   # a = colMeans(data_nplcm$Mobs$MSS$MSS1[1:N,])
+#   # b = set_parameter$etiology*ThetaSS_withNA
+#   # b = b[!is.na(b)]
+#   # 
+#   
+# }
