@@ -80,9 +80,11 @@ plot_panels <- function(DIR_NPLCM,
   # Plot - setup layout for panels:
   #
   
-  if (slices=="all") {slices <- lapply(Mobs,seq_along)} # <-- converts slices to a list if it is specified as "all".
+  if (slices=="all") {slices <- lapply(Mobs,seq_along);
+                n_total_meas <- sum(parsed_model$num_slice)} # <-- converts slices to a list if it is specified as "all".
   
-  n_total_meas <- sum(parsed_model$num_slice)
+  n_total_meas <- length(unlist(slices))
+  
   it <- layout(matrix(1:(n_total_meas+2),1,n_total_meas+1+1,byrow = TRUE),
                widths=c(1.5,rep(2.5,n_total_meas),3),heights=c(8))
   ## layout.show(it)

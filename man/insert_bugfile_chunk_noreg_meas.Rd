@@ -2,30 +2,34 @@
 % Please edit documentation in R/insert-bugfile-chunk.R
 \name{insert_bugfile_chunk_noreg_meas}
 \alias{insert_bugfile_chunk_noreg_meas}
-\title{Insert measurement likelihood (without regression) code chunk into .bug model file}
+\title{Insert measurement likelihood (without regression) code chunks into .bug model file}
 \usage{
 insert_bugfile_chunk_noreg_meas(k_subclass, Mobs, prior, cause_list,
   use_measurements = "BrS")
 }
 \arguments{
-\item{k_subclass}{the number of subclasses for the slices that require conditional dependence modeling; its length is
+\item{k_subclass}{the number of subclasses for the slices that require
+conditional dependence modeling (only applicable to BrS data); its length is
 of the same value as the number of BrS slices.}
 
 \item{Mobs}{measurement data in the form of \code{data_nplcm}}
 
-\item{prior}{prior information from \code{model_options}}
+\item{prior}{prior specification from \code{model_options}}
 
-\item{cause_list}{a list of latent status (crucial for building templates)}
+\item{cause_list}{a list of latent status names (crucial for building templates;
+see \code{\link{make_template}})}
 
 \item{use_measurements}{"BrS", or "SS"}
 }
 \value{
-a long character string to be inserted into target .bug model file
+a long character string to be inserted into .bug model file as measurement
+likelihood
 }
 \description{
-Insert measurement likelihood (without regression) code chunk into .bug model file
+Insert measurement likelihood (without regression) code chunks into .bug model file
 }
 \seealso{
-\link{write_model_NoReg} for constructing a .bug file
+\link{write_model_NoReg} for constructing a .bug file along with
+specification of latent status distribution (\link{insert_bugfile_chunk_noreg_etiology})
 }
 

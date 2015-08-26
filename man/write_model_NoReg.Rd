@@ -7,19 +7,21 @@
 write_model_NoReg(k_subclass, Mobs, prior, cause_list, use_measurements)
 }
 \arguments{
-\item{k_subclass}{the number of subclasses for the slices that require conditional dependence modeling; its length is
+\item{k_subclass}{the number of subclasses for the slices that require
+conditional dependence modeling (only applicable to BrS data); its length is
 of the same value as the number of BrS slices.}
 
 \item{Mobs}{measurement data in the form of \code{data_nplcm}}
 
-\item{prior}{prior information from \code{model_options}}
+\item{prior}{prior specification from \code{model_options}}
 
-\item{cause_list}{a list of latent status (crucial for building templates)}
+\item{cause_list}{a list of latent status names (crucial for building templates;
+see \code{\link{make_template}})}
 
 \item{use_measurements}{"BrS", or "SS"}
 }
 \value{
-a long character string to be written as .bug file.
+a long character string to be written into .bug file.
 }
 \description{
 Write .bug model file for no regression

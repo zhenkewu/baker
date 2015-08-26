@@ -2,14 +2,15 @@
 % Please edit documentation in R/insert-bugfile-chunk.R
 \name{insert_bugfile_chunk_noreg_etiology}
 \alias{insert_bugfile_chunk_noreg_etiology}
-\title{insert etiology code chunks into .bug file}
+\title{insert distribution for latent status code chunk into .bug file}
 \usage{
 insert_bugfile_chunk_noreg_etiology()
 }
 \value{
-a long character string to be inserted into target .bug model file
+a long character string to be inserted into .bug model file
+as distribution specification for latent status
 }
 \description{
-insert etiology code chunks into .bug file
+insert distribution for latent status code chunk into .bug file
 }
 

@@ -1,22 +1,26 @@
-#' Insert measurement likelihood (without regression) code chunk into .bug model file
+#' Insert measurement likelihood (without regression) code chunks into .bug model file
 #' 
-#' @param k_subclass the number of subclasses for the slices that require conditional dependence modeling; its length is
+#' @param k_subclass the number of subclasses for the slices that require 
+#' conditional dependence modeling (only applicable to BrS data); its length is 
 #' of the same value as the number of BrS slices.
 #' @param Mobs measurement data in the form of \code{data_nplcm}
-#' @param prior prior information from \code{model_options}
-#' @param cause_list a list of latent status (crucial for building templates)
+#' @param prior prior specification from \code{model_options}
+#' @param cause_list a list of latent status names (crucial for building templates; 
+#' see \code{\link{make_template}})
 #' @param use_measurements "BrS", or "SS"
 #' 
-#' @return a long character string to be inserted into target .bug model file
+#' @return a long character string to be inserted into .bug model file as measurement
+#' likelihood
 #' 
-#' @seealso \link{write_model_NoReg} for constructing a .bug file
+#' @seealso \link{write_model_NoReg} for constructing a .bug file along with
+#' specification of latent status distribution (\link{insert_bugfile_chunk_noreg_etiology})
 #' 
 #' @export
 insert_bugfile_chunk_noreg_meas <-
   function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS") {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){stop("==No BrS or SS measurements specified in the model! ==")}
     for (s in seq_along(Mobs$MBS)){
-      if (k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){stop("==cannot do nested modeling for BrS measurements with only one column! ==")}  
+      if (k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){stop("== Cannot do nested modeling for BrS measurements with only one column! ==")}  
     }
     
     # generate file:
@@ -59,19 +63,6 @@ insert_bugfile_chunk_noreg_meas <-
       )
     }
     
-    if (!("BrS" %in% use_measurements) & ("SS" %in% use_measurements)) {
-      nslice_SS <- length(Mobs$MSS)
-      chunk <- paste0(
-        "# SS measurements:
-        for (i in 1:Nd){
-        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
-        }
-        
-        # silver-standard measurement characteristics:
-        ",add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
-      )
-    }
-    
     if ("BrS" %in% use_measurements & ("SS" %in% use_measurements)) {
       nslice_SS <- length(Mobs$MSS)
       chunk <- paste0(
@@ -91,14 +82,30 @@ insert_bugfile_chunk_noreg_meas <-
           add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
     }
+    
+    if (!("BrS" %in% use_measurements) & ("SS" %in% use_measurements)) {
+      nslice_SS <- length(Mobs$MSS)
+      chunk <- paste0(
+        "# SS measurements:
+        for (i in 1:Nd){
+        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
+        }
+        
+        # silver-standard measurement characteristics:
+        ",add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
+      )
+    }
+    
     paste0(chunk,"\n")
 }
 
 
 
-#' insert etiology code chunks into .bug file
+#' insert distribution for latent status code chunk into .bug file
 #' 
-#' @return a long character string to be inserted into target .bug model file
+#' @return a long character string to be inserted into .bug model file 
+#' as distribution specification for latent status
+#' 
 #' @export
 
 insert_bugfile_chunk_noreg_etiology <- function(){
@@ -107,7 +114,6 @@ insert_bugfile_chunk_noreg_etiology <- function(){
   # etiology priors
   for (i in 1:Nd){
     Icat[i] ~ dcat(pEti[1:Jcause])
-    
   }
   pEti[1:Jcause]~ddirch(alpha[])")
   

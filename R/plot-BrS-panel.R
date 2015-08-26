@@ -247,8 +247,8 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     
     # x-axis for each cell:
     if (lat_pos>1){
-      axis(1, seq(0,1,by = .05), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
-           pos = seq(.625,height +.625,by = 1)[lat_pos], cex.axis = 0.8,
+      axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
+           pos = seq(.6, height +.6,by = 1)[lat_pos], cex.axis = 0.8,
            lty = 2,col = "blue"
       )
     }
@@ -363,8 +363,8 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     
     # x-axis for each cell:
     if (lat_pos>1){
-      axis(1, seq(0,1,by = .05), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
-           pos = seq(.625,height +.625,by = 1)[lat_pos], cex.axis = 0.8,
+      axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
+           pos = seq(.6,height +.6,by = 1)[lat_pos], cex.axis = 0.8,
            lty = 2,col = "blue"
       )
     }
@@ -426,6 +426,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   #   axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
   #   
   
+  
   if (sum(template_ord)==0){
     warning(paste0("== Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[slice], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
     plotat <- c(sapply(seq_along(latent_seq),get_plot_num,length(latent_seq)))
@@ -438,7 +439,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
          pch = c("","",""))
   }
   #add ticks from 0 to 1 for x-bar:
-  axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
+  axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= as.character(c(0,0.2,0.4,0.6,0.8,1)),las=1)
   
   #add dashed lines to separate cells:
   if (length(latent_seq) > 1){
