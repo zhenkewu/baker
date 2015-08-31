@@ -11,6 +11,13 @@ nplcm_read_folder(DIR_NPLCM)
 }
 \value{
 A list with data, options and posterior samples.
+\itemize{
+\item \code{bugs.dat}
+\item \code{model_options}
+\item \code{clean_otions}
+\item \code{Nd}; \code{Nu}; \code{Y}; \code{Mobs};
+\item \code{res_nplcm}.
+}
 }
 \description{
 Read data and other model information from a folder that stores model results.
