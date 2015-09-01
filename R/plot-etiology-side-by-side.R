@@ -88,16 +88,16 @@ plot_etiology_side_by_side <- function(DIR_list,
   
   res_cbind <- do.call(rbind,res)
   
-  ind_virus <- get_cause_by_taxo_group(read_names,"Virus",pathogen_displayorder_lookup)
-  ind_bact  <- get_cause_by_taxo_group(read_names,"Bacterium",pathogen_displayorder_lookup)
-  ind_combo <- get_cause_by_taxo_group(read_names, "Combo",pathogen_displayorder_lookup)
-  ind_other <- which(read_names=="Other")
+  ind_virus <- get_cause_by_taxo_group(read_names,"virus",pathogen_displayorder_lookup)
+  ind_bact  <- get_cause_by_taxo_group(read_names,"bacterium",pathogen_displayorder_lookup)
+  ind_combo <- get_cause_by_taxo_group(read_names, "combo",pathogen_displayorder_lookup)
+  ind_other <- which(read_names=="other")
   
-  res_cbind$virus <- rowSums(res_cbind[,ind_virus,drop=FALSE])
-  res_cbind$bacteria  <- rowSums(res_cbind[,ind_bact,drop=FALSE])
-  res_cbind$combo <- rowSums(res_cbind[,ind_combo,drop=FALSE])
+  res_cbind$Virus <- rowSums(res_cbind[,ind_virus,drop=FALSE])
+  res_cbind$Bacteria  <- rowSums(res_cbind[,ind_bact,drop=FALSE])
+  res_cbind$Combo <- rowSums(res_cbind[,ind_combo,drop=FALSE])
   if (length(ind_other)>0)
-  res_cbind$other <- rowSums(res_cbind[,ind_other,drop=FALSE])
+  res_cbind$Other <- rowSums(res_cbind[,ind_other,drop=FALSE])
   
   # first build some functions to summarize posterior distribution 
   # (following ggplot2 syntax):
