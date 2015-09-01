@@ -36,6 +36,7 @@ plot_etiology_side_by_side <- function(DIR_list,
   f                            <- pathogen_displayorder_lookup$Cause
   display_order                <- as.character(levels(f))[f] # <--- this is where the display order is specified.
   
+  if (any(duplicated(display_order))){stop("== There are duplicated names in the names to specify the displaying order! Please retain only one of the duplicates. ==")}
   # read from folders:
   out_list <- vector("list",length(DIR_list))
   base_nm  <- lapply(DIR_list,basename)

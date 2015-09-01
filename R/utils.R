@@ -1,6 +1,3 @@
-
-
-
 #' Create new folder name
 #'
 #' @param parent_path The parent directory where to put the new folder
