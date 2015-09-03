@@ -4,7 +4,8 @@
 \alias{write_model_NoReg}
 \title{Write .bug model file for no regression}
 \usage{
-write_model_NoReg(k_subclass, Mobs, prior, cause_list, use_measurements)
+write_model_NoReg(k_subclass, Mobs, prior, cause_list, use_measurements,
+  ppd = NULL)
 }
 \arguments{
 \item{k_subclass}{the number of subclasses for the slices that require
@@ -19,6 +20,8 @@ of the same value as the number of BrS slices.}
 see \code{\link{make_template}})}
 
 \item{use_measurements}{"BrS", or "SS"}
+
+\item{ppd}{Default is NULL; set to TRUE for posterior predictive checking}
 }
 \value{
 a long character string to be written into .bug file.

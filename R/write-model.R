@@ -11,12 +11,12 @@
 #' 
 #' @export
 #' 
-write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,use_measurements){
+write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,use_measurements,ppd=NULL){
   ## 1) accommodate singletons, combos, and NoA;
   ## 2) check-bit to prevent case data informing FPR (see the use of cut() functions in "plug-and-play.R");
   
-  chunk1 <- insert_bugfile_chunk_noreg_meas(k_subclass,Mobs,prior,cause_list,use_measurements)
-  chunk2 <- insert_bugfile_chunk_noreg_etiology()
+  chunk1 <- insert_bugfile_chunk_noreg_meas(k_subclass,Mobs,prior,cause_list,use_measurements,ppd)
+  chunk2 <- insert_bugfile_chunk_noreg_etiology(ppd)
   
   paste0("model{#BEGIN OF MODEL:\n",
          chunk1,"\n",

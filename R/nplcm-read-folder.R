@@ -80,3 +80,88 @@ nplcm_read_folder <- function(DIR_NPLCM){
               Mobs = Mobs,
               res_nplcm = res_nplcm)
 }
+
+
+#' get individual prediction (Bayesian posterior)
+#' 
+#' @param read_res a list read from a folder that stores fitted model results; 
+#' Commonly, it is the returned value from function \code{\link{nplcm_read_folder}}
+#' 
+#' @return a matrix of individual predictions; rows for cases, columns for causes 
+#' specified in \code{model_options$likelihood$cause_list}; See \code{\link{nplcm}}
+#' 
+#' @examples 
+#' \dontrun{
+#' get_individual_prediction(nplcm_read_folder("C://2015_09_02_02GAM"))
+#' }
+#' 
+#' @export
+#' 
+get_individual_prediction <- function(read_res){
+  res_nplcm     <- read_res$res_nplcm
+  model_options <- read_res$model_options
+  NSAMP         <- nrow(res_nplcm)
+  NCAUSE        <- length(model_options$likelihood$cause_list)
+  ind_pred_mat  <- matrix(0,nrow=read_res$Nd,ncol=NCAUSE)
+  Nd            <- read_res$Nd
+  
+  for (i in 1:Nd){
+    curr_Icat <- res_nplcm[,grep(paste0("^Icat\\[",i,"\\]"),colnames(res_nplcm))]
+    curr_ind_pred_mat <- matrix(0,nrow=NSAMP,ncol=NCAUSE)
+    for (iter in 1:NSAMP){
+      curr_ind_pred_mat[iter,curr_Icat[iter]] <- 1  
+    }
+    ind_pred_mat[i,] <- colMeans(curr_ind_pred_mat)
+  }
+  colnames(ind_pred_mat) <- model_options$likelihood$cause_list
+  ind_pred_mat
+}
+
+#' get individual data
+#' 
+#' @param i index of individual as appeared in \code{data_nplcm}
+#' @param data_nplcm the data for nplcm; see \code{\link{nplcm}}
+#' 
+#' @return a list of the same structure as \code{data_nplcm}; just with one row of values
+#' 
+#' @export
+#' 
+get_individual_data <- function(i, data_nplcm){
+  MBS <- NULL
+  if (!is.null(data_nplcm$Mobs$MBS)){
+    MBS <- vector("list",length = length(data_nplcm$Mobs$MBS))
+    names(MBS) <- names(data_nplcm$Mobs$MBS)
+    for (s in seq_along(data_nplcm$Mobs$MBS)){
+      MBS[[s]] <- data_nplcm$Mobs$MBS[[s]][i,,drop=FALSE]
+    }
+  }
+  
+  MSS <- NULL
+  if (!is.null(data_nplcm$Mobs$MSS)){
+    MSS <- vector("list",length = length(data_nplcm$Mobs$MSS))
+    names(MSS) <- names(data_nplcm$Mobs$MSS)
+    for (s in seq_along(data_nplcm$Mobs$MSS)){
+      MSS[[s]] <- data_nplcm$Mobs$MSS[[s]][i,,drop=FALSE]
+    }
+  }
+  
+  MGS <- NULL
+  if (!is.null(data_nplcm$Mobs$MGS)){
+    MGS <- vector("list",length = length(data_nplcm$Mobs$MGS))
+    names(MGS) <- names(data_nplcm$Mobs$MGS)
+    for (s in seq_along(data_nplcm$Mobs$MGS)){
+      MGS[[s]] <- data_nplcm$Mobs$MGS[[s]][i,,drop=FALSE]
+    }
+  }
+  
+  X <- NULL
+  if (!is.null(data_nplcm$X)){
+    X <- data_nplcm$X[i,,drop=FALSE]
+  }
+  
+  Y <- NULL
+  if (!is.null(data_nplcm$Y)){
+    Y <- data_nplcm$Y[i]
+  }
+  list(Mobs = list(MBS = MBS, MSS=MSS, MGS=MGS), X=X,Y=Y)
+}

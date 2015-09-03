@@ -72,8 +72,8 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     ## model fitted postive rate for each pathogen
     if (!this_slice_nest){fitted_mean <- get_fitted_mean_no_nested(slice,res_nplcm,model_options,data_nplcm,clean_options)}
     if (this_slice_nest){fitted_mean <- get_fitted_mean_nested(slice,res_nplcm,model_options,data_nplcm,clean_options)}
-    fittedmean_case    <- colMeans(fitted_mean$res_case)
-    fittedmean_ctrl    <- colMeans(fitted_mean$res_ctrl)
+    fittedmean_case    <- fitted_mean$res_case
+    fittedmean_ctrl    <- fitted_mean$res_ctrl
     #plot_pos <- get_plot_pos(template_ord)  # 1 at the 5th means for the fifth smallest etiology, we should plot 1st dimension in this slice.
   }
   
@@ -497,7 +497,7 @@ get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
                                    fitted_margin_case(pEti_mat_ord[iter,], theta_mat[iter,],
                                                       psi_mat[iter,],template_ord))))
   res_case <- as.matrix(res_case)
-  res_ctrl <- as.matrix(psi_mat)
+  res_ctrl <- colMeans(as.matrix(psi_mat))
   
   make_list(res_case,res_ctrl)
 }
@@ -573,8 +573,8 @@ get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
       res_ctrl[,j] <- res_ctrl[,j] + Lambda_tmp[,k]*PsiBS_tmp[,k]
     }
   }
-  res_case <- as.matrix(res_case)
-  res_ctrl <- as.matrix(res_ctrl)
+  res_case <- colMeans(as.matrix(res_case))
+  res_ctrl <- colMeans(as.matrix(res_ctrl))
   make_list(res_case,res_ctrl)
 } 
 

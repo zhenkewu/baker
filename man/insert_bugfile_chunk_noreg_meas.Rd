@@ -5,7 +5,7 @@
 \title{Insert measurement likelihood (without regression) code chunks into .bug model file}
 \usage{
 insert_bugfile_chunk_noreg_meas(k_subclass, Mobs, prior, cause_list,
-  use_measurements = "BrS")
+  use_measurements = "BrS", ppd = NULL)
 }
 \arguments{
 \item{k_subclass}{the number of subclasses for the slices that require
@@ -20,6 +20,8 @@ of the same value as the number of BrS slices.}
 see \code{\link{make_template}})}
 
 \item{use_measurements}{"BrS", or "SS"}
+
+\item{ppd}{Default is NULL; set to TRUE for posterior predictive checking}
 }
 \value{
 a long character string to be inserted into .bug model file as measurement
@@ -29,7 +31,7 @@ likelihood
 Insert measurement likelihood (without regression) code chunks into .bug model file
 }
 \seealso{
-\link{write_model_NoReg} for constructing a .bug file along with
+It is used in \link{write_model_NoReg} for constructing a .bug file along with
 specification of latent status distribution (\link{insert_bugfile_chunk_noreg_etiology})
 }
 

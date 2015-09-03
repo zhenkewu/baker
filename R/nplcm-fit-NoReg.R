@@ -391,10 +391,17 @@ nplcm_fit_NoReg<-
     
     # etiology (measurement independent)
     alpha          <- prior$Eti_prior    # <-------- input etiology prior here.
-    
+  
     #
     # fit model :
     #
+    
+    # special operations:
+    # get individual prediction:
+    if (!is.null(mcmc_options$individual.pred) && mcmc_options$individual.pred){out_parameter <- c(out_parameter,"Icat")}
+    # get posterior predictive distribution of BrS measurments:
+    if (!is.null(mcmc_options$ppd) && mcmc_options$ppd){out_parameter <- c(out_parameter,paste("MBS.new",seq_along(Mobs$MBS),sep = "_"))}
+    
     mybugs <- function(...){
       inits      <- in_init;
       data       <- in_data;
@@ -408,22 +415,16 @@ nplcm_fit_NoReg<-
     # could later set it equal to result.folder.
     #
     
-    if (mcmc_options$ppd==TRUE){
-      stop("not done.")
-    }  
-    if (mcmc_options$ppd==FALSE){
-      model_func         <- write_model_NoReg(model_options$likelihood$k_subclass,
-                                              data_nplcm$Mobs,
-                                              model_options$prior,
-                                              model_options$likelihood$cause_list,
-                                              model_options$use_measurements)
-      model_bugfile_name <- "model_NoReg.bug"
-    }
+    model_func         <- write_model_NoReg(model_options$likelihood$k_subclass,
+                                            data_nplcm$Mobs,
+                                            model_options$prior,
+                                            model_options$likelihood$cause_list,
+                                            model_options$use_measurements,
+                                            mcmc_options$ppd)
+    model_bugfile_name <- "model_NoReg.bug"
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
     writeLines(model_func, filename)
-    
-    
     #
     # run the model:
     #

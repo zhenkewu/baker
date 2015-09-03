@@ -8,16 +8,17 @@
 #' @param cause_list a list of latent status names (crucial for building templates; 
 #' see \code{\link{make_template}})
 #' @param use_measurements "BrS", or "SS"
+#' @param ppd Default is NULL; set to TRUE for posterior predictive checking
 #' 
 #' @return a long character string to be inserted into .bug model file as measurement
 #' likelihood
 #' 
-#' @seealso \link{write_model_NoReg} for constructing a .bug file along with
+#' @seealso It is used in \link{write_model_NoReg} for constructing a .bug file along with
 #' specification of latent status distribution (\link{insert_bugfile_chunk_noreg_etiology})
 #' 
 #' @export
 insert_bugfile_chunk_noreg_meas <-
-  function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS") {
+  function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){stop("==No BrS or SS measurements specified in the model! ==")}
     for (s in seq_along(Mobs$MBS)){
       if (k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){stop("== Cannot do nested modeling for BrS measurements with only one column! ==")}  
@@ -32,15 +33,15 @@ insert_bugfile_chunk_noreg_meas <-
       for (s in seq_along(Mobs$MBS)){# begin iterate over slices:
         k_curr <- k_subclass[s]
         if (k_curr == 1 ){
-          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice(s,Mobs,cause_list)$plug)
-          chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_NoNest_Slice(s,Mobs,cause_list)$plug)
+          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice(s,Mobs,cause_list,ppd)$plug)
+          chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_NoNest_Slice(s,Mobs,cause_list,ppd)$plug)
           chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_Slice(s,Mobs,cause_list)$plug)
         }
         
         if ((k_curr > 1 )){
-          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_Nest_Slice(s,Mobs,cause_list)$plug)
-          chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_Nest_Slice(s,Mobs,cause_list)$plug)
-          chunk_BrS_subclass  <- paste0(chunk_BrS_subclass,  add_meas_BrS_subclass_Nest_Slice(s,Mobs,cause_list)$plug)
+          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
+          chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
+          chunk_BrS_subclass  <- paste0(chunk_BrS_subclass,  add_meas_BrS_subclass_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
           chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_Nest_Slice(s,Mobs,cause_list)$plug)
         }
       }# end iterate over slices.
@@ -103,12 +104,14 @@ insert_bugfile_chunk_noreg_meas <-
 
 #' insert distribution for latent status code chunk into .bug file
 #' 
+#' @param ppd Default is NULL; set to TRUE for posterior predictive checking 
+#' 
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status
 #' 
 #' @export
 
-insert_bugfile_chunk_noreg_etiology <- function(){
+insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
 
   chunk_etiology <- paste0("
   # etiology priors
@@ -117,5 +120,20 @@ insert_bugfile_chunk_noreg_etiology <- function(){
   }
   pEti[1:Jcause]~ddirch(alpha[])")
   
+  if (!is.null(ppd) && ppd){
+    chunk_etiology <- paste0("
+      # etiology priors
+      for (i in 1:Nd){
+        Icat[i] ~ dcat(pEti[1:Jcause])
+        Icat.new[i] ~ dcat(pEti[1:Jcause])
+      }
+      pEti[1:Jcause]~ddirch(alpha[])")
+  }
+  
   paste0(chunk_etiology,"\n")
 }
+
+
+
+
+

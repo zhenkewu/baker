@@ -7,13 +7,13 @@
 #' @param s the slice
 #' @param Mobs See \code{data_nplcm} described in \code{\link{nplcm}}
 #' @param cause_list the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}
-#' 
+#' @param ppd Default is NULL; Set to TRUE for enabling posterior predictive checking.
 #' @return a list of two elements: the first is \code{plug}, the .bug code; 
 #' the second is \code{parameters} that stores model parameters introduced by this 
 #' plugged measurement slice
 #' 
 #' @export
-add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list) {
+add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
   template_BrS_list <-
@@ -29,6 +29,7 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list) {
   psiBS.cut_nm <- paste("psiBS.cut",seq_along(BrS_nm),sep = "_")#
   templateBS_nm  <- paste("templateBS",seq_along(BrS_nm),sep = "_")#
   indBS_nm  <- paste("indBS",seq_along(BrS_nm),sep = "_")#
+  Icat_nm   <- "Icat"
   
   if (length(patho_BrS_list[[s]]) > 1) {
     plug <-
@@ -36,7 +37,7 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list) {
         "
           # case BrS measurement; non-nested:
           for (j in 1:",JBrS_nm[s],"){
-          ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[Icat[i],j])
+          ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
           ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
           ",mu_bs_nm[s],"[i,j]<-", indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm[s],"[i,j])*",psiBS.cut_nm[s],"[j]
           }","\n"
@@ -47,17 +48,57 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list) {
         "
            
           # case BrS measurement; non-nested (with only one column):
-          ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[Icat[i]])
+          ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
           ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
           ",mu_bs_nm[s],"[i]<-", indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm[s],"[i])*",psiBS.cut_nm[s],"\n"
       )
   }
+  parameters <- c(Icat_nm, thetaBS_nm[s],psiBS.cut_nm[s])
+  # if posterior predictive distribution is requested:
+  if (!is.null(ppd) && ppd){
+    MBS_nm.new     <- paste("MBS.new",seq_along(BrS_nm),sep = "_")#
+    mu_bs_nm.new   <- paste("mu_bs.new",seq_along(BrS_nm),sep = "_")#
+    indBS_nm.new   <- paste("indBS.new",seq_along(BrS_nm),sep = "_")#
+    Icat_nm.new    <- "Icat.new"  
+    
+    if (length(patho_BrS_list[[s]]) > 1) {
+      plug <-
+        paste0(
+          "
+          # case BrS measurement; non-nested:
+          for (j in 1:",JBrS_nm[s],"){
+          ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+          ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
+          ",mu_bs_nm[s],"[i,j]<-", indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm[s],"[i,j])*",psiBS.cut_nm[s],"[j]
+          # posterior predictive distribution:
+          ",indBS_nm.new[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i],j])
+          ",MBS_nm.new[s],"[i,j] ~ dbern(",mu_bs_nm.new[s],"[i,j])
+          ",mu_bs_nm.new[s],"[i,j]<-", indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm.new[s],"[i,j])*",psiBS.cut_nm[s],"[j]
+          }","\n"
+        )
+    } else{
+      plug <-
+        paste0(
+          "
+           
+          # case BrS measurement; non-nested (with only one column):
+          ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
+          ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
+          ",mu_bs_nm[s],"[i]<-", indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm[s],"[i])*",psiBS.cut_nm[s],"
+          # posterior predictive distribution:
+          ",indBS_nm.new[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i]])
+          ",MBS_nm.new[s],"[i] ~ dbern(",mu_bs_nm.new[s],"[i])
+          ",mu_bs_nm.new[s],"[i]<-", indBS_nm.new[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm.new[s],"[i])*",psiBS.cut_nm[s],"
+          
+          
+          \n"
+        )
+    }
+    parameters <- c(Icat_nm,Icat_nm.new, thetaBS_nm[s],psiBS.cut_nm[s])
+  }
   
-  parameters <- c("Icat",thetaBS_nm[s],psiBS.cut_nm[s])
   make_list(plug,parameters)
 }
-
-
 
 
 #' add a likelihood component for a BrS measurement slice among controls (conditional independence)
@@ -69,7 +110,7 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list) {
 #' that stores model parameters introduced by this plugged measurement slice
 #' 
 #' @export
-add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list) {
+add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
   template_BrS_list <-
@@ -101,6 +142,39 @@ add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list) {
             ",mu_bs_nm[s],"[i]<- ",psiBS_nm[s],"\n"
     )
   }
+  
+  if (!is.null(ppd) && ppd){
+    
+    MBS_nm.new   <- paste("MBS.new",seq_along(BrS_nm),sep = "_")#
+    mu_bs_nm.new   <- paste("mu_bs.new",seq_along(BrS_nm),sep = "_")#
+    
+    if (length(patho_BrS_list[[s]]) > 1) {
+      plug <- paste0(
+        "       
+              ## control BrS measurements; no subclass:
+              for (j in 1:",JBrS_nm[s],"){
+                ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
+                ",mu_bs_nm[s],"[i,j]<- ",psiBS_nm[s],"[j]
+              ## posterior predictive distribution
+                ",MBS_nm.new[s],"[i,j] ~ dbern(",mu_bs_nm.new[s],"[i,j])
+                ",mu_bs_nm.new[s],"[i,j]<- ",psiBS_nm[s],"[j]
+              }
+              "
+      )
+    } else{
+      plug <- paste0(
+        "
+            ## control BrS measurements; no subclass (only one column):
+            ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
+            ",mu_bs_nm[s],"[i]<- ",psiBS_nm[s],"
+            ## posterior predictive distribution:
+            ",MBS_nm.new[s],"[i] ~ dbern(",mu_bs_nm.new[s],"[i])
+            ",mu_bs_nm.new[s],"[i]<- ",psiBS_nm[s],"
+             \n"
+      )
+    }
+  }
+  
   parameters <- c(psiBS_nm[s])
   make_list(plug,parameters)
 }
@@ -171,7 +245,7 @@ add_meas_BrS_param_NoNest_Slice <- function(s,Mobs,cause_list) {
 #' 
 #' @export
 #' 
-add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list){
+add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
   template_BrS_list <-
@@ -193,6 +267,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list){
   templateBS_nm  <-
     paste("templateBS",seq_along(BrS_nm),sep = "_")#
   indBS_nm  <- paste("indBS",seq_along(BrS_nm),sep = "_")#
+  Icat_nm   <- "Icat"
   
   if (length(patho_BrS_list[[s]]) == 1){stop("==cannot do nested modeling for BrS measurement with 1 dimension!==")} 
   
@@ -201,7 +276,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list){
       "
           ## case BrS measurements; with subclasses:
           for (j in 1:",JBrS_nm[s],"){
-            ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[Icat[i],j])
+            ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
             ",MBS_nm[s],"[i,j]~dbern(",mu_bs.bound_nm[s],"[i,j])
             ",mu_bs.bound_nm[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm[s],"[i,j]))
             ",mu_bs_nm[s],"[i,j]<-",PR_BS_nm[s],"[i,j,",Z_nm[s],"[i]]
@@ -212,10 +287,49 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list){
           }
       "
     )
+  parameters <- c(Icat_nm,ThetaBS_nm[s])
   
-  parameters <- c("Icat",ThetaBS_nm[s])
+  if (!is.null(ppd) && ppd){
+    MBS_nm.new   <- paste("MBS.new",seq_along(BrS_nm),sep = "_")#
+    mu_bs.bound_nm.new   <- paste("mu_bs.bound.new",seq_along(BrS_nm),sep = "_")#
+    mu_bs_nm.new   <- paste("mu_bs.new",seq_along(BrS_nm),sep = "_")#
+    PR_BS_nm.new   <- paste("PR_BS.new",seq_along(BrS_nm),sep = "_")#
+    Z_nm.new <- paste("Z.new",seq_along(BrS_nm),sep="_")#
+    Icat_nm.new <- "Icat.new"
+    indBS_nm.new  <- paste("indBS.new",seq_along(BrS_nm),sep = "_")#
+    
+    plug <-
+      paste0(
+        "
+          ## case BrS measurements; with subclasses:
+          for (j in 1:",JBrS_nm[s],"){
+            ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+            ",MBS_nm[s],"[i,j]~dbern(",mu_bs.bound_nm[s],"[i,j])
+            ",mu_bs.bound_nm[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm[s],"[i,j]))
+            ",mu_bs_nm[s],"[i,j]<-",PR_BS_nm[s],"[i,j,",Z_nm[s],"[i]]
+            
+            for (s in 1:",K_nm[s],"){
+              ",PR_BS_nm[s],"[i,j,s]<-",PsiBS.cut_nm[s],"[j,s]*(1-",indBS_nm[s],"[i,j])+",ThetaBS_nm[s],"[j,s]*",indBS_nm[s],"[i,j]
+            }
+          ## posterior predictive distribution:
+            ",indBS_nm.new[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i],j])
+            ",MBS_nm.new[s],"[i,j]~dbern(",mu_bs.bound_nm.new[s],"[i,j])
+            ",mu_bs.bound_nm.new[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm.new[s],"[i,j]))
+            ",mu_bs_nm.new[s],"[i,j]<-",PR_BS_nm.new[s],"[i,j,",Z_nm.new[s],"[i]]
+            
+            for (s in 1:",K_nm[s],"){
+              ",PR_BS_nm.new[s],"[i,j,s]<-",PsiBS.cut_nm[s],"[j,s]*(1-",indBS_nm.new[s],"[i,j])+",ThetaBS_nm[s],"[j,s]*",indBS_nm.new[s],"[i,j]
+            }
+          }
+      "
+      )  
+    parameters <- c(Icat_nm, Icat_nm.new, ThetaBS_nm[s])
+  }
+ 
+
   make_list(plug,parameters)
 }
+
 
 #' add likelihood for a BrS measurement slice among controls (conditional independence)
 #' 
@@ -227,7 +341,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list){
 #' 
 #' @export
 #' 
-add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list) {
+add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
   template_BrS_list <-
@@ -258,10 +372,33 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list) {
           "
   )
   
+  
+  
+  if (!is.null(ppd) && ppd){
+    MBS_nm.new   <- paste("MBS.new",seq_along(BrS_nm),sep = "_")#
+    mu_bs.bound_nm.new   <- paste("mu_bs.bound.new",seq_along(BrS_nm),sep = "_")#
+    mu_bs_nm.new   <- paste("mu_bs.new",seq_along(BrS_nm),sep = "_")#
+    Z_nm.new <- paste("Z.new",seq_along(BrS_nm),sep="_")#
+    
+    plug <- paste0(
+      "   
+          ## control BrS measurements;  with subclasses:
+          for (j in 1:",JBrS_nm[s],"){
+              ",MBS_nm[s],"[i,j]~dbern(",mu_bs.bound_nm[s],"[i,j])
+              ",mu_bs.bound_nm[s],"[i,j] <-max(0.000001,min(0.999999,",mu_bs_nm[s],"[i,j]))
+              ",mu_bs_nm[s],"[i,j]<-",PsiBS_nm[s],"[j,",Z_nm[s],"[i]]
+              ## posterior predictive distribution:
+              ",MBS_nm.new[s],"[i,j]~dbern(",mu_bs.bound_nm.new[s],"[i,j])
+              ",mu_bs.bound_nm.new[s],"[i,j] <-max(0.000001,min(0.999999,",mu_bs_nm.new[s],"[i,j]))
+              ",mu_bs_nm.new[s],"[i,j]<-",PsiBS_nm[s],"[j,",Z_nm.new[s],"[i]]
+          }
+          "
+    )    
+  }
+  
   parameters <- c(PsiBS_nm[s])
   make_list(plug,parameters)
 }
-
 
 #' add parameters for a BrS measurement slice among cases and controls (conditional dependence)
 #' 
@@ -369,7 +506,7 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
 #' 
 #' @export
 
-add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list){
+add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
   template_BrS_list <-
@@ -396,13 +533,27 @@ add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list){
     "
   )
   
-  parameters <- c("Icat",Eta_nm[s],Lambda_nm[s])
+  if (!is.null(ppd) && ppd){
+    Z_nm.new <- paste("Z.new",seq_along(BrS_nm),sep="_")#
+    plug <- paste0(
+      " 
+      # cases' subclass indicators:
+      for (i in 1:Nd){
+        ",Z_nm[s],"[i] ~ dcat(",Eta_nm[s],"[1:",K_nm[s],"])
+        ",Z_nm.new[s],"[i] ~ dcat(",Eta_nm[s],"[1:",K_nm[s],"])
+      }
+      # controls' subclass indicators:
+      for (i in (Nd+1):(Nd+Nu)){
+        ",Z_nm[s],"[i] ~ dcat(",Lambda_nm[s],"[1:",K_nm[s],"])
+        ",Z_nm.new[s],"[i] ~ dcat(",Lambda_nm[s],"[1:",K_nm[s],"])
+      }
+    "
+    )  
+  }
+  
+  parameters <- c(Eta_nm[s],Lambda_nm[s])
   make_list(plug,parameters)
 }
-
-
-
-
 
 #
 # 3. Silver standard data:

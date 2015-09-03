@@ -4,7 +4,7 @@
 \alias{add_meas_BrS_ctrl_NoNest_Slice}
 \title{add a likelihood component for a BrS measurement slice among controls (conditional independence)}
 \usage{
-add_meas_BrS_ctrl_NoNest_Slice(s, Mobs, cause_list)
+add_meas_BrS_ctrl_NoNest_Slice(s, Mobs, cause_list, ppd = NULL)
 }
 \arguments{
 \item{s}{the slice}
@@ -12,6 +12,8 @@ add_meas_BrS_ctrl_NoNest_Slice(s, Mobs, cause_list)
 \item{Mobs}{See \code{data_nplcm} described in \code{\link{nplcm}}}
 
 \item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}}
+
+\item{ppd}{Default is NULL; Set to TRUE for enabling posterior predictive checking.}
 }
 \value{
 a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}

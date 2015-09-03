@@ -4,7 +4,10 @@
 \alias{insert_bugfile_chunk_noreg_etiology}
 \title{insert distribution for latent status code chunk into .bug file}
 \usage{
-insert_bugfile_chunk_noreg_etiology()
+insert_bugfile_chunk_noreg_etiology(ppd = NULL)
+}
+\arguments{
+\item{ppd}{Default is NULL; set to TRUE for posterior predictive checking}
 }
 \value{
 a long character string to be inserted into .bug model file
