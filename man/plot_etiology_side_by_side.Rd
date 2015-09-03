@@ -31,4 +31,15 @@ that pathogens from one analysis are subset of another. NB: current implementati
 does not check whether the results are from the same stratum, e.g., same site.
 We recommend putting information in the the folder names under comparisons.
 }
+\examples{
+\dontrun{
+PATH <- "C:\\\\package_test"
+
+dir_list <- list(file.path(PATH,"SouthAfrica"),
+                 file.path(PATH,"Kenya"))
+library(baker)
+plot_etiology_side_by_side(dir_list,
+  file.path(PATH,"pathogen_displayorder_lookup.csv"))
+}
+}
 

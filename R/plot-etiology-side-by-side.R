@@ -24,6 +24,17 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #'@return A figure that compares posterior etiology distribution stored in
 #'two or more folders
 #'
+#'@examples
+#'\dontrun{
+#' PATH <- "C:\\package_test"
+#'
+#' dir_list <- list(file.path(PATH,"SouthAfrica"),
+#'                  file.path(PATH,"Kenya"))
+#' library(baker)
+#' plot_etiology_side_by_side(dir_list,
+#'   file.path(PATH,"pathogen_displayorder_lookup.csv"))
+#'}
+#'
 #'@export
 #'
 plot_etiology_side_by_side <- function(DIR_list,
@@ -83,7 +94,7 @@ plot_etiology_side_by_side <- function(DIR_list,
     for (j in seq_along(read_order)){
       if (!is.na(read_order[j])) {res[[d]][,j] <- pEti_samp_list[[d]]$pEti_mat[,read_order[j]] }
     }
-    res[[d]]$DIR  <- DIR_list[[d]]
+    res[[d]]$DIR  <- d#DIR_list[[d]]
     res[[d]]$ITER <- 1:NSAMP
   }
   
@@ -118,7 +129,6 @@ plot_etiology_side_by_side <- function(DIR_list,
     names(r)<-c("y","ymax","label")
     r
   }
-  
   
   curr_res         <- res_cbind
   data_for_boxplot <- reshape2::melt(curr_res,
