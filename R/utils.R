@@ -980,7 +980,7 @@ set_strat <- function(X,X_reg) {
 #'
 #' @details Note that this function should be used with caution. It used
 #' \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an \emph{ad hoc} criterion.
-#' It is not the same as \code{\link{is.discrete}}
+#' It is not the same as \code{\link[plyr]{is.discrete}}
 #'
 #' @inheritParams set_strat
 #'

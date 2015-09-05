@@ -23,8 +23,8 @@ Imports:
     ks(>= 1.9),
     robCompositions(>= 1.9),
     ggplot2(>= 1.0),
+    gridExtra(>= 2.0),
     reshape2(>= 1.4),
-    plyr,
     splines
 License: MIT + file LICENSE
 Suggests: 

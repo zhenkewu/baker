@@ -6,6 +6,7 @@
 #' that of the actual data set, i.e. the same number of cases and controls.
 #' 
 #' @param DIR_NPLCM File path to the folder that stores results from npLCM fit.
+#' @param slice Default is 1, for the first slice in BrS measurements.
 #' @param npat.ctrl Number of the most common BrS measurement pattern among controls.
 #' Default is 10.
 #' @param npat.case Number of the most common BrS measurement pattern among cases.
@@ -18,8 +19,9 @@
 #' @export
 #' 
 
-check_common_pattern <- function(DIR_NPLCM,npat.case=10,npat.ctrl = 10,
-                                          cex.pattern = 1){
+check_common_pattern <- function(DIR_NPLCM,slice =1,
+                                 npat.case=10,npat.ctrl = 10,
+                                 cex.pattern = 1){
     
   # read NPLCM outputs:
   out           <- nplcm_read_folder(DIR_NPLCM)

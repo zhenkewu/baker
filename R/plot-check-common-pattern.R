@@ -1,0 +1,258 @@
+if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DIR","..y.."))
+
+#' Posterior predictive checking for the nested partially class models - 
+#' frequent patterns in the BrS data. (for multiple folders)
+#' 
+#' At each MCMC iteration, we generate a new data set based on the model and 
+#' parameter values at that iteration. The sample size of the new data set equals
+#' that of the actual data set, i.e. the same number of cases and controls.
+#' 
+#' 
+#' 
+#' @param DIR_list The list of directory paths, each storing a model output.
+#' @param slice_vec Default are 1s, for the first slice of BrS data.
+#' @param n_pat Number of the most common BrS measurement pattern among cases and controls.
+#' Default is 10.
+#' @param dodge_val Default is 0.8; For width of boxplots.
+#' 
+#' @return A figure of posterior predicted frequencies compared with the observed 
+#' frequencies of the most common patterns for the BrS data. 
+#' 
+#' @import ggplot2
+#' @importFrom gridExtra grid.arrange
+#' 
+#' @examples 
+#' \dontrun{
+#' DIR_list <- list("C:\\2015_09_04_05SAF_k=1","C:\\2015_09_04_05SAF_k=2")
+#' plot_check_common_pattern(DIR_list)
+#' plot_check_common_pattern(DIR_list[[1]])
+#' }
+#' 
+#' @export
+
+plot_check_common_pattern <- function(DIR_list,
+                                      slice_vec = rep(1,length(DIR_list)),
+                                                   n_pat     = 10,
+                                                   dodge_val = 0.8){
+  
+  
+  name_vec <- vector("list",length(DIR_list))
+  out      <- vector("list",length(DIR_list))
+  for (d in seq_along(DIR_list)){
+    curr_dir   <- DIR_list[[d]]
+    curr_slice <- slice_vec[d]
+    # read NPLCM outputs:
+    out[[d]]           <- nplcm_read_folder(curr_dir)
+    name_vec[[d]]      <- out[[d]]$clean_options$BrS_objects[[curr_slice]]$patho
+  }
+  
+  if (!(length(unique(name_vec))==1)){stop("==The fitted models have different BrS measurement names! Please use `slice_vec` to match the names.==")}
+  
+  get_top_pattern <- function(curr_out,case_status,slice,n_pat){
+    # getting data:
+    curr_bugs.dat <- curr_out$bugs.dat
+    curr_Nd       <- curr_out$Nd
+    curr_Nu       <- curr_out$Nu
+    curr_slice    <- slice_vec[slice] 
+    
+    curr_observed <- curr_out$Mobs$MBS[[curr_slice]]
+    len_pat       <- ncol(curr_out$Mobs$MBS[[curr_slice]])
+    curr_Y        <- curr_out$Y 
+    curr_res_nplcm <- curr_out$res_nplcm
+    curr_predicted <- curr_res_nplcm[,grep(paste0("^MBS.new_",slice,"\\["),colnames(curr_res_nplcm)),drop=FALSE]
+    
+    NSAMP <- nrow(curr_predicted)
+    curr_predicted_array <- array(curr_predicted,dim=c(NSAMP,len_pat,curr_Nd+curr_Nu)) # <-- first dimension for iterations; second dimension for pathogen measurements; third dimension for individual (cases first and controls).
+    
+    observed  <- curr_observed[curr_Y==case_status,,drop=FALSE]
+    predicted <- curr_predicted_array[,,curr_Y==case_status,drop=FALSE]
+    
+    collapse_byrow <- function(mat){
+      res <- apply(mat,1,paste,collapse = "" )
+      NA2dot(res)
+    }
+    
+    observed_pat  <- collapse_byrow(observed)
+    predicted_pat <- as.matrix(apply(predicted,3,collapse_byrow))
+    
+    # counting patterns:
+    pat               <- sort(table(observed_pat),decreasing=TRUE)
+    n_pat_used        <- min(n_pat,length(pat))
+    ind_missing       <- grep("\\.",names(pat))
+    n_missing         <- sum(pat[ind_missing])
+    pat_high_frac     <- pat[1:n_pat_used]/(length(observed_pat)-n_missing)
+    pat_high_frac_no_missing     <- pat_high_frac
+    if (length(ind_missing)){
+      pat_high_frac_no_missing     <- pat_high_frac[-ind_missing]
+    }
+    pat_high_name_no_missing     <- names(pat_high_frac_no_missing)
+    
+    n_pat_used_no_missing <- length(pat_high_name_no_missing)
+    ppd_pat_ct <- matrix(NA,nrow=NSAMP,ncol=n_pat_used_no_missing+1)
+    ppd_pat_ct <- as.data.frame(ppd_pat_ct)
+    for (iter in 1:NSAMP){
+      ppd_pat_table <- table(predicted_pat[iter,])
+      curr_ct <- (sapply(pat_high_name_no_missing,function(x) {
+        indtmp <- names(ppd_pat_table)==x
+        if (sum(indtmp)==0){
+          res <- 0
+        } else{
+          res <- ppd_pat_table[indtmp]
+        }     
+        res
+      }
+      ))
+      ppd_pat_ct[iter,1:n_pat_used_no_missing] <- curr_ct/ncol(predicted_pat)
+      ppd_pat_ct[iter,n_pat_used_no_missing+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
+      
+    }
+    colnames(ppd_pat_ct) <- c(1:length(pat_high_name_no_missing),"other")
+    pattern_names  <- c(pat_high_name_no_missing,"other")
+    obs_pat        <- c(pat_high_frac_no_missing,1-sum(pat_high_frac_no_missing))
+    names(obs_pat) <- pattern_names
+    make_list(ppd_pat_ct,obs_pat,pattern_names)
+  }
+  
+  case_res_list <- vector("list",length=length(DIR_list))
+  ctrl_res_list <- vector("list",length=length(DIR_list))
+  res_list <- vector("list",length=length(DIR_list))
+  case_pat_list <- vector("list",length=length(DIR_list))
+  ctrl_pat_list <- vector("list",length=length(DIR_list))
+  obs_case_pat_list <- vector("list",length=length(DIR_list))
+  obs_ctrl_pat_list <- vector("list",length=length(DIR_list))
+  
+  for (d in seq_along(DIR_list)){
+      # cases:
+      out_case_pat <- get_top_pattern(out[[d]],1,slice_vec[d],n_pat)
+      case_res_list[[d]] <- out_case_pat$ppd_pat_ct
+      case_res_list[[d]]$DIR <- d 
+      case_res_list[[d]]$ITER <- 1:nrow(case_res_list[[d]])
+      case_res_list[[d]]$CASE <- rep(1,nrow(case_res_list[[d]]))
+      case_res_melt <- reshape2::melt(case_res_list[[d]],
+                                      id.vars = c("CASE","DIR","ITER"),
+                                      variable.name="pattern",
+                                      value.name = "frequency")
+      
+      # controls:
+      out_ctrl_pat <- get_top_pattern(out[[d]],0,slice_vec[d],n_pat)
+      ctrl_res_list[[d]] <- out_ctrl_pat$ppd_pat_ct
+      ctrl_res_list[[d]]$DIR <- d 
+      ctrl_res_list[[d]]$ITER <- 1:nrow(ctrl_res_list[[d]])
+      ctrl_res_list[[d]]$CASE <- rep(0,nrow(ctrl_res_list[[d]]))
+      ctrl_res_melt <- reshape2::melt(ctrl_res_list[[d]],
+                                      id.vars = c("CASE","DIR","ITER"),
+                                      variable.name="pattern",
+                                      value.name = "frequency")
+      
+      res_list[[d]] <- rbind(case_res_melt,ctrl_res_melt)
+      case_pat_list[[d]] <- c(out_case_pat$pattern_names)
+      ctrl_pat_list[[d]] <- c(out_ctrl_pat$pattern_names)
+      
+      obs_case_pat_list[[d]] <- out_case_pat$obs_pat
+      obs_ctrl_pat_list[[d]] <- out_ctrl_pat$obs_pat
+  }
+  
+  if(!(length(unique(case_pat_list))==1)){stop("==Different data sets are used under comparison! Please use the results fitted from the same data set.==")}
+  if(!(length(unique(ctrl_pat_list))==1)){stop("==Different data sets are used under comparison! Please use the results fitted from the same data set.==")}
+  if(!(length(unique(obs_case_pat_list))==1)){stop("==Different data sets are used under comparison! Please use the results fitted from the same data set.==")}
+  if(!(length(unique(obs_ctrl_pat_list))==1)){stop("==Different data sets are used under comparison! Please use the results fitted from the same data set.==")}
+  
+  res <- do.call(rbind,res_list)
+  
+  base_nm <- lapply(DIR_list,basename)
+  NDIR <- length(DIR_list)
+  # first build some functions to summarize posterior distribution 
+  # (following ggplot2 syntax):
+  f <- function(x) {
+    r <- quantile(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95))
+    names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
+    r
+  }
+  mean_with_nm <- function(x){
+    r <- rep(mean(x),2)
+    names(r)<-c("y","ymax")
+    r
+  }
+  mean_with_nm_txt <- function(x){
+    r <- c(ifelse(max(x)-quantile(x,.97)>0.02,quantile(x,.97)+0.02,max(x)),
+           round(mean(x),3),round(mean(x),3)*100)
+    names(r)<-c("y","ymax","label")
+    r
+  }
+  
+  ## ggplot2:
+  ymax <- max(res$frequency)
+  aes_now <- function(...) {
+    structure(list(...),  class = "uneval")
+  }
+  
+  case_status_labeller <- function(variable,value){
+    c("Case","Control")[2-value]
+  }
+  
+  # plot for cases:
+  hline.data <- as.data.frame(list(frequency=obs_case_pat_list[[1]],
+                              pattern= c(1:(length(obs_case_pat_list[[1]])-1),"other"),
+                              DIR    = rep(1,length(obs_case_pat_list[[1]]))))
+  gg1<-ggplot(data = res[res$CASE==1, ], 
+             aes(x = factor(pattern), y = frequency, fill = factor(DIR))) +
+    #facet_wrap(~ CASE, ncol = 2)+ 
+    #facet_grid(~CASE,labeller=case_status_labeller)+
+    labs(list(x = "pattern", y = "frequency"))+theme_bw()+
+    stat_summary(fun.data = f, geom="boxplot",aes_now(width=dodge_val),
+                 position = position_dodge(dodge_val))+
+    stat_summary(fun.data = mean_with_nm,geom="point",aes(size=1.5),
+                 position = position_dodge(dodge_val))+scale_size(guide = 'none')+
+    stat_summary(fun.data = mean_with_nm_txt,geom="text",
+                 aes(angle=90),position = position_dodge(width = dodge_val))+
+    scale_fill_discrete("Model\n",labels = c(base_nm))+
+    guides(fill=guide_legend(nrow=NDIR,byrow=TRUE))+
+    theme(legend.text = element_text(colour="blue",size = 16, face = "bold"),
+          legend.title = element_text(size=16,face="bold"),legend.position = "top",
+          axis.title   = element_text(size=16,face="bold"),
+          axis.text.x = element_text(angle=40, vjust=.8, hjust=1.01,size=16,face="bold"),
+          strip.text.x = element_text(size = 16, colour = "red",face="bold"))+
+    scale_x_discrete(labels=c(case_pat_list[[1]]))+
+    scale_y_continuous(limits = c(0,ymax))+
+    annotate("text", label = "case", x = length(case_pat_list[[1]])/2, 
+             y = ymax*0.67, size = 8, colour = "red")+
+    geom_errorbar(stat = "hline", 
+                  width=0.8,aes(yintercept = frequency,ymax=..y..,ymin=..y..),
+                  color="blue",size=0.9,data=hline.data)
+  #gg1
+  
+  # plot for controls:
+  hline.data <- as.data.frame(list(frequency=obs_ctrl_pat_list[[1]],
+                                   pattern= c(1:(length(obs_ctrl_pat_list[[1]])-1),"other"),
+                                   DIR    = rep(1,length(obs_ctrl_pat_list[[1]]))))
+  gg0<-ggplot(data = res[res$CASE==0, ], #<-- modified to 0
+             aes(x = factor(pattern), y = frequency, fill = factor(DIR))) +
+    #facet_wrap(~ CASE, ncol = 2)+ 
+    #facet_grid(~CASE,labeller=case_status_labeller)+
+    labs(list(x = "pattern", y = "frequency"))+theme_bw()+
+    stat_summary(fun.data = f, geom="boxplot",aes_now(width=dodge_val),
+                 position = position_dodge(dodge_val))+
+    stat_summary(fun.data = mean_with_nm,geom="point",aes(size=1.5),
+                 position = position_dodge(dodge_val))+scale_size(guide = 'none')+
+    stat_summary(fun.data = mean_with_nm_txt,geom="text",
+                 aes(angle=90),position = position_dodge(width = dodge_val))+
+    scale_fill_discrete("Model\n",labels = c(base_nm))+
+    guides(fill=guide_legend(nrow=NDIR,byrow=TRUE))+
+    theme(legend.text = element_text(colour="blue",size = 16, face = "bold"),
+          legend.title = element_text(size=16,face="bold"),legend.position = "top",
+          axis.title   = element_text(size=16,face="bold"),
+          axis.text.x = element_text(angle=40, vjust=.8, hjust=1.01,size=16,face="bold"),
+          strip.text.x = element_text(size = 16, colour = "red",face="bold"))+
+    scale_x_discrete(labels=c(ctrl_pat_list[[1]]))+# <-- modified to ctrl_pat_list
+    scale_y_continuous(limits = c(0,ymax))+
+    annotate("text", label = "control", x = length(ctrl_pat_list[[1]])/2, 
+             y = ymax*0.67, size = 8, colour = "red")+
+    geom_errorbar(stat = "hline", 
+                  width=0.8,aes(yintercept = frequency,ymax=..y..,ymin=..y..),
+                  color="blue",size=0.9,data=hline.data)
+  #gg0
+  
+  
+  cat("==Plotting for model checking: frequent BrS measurements patterns. ==")
+  grid.arrange(gg1,gg0,ncol=2)
+}

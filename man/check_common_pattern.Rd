@@ -5,11 +5,13 @@
 \title{Posterior predictive checking for the nested partially class models -
 frequent patterns in the BrS data.}
 \usage{
-check_common_pattern(DIR_NPLCM, npat.case = 10, npat.ctrl = 10,
+check_common_pattern(DIR_NPLCM, slice = 1, npat.case = 10, npat.ctrl = 10,
   cex.pattern = 1)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder that stores results from npLCM fit.}
+
+\item{slice}{Default is 1, for the first slice in BrS measurements.}
 
 \item{npat.case}{Number of the most common BrS measurement pattern among cases.
 Default is 10.}

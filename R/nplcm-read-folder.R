@@ -165,3 +165,6 @@ get_individual_data <- function(i, data_nplcm){
   }
   list(Mobs = list(MBS = MBS, MSS=MSS, MGS=MGS), X=X,Y=Y)
 }
+
+
+

@@ -94,7 +94,7 @@ plot_etiology_side_by_side <- function(DIR_list,
     for (j in seq_along(read_order)){
       if (!is.na(read_order[j])) {res[[d]][,j] <- pEti_samp_list[[d]]$pEti_mat[,read_order[j]] }
     }
-    res[[d]]$DIR  <- d#DIR_list[[d]]
+    res[[d]]$DIR  <- d
     res[[d]]$ITER <- 1:NSAMP
   }
   
