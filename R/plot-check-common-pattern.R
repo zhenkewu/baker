@@ -34,61 +34,70 @@ plot_check_common_pattern <- function(DIR_list,
                                       slice_vec = rep(1,length(DIR_list)),
                                                    n_pat     = 10,
                                                    dodge_val = 0.8){
-  
   # read in data:
+  # names of the measurements for the selected slice:
   name_vec <- vector("list",length(DIR_list))
+  # the list of results read from the specified list of directories:
   out      <- vector("list",length(DIR_list))
   for (d in seq_along(DIR_list)){
     curr_dir   <- DIR_list[[d]]
     curr_slice <- slice_vec[d]
     # read NPLCM outputs:
     out[[d]]           <- nplcm_read_folder(curr_dir)
-    name_vec[[d]]      <- out[[d]]$clean_options$BrS_objects[[curr_slice]]$patho
+    name_vec[[d]]      <- out[[d]]$clean_options$BrS_objects[[curr_slice]]$patho # <-- it means we need to store clean_options in the result folder.
   }
   
-  if (!(length(unique(name_vec))==1)){stop("==The fitted models have different BrS measurement names! Please use `slice_vec` to match the names.==")}
+  if (!(length(unique(name_vec))==1)){stop("==The results under comparison have different BrS measurement names! Please use `slice_vec` to match the names.==")}
   
   get_top_pattern <- function(curr_out,case_status,slice,n_pat){
     # getting data:
     curr_bugs.dat <- curr_out$bugs.dat
     curr_Nd       <- curr_out$Nd
     curr_Nu       <- curr_out$Nu
-    curr_slice    <- slice_vec[slice] 
+    curr_slice    <- slice
     
+    # get observed data:
     curr_observed <- curr_out$Mobs$MBS[[curr_slice]]
+    # length of a pattern (e.g., 10001 means length is 5)
     len_pat       <- ncol(curr_out$Mobs$MBS[[curr_slice]])
-    curr_Y        <- curr_out$Y 
-    curr_res_nplcm <- curr_out$res_nplcm
-    curr_predicted <- curr_res_nplcm[,grep(paste0("^MBS.new_",slice,"\\["),colnames(curr_res_nplcm)),drop=FALSE]
-    
+    curr_Y        <- curr_out$Y # case control status.
+    curr_res_nplcm <- curr_out$res_nplcm # get posterior samples.
+    curr_predicted <- curr_res_nplcm[,grep(paste0("^MBS.new_",curr_slice,"\\["),colnames(curr_res_nplcm)),drop=FALSE]
     NSAMP <- nrow(curr_predicted)
+    # organize into an array for easy subsetting (case and control's measurements):
     curr_predicted_array <- array(curr_predicted,dim=c(NSAMP,len_pat,curr_Nd+curr_Nu)) # <-- first dimension for iterations; second dimension for pathogen measurements; third dimension for individual (cases first and controls).
     
+    # subsetting into case or control based on input `case_status`:
     observed  <- curr_observed[curr_Y==case_status,,drop=FALSE]
     predicted <- curr_predicted_array[,,curr_Y==case_status,drop=FALSE]
     
+    # convert numeric vector into a character string: e.g., c(1,0,0,1,1) into "10011"; for faster pattern matching:
     collapse_byrow <- function(mat){
-      res <- apply(mat,1,paste,collapse = "" )
-      NA2dot(res)
+      NA2dot(apply(mat,1,paste,collapse = "" ))
     }
     
     observed_pat  <- collapse_byrow(observed)
     predicted_pat <- as.matrix(apply(predicted,3,collapse_byrow))
     
     # counting patterns:
-    pat               <- sort(table(observed_pat),decreasing=TRUE)
-    n_pat_used        <- min(n_pat,length(pat))
-    ind_missing       <- grep("\\.",names(pat))
-    n_missing         <- sum(pat[ind_missing])
-    pat_high_frac     <- pat[1:n_pat_used]/(length(observed_pat)-n_missing)
+    pat               <- sort(table(observed_pat),decreasing=TRUE) # observed patten.
+    n_pat_used        <- min(n_pat,length(pat)) # actually used pattern number.
+    ind_missing       <- grep("\\.",names(pat)) # pick out patterns with missing measurements.
+    n_missing         <- sum(pat[ind_missing])  # the total number of individuals with missing measurements.
+    pat_high_frac     <- pat[1:n_pat_used]/(length(observed_pat)-n_missing) # divide by no. of individuals with complete measurements.
     pat_high_frac_no_missing     <- pat_high_frac
     if (length(ind_missing)){
-      pat_high_frac_no_missing     <- pat_high_frac[-ind_missing]
+      pat_high_frac_no_missing     <- pat_high_frac[-ind_missing] # delete patterns with missingness.
     }
-    pat_high_name_no_missing     <- names(pat_high_frac_no_missing)
+    pat_high_name_no_missing     <- names(pat_high_frac_no_missing) # get names to display in the plot.
     
-    n_pat_used_no_missing <- length(pat_high_name_no_missing)
-    ppd_pat_ct <- matrix(NA,nrow=NSAMP,ncol=n_pat_used_no_missing+1)
+    n_pat_used_no_missing <- length(pat_high_name_no_missing) # the length of patterns without missingness.
+    
+    ppd_pat_ct  <- matrix(NA,nrow=NSAMP,ncol=n_pat_used_no_missing)
+    exist_other <- (length(pat)-length(ind_missing))>0
+    if (exist_other){
+      ppd_pat_ct <- matrix(NA,nrow=NSAMP,ncol=n_pat_used_no_missing+1) # the extra column for "other" patterns.
+    }
     ppd_pat_ct <- as.data.frame(ppd_pat_ct)
     for (iter in 1:NSAMP){
       ppd_pat_table <- table(predicted_pat[iter,])
@@ -103,49 +112,53 @@ plot_check_common_pattern <- function(DIR_list,
       }
       ))
       ppd_pat_ct[iter,1:n_pat_used_no_missing] <- curr_ct/ncol(predicted_pat)
-      ppd_pat_ct[iter,n_pat_used_no_missing+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
-      
+      if (exist_other){
+        ppd_pat_ct[iter,n_pat_used_no_missing+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
+      }
     }
-    colnames(ppd_pat_ct) <- c(1:length(pat_high_name_no_missing),"other")
-    pattern_names  <- c(pat_high_name_no_missing,"other")
-    obs_pat        <- c(pat_high_frac_no_missing,1-sum(pat_high_frac_no_missing))
+    colnames(ppd_pat_ct) <- c(1:length(pat_high_name_no_missing))
+    pattern_names        <- c(pat_high_name_no_missing)
+    obs_pat              <- pat_high_frac_no_missing
+    if (exist_other){
+       colnames(ppd_pat_ct) <- 1:(length(pat_high_name_no_missing)+1)
+       pattern_names  <- c(pat_high_name_no_missing,"other")
+       obs_pat        <- c(pat_high_frac_no_missing,1-sum(pat_high_frac_no_missing))
+    }
     names(obs_pat) <- pattern_names
-    make_list(ppd_pat_ct,obs_pat,pattern_names)
+    
+    make_list(ppd_pat_ct,obs_pat,pattern_names,exist_other)
   }
   
   plot_ppd <- function(DIR_list,case_or_control="case"){
-    case_res_list <- vector("list",length=length(DIR_list))
-    case_pat_list <- vector("list",length=length(DIR_list))
-    res_list <- vector("list",length=length(DIR_list))
-    obs_case_pat_list <- vector("list",length=length(DIR_list))
-    
+    case_res_list <- vector("list",length=length(DIR_list)) # posterior predictive pattern frequencies.
+    case_pat_list <- vector("list",length=length(DIR_list)) # pattern names.
+    res_list      <- vector("list",length=length(DIR_list)) # long format results with extra information.
+    obs_case_pat_list <- vector("list",length=length(DIR_list)) # observed pattern frequencies.
     
     if (case_or_control=="case"){select <- 1}
     if (case_or_control=="control"){select <- 0}
     
     for (d in seq_along(DIR_list)){
-      # cases:
-      out_case_pat <- get_top_pattern(out[[d]],select,slice_vec[d],n_pat)
+      out_case_pat       <- get_top_pattern(out[[d]],select,slice_vec[d],n_pat)
       case_res_list[[d]] <- out_case_pat$ppd_pat_ct
       case_res_list[[d]]$DIR <- d 
       case_res_list[[d]]$ITER <- 1:nrow(case_res_list[[d]])
       case_res_list[[d]]$CASE <- rep(select,nrow(case_res_list[[d]]))
-      case_res_melt <- reshape2::melt(case_res_list[[d]],
+      res_list[[d]] <- reshape2::melt(case_res_list[[d]],
                                       id.vars = c("CASE","DIR","ITER"),
                                       variable.name="pattern",
                                       value.name = "frequency")
-      res_list[[d]]     <- case_res_melt
-      case_pat_list[[d]] <- c(out_case_pat$pattern_names)
+      case_pat_list[[d]]     <- out_case_pat$pattern_names
       obs_case_pat_list[[d]] <- out_case_pat$obs_pat
     }
     
     if(!(length(unique(case_pat_list))==1)){stop("==Different data sets are used under comparison! Please use the results fitted from the same data set.==")}
     if(!(length(unique(obs_case_pat_list))==1)){stop("==Different data sets are used under comparison! Please use the results fitted from the same data set.==")}
     
-    res <- do.call(rbind,res_list)
+    res <- do.call(rbind,res_list) # combine results across directories.
     
     base_nm <- lapply(DIR_list,basename)
-    NDIR <- length(DIR_list)
+    NDIR    <- length(DIR_list)
     # first build some functions to summarize posterior distribution 
     # (following ggplot2 syntax):
     f <- function(x) {
@@ -171,14 +184,14 @@ plot_check_common_pattern <- function(DIR_list,
       structure(list(...),  class = "uneval")
     }
     
-    case_status_labeller <- function(variable,value){
-      c("Case","Control")[2-value]
-    }
+#     case_status_labeller <- function(variable,value){
+#       c("Case","Control")[2-value]
+#     }
     
     # plot for cases:
-    hline.data <- as.data.frame(list(frequency=obs_case_pat_list[[1]],
-                                     pattern= c(1:(length(obs_case_pat_list[[1]])-1),"other"),
-                                     DIR    = rep(1,length(obs_case_pat_list[[1]]))))
+    hline.data <- as.data.frame(list(frequency = obs_case_pat_list[[1]],
+                                       pattern   = 1:(length(obs_case_pat_list[[1]])),
+                                       DIR       = rep(1,length(obs_case_pat_list[[1]]))))
     gg1<-ggplot(data = res, 
                 aes(x = factor(pattern), y = frequency, fill = factor(DIR))) +
       #facet_wrap(~ CASE, ncol = 2)+ 
@@ -197,7 +210,7 @@ plot_check_common_pattern <- function(DIR_list,
             axis.title   = element_text(size=16,face="bold"),
             axis.text.x = element_text(angle=40, vjust=.8, hjust=1.01,size=16,face="bold"),
             strip.text.x = element_text(size = 16, colour = "red",face="bold"))+
-      scale_x_discrete(labels=c(case_pat_list[[1]]))+
+      scale_x_discrete(labels=case_pat_list[[1]])+
       scale_y_continuous(limits = c(0,ymax))+
       annotate("text", label = case_or_control, 
                x = length(case_pat_list[[1]])/2, 
