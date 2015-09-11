@@ -10,7 +10,6 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #' does not check whether the results are from the same stratum, e.g., same site. 
 #' We recommend putting information in the the folder names under comparisons.
 #'
-#'
 #'@param DIR_list The list of directory paths, each storing a model output.
 #'
 #'@param DIR_pathogen_displayorder_lookup The directory path to the .csv file

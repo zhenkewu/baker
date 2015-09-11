@@ -160,45 +160,159 @@ plot_logORmat = function(data_nplcm,
 
 
 
+#' silver-standard data summary
+#' 
+#' @param SS_dat a data frame of silver-standard data. It can usually 
+#' be obtained by \code{data_nplcm$Mobs$MSS[[1]]}, meaning the first SS measurement
+#' slice.
+#' 
+#' @param Y a vector of case control status: 1 for case; 0 for control.
+#' 
+#' @return a vector of number of positives
+#' 
+#' @export
+
+summarize_SS <- function(SS_dat, Y){
+  # get observed rates' summaries:
+  Nd <- sum(Y==1)
+  Nu <- sum(Y==0)
+  N  <- Nd+Nu
+  
+  MSS_curr <- SS_dat
+  MSS_nm <- colnames(SS_dat)
+  # positive rates and confidence intervals:
+  #cases:
+  MSS_case_curr <- MSS_curr[1:Nd,,drop=FALSE]
+  count    <- as.integer(do.call(cbind,lapply(MSS_case_curr,sum,na.rm=TRUE))) #<-- added 'as.integer' to make pathogens appear by rows.
+  NA_count <- apply(MSS_case_curr,2,function(v) sum(is.na(v)))
+  tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
+  
+  # case and control positive rate, lower and upper limit
+  MSS_mean  <- rbind(round(tmp.case$mean,5))
+  MSS_q1    <- rbind(tmp.case[,c("lower")])
+  MSS_q2    <- rbind(tmp.case[,c("upper")])
+  
+  make_list(count, NA_count, Nd, MSS_mean, MSS_q1, MSS_q2, MSS_nm)
+}
+
+#summarize_SS(data_nplcm$Mobs$MSS[[1]], data_nplcm$Y)
+
+#' summarize bronze-standard data
+#' 
+#' @param BrS_dat bronze-stanadrd data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' 
+#' @param Y A vector of case/control status: 1 for case; 0 for control
+#' 
+#' @return a list of summaries for BrS data
+#' @export
+
+summarize_BrS <- function(BrS_dat,Y){
+  # get observed rates' summaries:
+  Nd <- sum(Y==1)
+  Nu <- sum(Y==0)
+  N  <- Nd+Nu
+  
+  MBS_curr <- BrS_dat
+  MBS_nm <- colnames(BrS_dat)
+  # positive rates and confidence intervals:
+  #cases:
+  
+  MBS_case_curr <- MBS_curr[1:Nd,,drop=FALSE]
+  count    <- as.integer(do.call(cbind,lapply(MBS_case_curr,sum,na.rm=TRUE)))
+  NA_count <- apply(MBS_case_curr,2,function(v) sum(is.na(v)))
+  tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
+  
+  #controls:
+  MBS_ctrl_curr <- MBS_curr[-(1:Nd),,drop=FALSE]
+  count    <- as.integer(do.call(cbind,lapply(MBS_ctrl_curr,sum,na.rm=TRUE)))
+  NA_count <- apply(MBS_ctrl_curr,2,function(v) sum(is.na(v)))
+  tmp.ctrl <- binom.confint(count, Nu-NA_count, conf.level = 0.95, methods = "ac")
+  
+  # case and control positive rate, lower and upper limit
+  MBS_mean  <- rbind(round(tmp.case$mean,5),round(tmp.ctrl$mean,5));rownames(MBS_mean) = c("case","control")
+  MBS_q1 <- rbind(tmp.case[,c("lower")],tmp.ctrl[,c("lower")]); rownames(MBS_q1) = c("case","control")
+  MBS_q2 <- rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")]); rownames(MBS_q2) = c("case","control")
+
+  make_list(Nd, MBS_mean, MBS_q1, MBS_q2, MBS_nm)
+}
 
 
+#' get top patterns from a slice of bronze-standard measurement
+#' 
+#' @param BrS_dat bronze-stanadrd data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' 
+#' @param Y A vector of case/control status: 1 for case; 0 for control
+#' @param case_status 1 for case; 0 for controls
+#' @param n_pat the number of top patterns one wants to show
+#' @param exclude_missing DEFAULT is TRUE for excluding any individual with missing measurements.
+#' 
+#' @examples 
+#' \dontrun{
+#' 
+#' res <- get_top_pattern(data_nplcm$Mobs$MBS[[1]],data_nplcm$Y,1,30,FALSE)
+#' }
+#' 
+#' @return a list of results: \code{obs_pat} - observed rates; 
+#' \code{pattern_names}; \code{exist_other} - if
+#' actual no. of patterns is larger than \code{n_pat}; \code{N}- No. of individuals
+#' with \code{Y = case_status}.
+#' @export
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#         n1       <- nrow(MBS.case)
-#         n0       <- nrow(MBS.ctrl)
-#         J        <- ncol(MBS.case)
-
-# #1. comparing the total no. of positives for cases and controls
-# if (eda_options$total_positives == TRUE){
-#   ct1 = rowSums(MBS.case)
-#   ct0 = rowSums(MBS.ctrl)
-#   tb1 = rep(NA,J+1);names(tb1)=c(0,1:J)
-#   tb0 = tb1
-#   for (j in 1:(J+1)){
-#     tb1[j] = sum(ct1==j-1);tb0[j]=sum(ct0==j-1)
-#   }
-#
-#   barplot(rbind(tb1/n1,tb0/n0),beside=TRUE,
-#           #ylim=c(0,max(c(tb1/n1,tb0/n0))+.1),
-#           legend.text = c("case", "control"),
-#           xlab="no. of positives",
-#           ylab="sample frequency",
-#           main=paste(eda_options$X_names,eda_options$X_values,
-#                      sep="="))
-# }
-
-
+get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
+  # getting data:
+  
+  # get observed data:
+  curr_observed <- BrS_dat
+  # length of a pattern (e.g., 10001 means length is 5)
+  len_pat       <- ncol(curr_observed)
+  curr_Y        <- Y # case control status.
+  
+  # subsetting into case or control based on input `case_status`:
+  observed  <- curr_observed[curr_Y==case_status,,drop=FALSE]
+  N <- sum(curr_Y==case_status)
+  
+  # convert numeric vector into a character string: e.g., c(1,0,0,1,1) into "10011"; for faster pattern matching:
+  collapse_byrow <- function(mat){
+    NA2dot(apply(mat,1,paste,collapse = "" ))
+  }
+  
+  observed_pat  <- collapse_byrow(observed)
+  
+  # counting patterns:
+  pat               <- sort(table(observed_pat),decreasing=TRUE) # observed patten.
+  n_pat_used        <- min(n_pat,length(pat)) # actually used pattern number.
+  pat_high_frac     <- pat[1:n_pat_used]/length(observed_pat)
+  pattern_names     <- names(pat_high_frac)
+  obs_pat           <- pat_high_frac
+  exist_other       <- (length(pat)-n_pat_used) >0
+  if (exist_other){
+    pattern_names  <- c(names(pat_high_frac),"other")
+    obs_pat        <- c(pat_high_frac,1-sum(pat_high_frac))
+  }
+  
+  
+  if (exclude_missing){
+    ind_missing       <- grep("\\.",names(pat)) # pick out patterns with missing measurements.
+    n_missing         <- sum(pat[ind_missing])  # the total number of individuals with missing measurements.
+    pat_high_frac     <- pat[1:n_pat_used]/(length(observed_pat)-n_missing) # divide by no. of individuals with complete measurements.
+    pat_high_frac_no_missing     <- pat_high_frac
+    if (length(ind_missing)){
+      pat_high_frac_no_missing     <- pat_high_frac[-ind_missing] # delete patterns with missingness.
+    }
+    pat_high_name_no_missing     <- names(pat_high_frac_no_missing) # get names to display in the plot.
+    
+    n_pat_used_no_missing <- length(pat_high_name_no_missing) # the length of patterns without missingness.
+    
+    exist_other <- (length(pat)-length(ind_missing))>0
+    pattern_names        <- c(pat_high_name_no_missing)
+    obs_pat              <- pat_high_frac_no_missing
+    if (exist_other){
+      pattern_names  <- c(pat_high_name_no_missing,"other")
+      obs_pat        <- c(pat_high_frac_no_missing,1-sum(pat_high_frac_no_missing))
+    }
+  }
+  names(obs_pat) <- pattern_names
+  make_list(obs_pat,pattern_names,exist_other,N)
+}
 
 

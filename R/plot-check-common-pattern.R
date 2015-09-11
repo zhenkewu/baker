@@ -32,8 +32,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DI
 
 plot_check_common_pattern <- function(DIR_list,
                                       slice_vec = rep(1,length(DIR_list)),
-                                                   n_pat     = 10,
-                                                   dodge_val = 0.8){
+                                      n_pat     = 10,
+                                      dodge_val = 0.8){
   # read in data:
   # names of the measurements for the selected slice:
   name_vec <- vector("list",length(DIR_list))
