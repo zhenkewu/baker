@@ -25,4 +25,17 @@ equal to the no. of measurement dimensions within a slice.
 \description{
 get fitted mean for nested model with the same subclass mixing weights
 }
+\examples{
+\dontrun{
+result_folder <- c("C:/2015_09_17_01KEN_nplcm")
+out           <- nplcm_read_folder(result_folder)
+data_nplcm    <- list(Mobs  = out$Mobs, Y = out$Y)
+slice         <- 1
+# fitted positive rates for pathogens separately among cases and controls:
+get_fitted_mean_nested(slice,out$res_nplcm,out$model_options,data_nplcm,
+                      out$clean_options)
+# names of pathogens:
+colnames(out$Mobs$MBS[[slice]])
+}
+}
 

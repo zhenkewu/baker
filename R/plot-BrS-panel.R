@@ -456,7 +456,18 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
 #' get model fitted mean for conditional independence model
 #' 
 #' @inheritParams get_fitted_mean_nested
-#' 
+#' @examples 
+#' \dontrun{
+#' result_folder <- c("C:/2015_09_17_01KEN")
+#' out           <- nplcm_read_folder(result_folder)
+#' data_nplcm    <- list(Mobs  = out$Mobs, Y = out$Y)
+#' slice         <- 1
+#' # fitted positive rates for pathogens separately among cases and controls:
+#' get_fitted_mean_no_nested(slice,out$res_nplcm,out$model_options,data_nplcm,
+#'                       out$clean_options)
+#' # names of pathogens:
+#' colnames(out$Mobs$MBS[[slice]])
+#' }
 #' @return a list with model fitted means
 #' @export
 
@@ -513,6 +524,19 @@ get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
 #' @param clean_options see \code{\link{clean_perch_data}}
 #' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
 #' equal to the no. of measurement dimensions within a slice.
+#' 
+#' @examples 
+#' \dontrun{
+#' result_folder <- c("C:/2015_09_17_01KEN_nplcm")
+#' out           <- nplcm_read_folder(result_folder)
+#' data_nplcm    <- list(Mobs  = out$Mobs, Y = out$Y)
+#' slice         <- 1
+#' # fitted positive rates for pathogens separately among cases and controls:
+#' get_fitted_mean_nested(slice,out$res_nplcm,out$model_options,data_nplcm,
+#'                       out$clean_options)
+#' # names of pathogens:
+#' colnames(out$Mobs$MBS[[slice]])
+#' }
 #' 
 #' @export
 #' 

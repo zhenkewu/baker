@@ -259,6 +259,11 @@ extract_data_raw <- function(meas_dir,strat_nm,strat_val,
   
   read_meas_object <- function(object,data) {
     position <- lookup_quality(object$quality)
+    exist <- sapply(object$name_in_data,grep,colnames(data))
+    not_exist_index <- which(unlist(lapply(exist,length))==0)
+    if (length(not_exist_index)>0){
+      stop(paste0("==",paste(object$name_in_data[not_exist_index],collapse=", ")," is not in data!=="))  
+    }
     meas <- data[,object$name_in_data,drop = FALSE]
     colnames(meas) <- object$patho
     make_list(meas,position)
