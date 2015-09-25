@@ -70,7 +70,7 @@ set_parameter <- list(
   PsiSS           = PsiSS_withNA[!is.na(PsiSS_withNA)],
   ThetaSS         = ThetaSS_withNA[!is.na(ThetaSS_withNA)],
   Nu      =     N, # control size.
-  Nd      =     N  # case size.
+  Nd      =     N,  # case size.
   SS      = TRUE
 )
  simu_out <- simulate_nplcm(set_parameter)
