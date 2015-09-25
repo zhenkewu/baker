@@ -71,6 +71,7 @@ set_parameter <- list(
   ThetaSS         = ThetaSS_withNA[!is.na(ThetaSS_withNA)],
   Nu      =     N, # control size.
   Nd      =     N  # case size.
+  SS      = TRUE
 )
  simu_out <- simulate_nplcm(set_parameter)
  data_nplcm <- simu_out$data_nplcm

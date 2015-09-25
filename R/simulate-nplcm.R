@@ -66,6 +66,7 @@
 #'   ThetaSS         = ThetaSS_withNA[!is.na(ThetaSS_withNA)],
 #'   Nu      =     N, # control size.
 #'   Nd      =     N  # case size.
+#'   SS      = TRUE
 #' )
 #'  simu_out <- simulate_nplcm(set_parameter)
 #'  data_nplcm <- simu_out$data_nplcm
@@ -81,20 +82,23 @@ simulate_nplcm <- function(set_parameter) {
   latent <- simulate_latent(set_parameter)
   # simulate BrS measurements:
   out_brs   <- simulate_brs(set_parameter,latent)
-  # simulate SS measurements:
-  out_ss   <- simulate_ss(set_parameter,latent)
-  
-  # organize data:
-  # bronze-standard data:
+  # organize  bronze-standard data:
   MBS_list <-
     list(out_brs$datres[,-grep("case",colnames(out_brs$datres)),drop = FALSE])
   names(MBS_list) <- set_parameter$meas_nm$MBS
-  # silver-standard data:
-  MSS_list <-
-    list(out_ss$datres[,-grep("case",colnames(out_ss$datres)),drop = FALSE])
-  names(MSS_list) <- set_parameter$meas_nm$MSS
+  Mobs <- list(MBS = MBS_list, MSS=NULL, MGS = NULL)
   
-  Mobs <- list(MBS = MBS_list, MSS = MSS_list, MGS = NULL)
+  if (!is.null(set_parameter$SS) && set_parameter$SS){
+      # simulate SS measurements:
+      out_ss    <- simulate_ss(set_parameter,latent)
+      # silver-standard data:
+      MSS_list <-
+        list(out_ss$datres[,-grep("case",colnames(out_ss$datres)),drop = FALSE])
+      names(MSS_list) <- set_parameter$meas_nm$MSS
+      
+      Mobs <- list(MBS = MBS_list, MSS = MSS_list, MGS = NULL)
+  }
+  
   Y    <- out_brs$datres$case
   X    <- NULL
   
