@@ -5,6 +5,7 @@
 #' motivating study), exploratory data analysis, fitting NPLCM, posterior
 #' summaries and model checking.
 #'
+#'
 #' @section baker functions:
 #' The baker functions ...
 #'

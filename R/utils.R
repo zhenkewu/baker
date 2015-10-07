@@ -1556,6 +1556,48 @@ get_latent_seq <- function(cause_list, ord,select_latent=NULL,exact=TRUE){
 
 
 
+#' Shannon entropy for multivariate discrete data
+#' 
+#' @param px a vector of positive numbers sum to 1
+#' 
+#' @return a non-negative number
+#' @export
+#' 
+H      <- function(px){-sum(px*log(px))}
+
+#' Shannon entropy for binary data
+#' 
+#' @param m_px a number between 0 and 1
+#' 
+#' @return a non-negative number
+#' 
+#' @export
+#' 
+marg_H <- function(m_px){-m_px*log(m_px)-(1-m_px)*log(1-m_px)}
+
+
+#' load an object from .RDATA file
+#' 
+#' @param objName the name of the object
+#' @param file the file path
+#' @param envir environment; default is calling environment: \link{parent.frame}
+#' @param assign.on.exit defautl is TRUE
+#' 
+#' @return a new environment
+#' @export
+
+loadOneName <- function(objName, file, envir = parent.frame(),
+                        assign.on.exit = TRUE) {
+  tempEnv <- new.env()
+  load(file, envir = tempEnv)
+  stopifnot(objName %in% ls(tempEnv))
+  if(assign.on.exit) {
+    assign(objName, tempEnv[[objName]], envir = envir)
+    return(invisible(tempEnv[[objName]]))
+  }
+  tempEnv[[objName]]
+}
+
 # #' check simulation is correct
 # #' 
 # #' @details check actual realized positive rates vs theoretical rates
