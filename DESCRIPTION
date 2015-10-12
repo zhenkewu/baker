@@ -24,8 +24,7 @@ Imports:
     robCompositions(>= 1.9),
     ggplot2(>= 1.0),
     gridExtra(>= 2.0),
-    reshape2(>= 1.4),
-    splines(>= 3.2)
+    reshape2(>= 1.4)
 License: MIT + file LICENSE
 Suggests: 
     knitr,
