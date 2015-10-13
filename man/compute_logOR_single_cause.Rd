@@ -21,7 +21,7 @@ Calculate marginal log odds ratios
 \examples{
 rm(list=ls())
 K.true  <- 2   # no. of latent subclasses in actual simulation. 
-              # If eta = c(1,0), effectively, it is K.true=1
+               # If eta = c(1,0), effectively, it is K.true=1
 J       <- 5   # no. of pathogens.
 N       <- 500 # no. of cases/controls.
 
