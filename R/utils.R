@@ -1598,31 +1598,3 @@ loadOneName <- function(objName, file, envir = parent.frame(),
   tempEnv[[objName]]
 }
 
-#' Helping messages for setting up analyses
-#' 
-#' 
-#' @return Text messages on the Operating System (OS) and how to set up \code{mcmc_options}
-#' to call the right Bayesian fitting functions.
-#' @export
-
-baker_help <- function(){
-  switch(Sys.info()[['sysname']],
-         Windows= {cat("I'm a Windows PC. ",
-                       "Instruction: ",
-                      "a) To use WinBUGS, install WinBUGS 1.4 (http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) as well as the patch. ", 
-                         "In 'mcmc_options' specify 'winbugs.dir' - the path where WinBUGS 1.4 is installed; Delete 'jags.path' and ‘use_jags’. ",
-                      "b) You can also use JAGS. Install JAGS 3.4.0 (http://sourceforge.net/projects/mcmc-jags/files/JAGS/3.x/). ",
-                         "In 'mcmc_options', specify 'jags.path=\"\"' and ‘use_jags=TRUE’; Delete 'winbgus.dir'.  ",
-                         "To make JAGS callable from command line tools, add the path to JAGS into your ENVIRONMENTAL VARIABLE (check Control Panel).")},
-         Darwin = {cat("I'm a Mac. ",
-                       "Instruction: ", 
-                       "To use JAGS, install JAGS 3.4.0 (http://sourceforge.net/projects/mcmc-jags/files/JAGS/3.x/). ",
-                       "In 'mcmc_options', specify 'jags.path=\"\"' and ‘use_jags=TRUE’; Delete 'winbgus.dir'.  "
-                       )},
-         Linux  = {cat("I'm a penguin. ",
-                       "Instruction: ",
-                       "a) It is most likely you are using a cluster computing facility. You'd need to install JAGS and make it available to 'baker'. Email zhwu@jhu.edu for step-by-step instructions."
-                       )}
-         )
-}
-
