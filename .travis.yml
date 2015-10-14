@@ -1,14 +1,38 @@
-# Sample .travis.yml for R projects
+language: c
 
-language: r
-sudo: required
-warnings_are_errors: true
-env:
-  global:
-    - NOT_CRAN=true
-before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
+before_install:
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - chmod 755 ./pkg-build.sh
+  - ./pkg-build.sh bootstrap
+ 
+install:
+  # Install bioc deps
+  - ./travis-tool.sh install_r rjags
+  - ./travis-tool.sh install_r R2jags
+ 
+script:
+#  - ./travis-tool.sh run_tests
+  - ./pkg-build.sh run_build
+  - ./pkg-build.sh run_check
+
+after_failure:
+#  - ./travis-tool.sh dump_logs
+  - ./pkg-build.sh dump_logs
+
+after_script:
+#  - ./travis-tool.sh dump_logs_by_extension "timings"
+#  - ./travis-tool.sh dump_sysinfo
+  - ./pkg-build.sh dump_logs_by_extension "timings"
+  - ./pkg-build.sh dump_sysinfo
 
 notifications:
   email:
     on_success: change
     on_failure: change
+
+env:
+  global:
+    - R_BUILD_ARGS="--no-build-vignettes --no-manual --no-resave-data"
+    - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
+    - R_CHECK_TESTS="TRUE"
+    - _R_CHECK_TIMINGS_="0"
