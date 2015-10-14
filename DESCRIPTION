@@ -28,7 +28,7 @@ Imports:
     gridExtra(>= 2.0),
     reshape2(>= 1.4)
 License: MIT + file LICENSE
-SystemRequirements: JAGS (http://mcmc-jags.sourceforge.net)
+SystemRequirements: JAGS (http://mcmc-jags.sourceforge.net) or WinBUGS 1.4 (Windows-only)
 Suggests: 
     knitr,
     testthat,
