@@ -11,6 +11,7 @@ before_install:
 env:
  global:
    - NOT_CRAN = true
+   - _R_CHECK_CRAN_INCOMING_=false # should delete this if want CRAN check.
    - WARNINGS_ARE_ERRORS=1
    - R_BUILD_ARGS=--no-manual 
    - R_CHECK_ARGS=--no-manual --as-cran 
