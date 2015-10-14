@@ -14,17 +14,37 @@
 #' @export
 
 nplcm_read_folder <- function(DIR_NPLCM){
+  mcmc_options  <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
+  use_jags      <- !is.null(mcmc_options$use_jags) && mcmc_options$use_jags
   #
   # Read data from DIR_NPLCM:
   #
-  bugs.dat <- dget(file.path(DIR_NPLCM,"data.txt"))
+  if (use_jags){
+    
+    new_env <- new.env()
+    source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
+    bugs.dat <- as.list(new_env)
+    rm(new_env)
+    res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
+                                 file.path(DIR_NPLCM,"CODAindex.txt"),
+                                 quiet=TRUE)
+  }else{
+    bugs.dat <- dget(file.path(DIR_NPLCM,"data.txt"))  
+    res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"coda1.txt"),
+                                 file.path(DIR_NPLCM,"codaIndex.txt"),
+                                 quiet=TRUE)
+  }
+  
   for (bugs.variable.name in names(bugs.dat)) {
-    if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
-      dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
-      bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
+    if (!use_jags){
+      if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
+        dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
+        bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
+      }
     }
     assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
   }
+
   
   model_options  <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   if (!file.exists(file.path(DIR_NPLCM,"data_clean_options.txt"))){
@@ -68,9 +88,7 @@ nplcm_read_folder <- function(DIR_NPLCM){
   
   Mobs <- make_list(MBS, MSS, MGS)
   
-  res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"coda1.txt"),
-                         file.path(DIR_NPLCM,"codaIndex.txt"),
-                         quiet=TRUE)
+
   res <- list(bugs.dat = bugs.dat,
               model_options = model_options,
               clean_options = clean_options,

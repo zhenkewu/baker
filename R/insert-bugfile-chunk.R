@@ -9,6 +9,7 @@
 #' see \code{\link{make_template}})
 #' @param use_measurements "BrS", or "SS"
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking
+#' @param use_jags Default is FALSE; set to TRUE if want to use JAGS for model fitting.
 #' 
 #' @return a long character string to be inserted into .bug model file as measurement
 #' likelihood
@@ -18,10 +19,14 @@
 #' 
 #' @export
 insert_bugfile_chunk_noreg_meas <-
-  function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL) {
-    if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){stop("==No BrS or SS measurements specified in the model! ==")}
+  function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
+    if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
+      stop("==No BrS or SS measurements specified in the model! ==")
+      }
     for (s in seq_along(Mobs$MBS)){
-      if (k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){stop("== Cannot do nested modeling for BrS measurements with only one column! ==")}  
+      if (k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){
+        stop("== Cannot do nested modeling for BrS measurements with only one column! ==")
+        }  
     }
     
     # generate file:
@@ -33,16 +38,26 @@ insert_bugfile_chunk_noreg_meas <-
       for (s in seq_along(Mobs$MBS)){# begin iterate over slices:
         k_curr <- k_subclass[s]
         if (k_curr == 1 ){
-          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice(s,Mobs,cause_list,ppd)$plug)
+          if (!use_jags){ # use winbugs:
+            chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice(s,Mobs,cause_list,ppd)$plug)
+            chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_Slice(s,Mobs,cause_list)$plug)
+          } else{# use jags:
+            chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice_jags(s,Mobs,cause_list,ppd)$plug)
+            chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_Slice_jags(s,Mobs,cause_list)$plug)
+          }
           chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_NoNest_Slice(s,Mobs,cause_list,ppd)$plug)
-          chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_Slice(s,Mobs,cause_list)$plug)
         }
         
         if ((k_curr > 1 )){
-          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
-          chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
+          if (!use_jags){# use winbugs:
+            chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
+            chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_Nest_Slice(s,Mobs,cause_list)$plug)
+          }else{#use jags:
+            chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_Nest_Slice_jags(s,Mobs,cause_list,ppd)$plug)
+            chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_Nest_Slice_jags(s,Mobs,cause_list)$plug)
+          }
           chunk_BrS_subclass  <- paste0(chunk_BrS_subclass,  add_meas_BrS_subclass_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
-          chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_Nest_Slice(s,Mobs,cause_list)$plug)
+          chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
         }
       }# end iterate over slices.
     }

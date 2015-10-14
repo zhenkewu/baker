@@ -85,14 +85,20 @@ model fitting;
 }}
 }
 \value{
-WinBUGS fit results.
+BUGS fit results.
 }
 \description{
-Features:
+Fit nested partially-latent class model (low-level)
+}
+\details{
+This function includes preparing data (specify hyperparameters in priors),
+initialize the chain, write the model file, and fit the model. Features:
 \itemize{
 \item no regression;
 \item no nested
 }
+If running JAGS on windows, please go to control panel to add the directory to
+jags into ENVIRONMENTAL VARIABLE!
 }
 \seealso{
 \link{write_model_NoReg} for writing .bug model file;

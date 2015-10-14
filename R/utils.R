@@ -185,7 +185,7 @@ Imat2cat <- function(binary_mat,cause_list,pathogen_list) {
     paste(v,collapse = ""))
   known_symb = sapply(known_code,I2symb,pathogen_list)
   if (sum(known_symb %in% cause_list == FALSE) > 0) {
-    stop("Some binary pattern in 'binary_mat' is not included by 'cause_list'.")
+    stop("==Some binary pattern in 'binary_mat' is not included by 'cause_list'!==")
   }else {
     known_Icat = sapply(known_symb,function(s)
       which(cause_list == s))
@@ -1623,3 +1623,5 @@ loadOneName <- function(objName, file, envir = parent.frame(),
 #   # 
 #   
 # }
+
+

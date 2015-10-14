@@ -5,7 +5,7 @@
 \title{Insert measurement likelihood (without regression) code chunks into .bug model file}
 \usage{
 insert_bugfile_chunk_noreg_meas(k_subclass, Mobs, prior, cause_list,
-  use_measurements = "BrS", ppd = NULL)
+  use_measurements = "BrS", ppd = NULL, use_jags = FALSE)
 }
 \arguments{
 \item{k_subclass}{the number of subclasses for the slices that require
@@ -22,6 +22,8 @@ see \code{\link{make_template}})}
 \item{use_measurements}{"BrS", or "SS"}
 
 \item{ppd}{Default is NULL; set to TRUE for posterior predictive checking}
+
+\item{use_jags}{Default is FALSE; set to TRUE if want to use JAGS for model fitting.}
 }
 \value{
 a long character string to be inserted into .bug model file as measurement

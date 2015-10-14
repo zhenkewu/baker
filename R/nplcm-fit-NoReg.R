@@ -1,13 +1,16 @@
 #' Fit nested partially-latent class model (low-level)
 #'
-#' Features:
+#' @details This function includes preparing data (specify hyperparameters in priors),
+#' initialize the chain, write the model file, and fit the model. Features:
 #' \itemize{
 #' \item no regression;
 #' \item no nested
 #' }
+#' If running JAGS on windows, please go to control panel to add the directory to
+#' jags into ENVIRONMENTAL VARIABLE!
 #'
 #' @inheritParams nplcm
-#' @return WinBUGS fit results.
+#' @return BUGS fit results.
 #' 
 #' @seealso \link{write_model_NoReg} for writing .bug model file; 
 #' 
@@ -16,6 +19,7 @@
 #' 
 nplcm_fit_NoReg<-
   function(data_nplcm,model_options,mcmc_options){
+  
     # Record the settings of current analysis:
     cat("==Results stored in: ==","\n",mcmc_options$result.folder)
     #model_options:
@@ -31,44 +35,7 @@ nplcm_fit_NoReg<-
     likelihood       <- model_options$likelihood
     use_measurements <- model_options$use_measurements
     prior            <- model_options$prior
-    
-    # define generic function to call WinBUGS:
-    call.bugs <- function(data, inits, parameters,m.file,
-                          bugsmodel.dir = mcmc_options$bugsmodel.dir,
-                          winbugs.dir   = mcmc_options$winbugs.dir,
-                          nitermcmc     = mcmc_options$n.itermcmc,
-                          nburnin       = mcmc_options$n.burnin,
-                          nthin         = mcmc_options$n.thin,
-                          nchains       = mcmc_options$n.chains,
-                          dic = FALSE,
-                          is.debug = mcmc_options$debugstatus,
-                          workd= mcmc_options$result.folder,...) {
-      
-      m.file <- file.path(bugsmodel.dir, m.file);
-      f.tmp <- function() {
-        ##winbugs
-        gs <- R2WinBUGS::bugs(data, inits, parameters,
-                              model.file = m.file,
-                              working.directory=workd,
-                              n.chains = nchains,
-                              n.iter   = nitermcmc,
-                              n.burnin = nburnin,
-                              n.thin   = nthin,
-                              bugs.directory=winbugs.dir,
-                              DIC=dic,
-                              debug=is.debug,...);
-        
-        gs;
-      }
-      
-      bugs.try  <- try(rst.bugs <- f.tmp(), silent=FALSE);
-      if (class(bugs.try) == "try-error") {
-        rst.bugs <- NULL;
-      }
-      rst.bugs;
-    }
-    
-    
+
     #####################################################################
     # 1. prepare data (including hyper-parameters):
     #####################################################################
@@ -331,17 +298,26 @@ nplcm_fit_NoReg<-
     if (!("BrS" %in% use_measurements) & "SS" %in% use_measurements){
       in_init       <-   function(){
         tmp_thetaSS <- list()
-        tmp_psiSS <- list()
+       #tmp_psiSS <- list()
+        tmp_Icat_case <- list()
         for(i in seq_along(JSS_list)){
           GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
           if (GSS_TPR_curr==1){
             tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
           } else{
-            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),
+                                       nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+          }
+          if (i==1){
+            if (length(JSS_list)>1){
+              warning("==Only the first slice of silver-standard data is used to initialize 'Icat' in JAGS fitting. Choose wisely!==")
+            }  
+            tmp_Icat_case[[i]] <- init_latent_jags(MSS_list[[i]],likelihood$cause_list)
           }
         }
-        res <- c(tmp_thetaSS,tmp_psiSS)
-        names(res) <- c(paste("thetaSS", seq_along(JSS_list), sep = "_"))
+        
+        res <- c(tmp_thetaSS,tmp_Icat_case)
+        names(res) <- c(paste("thetaSS", seq_along(JSS_list), sep = "_"),"Icat")
         res
       }
     } 
@@ -373,7 +349,8 @@ nplcm_fit_NoReg<-
         }
         
         tmp_thetaSS <- list()
-        tmp_psiSS <- list()
+        #tmp_psiSS <- list()
+        tmp_Icat_case <- list()
         for(i in seq_along(JSS_list)){
           GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
           if (GSS_TPR_curr==1){
@@ -381,9 +358,15 @@ nplcm_fit_NoReg<-
           } else{
             tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
           }
+          if (i==1){
+            if (length(JSS_list)>1){
+             warning("==Only the first slice of silver-standard data is used to initialize 'Icat' in JAGS fitting. Choose wisely!==")
+            }
+            tmp_Icat_case[[i]] <- init_latent_jags(MSS_list[[i]],likelihood$cause_list)
+          }
         }
-        res2 <- c(tmp_thetaSS,tmp_psiSS)
-        names(res2) <- c(paste("thetaSS", seq_along(JSS_list), sep = "_"))
+        res2 <- c(tmp_thetaSS,tmp_Icat_case)
+        names(res2) <- c(paste("thetaSS", seq_along(JSS_list), sep = "_"),"Icat")
         #print(res2)
         c(res,res2)
       }
@@ -402,25 +385,19 @@ nplcm_fit_NoReg<-
     # get posterior predictive distribution of BrS measurments:
     if (!is.null(mcmc_options$ppd) && mcmc_options$ppd){out_parameter <- c(out_parameter,paste("MBS.new",seq_along(Mobs$MBS),sep = "_"))}
     
-    mybugs <- function(...){
-      inits      <- in_init;
-      data       <- in_data;
-      parameters <- out_parameter;
-      rst.bugs   <- call.bugs(data, inits, parameters,...);
-      rst.bugs
-    }
-    
     #
     # write the .bug files into mcmc_options$bugsmodel.dir; 
     # could later set it equal to result.folder.
     #
     
+    use_jags <- (!is.null(mcmc_options$use_jags) && mcmc_options$use_jags)
     model_func         <- write_model_NoReg(model_options$likelihood$k_subclass,
                                             data_nplcm$Mobs,
                                             model_options$prior,
                                             model_options$likelihood$cause_list,
                                             model_options$use_measurements,
-                                            mcmc_options$ppd)
+                                            mcmc_options$ppd,
+                                            use_jags)
     model_bugfile_name <- "model_NoReg.bug"
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
@@ -428,5 +405,77 @@ nplcm_fit_NoReg<-
     #
     # run the model:
     #
-    gs <- mybugs(model_bugfile_name)
+    m.file   <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name);
+    if (!use_jags){
+      ##winbugs is the only current option:
+      gs <- R2WinBUGS::bugs(data     = in_data,
+                            inits    = in_init, 
+                            parameters.to.save = out_parameter,
+                            model.file = m.file,
+                            working.directory=mcmc_options$result.folder,
+                            bugs.directory  = mcmc_options$winbugs.dir,  #<- special to WinBUGS.
+                            n.iter     = mcmc_options$n.itermcmc,
+                            n.burnin       = mcmc_options$n.burnin,
+                            n.thin         = mcmc_options$n.thin,
+                            n.chains       = mcmc_options$n.chains,
+                            DIC      = FALSE,
+                            debug    = mcmc_options$debugstatus);
+      return(gs)
+    }
+    
+    here <- environment()
+    if (use_jags){
+      ##JAGS
+      in_data.list <- lapply(as.list(in_data),get, envir= here)
+      names(in_data.list) <- in_data
+      lapply(names(in_data.list), dump, append = TRUE, envir = here,
+             file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+      gs <- R2jags::jags2(data   = in_data,
+                          inits  = in_init,
+                          parameters.to.save = out_parameter,
+                          model.file = m.file,
+                          working.directory = mcmc_options$result.folder,
+                          n.iter     = mcmc_options$n.itermcmc,
+                          n.burnin       = mcmc_options$n.burnin,
+                          n.thin         = mcmc_options$n.thin,
+                          n.chains       = mcmc_options$n.chains,
+                          DIC      = FALSE,
+                          clearWD  = FALSE,              #<--- special to JAGS.
+                          jags.path=mcmc_options$jags.dir# <- special to JAGS.
+                          );
+      return(gs)
+    }
+}
+
+#' Initialize individual latent status (only for JAGS)
+#' 
+#' @details In JAGS 3.4.0, if an initial value contradicts the probablistic specification, e.g.
+#' \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
+#' then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
+#' silver-standard data is 1. Note: this is not a problem in WinBUGS.
+#' 
+#' 
+#' @param MSS a slice of silver-standard measurement; see \code{data_nplcm} argument in
+#' \code{\link{nplcm}}
+#' @param cause_list See \code{model_options} arguments in \code{\link{nplcm}}
+#' @param patho A vector of measured pathogen name for MSS; default is \code{colnames(MSS)}
+#' 
+#' @return a list of numbers, indicating categories of individual latent causes.
+#' 
+#' @export
+
+init_latent_jags <- function(MSS,cause_list,patho=colnames(MSS)){
+  #table(apply(MSS,1,function(v) paste(v,collapse="")))
+  ind_positive <- which( apply(MSS,1,sum)>0)
+  res <- sample.int(length(cause_list),size = nrow(MSS), replace=TRUE)
+  vec <- sapply(ind_positive, function(i) paste(patho[which(MSS[i,]==1)],collapse="+"))
+  res[ind_positive] <- match_cause(cause_list,vec)
+  if (sum(is.na(ind_positive))>0){
+    ind_NA <- which(is.na(ind_positive))
+    stop(paste0("== Case(s) No.: ",paste(ind_NA,collapse=", "), " have positive silver-standard
+                measurements on pathogen combinations not specified in the 'cause_list' of 
+                'model_options$likelihood'! Please consider if you want to delete these cases,
+                or to add these combinations into 'cause_list'.=="))
+  }
+  res
 }
