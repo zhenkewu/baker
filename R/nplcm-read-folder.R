@@ -10,6 +10,8 @@
 #' \item \code{Nd}; \code{Nu}; \code{Y}; \code{Mobs}; 
 #' \item \code{res_nplcm}.
 #' }
+#' @importFrom R2WinBUGS bugs
+#' @importFrom R2jags jags2
 #'
 #' @export
 
