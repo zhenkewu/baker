@@ -1,38 +1,27 @@
-language: c
+language: r
+warnings_are_errors: true
+sudo: required
 
 before_install:
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
-  - chmod 755 ./pkg-build.sh
-  - ./pkg-build.sh bootstrap
- 
-install:
-  # Install bioc deps
-  - ./travis-tool.sh install_r rjags
-  - ./travis-tool.sh install_r R2jags
- 
-script:
-#  - ./travis-tool.sh run_tests
-  - ./pkg-build.sh run_build
-  - ./pkg-build.sh run_check
+  - sudo add-apt-repository ppa:marutter/rrutter -y
+  - sudo apt-get update
+  - sudo apt-get install r-cran-rjags 
 
-after_failure:
-#  - ./travis-tool.sh dump_logs
-  - ./pkg-build.sh dump_logs
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
+   - WARNINGS_ARE_ERRORS=1
+   - R_BUILD_ARGS=--no-manual 
+   - R_CHECK_ARGS=--no-manual --as-cran 
+   
+apt_packages:
+  - libv8-dev
 
-after_script:
-#  - ./travis-tool.sh dump_logs_by_extension "timings"
-#  - ./travis-tool.sh dump_sysinfo
-  - ./pkg-build.sh dump_logs_by_extension "timings"
-  - ./pkg-build.sh dump_sysinfo
+r_packages:
+  - rjags
 
 notifications:
   email:
     on_success: change
     on_failure: change
-
-env:
-  global:
-    - R_BUILD_ARGS="--no-build-vignettes --no-manual --no-resave-data"
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
-    - R_CHECK_TESTS="TRUE"
-    - _R_CHECK_TIMINGS_="0"
+  
