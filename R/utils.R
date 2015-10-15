@@ -1446,6 +1446,8 @@ make_template <- function(patho, cause_list) {
   rownames(template) <- nm_row
   colnames(template) <- nm_col
   
+  template <- matrix(as.integer(template),nrow=nrow(template),ncol=ncol(template))
+  
   template
 }
 

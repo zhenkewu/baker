@@ -435,7 +435,7 @@ nplcm_fit_NoReg<-
                           parameters.to.save = out_parameter,
                           model.file = m.file,
                           working.directory = mcmc_options$result.folder,
-                          n.iter     = mcmc_options$n.itermcmc,
+                          n.iter         = mcmc_options$n.itermcmc,
                           n.burnin       = mcmc_options$n.burnin,
                           n.thin         = mcmc_options$n.thin,
                           n.chains       = mcmc_options$n.chains,
