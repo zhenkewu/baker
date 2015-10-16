@@ -414,7 +414,7 @@ nplcm_fit_NoReg<-
                             model.file = m.file,
                             working.directory=mcmc_options$result.folder,
                             bugs.directory  = mcmc_options$winbugs.dir,  #<- special to WinBUGS.
-                            n.iter     = mcmc_options$n.itermcmc,
+                            n.iter         = mcmc_options$n.itermcmc,
                             n.burnin       = mcmc_options$n.burnin,
                             n.thin         = mcmc_options$n.thin,
                             n.chains       = mcmc_options$n.chains,
@@ -435,17 +435,20 @@ nplcm_fit_NoReg<-
                           parameters.to.save = out_parameter,
                           model.file = m.file,
                           working.directory = mcmc_options$result.folder,
-                          n.iter         = mcmc_options$n.itermcmc,
-                          n.burnin       = mcmc_options$n.burnin,
-                          n.thin         = mcmc_options$n.thin,
-                          n.chains       = mcmc_options$n.chains,
-                          DIC      = FALSE,
-                          clearWD  = FALSE,              #<--- special to JAGS.
-                          jags.path=mcmc_options$jags.dir# <- special to JAGS.
+                          n.iter         = as.integer(mcmc_options$n.itermcmc),
+                          n.burnin       = as.integer(mcmc_options$n.burnin),
+                          n.thin         = as.integer(mcmc_options$n.thin),
+                          n.chains       = as.integer(mcmc_options$n.chains),
+                          DIC            = FALSE,
+                          clearWD        = FALSE,              #<--- special to JAGS.
+                          jags.path      = mcmc_options$jags.dir# <- special to JAGS.
                           );
       return(gs)
     }
 }
+
+
+
 
 #' Initialize individual latent status (only for JAGS)
 #' 
