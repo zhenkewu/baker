@@ -46,7 +46,16 @@ plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
   MBS.case <- curr_MBS[Y==1,index_display]
   MBS.ctrl <- curr_MBS[Y==0,index_display]
   
+  is_jags <- is_jags_folder(DIR_NPLCM)
+  
   MBS.new <- res_nplcm[,grep(paste0("^MBS.new_",slice,"\\["),colnames(res_nplcm))]
+  
+  # to handle JAGS outputs' transposition:
+  if (is_jags){
+    swap_col <- c(sapply(1:(Nd+Nu),function(s) s+((1:JBrS)-1)*(Nd+Nu)))
+    MBS.new  <- MBS.new[,swap_col]
+  }
+  
   Niter   <- nrow(MBS.new)
   
   

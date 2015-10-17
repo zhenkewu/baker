@@ -39,23 +39,27 @@ plot_check_common_pattern <- function(DIR_list,
   name_vec <- vector("list",length(DIR_list))
   # the list of results read from the specified list of directories:
   out      <- vector("list",length(DIR_list))
+  is_jags  <- rep(NA,length(DIR_list))
   for (d in seq_along(DIR_list)){
     curr_dir   <- DIR_list[[d]]
     curr_slice <- slice_vec[d]
     # read NPLCM outputs:
     out[[d]]           <- nplcm_read_folder(curr_dir)
     name_vec[[d]]      <- out[[d]]$clean_options$BrS_objects[[curr_slice]]$patho # <-- it means we need to store clean_options in the result folder.
+    is_jags[d]         <- is_jags_folder(curr_dir)
   }
   
-  if (!(length(unique(name_vec))==1)){stop("==The results under comparison have different BrS measurement names! Please use `slice_vec` to match the names.==")}
+  if (!(length(unique(name_vec))==1)){
+    stop("==The results under comparison have different BrS measurement names! 
+         Please use `slice_vec` to match the names.==")
+    }
   
-  get_top_pattern <- function(curr_out,case_status,slice,n_pat){
+  get_top_pattern <- function(curr_out,case_status,slice,n_pat,curr_is_jags){
     # getting data:
     curr_bugs.dat <- curr_out$bugs.dat
     curr_Nd       <- curr_out$Nd
     curr_Nu       <- curr_out$Nu
     curr_slice    <- slice
-    
     # get observed data:
     curr_observed <- curr_out$Mobs$MBS[[curr_slice]]
     # length of a pattern (e.g., 10001 means length is 5)
@@ -65,8 +69,12 @@ plot_check_common_pattern <- function(DIR_list,
     curr_predicted <- curr_res_nplcm[,grep(paste0("^MBS.new_",curr_slice,"\\["),colnames(curr_res_nplcm)),drop=FALSE]
     NSAMP <- nrow(curr_predicted)
     # organize into an array for easy subsetting (case and control's measurements):
-    curr_predicted_array <- array(curr_predicted,dim=c(NSAMP,len_pat,curr_Nd+curr_Nu)) # <-- first dimension for iterations; second dimension for pathogen measurements; third dimension for individual (cases first and controls).
-    
+    if (!curr_is_jags){
+      curr_predicted_array <- array(curr_predicted,dim=c(NSAMP,len_pat,curr_Nd+curr_Nu)) # <-- first dimension for iterations; second dimension for pathogen measurements; third dimension for individual (cases first and controls).
+    } else{
+      curr_predicted_array <- 
+      curr_predicted_array <- aperm(array(curr_predicted,dim=c(NSAMP,curr_Nd+curr_Nu,len_pat)),c(1,3,2))
+    }
     # subsetting into case or control based on input `case_status`:
     observed  <- curr_observed[curr_Y==case_status,,drop=FALSE]
     predicted <- curr_predicted_array[,,curr_Y==case_status,drop=FALSE]
@@ -139,7 +147,7 @@ plot_check_common_pattern <- function(DIR_list,
     if (case_or_control=="control"){select <- 0}
     
     for (d in seq_along(DIR_list)){
-      out_case_pat       <- get_top_pattern(out[[d]],select,slice_vec[d],n_pat)
+      out_case_pat       <- get_top_pattern(out[[d]],select,slice_vec[d],n_pat,is_jags[d])
       case_res_list[[d]] <- out_case_pat$ppd_pat_ct
       case_res_list[[d]]$DIR <- d 
       case_res_list[[d]]$ITER <- 1:nrow(case_res_list[[d]])

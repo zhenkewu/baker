@@ -405,13 +405,12 @@ nplcm_fit_NoReg<-
     #
     # run the model:
     #
-    m.file   <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name);
     if (!use_jags){
       ##winbugs is the only current option:
       gs <- R2WinBUGS::bugs(data     = in_data,
                             inits    = in_init, 
                             parameters.to.save = out_parameter,
-                            model.file = m.file,
+                            model.file = filename,
                             working.directory=mcmc_options$result.folder,
                             bugs.directory  = mcmc_options$winbugs.dir,  #<- special to WinBUGS.
                             n.iter         = mcmc_options$n.itermcmc,
@@ -433,7 +432,7 @@ nplcm_fit_NoReg<-
       gs <- R2jags::jags2(data   = in_data,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
-                          model.file = m.file,
+                          model.file = filename,
                           working.directory = mcmc_options$result.folder,
                           n.iter         = as.integer(mcmc_options$n.itermcmc),
                           n.burnin       = as.integer(mcmc_options$n.burnin),

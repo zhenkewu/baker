@@ -16,38 +16,37 @@
 #' @export
 
 nplcm_read_folder <- function(DIR_NPLCM){
-  mcmc_options  <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
-  use_jags      <- !is.null(mcmc_options$use_jags) && mcmc_options$use_jags
+  use_jags      <- is_jags_folder(DIR_NPLCM)
   #
   # Read data from DIR_NPLCM:
   #
   if (use_jags){
-    
     new_env <- new.env()
     source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
     bugs.dat <- as.list(new_env)
     rm(new_env)
     res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
-                                 file.path(DIR_NPLCM,"CODAindex.txt"),
-                                 quiet=TRUE)
+                                file.path(DIR_NPLCM,"CODAindex.txt"),
+                                quiet=TRUE)
+    for (bugs.variable.name in names(bugs.dat)) {
+      assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
+    }
+    
   }else{
     bugs.dat <- dget(file.path(DIR_NPLCM,"data.txt"))  
     res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"coda1.txt"),
                                  file.path(DIR_NPLCM,"codaIndex.txt"),
                                  quiet=TRUE)
-  }
-  
-  for (bugs.variable.name in names(bugs.dat)) {
-    if (!use_jags){
-      if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
-        dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
-        bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
-      }
+    # WinBUGS stores objects with transposition, so need to rev or aperm back:
+    for (bugs.variable.name in names(bugs.dat)) {
+        if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
+          dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
+          bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
+        }
+      assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
     }
-    assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
   }
 
-  
   model_options  <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   if (!file.exists(file.path(DIR_NPLCM,"data_clean_options.txt"))){
     stop("=='data_clean_options.txt' does not exist in the result folder. Please 'dput' the clean_options in the result folder. ==")
@@ -187,4 +186,17 @@ get_individual_data <- function(i, data_nplcm){
 }
 
 
+#' See if a result folder is obtained by JAGS
+#' 
+#' 
+#' @param DIR_NPLCM directory to the folder with results. 
+#' "mcmc_options.txt" must be in the folder.
+#' 
+#' @return TRUE for from JAGS; FALSE otherwise.
+#' 
+#' @export
 
+is_jags_folder <- function(DIR_NPLCM){
+  mcmc_options  <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
+  !is.null(mcmc_options$use_jags) && mcmc_options$use_jags
+}
