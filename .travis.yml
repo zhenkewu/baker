@@ -21,9 +21,9 @@ apt_packages:
 
 r_packages:
   - rjags
+  - R2jags
 
 notifications:
   email:
     on_success: change
     on_failure: change
-  
