@@ -559,26 +559,29 @@ get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
   res_ctrl <- matrix(0,nrow = nrow(res_nplcm),ncol=JBrS_curr)
   # formula: fittedmean_case[j] = \sum_e pEti[e]*\sum_k {Eta[e,k]*Theta[j,k]*templateBS[e,j]+Eta[e,k]*Psi[j,k]*(1-templateBS[e,j])}
   for (j in 1:JBrS_curr){
+    # get ThetaBS[j,k]:
+    ind_ThetaBS_tmp <- grep(paste0("^ThetaBS_",slice,"\\[",j,","),colnames(res_nplcm))
+    if (length(ind_ThetaBS_tmp)!=K_curr){stop("== Check `ThetaBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    ThetaBS_tmp <- res_nplcm[,ind_ThetaBS_tmp]
+    # get PsiBS[j,k]:
+    ind_PsiBS_tmp <- grep(paste0("^PsiBS_",slice,"\\[",j,","),colnames(res_nplcm))
+    if (length(ind_PsiBS_tmp)!=K_curr){stop("== Check `PsiBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    PsiBS_tmp <- res_nplcm[,ind_PsiBS_tmp]
+    # get Eta[e,k]:
+    ind_Eta_tmp <- grep(paste0("^Eta_",slice),colnames(res_nplcm))
+    if (length(ind_Eta_tmp)!=K_curr){stop("== Check `Eta` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    Eta_tmp <- res_nplcm[,ind_Eta_tmp]
+    
     term_e <- matrix(0,nrow = nrow(res_nplcm),ncol=Jcause)
+    
     for (e in 1:Jcause){
       # get templateBS[e,j]:
       indBS <- template_ord[e,j]
       # get pEti[e]:
-      ind_pEti_tmp <- grep(paste0("^pEti\\[",e,"\\]$"),colnames(res_nplcm))
+      ind_pEti_tmp <- grep(paste0("^pEti\\[",ord[e],"\\]$"),colnames(res_nplcm))
       if (length(ind_pEti_tmp)!=1){stop("== Error in extracting etiology! ==")}
       pEti_tmp <- res_nplcm[,ind_pEti_tmp]
-      # get ThetaBS[j,k]:
-      ind_ThetaBS_tmp <- grep(paste0("^ThetaBS_",slice,"\\[",j,","),colnames(res_nplcm))
-      if (length(ind_ThetaBS_tmp)!=K_curr){stop("== Check `ThetaBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
-      ThetaBS_tmp <- res_nplcm[,ind_ThetaBS_tmp]
-      # get PsiBS[j,k]:
-      ind_PsiBS_tmp <- grep(paste0("^PsiBS_",slice,"\\[",j,","),colnames(res_nplcm))
-      if (length(ind_PsiBS_tmp)!=K_curr){stop("== Check `PsiBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
-      PsiBS_tmp <- res_nplcm[,ind_PsiBS_tmp]
-      # get Eta[e,k]:
-      ind_Eta_tmp <- grep(paste0("^Eta_",slice),colnames(res_nplcm))
-      if (length(ind_Eta_tmp)!=K_curr){stop("== Check `Eta` extraction from posterior samples! No. of subclasses not matched with specification.==")}
-      Eta_tmp <- res_nplcm[,ind_Eta_tmp]
+
       # calculate by formula:
       for (k in 1:K_curr){
         if (indBS == 1){term_e[,e] <- term_e[,e] + Eta_tmp[,k]*ThetaBS_tmp[,k]}
