@@ -14,7 +14,7 @@ Description: Nested Partially-Latent Class Models (npLCM) for Inference of
     usually call them "population etiology pie" and "individual etiology pie" for 
     their compositional nature, hence the name of the package.
 Depends: 
-    R(>= 3.2), 
+    R(>= 3.2)
 Imports: 
     rjags(>= 3-15),
     R2WinBUGS(>= 2.1),
