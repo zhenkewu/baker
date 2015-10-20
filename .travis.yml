@@ -3,9 +3,6 @@ warnings_are_errors: true
 sudo: required
 
 before_install:
-  - sudo mkdir -p /usr/lib/R/library
-  - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
-  - sudo chmod 2777 /usr/lib/R/library
   - echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
   - sudo add-apt-repository ppa:marutter/rrutter -y
   - sudo apt-get update
@@ -14,7 +11,6 @@ before_install:
 
 env:
  global:
-   - NOT_CRAN = true
    - _R_CHECK_CRAN_INCOMING_=false # should delete this if want CRAN check.
    - WARNINGS_ARE_ERRORS=1
    - R_BUILD_ARGS=--no-manual 
@@ -23,9 +19,8 @@ env:
 apt_packages:
   - libv8-dev
 
-r_packages:
+r_binary_packages:
   - rjags
-  - R2jags
 
 notifications:
   email:
