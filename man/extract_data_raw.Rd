@@ -4,11 +4,11 @@
 \alias{extract_data_raw}
 \title{Convert raw data to analyzable format}
 \usage{
-extract_data_raw(meas_dir, strat_nm, strat_val, meas_object,
+extract_data_raw(dat_prepared, strat_nm, strat_val, meas_object,
   extra_covariates = NULL)
 }
 \arguments{
-\item{meas_dir}{The directory to the data set (.csv)}
+\item{dat_prepared}{The data set prepared in \code{clean_perch_data}}
 
 \item{strat_nm}{The vector of covariate names to separately extract data.
 For example, in PERCH data cleaning, \code{X = c("newSITE","CASECONT")}}

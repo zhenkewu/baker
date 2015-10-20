@@ -6,11 +6,12 @@ before_install:
   - echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
   - sudo add-apt-repository ppa:marutter/rrutter -y
   - sudo apt-get update
-  - sudo apt-get install r-cran-rjags 
+  - sudo apt-get install r-cran-rjags r-cran-R2jags
 
 env:
  global:
    - NOT_CRAN = true
+   - CRAN: http://cran.rstudio.com
    - _R_CHECK_CRAN_INCOMING_=false # should delete this if want CRAN check.
    - WARNINGS_ARE_ERRORS=1
    - R_BUILD_ARGS=--no-manual 

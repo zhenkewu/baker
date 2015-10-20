@@ -92,10 +92,10 @@ clean_perch_data <- function(clean_options) {
   colnames(PERCH_data_with_newSITE) <- cleanName
   
   # write cleaned data into working directory:
-  meas_dir <-
-    file.path(dirname(raw_meas_dir),paste0("prepared_",basename(raw_meas_dir)))
-  write.csv(PERCH_data_with_newSITE, meas_dir, row.names = FALSE)
-  rm(PERCH_data_with_newSITE)
+  #meas_dir <-
+  #  file.path(dirname(raw_meas_dir),paste0("prepared_",basename(raw_meas_dir)))
+  #write.csv(PERCH_data_with_newSITE, meas_dir, row.names = FALSE)
+  #rm(PERCH_data_with_newSITE)
   
   #
   # read in prepared data:
@@ -112,12 +112,12 @@ clean_perch_data <- function(clean_options) {
   # get data for cases and controls
   datacase <-
     extract_data_raw(
-      meas_dir,X_strat_nm_tmp_case,X_strat_val_tmp_case,
+      PERCH_data_with_newSITE,X_strat_nm_tmp_case,X_strat_val_tmp_case,
       c(BrS_objects,SS_objects),X_extra
     )
   datactrl <-
     extract_data_raw(
-      meas_dir,X_strat_nm_tmp_ctrl,X_strat_val_tmp_ctrl,
+      PERCH_data_with_newSITE,X_strat_nm_tmp_ctrl,X_strat_val_tmp_ctrl,
       c(BrS_objects,SS_objects),X_extra
     )
   
@@ -215,7 +215,7 @@ make_meas_object <-
 
 #' Convert raw data to analyzable format
 #'
-#' @param meas_dir  The directory to the data set (.csv)
+#' @param dat_prepared  The data set prepared in \code{clean_perch_data}
 #' @param strat_nm        The vector of covariate names to separately extract data.
 #'    For example, in PERCH data cleaning, \code{X = c("newSITE","CASECONT")}
 #' @param strat_val     The list of covariate values to stratify data.
@@ -243,11 +243,11 @@ make_meas_object <-
 #'
 #' @export
 
-extract_data_raw <- function(meas_dir,strat_nm,strat_val,
+extract_data_raw <- function(dat_prepared,strat_nm,strat_val,
                              meas_object,
                              extra_covariates = NULL) {
-  dat_prepared <-
-    read.csv(meas_dir,header = TRUE,stringsAsFactors = FALSE)
+  #dat_prepared <-
+  #  read.csv(meas_dir,header = TRUE,stringsAsFactors = FALSE)
   cleanName    <- colnames(dat_prepared)
   ind_this_strat  <- 1:nrow(dat_prepared)
   for (j in 1:length(strat_nm)) {
