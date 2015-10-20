@@ -1,28 +1,29 @@
+# Sample .travis.yml for R projects
+
 language: r
 warnings_are_errors: true
 sudo: required
 
 before_install:
-  - echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
   - sudo add-apt-repository ppa:marutter/rrutter -y
   - sudo apt-get update
-  - sudo apt-get install r-cran-rjags
-  
+  - sudo apt-get install r-cran-rjags 
 
 env:
  global:
-   - _R_CHECK_CRAN_INCOMING_=false # should delete this if want CRAN check.
+   - CRAN: http://cran.rstudio.com
    - WARNINGS_ARE_ERRORS=1
    - R_BUILD_ARGS=--no-manual 
    - R_CHECK_ARGS=--no-manual --as-cran 
-   
+
 apt_packages:
   - libv8-dev
 
-r_binary_packages:
+r_packages:
   - rjags
 
 notifications:
   email:
     on_success: change
     on_failure: change
+    
