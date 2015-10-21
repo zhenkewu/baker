@@ -5,7 +5,7 @@
 \title{Obtain direct bias that measure the discrepancy of a posterior
 distribution of pie and a true pie.}
 \usage{
-get_direct_bias(DIR_list, truth = NULL)
+get_direct_bias(DIR_list, truth = NULL, silent = FALSE)
 }
 \arguments{
 \item{DIR_list}{The list of  where Bayesian results are stored}
@@ -13,6 +13,8 @@ get_direct_bias(DIR_list, truth = NULL)
 \item{truth}{True etiologic fraction vector (must sum to 1)  used to generate data;
 Default is \code{NULL}. If a vector is supplied, then only the frist path in \code{DIR_LIST}
 is used.}
+
+\item{silent}{Default is FALSE. To suppress printing messages, set to TRUE.}
 }
 \value{
 a list of length two. \code{diff} is the direct differences;

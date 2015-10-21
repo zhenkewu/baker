@@ -87,13 +87,14 @@ get_metric <- function(DIR_NPLCM,truth){
 #' @param truth True etiologic fraction vector (must sum to 1)  used to generate data;
 #' Default is \code{NULL}. If a vector is supplied, then only the frist path in \code{DIR_LIST}
 #' is used.
+#' @param silent Default is FALSE. To suppress printing messages, set to TRUE.
 #' 
 #' @importFrom robCompositions cenLR
 #' @return a list of length two. \code{diff} is the direct differences; 
 #' \code{prb} is the percent relative bias.
 #' @export
 #'
-get_direct_bias <- function(DIR_list,truth=NULL){
+get_direct_bias <- function(DIR_list,truth=NULL,silent=FALSE){
 
   symdiff <- function( x, y) { setdiff( union(x, y), intersect(x, y))}
   
@@ -112,7 +113,9 @@ get_direct_bias <- function(DIR_list,truth=NULL){
     different_names <- symdiff(out_list[[1]]$model_options$likelihood$cause_list,out_list[[2]]$model_options$likelihood$cause_list)
     if (length(different_names) > 0 ){stop("==Two folders have different latent category names!==")}
     
-    print("==The first folder in 'DIR_LIST' is used as reference for calculating relative bias. ==")
+    if(!silent){
+      print("==The first folder in 'DIR_LIST' is used as reference for calculating relative bias. ==")
+    }
     # plain difference:
     diff_mat <- pEti_samp_list[[2]]$pEti_mat - pEti_samp_list[[1]]$pEti_mat
     diff     <- colMeans(diff_mat)
@@ -126,7 +129,7 @@ get_direct_bias <- function(DIR_list,truth=NULL){
   }
   
   if (!is.null(truth)){
-    print("==Only the first folder in 'DIR_LIST' is used to compare with 'truth'!==")
+    if(!silent){print("==Only the first folder in 'DIR_LIST' is used to compare with 'truth'!==")}
     # read from folders:
     out_list <- vector("list",length(DIR_list))
     base_nm  <- lapply(DIR_list,basename)
