@@ -89,7 +89,6 @@ get_metric <- function(DIR_NPLCM,truth){
 #' is used.
 #' @param silent Default is FALSE. To suppress printing messages, set to TRUE.
 #' 
-#' @importFrom robCompositions cenLR
 #' @return a list of length two. \code{diff} is the direct differences; 
 #' \code{prb} is the percent relative bias.
 #' @export
@@ -158,4 +157,33 @@ get_direct_bias <- function(DIR_list,truth=NULL,silent=FALSE){
   }
 }
 
-
+#' Obtain coverage status from a result folder
+#'
+#' @param DIR_NPLCM Path to where Bayesian results are stored
+#' @param truth True etiologic fraction vector (must sum to 1)  used to generate data.
+#' 
+#' @examples 
+#' \dontrun{
+#' DIR_NPLCM <- "~/downloads/rep_1_kfit_2/"  
+#' truth     <- c(0.5,0.2,0.15,0.1,0.05)
+#' get_coverage(DIR_NPLCM,truth)
+#' }
+#' @return A logic vector of length as \code{truth}. 1 for covered; 0 for not.
+#' @export
+#'
+get_coverage <- function(DIR_NPLCM,truth){
+    # read from folders:
+    out       <- nplcm_read_folder(DIR_NPLCM)
+    pEti_samp <- get_pEti_samp(out$res_nplcm,out$model_options)
+    
+    if (length(out$model_options$likelihood$cause_list) != length(truth)){
+      stop("==Results and truth have different number of latent categories! ==")
+    }
+    
+    # plain difference:
+    diff_mat <- pEti_samp$pEti_mat - t(replicate(nrow(pEti_samp$pEti_mat),truth))
+    UL <- apply(diff_mat,2,quantile,0.975)
+    LL <- apply(diff_mat,2,quantile,0.025)
+    res <- (UL>=0 & LL <=0)
+    return(res)
+}
