@@ -16,6 +16,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #'that stores the display order of pathogens in the combined music sheet plot.
 #'
 #'@param dodge_val default is 0.5; for width and position of boxplots.
+#'@param right_panel default is \code{TRUE}, for bacterial, viral, combo, other groupings. 
+#'Set to \code{FALSE} if not wanted. 
 #' 
 #'@import ggplot2
 #'@import reshape2
@@ -38,7 +40,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #'
 plot_etiology_side_by_side <- function(DIR_list,
                                        DIR_pathogen_displayorder_lookup,
-                                       dodge_val = 0.5){
+                                       dodge_val = 0.5,
+                                       right_panel = TRUE){
   old_par <- par(par("mfrow", "mar"))
   on.exit(par(old_par))
   ## read in pathogen display order lookup table:
@@ -99,18 +102,20 @@ plot_etiology_side_by_side <- function(DIR_list,
   
   res_cbind <- do.call(rbind,res)
   
-  ind_virus <- get_cause_by_taxo_group(read_names,"virus",pathogen_displayorder_lookup)
-  ind_bact  <- get_cause_by_taxo_group(read_names,"bacterium",pathogen_displayorder_lookup)
-  ind_combo <- get_cause_by_taxo_group(read_names, "combo",pathogen_displayorder_lookup)
-  ind_other <- which(read_names=="other")
-  
-  res_cbind$Virus <- rowSums(res_cbind[,ind_virus,drop=FALSE])
-  res_cbind$Bacteria  <- rowSums(res_cbind[,ind_bact,drop=FALSE])
-  if (length(ind_combo)>0){
-  res_cbind$Combo <- rowSums(res_cbind[,ind_combo,drop=FALSE])
+  if (right_panel){
+      ind_virus <- get_cause_by_taxo_group(read_names,"virus",pathogen_displayorder_lookup)
+      ind_bact  <- get_cause_by_taxo_group(read_names,"bacterium",pathogen_displayorder_lookup)
+      ind_combo <- get_cause_by_taxo_group(read_names, "combo",pathogen_displayorder_lookup)
+      ind_other <- which(read_names=="other")
+      
+      res_cbind$Virus <- rowSums(res_cbind[,ind_virus,drop=FALSE])
+      res_cbind$Bacteria  <- rowSums(res_cbind[,ind_bact,drop=FALSE])
+      if (length(ind_combo)>0){
+      res_cbind$Combo <- rowSums(res_cbind[,ind_combo,drop=FALSE])
+      }
+      if (length(ind_other)>0)
+      res_cbind$Other <- rowSums(res_cbind[,ind_other,drop=FALSE])
   }
-  if (length(ind_other)>0)
-  res_cbind$Other <- rowSums(res_cbind[,ind_other,drop=FALSE])
   
   # first build some functions to summarize posterior distribution 
   # (following ggplot2 syntax):
