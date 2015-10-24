@@ -162,8 +162,11 @@ plot_etiology_side_by_side <- function(DIR_list,
           legend.title = element_text(size=16,face="bold"),legend.position = "top",
           axis.title   = element_text(size=16,face="bold"),
           axis.text.x = element_text(angle=40, vjust=.8, hjust=1.01,size=16,face="bold"))+
-    scale_y_continuous(limits = c(0,ymax))+
-    geom_vline(xintercept=length(read_names)+.5,linetype = "longdash")
+    scale_y_continuous(limits = c(0,ymax))
+  if (right_panel){
+      gg <- gg+
+        geom_vline(xintercept=length(read_names)+.5,linetype = "longdash")
+  }
   gg
   
 }
