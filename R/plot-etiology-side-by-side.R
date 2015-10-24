@@ -106,7 +106,9 @@ plot_etiology_side_by_side <- function(DIR_list,
   
   res_cbind$Virus <- rowSums(res_cbind[,ind_virus,drop=FALSE])
   res_cbind$Bacteria  <- rowSums(res_cbind[,ind_bact,drop=FALSE])
+  if (length(ind_combo)>0){
   res_cbind$Combo <- rowSums(res_cbind[,ind_combo,drop=FALSE])
+  }
   if (length(ind_other)>0)
   res_cbind$Other <- rowSums(res_cbind[,ind_other,drop=FALSE])
   
