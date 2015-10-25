@@ -72,7 +72,6 @@ plot_check_common_pattern <- function(DIR_list,
     if (!curr_is_jags){
       curr_predicted_array <- array(curr_predicted,dim=c(NSAMP,len_pat,curr_Nd+curr_Nu)) # <-- first dimension for iterations; second dimension for pathogen measurements; third dimension for individual (cases first and controls).
     } else{
-      curr_predicted_array <- 
       curr_predicted_array <- aperm(array(curr_predicted,dim=c(NSAMP,curr_Nd+curr_Nu,len_pat)),c(1,3,2))
     }
     # subsetting into case or control based on input `case_status`:

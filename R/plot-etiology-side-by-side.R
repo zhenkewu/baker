@@ -84,7 +84,6 @@ plot_etiology_side_by_side <- function(DIR_list,
   # get combined pEti samples listed by the combo sizes:
   res_all_combo <- vector("list",length(unique(fitted_num)))
   
-  
   res   <- vector("list",NDIR)  
   for (d in seq_along(DIR_list)){
     NSAMP       <- nrow(out_list[[d]]$res_nplcm) # no. of retained MCMC iterations.
