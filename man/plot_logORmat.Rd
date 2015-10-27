@@ -26,13 +26,11 @@ Visualize pairwise log odds ratios (LOR) for data that are available in
 both cases and controls
 }
 \details{
-\code{plot_logORmat} visualizes a matrix of values (log odds ratios here).
-Cases' values are on upper right and controls on lower
-left. Log odds ratio (LOR) is at the top of the cell.  Below it, its standard
-error is in smaller type, using the same color as the LOR.  Then the
-estimate is divided by its standard error. If it is less than 1 in
-absolute value, we put a plus (red) or minus (blue) when
-the Z-stat is between 1-2 in absolute value and put the actual
-value when the Z is greater than 2.
+\code{plot_logORmat} visualizes a matrix of pairwise log odds ratios (LOR)
+ for cases (upper) and controls (lower). LOR is at the top of the cell.
+ Below it, its standard error is in smaller type, using the same color as the LOR.
+ Then the estimate is divided by its standard error. We put the actual value when
+  the Z-statistics has an absolute value greater than $2$; a plus (red) or minus (blue)
+ if between $1$ and $2$; blank otherwise.
 }
 
