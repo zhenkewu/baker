@@ -34,7 +34,6 @@ plot_check_common_pattern <- function(DIR_list,
                                       slice_vec = rep(1,length(DIR_list)),
                                       n_pat     = 10,
                                       dodge_val = 0.8){
-  
   # read in data:
   # names of the measurements for the selected slice:
   name_vec <- vector("list",length(DIR_list))
@@ -93,7 +92,7 @@ plot_check_common_pattern <- function(DIR_list,
     n_missing         <- sum(pat[ind_missing])  # the total number of individuals with missing measurements.
     n_pat_no_missing  <- length(pat)-length(ind_missing)
     
-    if (n_pat > 2^ncol(observed)){ # if n_pat is larger than possible combinations:
+    if (n_pat >= 2^ncol(observed)){ # if n_pat is larger than possible combinations:
       n_pat_used <- max(length(unique(c(predicted_pat))), n_pat_no_missing)
     
       if (n_pat_no_missing < length(unique(c(predicted_pat)))){
