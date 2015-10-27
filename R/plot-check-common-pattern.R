@@ -51,7 +51,7 @@ plot_check_common_pattern <- function(DIR_list,
   
   if (!(length(unique(name_vec))==1)){
     stop("==The results under comparison have different BrS measurement names! 
-         Please use `slice_vec` to match the names.==")
+         Please use `slice_vec` to match the names.==\n")
     }
   
   get_top_pattern <- function(curr_out,case_status,slice,n_pat,curr_is_jags){
@@ -228,7 +228,7 @@ plot_check_common_pattern <- function(DIR_list,
     gg1
   }
   
-  cat("==Plotting for model checking: frequent BrS measurements patterns. ==")
+  cat("==Plotting for model checking: frequent BrS measurements patterns. ==\n")
   gg1 <- plot_ppd(DIR_list,"case")
   gg0 <- plot_ppd(DIR_list,"control")
   grid.arrange(gg1,gg0,ncol=2)
