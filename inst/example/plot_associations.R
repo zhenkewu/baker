@@ -17,6 +17,9 @@ it <- layout(matrix(1:J^2,nrow=J,ncol=J,byrow=TRUE),
 
 par(oma=c(8,10,8,3));  
 
+pch_seq_cause <- LETTERS[1:J]
+lty_seq_cause <- 1+(1:J)
+pch_pos_seq   <- c(0.01); gap = 0.15
 adj_seq <- c(0.15,0.5,0.85) # for roman numerals:
 cex1       <- 2
 cex_label1 <- 1
@@ -88,6 +91,9 @@ for (scn in c(1,2,3)){
  logOR_lim <- c(-2.15,2.15)
  col_seq <- c("dodgerblue2","orange")
  logOR_seq <- log(c(0.25,0.5,1,2,4))
+ pick_one <- 3
+
+ print(paste0("==Shading pairs of ",pch_seq_cause[pick_one]," and others.==="))
  for (j in 1:J){
    for (l in 1:J){
      
@@ -154,6 +160,22 @@ for (scn in c(1,2,3)){
        if (j==5){
          mtext(expression(lambda[o]),side=1,line=4,cex=cex_label1)
        }
+       
+       if ((j<l) && (l==pick_one | j==pick_one )){
+         # add shading cells for oen picked pathogen among cases:
+         color <- rgb(190, 190, 190, alpha=80, maxColorValue=255)
+         rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], density = 100, col = color)
+         
+         matplot(res_cond[j,l,,],type="l",add=TRUE,lwd=2,col=col_seq_cause,lty=lty_seq_cause)
+         for (ell in 1:J){
+           where_add_letter <- quantile(seq_along(subclass_mix_seq),pch_pos_seq+gap*ell)
+           points(where_add_letter, res_cond[j,l,where_add_letter,ell], pch=pch_seq_cause[ell])
+         }
+         mtext(paste0("(",set_parameter$pathogen_BrS[lab_ord[1]],",", 
+                      set_parameter$pathogen_BrS[lab_ord[2]],")"), 
+               side=3, adj=0.1,line=-2)
+       }
+       
      }else{
        
        plot(1, type="n", axes=FALSE, xlab="", ylab="", bty="n",
