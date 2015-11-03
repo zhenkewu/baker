@@ -412,7 +412,7 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' 
 
 
-add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
+add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separated case and controls subclass weights.
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
   template_BrS_list <-
@@ -429,6 +429,8 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
   Lambda0_nm <- paste("Lambda0",seq_along(BrS_nm),sep="_")#
   r0_nm <- paste("r0",seq_along(BrS_nm),sep="_")#
   alphadp0_nm <- paste("alphadp0",seq_along(BrS_nm),sep="_")#
+  alphadp0_case_nm <- paste("alphadp0_case",seq_along(BrS_nm),sep="_")# <--- cases' subclass weights.
+  
   Eta0_nm <- paste("Eta0",seq_along(BrS_nm),sep="_")#
   r1_nm <- paste("r1",seq_along(BrS_nm),sep="_")#
   Eta_nm <- paste("Eta",seq_along(BrS_nm),sep="_")#
@@ -469,13 +471,14 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) {
     ",r1_nm[s],"[",K_nm[s],"]<-1
     for(j in 2:",K_nm[s],") {",Eta0_nm[s],"[j]<-",r1_nm[s],"[j]*(1-",r1_nm[s],"[j-1])*",Eta0_nm[s],"[j-1]/",r1_nm[s],"[j-1]}
     for(k in 1:",K_nm[s],"-1){
-          ",r1_nm[s],"[k]~dbeta(1,",alphadp0_nm[s],")I(0.000001,0.999999)
+          ",r1_nm[s],"[k]~dbeta(1,",alphadp0_case_nm[s],")I(0.000001,0.999999)
     }
     
     for (k in 1:",K_nm[s],"-1){",Eta_nm[s],"[k]<-max(0.000001,min(0.999999,",Eta0_nm[s],"[k]))}
     ",Eta_nm[s],"[",K_nm[s],"]<-1-sum(",Eta_nm[s],"[1:(",K_nm[s],"-1)])
     
     ",alphadp0_nm[s],"~dgamma(.25,.25)I(0.001,20)
+    ",alphadp0_case_nm[s],"~dgamma(.25,.25)I(0.001,20)
     
     #########################
     ## priors on TPR and FPR:
@@ -1110,6 +1113,8 @@ add_meas_BrS_param_Nest_Slice_jags <- function(s,Mobs,cause_list) {
   Lambda0_nm <- paste("Lambda0",seq_along(BrS_nm),sep="_")#
   r0_nm <- paste("r0",seq_along(BrS_nm),sep="_")#
   alphadp0_nm <- paste("alphadp0",seq_along(BrS_nm),sep="_")#
+  alphadp0_case_nm <- paste("alphadp0_case",seq_along(BrS_nm),sep="_")# <--- added case subclass weights.
+  
   Eta0_nm <- paste("Eta0",seq_along(BrS_nm),sep="_")#
   r1_nm <- paste("r1",seq_along(BrS_nm),sep="_")#
   Eta_nm <- paste("Eta",seq_along(BrS_nm),sep="_")#
@@ -1143,13 +1148,14 @@ add_meas_BrS_param_Nest_Slice_jags <- function(s,Mobs,cause_list) {
     ",r1_nm[s],"[",K_nm[s],"]<-1
     for(j in 2:",K_nm[s],") {",Eta0_nm[s],"[j]<-",r1_nm[s],"[j]*(1-",r1_nm[s],"[j-1])*",Eta0_nm[s],"[j-1]/",r1_nm[s],"[j-1]}
     for(k in 1:",K_nm[s],"-1){
-    ",r1_nm[s],"[k]~dbeta(1,",alphadp0_nm[s],")T(0.000001,0.999999)
+    ",r1_nm[s],"[k]~dbeta(1,",alphadp0_case_nm[s],")T(0.000001,0.999999)
     }
     
     for (k in 1:",K_nm[s],"-1){",Eta_nm[s],"[k]<-max(0.000001,min(0.999999,",Eta0_nm[s],"[k]))}
     ",Eta_nm[s],"[",K_nm[s],"]<-1-sum(",Eta_nm[s],"[1:(",K_nm[s],"-1)])
     
     ",alphadp0_nm[s],"~dgamma(.25,.25)T(0.001,20)
+    ",alphadp0_case_nm[s],"~dgamma(.25,.25)T(0.001,20)
     
     #########################
     ## priors on TPR and FPR:

@@ -51,7 +51,7 @@ plot_check_common_pattern <- function(DIR_list,
   
   if (!(length(unique(name_vec))==1)){
     stop("==The results under comparison have different BrS measurement names! 
-         Please use `slice_vec` to match the names.==")
+         Please use `slice_vec` to match the names.==\n")
     }
   
   get_top_pattern <- function(curr_out,case_status,slice,n_pat,curr_is_jags){
@@ -72,7 +72,6 @@ plot_check_common_pattern <- function(DIR_list,
     if (!curr_is_jags){
       curr_predicted_array <- array(curr_predicted,dim=c(NSAMP,len_pat,curr_Nd+curr_Nu)) # <-- first dimension for iterations; second dimension for pathogen measurements; third dimension for individual (cases first and controls).
     } else{
-      curr_predicted_array <- 
       curr_predicted_array <- aperm(array(curr_predicted,dim=c(NSAMP,curr_Nd+curr_Nu,len_pat)),c(1,3,2))
     }
     # subsetting into case or control based on input `case_status`:
@@ -85,45 +84,95 @@ plot_check_common_pattern <- function(DIR_list,
     }
     
     observed_pat  <- collapse_byrow(observed)
-    predicted_pat <- as.matrix(apply(predicted,3,collapse_byrow))
+    predicted_pat <- as.matrix(apply(predicted,3,collapse_byrow)) # <---- time consuming!
     
     # counting patterns:
     pat               <- sort(table(observed_pat),decreasing=TRUE) # observed patten.
-    n_pat_used        <- min(n_pat,length(pat)) # actually used pattern number.
     ind_missing       <- grep("\\.",names(pat)) # pick out patterns with missing measurements.
     n_missing         <- sum(pat[ind_missing])  # the total number of individuals with missing measurements.
-    pat_high_frac     <- pat[1:n_pat_used]/(length(observed_pat)-n_missing) # divide by no. of individuals with complete measurements.
-    pat_high_frac_no_missing     <- pat_high_frac
-    if (length(ind_missing)){
-      pat_high_frac_no_missing     <- pat_high_frac[-ind_missing] # delete patterns with missingness.
-    }
-    pat_high_name_no_missing     <- names(pat_high_frac_no_missing) # get names to display in the plot.
+    n_pat_no_missing  <- length(pat)-length(ind_missing)
     
-    n_pat_used_no_missing <- length(pat_high_name_no_missing) # the length of patterns without missingness.
+    if (n_pat >= 2^ncol(observed)){ # if n_pat is larger than possible combinations:
+      n_pat_used <- max(length(unique(c(predicted_pat))), n_pat_no_missing)
     
-    ppd_pat_ct  <- matrix(NA,nrow=NSAMP,ncol=n_pat_used_no_missing)
-    exist_other <- (length(pat)-length(ind_missing))>0
-    if (exist_other){
-      ppd_pat_ct <- matrix(NA,nrow=NSAMP,ncol=n_pat_used_no_missing+1) # the extra column for "other" patterns.
-    }
-    ppd_pat_ct <- as.data.frame(ppd_pat_ct)
-    for (iter in 1:NSAMP){
-      ppd_pat_table <- table(predicted_pat[iter,])
-      curr_ct <- (sapply(pat_high_name_no_missing,function(x) {
-        indtmp <- names(ppd_pat_table)==x
-        if (sum(indtmp)==0){
-          res <- 0
-        } else{
-          res <- ppd_pat_table[indtmp]
-        }     
-        res
+      if (n_pat_no_missing < length(unique(c(predicted_pat)))){
+        n_pat_used        <- n_pat_no_missing # actually used pattern number.
+        
+        pat_high_frac     <- pat[1:n_pat_used]/(length(observed_pat)-n_missing) # divide by no. of individuals with complete measurements.
+        pat_high_frac_no_missing  <- pat_high_frac; 
+        if (length(ind_missing)){pat_high_frac_no_missing <- pat_high_frac[-ind_missing]} # delete patterns with missingness.
+        pat_high_name_no_missing     <- names(pat_high_frac_no_missing) # get names to display in the plot.
+        exist_other  <- TRUE
+        ppd_pat_ct  <- matrix(NA,nrow=NSAMP,ncol=n_pat_used+1);ppd_pat_ct <- as.data.frame(ppd_pat_ct)
+        for (iter in 1:NSAMP){
+          ppd_pat_table <- table(predicted_pat[iter,])
+          curr_ct <- (sapply(pat_high_name_no_missing,function(x) {
+            indtmp <- names(ppd_pat_table)==x
+            if (sum(indtmp)==0){
+              res <- 0
+            } else{
+              res <- ppd_pat_table[indtmp]
+            }     
+            res
+          }
+          ))
+          ppd_pat_ct[iter,1:n_pat_used] <- curr_ct/ncol(predicted_pat)
+          ppd_pat_ct[iter,n_pat_used+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
+        }
+      } else{
+        n_pat_used        <- length(unique(c(predicted_pat))) # actually used pattern number.
+        pat_high_frac     <- pat[1:min(n_pat_no_missing,n_pat_used)]/(length(observed_pat)-n_missing) # divide by no. of individuals with complete measurements.
+        pat_high_frac_no_missing  <- pat_high_frac; 
+        if (length(ind_missing)){pat_high_frac_no_missing <- pat_high_frac[-ind_missing]} # delete patterns with missingness.
+        pat_high_name_no_missing     <- names(pat_high_frac_no_missing) # get names to display in the plot.
+        exist_other  <- FALSE
+        ppd_pat_ct  <- matrix(NA,nrow=NSAMP,ncol=n_pat_used);ppd_pat_ct <- as.data.frame(ppd_pat_ct)
+        for (iter in 1:NSAMP){
+          ppd_pat_table <- table(predicted_pat[iter,])
+          curr_ct <- (sapply(pat_high_name_no_missing,function(x) {
+            indtmp <- names(ppd_pat_table)==x
+            if (sum(indtmp)==0){
+              res <- 0
+            } else{
+              res <- ppd_pat_table[indtmp]
+            }     
+            res
+          }
+          ))
+          ppd_pat_ct[iter,1:n_pat_used] <- curr_ct/ncol(predicted_pat)
+        }
       }
-      ))
-      ppd_pat_ct[iter,1:n_pat_used_no_missing] <- curr_ct/ncol(predicted_pat)
-      if (exist_other){
-        ppd_pat_ct[iter,n_pat_used_no_missing+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
-      }
+      
     }
+    if (n_pat < max(length(unique(c(predicted_pat))), n_pat_no_missing)){
+      n_pat_used <- n_pat
+      exist_other<- TRUE
+  
+      pat_high_frac     <- pat[1:n_pat_used]/(length(observed_pat)-n_missing) # divide by no. of individuals with complete measurements.
+      pat_high_frac_no_missing  <- pat_high_frac; 
+      if (length(ind_missing)){pat_high_frac_no_missing <- pat_high_frac[-ind_missing]} # delete patterns with missingness.
+      pat_high_name_no_missing     <- names(pat_high_frac_no_missing) # get names to display in the plot.
+      ppd_pat_ct  <- matrix(NA,nrow=NSAMP,ncol=n_pat_used+1);ppd_pat_ct <- as.data.frame(ppd_pat_ct)
+      for (iter in 1:NSAMP){
+        ppd_pat_table <- table(predicted_pat[iter,])
+        curr_ct <- (sapply(pat_high_name_no_missing,function(x) {
+          indtmp <- names(ppd_pat_table)==x
+          if (sum(indtmp)==0){
+            res <- 0
+          } else{
+            res <- ppd_pat_table[indtmp]
+          }     
+          res
+        }
+        ))
+        ppd_pat_ct[iter,1:n_pat_used] <- curr_ct/ncol(predicted_pat)
+        ppd_pat_ct[iter,n_pat_used+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
+      }
+      
+    }
+    
+    
+    
     colnames(ppd_pat_ct) <- c(1:length(pat_high_name_no_missing))
     pattern_names        <- c(pat_high_name_no_missing)
     obs_pat              <- pat_high_frac_no_missing
@@ -229,7 +278,7 @@ plot_check_common_pattern <- function(DIR_list,
     gg1
   }
   
-  cat("==Plotting for model checking: frequent BrS measurements patterns. ==")
+  cat("==Plotting for model checking: frequent BrS measurements patterns. ==\n")
   gg1 <- plot_ppd(DIR_list,"case")
   gg0 <- plot_ppd(DIR_list,"control")
   grid.arrange(gg1,gg0,ncol=2)

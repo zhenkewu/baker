@@ -3,7 +3,7 @@ baker.Rproj
 .Rhistory
 .RData
 .pdf
-.DS_Store .
+.DS_Store
 inst/doc
 dev-notes/
 vignettes/

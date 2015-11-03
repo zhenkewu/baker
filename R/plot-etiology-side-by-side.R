@@ -16,6 +16,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #'that stores the display order of pathogens in the combined music sheet plot.
 #'
 #'@param dodge_val default is 0.5; for width and position of boxplots.
+#'@param right_panel default is \code{TRUE}, for bacterial, viral, combo, other groupings. 
+#'Set to \code{FALSE} if not wanted. 
 #' 
 #'@import ggplot2
 #'@import reshape2
@@ -38,7 +40,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #'
 plot_etiology_side_by_side <- function(DIR_list,
                                        DIR_pathogen_displayorder_lookup,
-                                       dodge_val = 0.5){
+                                       dodge_val = 0.5,
+                                       right_panel = TRUE){
   old_par <- par(par("mfrow", "mar"))
   on.exit(par(old_par))
   ## read in pathogen display order lookup table:
@@ -81,7 +84,6 @@ plot_etiology_side_by_side <- function(DIR_list,
   # get combined pEti samples listed by the combo sizes:
   res_all_combo <- vector("list",length(unique(fitted_num)))
   
-  
   res   <- vector("list",NDIR)  
   for (d in seq_along(DIR_list)){
     NSAMP       <- nrow(out_list[[d]]$res_nplcm) # no. of retained MCMC iterations.
@@ -99,16 +101,20 @@ plot_etiology_side_by_side <- function(DIR_list,
   
   res_cbind <- do.call(rbind,res)
   
-  ind_virus <- get_cause_by_taxo_group(read_names,"virus",pathogen_displayorder_lookup)
-  ind_bact  <- get_cause_by_taxo_group(read_names,"bacterium",pathogen_displayorder_lookup)
-  ind_combo <- get_cause_by_taxo_group(read_names, "combo",pathogen_displayorder_lookup)
-  ind_other <- which(read_names=="other")
-  
-  res_cbind$Virus <- rowSums(res_cbind[,ind_virus,drop=FALSE])
-  res_cbind$Bacteria  <- rowSums(res_cbind[,ind_bact,drop=FALSE])
-  res_cbind$Combo <- rowSums(res_cbind[,ind_combo,drop=FALSE])
-  if (length(ind_other)>0)
-  res_cbind$Other <- rowSums(res_cbind[,ind_other,drop=FALSE])
+  if (right_panel){
+      ind_virus <- get_cause_by_taxo_group(read_names,"virus",pathogen_displayorder_lookup)
+      ind_bact  <- get_cause_by_taxo_group(read_names,"bacterium",pathogen_displayorder_lookup)
+      ind_combo <- get_cause_by_taxo_group(read_names, "combo",pathogen_displayorder_lookup)
+      ind_other <- which(read_names=="other")
+      
+      res_cbind$Virus <- rowSums(res_cbind[,ind_virus,drop=FALSE])
+      res_cbind$Bacteria  <- rowSums(res_cbind[,ind_bact,drop=FALSE])
+      if (length(ind_combo)>0){
+      res_cbind$Combo <- rowSums(res_cbind[,ind_combo,drop=FALSE])
+      }
+      if (length(ind_other)>0)
+      res_cbind$Other <- rowSums(res_cbind[,ind_other,drop=FALSE])
+  }
   
   # first build some functions to summarize posterior distribution 
   # (following ggplot2 syntax):
@@ -155,8 +161,11 @@ plot_etiology_side_by_side <- function(DIR_list,
           legend.title = element_text(size=16,face="bold"),legend.position = "top",
           axis.title   = element_text(size=16,face="bold"),
           axis.text.x = element_text(angle=40, vjust=.8, hjust=1.01,size=16,face="bold"))+
-    scale_y_continuous(limits = c(0,ymax))+
-    geom_vline(xintercept=length(read_names)+.5,linetype = "longdash")
+    scale_y_continuous(limits = c(0,ymax))
+  if (right_panel){
+      gg <- gg+
+        geom_vline(xintercept=length(read_names)+.5,linetype = "longdash")
+  }
   gg
   
 }

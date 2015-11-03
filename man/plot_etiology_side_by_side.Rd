@@ -5,7 +5,7 @@
 \title{compare the posterior distribution of population etiologies side-by-side}
 \usage{
 plot_etiology_side_by_side(DIR_list, DIR_pathogen_displayorder_lookup,
-  dodge_val = 0.5)
+  dodge_val = 0.5, right_panel = TRUE)
 }
 \arguments{
 \item{DIR_list}{The list of directory paths, each storing a model output.}
@@ -14,6 +14,9 @@ plot_etiology_side_by_side(DIR_list, DIR_pathogen_displayorder_lookup,
 that stores the display order of pathogens in the combined music sheet plot.}
 
 \item{dodge_val}{default is 0.5; for width and position of boxplots.}
+
+\item{right_panel}{default is \code{TRUE}, for bacterial, viral, combo, other groupings.
+Set to \code{FALSE} if not wanted.}
 }
 \value{
 A figure that compares posterior etiology distribution stored in

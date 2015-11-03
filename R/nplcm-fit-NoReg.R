@@ -123,7 +123,7 @@ nplcm_fit_NoReg<-
          assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
          in_data       <- c(in_data,paste0("K_",s)) # <---- not prior, but data about the subclasses for this slice.
          out_parameter <- c(out_parameter,
-                            paste(c("ThetaBS","PsiBS","Lambda","Eta","alphadp0"),s,sep="_")
+                            paste(c("ThetaBS","PsiBS","Lambda","Eta","alphadp0","alphadp0_case"),s,sep="_")
                             )
         }
       }
@@ -286,8 +286,9 @@ nplcm_fit_NoReg<-
             #                                           nrow=Jcause,ncol=K_curr-1),
             #                                    rep(NA,Jcause))
             res_curr[[3]] <- 1
+            res_curr[[4]] <- 1 #<---- added together with 'alphadp0_case' below.
             
-            names(res_curr) <- paste(c("r0","r1","alphadp0"),s,sep="_")
+            names(res_curr) <- paste(c("r0","r1","alphadp0","alphadp0_case"),s,sep="_")
             res <- c(res,res_curr)
           }
         }
@@ -342,8 +343,9 @@ nplcm_fit_NoReg<-
             #                               nrow=Jcause,ncol=K_curr-1),
             #                              rep(NA,Jcause))
             res_curr[[3]] <- 1
+            res_curr[[4]] <- 1
             
-            names(res_curr) <- paste(c("r0","r1","alphadp0"),s,sep="_")
+            names(res_curr) <- paste(c("r0","r1","alphadp0","alphadp0_case"),s,sep="_")
             res <- c(res,res_curr)
           }
         }
