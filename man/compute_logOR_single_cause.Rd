@@ -185,7 +185,8 @@ for (scn in c(1,2,3)){
        if ((j<l) && (l==pick_one | j==pick_one )){
          # add shading cells for oen picked pathogen among cases:
          color <- rgb(190, 190, 190, alpha=80, maxColorValue=255)
-         rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], density = 100, col = color)
+         rect(par("usr")[1], par("usr")[3], par("usr")[2], 
+              par("usr")[4], density = 100, col = color)
          
          matplot(res_cond[j,l,,],type="l",add=TRUE,lwd=2,col=col_seq_cause,lty=lty_seq_cause)
          for (ell in 1:J){

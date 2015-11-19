@@ -26,7 +26,8 @@ Imports:
     robCompositions(>= 1.9),
     ggplot2(>= 1.0),
     gridExtra(>= 2.0),
-    reshape2(>= 1.4)
+    reshape2(>= 1.4),
+    mgcv(>= 1.8-6)
 License: MIT + file LICENSE
 SystemRequirements: JAGS (== 3.4.0) (http://mcmc-jags.sourceforge.net) or WinBUGS 1.4 (Windows-only)
 Suggests: 

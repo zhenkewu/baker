@@ -37,7 +37,7 @@ and square-root the following matrix (\eqn{\Omega}]) with (\eqn{j_1},\eqn{j_2}) 
 }
 }
 \description{
-\code{dm_Rdate_FPR} creates desigm matrices for false positive rate regressions.
+\code{dm_Rdate_FPR} creates design matrices for false positive rate regressions.
 }
 \seealso{
 \code{\link{nplcm}}

@@ -22,12 +22,12 @@ plot_logORmat = function(data_nplcm,
                          BrS_slice = 1,
                          logOR_rounding = 2){
   Y <- data_nplcm$Y
-  cat("== Visualizing pairwise log odds ratios for bronze-standard data set: ", BrS_slice, ": ",names(data_nplcm$Mobs$MBS[BrS_slice]) ,". ==")
+  cat("== Visualizing pairwise log odds ratios for bronze-standard data set: ", BrS_slice, ": ",names(data_nplcm$Mobs$MBS[BrS_slice]) ,". ==\n")
   MBS.case <- as.matrix(data_nplcm$Mobs$MBS[[BrS_slice]][Y==1,,drop=FALSE])
   MBS.ctrl <- as.matrix(data_nplcm$Mobs$MBS[[BrS_slice]][Y==0,,drop=FALSE])
   pathogen_BrS <- colnames(MBS.case)
   
-  if(length(pathogen_BrS)==1){stop("== Cannot do log odds ratio plot with only one measurement! ==")}
+  if(length(pathogen_BrS)==1){stop("== Cannot do log odds ratio plot with only one measurement! ==\n")}
   
   if (is.null(data_nplcm$Mobs$MBS) || is.na(data_nplcm$Mobs["MBS"])){
     stop("==No bronze-standard data!==")
@@ -311,6 +311,217 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
   }
   names(obs_pat) <- pattern_names
   make_list(obs_pat,pattern_names,exist_other,N)
+}
+
+#' visualize trend of pathogen observation rate for NPPCR data (both cases and controls)
+#' 
+#' 
+#' @details This function shows observed
+#' positive rate for continuous covariates,e.g., enrollment date 
+#' in PERCH application. Smoothing is done by penalized splines implemented by 
+#' \code{mgcv} package. The penalized spline smoothing term is constructed by 
+#' \code{\link[mgcv]{smooth.construct.ps.smooth.spec}}
+#' 
+#' @param data_nplcm Data set produced by \code{\link{clean_perch_data}}
+#' @param patho the index of pathogen
+#' @param slice the slice of BrS data for visualization; default is 1.
+#' @param slice_SS the slice of SS data to add onto BrS plots; default is 1, usually
+#' representing blood culture measurements.
+#' 
+#' @importFrom mgcv gam
+#' 
+#' @return A figure with smoothed positive rate and confidence bands for cases
+#' and controls, respectively. The right margin shows marginal positive rates.
+#' 
+#' @export
+
+visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
+  ord_all <- order(data_nplcm$X$ENRLDATE)
+  
+  Y <- data_nplcm$Y[ord_all]
+  X <- data_nplcm$X[ord_all,]
+  Nd <- sum(Y)
+  Nu <- sum(1-Y)
+  curr_MBS <- data_nplcm$Mobs$MBS[[slice]][ord_all,]
+  # dataframe with enrollment dates in the last column: Rdate
+  curr_dat <- cbind(curr_MBS,Rdate= X$ENRLDATE)
+  
+  smooth_season <- function(){
+    # prepare data by centering and transformation:
+    std_date      <- dm_Rdate_FPR(curr_dat$Rdate,Y,effect = "fixed")
+    # case fit and predict:
+    pred_date1    <- seq(min(std_date[Y==1]),max(std_date[Y==1]),length=1000)
+    datcase_path  <- data.frame(M = curr_MBS[Y==1,patho],Rdate = std_date[Y==1])
+    fit_case      <- gam(M~s(Rdate,bs="ps",k=10,m=c(2,1)),  
+                         data = datcase_path,family=binomial(logit),method="REML")
+    
+    fitted_case  <- predict(fit_case,type="response")[1:Nd]
+    pred_case    <- predict(fit_case,data.frame(Rdate=pred_date1), type = "link", se.fit = TRUE)
+    
+    # control fit and predict:
+    pred_date0   <- seq(min(std_date[Y==0]),max(std_date[Y==0]),length=1000)
+    datctrl_path <- data.frame(M = curr_MBS[Y==0,patho],Rdate = std_date[Y==0])
+    fit_ctrl     <- gam(M~s(Rdate,bs="ps",k=10,m=c(2,1)), 
+                        data = datctrl_path,family=binomial(logit),method="REML")
+    
+    fitted_ctrl  <- predict(fit_ctrl,type="response")[1:Nu]
+    pred_ctrl    <- predict(fit_ctrl,data.frame(Rdate=pred_date0), type = "link", se.fit = TRUE)
+    
+    make_list(fitted_case,fitted_ctrl,fit_case,fit_ctrl,pred_case,pred_ctrl,
+              pred_date1,pred_date0,std_date)
+  }
+  
+  # patho specifies which pathogen to smooth:
+  response.case <- curr_MBS[Y==1,patho]
+  response.ctrl <- curr_MBS[Y==0,patho]
+  # calculate the smoothed curve of pathogen detection over seasons:
+  out <- smooth_season()  
+  fitted_case <- out$fitted_case
+  fitted_ctrl <- out$fitted_ctrl
+  fit_case   <- out$fit_case
+  fit_ctrl   <- out$fit_ctrl
+  pred_case  <- out$pred_case
+  pred_ctrl  <- out$pred_ctrl
+  pred_date1 <- out$pred_date1
+  pred_date0 <- out$pred_date0
+  std_date   <- out$std_date
+  
+  # because pred_date1/0 are standardized, transform back to original scale:
+  pred.date.case.plot <- pred_date1*sd(curr_dat$Rdate[Y==0])+mean(curr_dat$Rdate[Y==0])
+  pred.date.ctrl.plot <- pred_date0*sd(curr_dat$Rdate[Y==0])+mean(curr_dat$Rdate[Y==0])
+  
+  #
+  # plotting raw data:
+  #
+  # some date transformations:
+  X$date_plot  <- as.Date(X$ENRLDATE)
+  X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
+  X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
+  
+  color2 <- rgb(190, 190, 190, alpha=200, maxColorValue=255)
+  color1 <- rgb(216,191,216, alpha=200, maxColorValue=255)
+  #
+  #cases:
+  #
+  
+  dat_case <- cbind(X[Y==1,],fitted_case)
+  # fitted curve:
+  plot(fitted_case ~ date_plot, data=dat_case,
+       type = "l",lwd=4,
+       xlab = "",xaxt = "n", axes=F,xlim=c(min(X$date_plot),max(X$date_plot)+80),
+       ylab = colnames(curr_MBS)[patho],ylim=c(-.2,1.4))
+  
+  
+  last_interval <- max(X$date_month)
+  lubridate::month(last_interval) <- lubridate::month(last_interval) +2
+  axis(1, c(X$date_month,last_interval), format(c(X$date_month,last_interval), "%Y %b"), 
+       cex.axis = .7)
+  axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2))
+  
+  
+  #points(upr~as.Date(pred.date.case.plot),lty=2,type="l",lwd=2)
+  #points(lwr~as.Date(pred.date.case.plot),lty=2,type="l",lwd=2)
+  
+  #rug plot:
+  points(dat_case$date_plot,c(-0.1,1.15)[response.case+1],pch="|")
+  
+  #
+  # controls:
+  #
+  dat_ctrl <- cbind(X[Y==0,],fitted_ctrl)
+  # get value in linear predictor scale:
+  upr <- pred_ctrl$fit + (1.96 * pred_ctrl$se.fit)
+  lwr <- pred_ctrl$fit - (1.96 * pred_ctrl$se.fit)
+  # transform to the right scale:
+  upr <- fit_ctrl$family$linkinv(upr)
+  lwr <- fit_ctrl$family$linkinv(lwr)
+  polygon(c(as.Date(pred.date.ctrl.plot), rev(as.Date(pred.date.ctrl.plot))),
+          c(lwr,rev(upr)),col=color2,border=NA)
+  #plot control actual data:
+  points(fitted_ctrl ~ date_plot,data=dat_ctrl,
+         pch=2,cex=2,col="dodgerblue2",lwd=5,type="l",lty=2)
+  
+  ma <- function(x,n=60){filter(x,rep(1/n,n), sides=2)}
+  
+  dat_ctrl$runmean <- ma(response.ctrl)
+  points(runmean ~ date_plot,data=dat_ctrl,lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")
+  
+  
+  # raw moving-window prevalences:
+  # interval_raw <- aggregate(response.ctrl~dat_ctrl$date_month_centered, FUN=mean)
+  # points(interval_raw[,2]~as.Date(interval_raw[,1]),
+  #        lty=2,pch=1,cex=0.7,col="dodgerblue2",type="o",
+  #        lwd=1)
+  
+  #### plot some case data here to prevent overlapping:
+  # get value in linear predictor scale:
+  upr <- pred_case$fit + (1.96 * pred_case$se.fit)
+  lwr <- pred_case$fit - (1.96 * pred_case$se.fit)
+  # transform back to the right scale:
+  upr <- fit_case$family$linkinv(upr)
+  lwr <- fit_case$family$linkinv(lwr)
+  polygon(c(as.Date(pred.date.case.plot), rev(as.Date(pred.date.case.plot))),
+          c(lwr,rev(upr)),col=color1,border=NA)
+  
+  points(fitted_case ~ date_plot, data=dat_case,
+         type = "l",lwd=4)
+  
+  # raw moving-window prevalences:
+  #interval_raw <- aggregate(response.case~dat_case$date_month_centered, FUN=mean)
+  #points(interval_raw[,2]~as.Date(interval_raw[,1]),
+  #       lty=1,pch=20,cex=0.7,type="o")
+  
+  dat_case$runmean <- ma(response.case)
+  points(runmean ~ date_plot,data=dat_case,lty=1,pch=20,cex=0.5,type="o")
+  
+  
+  #points(upr~as.Date(pred.date.ctrl.plot),lty=2,type="l",col="dodgerblue2",lwd=2)
+  #points(lwr~as.Date(pred.date.ctrl.plot),lty=2,type="l",col="dodgerblue2",lwd=2)
+  # rug plot:
+  points(dat_ctrl$date_plot,c(-0.2,1.05)[response.ctrl+1],pch="|", col="dodgerblue2")
+  
+  
+  #
+  # plot overall marginal mean:
+  #
+  delta            <- 40
+  case.overall.loc <- max(X$date_plot)+10
+  ctrl.overall.loc <- case.overall.loc+delta
+  
+  text(case.overall.loc,mean(response.case)+0.3,
+       paste0(round(mean(response.case)*100,1),"%"),col="black",pch=20,srt=90,cex=2)
+  text(ctrl.overall.loc,mean(response.ctrl)+0.3,
+       paste0(round(mean(response.ctrl)*100,1),"%"),col="dodgerblue2",pch=20,srt=90,cex=2)
+  
+  ncase = length(response.case)
+  nctrl = length(response.ctrl)
+  tmp.case = binom::binom.confint(sum(response.case), ncase, conf.level = 0.95, methods = "ac")
+  tmp.ctrl = binom::binom.confint(sum(response.ctrl), nctrl, conf.level = 0.95, methods = "ac")
+  Bcomp = rbind(round(tmp.case$mean,5),round(tmp.ctrl$mean,5))
+  Bcompq1 = rbind(tmp.case[,c("lower")],tmp.ctrl[,c("lower")])
+  Bcompq2 = rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")])
+  
+  points(case.overall.loc,mean(response.case),col="black",pch=20,cex=2)
+  points(ctrl.overall.loc,mean(response.ctrl),col="dodgerblue2",pch=20,cex=2)
+  
+  segments(case.overall.loc,mean(response.case),ctrl.overall.loc,mean(response.ctrl))
+  segments(case.overall.loc,Bcompq1[1,],case.overall.loc,Bcompq2[1,])
+  segments(ctrl.overall.loc,Bcompq1[2,],ctrl.overall.loc,Bcompq2[2,],col="dodgerblue2")
+  
+  ## plot silver-standard data
+  
+  if (!is.null(data_nplcm$Mobs$MSS) && 
+      colnames(curr_MBS)[patho]%in%colnames(data_nplcm$Mobs$MSS[[slice_SS]])){
+    curr_MSS <- data_nplcm$Mobs$MSS[[slice_SS]][ord_all,,drop=FALSE]
+    ind_BrS_not_missing <- which(!is.na(curr_MSS[,patho]))
+    points(dat_case$date_plot[ind_BrS_not_missing],
+           c(-0.5,1.3)[curr_MSS[ind_BrS_not_missing,patho]+1],pch="|",col="red",lwd=2)
+    text(case.overall.loc,1.3,
+         paste0(names(data_nplcm$Mobs$MSS)[slice_SS],"(+)%:",round(100*mean(curr_MSS[ind_BrS_not_missing,patho]),2),"%"),
+         cex=2,col=2)
+  }
+  
+  
 }
 
 

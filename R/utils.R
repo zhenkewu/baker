@@ -1065,7 +1065,7 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 
 #' Make FPR design matrix for dates with R format.
 #'
-#' \code{dm_Rdate_FPR} creates desigm matrices for false positive rate regressions.
+#' \code{dm_Rdate_FPR} creates design matrices for false positive rate regressions.
 #'
 #' @param Rdate a vector of dates of R format
 #' @param Y binary case/control status; 1 for case; 0 for controls
@@ -1102,10 +1102,12 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
   
   if (!is.null(num_knots_FPR) & effect == "fixed") {
     stop("==Don't need 'num_knots_FPR' for fixed effects.==")
-  }# standardization:
-  df    <- data.frame(Y = Y,num_date = as.numeric(Rdate))
+  }
+  
+  # standardization:
+  df       <- data.frame(Y = Y,num_date = as.numeric(Rdate))
   grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
-  grp_sd <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
+  grp_sd   <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
   df$ingrp_std_num_date <-
     (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
   #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
