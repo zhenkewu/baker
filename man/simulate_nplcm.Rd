@@ -25,6 +25,9 @@ A list of measurements, true latent statues:
  }
 }
 \description{
+Simulation data from nested partially-latent class model (npLCM) family
+}
+\details{
 Use different case and control subclass mixing weights. Eta is of
 dimension J times K. NB: document the elements in \code{set_parameter}. Also, current
 function is written in a way to facilitate adding more measurement components.

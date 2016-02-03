@@ -1602,3 +1602,36 @@ loadOneName <- function(objName, file, envir = parent.frame(),
   tempEnv[[objName]]
 }
 
+
+#' generate stick-breaking prior (truncated) from a vector of random probabilities
+#' 
+#' @param u a vector of probabilities, with the last element 1.
+#' 
+#' @return a vector of the same length as u; sum to 1.
+#' 
+#' @examples 
+#' 
+#' par(mfrow=c(3,3),oma=c(2,2,5,2))
+#' for (iter in 1:9){
+#'    u   <- c(rbeta(9,1,1),1)
+#'    res <- tsb(u)
+#'    barplot(res,ylim=c(0,1),main=paste0("Random Sample #", iter))
+#' }
+#' mtext("Random Samples: Truncated Stick-Breaking Dist. (10 segements)",
+#' 3,outer=TRUE,cex=1.5)
+#' @export
+#' 
+tsb <- function(u){
+  K <- length(u)
+  if (u[K]!=1) {stop("==The last element of u must be 1 for truncated stick-breaking!==\n")}
+  w <- rep(NA,K)
+  w[1] <- u[1]
+  for (k in 2:(K)){
+    w[k] <- w[k-1]/u[k-1]*(1-u[k-1])*u[k]
+  }
+  w
+}
+
+
+
+

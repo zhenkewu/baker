@@ -70,8 +70,6 @@ compute_logOR_single_cause <- function(set_parameter){
   MAT
 }
 
-
-
 #' Calculate marginal log odds ratios (with other causes)
 #' 
 #' @inheritParams simulate_nplcm

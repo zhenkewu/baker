@@ -315,7 +315,6 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
 
 #' visualize trend of pathogen observation rate for NPPCR data (both cases and controls)
 #' 
-#' 
 #' @details This function shows observed
 #' positive rate for continuous covariates,e.g., enrollment date 
 #' in PERCH application. Smoothing is done by penalized splines implemented by 
@@ -439,7 +438,7 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
           c(lwr,rev(upr)),col=color2,border=NA)
   #plot control actual data:
   points(fitted_ctrl ~ date_plot,data=dat_ctrl,
-         pch=2,cex=2,col="dodgerblue2",lwd=5,type="l",lty=2)
+         pch=2,cex=2,col="dodgerblue2",lwd=5,type="l",lty=1)
   
   ma <- function(x,n=60){filter(x,rep(1/n,n), sides=2)}
   
@@ -472,7 +471,7 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   #       lty=1,pch=20,cex=0.7,type="o")
   
   dat_case$runmean <- ma(response.case)
-  points(runmean ~ date_plot,data=dat_case,lty=1,pch=20,cex=0.5,type="o")
+  points(runmean ~ date_plot,data=dat_case,lty=1,pch=20,cex=0.5)
   
   
   #points(upr~as.Date(pred.date.ctrl.plot),lty=2,type="l",col="dodgerblue2",lwd=2)
