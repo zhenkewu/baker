@@ -1,4 +1,6 @@
-#' Write .bug model file for no regression
+#' Write .bug model file for model without regression
+#' 
+#' \code{write_model_NoReg} automatically 
 #' 
 #' @inheritParams insert_bugfile_chunk_noreg_meas
 #' 

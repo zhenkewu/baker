@@ -12,7 +12,9 @@
 #' @inheritParams nplcm
 #' @return BUGS fit results.
 #' 
-#' @seealso \link{write_model_NoReg} for writing .bug model file; 
+#' @seealso \link{write_model_NoReg} for constructing .bug model file; This function
+#' adds this constructed .bug file into the directory specified by 
+#' \code{mcmc_options$bugsmodel.dir}.
 #' 
 #' @export
 #' 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/write-model.R
 \name{write_model_NoReg}
 \alias{write_model_NoReg}
-\title{Write .bug model file for no regression}
+\title{Write .bug model file for model without regression}
 \usage{
 write_model_NoReg(k_subclass, Mobs, prior, cause_list, use_measurements,
   ppd = NULL, use_jags = FALSE)
@@ -29,7 +29,7 @@ see \code{\link{make_template}})}
 a long character string to be written into .bug file.
 }
 \description{
-Write .bug model file for no regression
+\code{write_model_NoReg} automatically
 }
 \seealso{
 \link{insert_bugfile_chunk_noreg_meas} for inserting .bug file

@@ -101,6 +101,8 @@ If running JAGS on windows, please go to control panel to add the directory to
 jags into ENVIRONMENTAL VARIABLE!
 }
 \seealso{
-\link{write_model_NoReg} for writing .bug model file;
+\link{write_model_NoReg} for constructing .bug model file; This function
+adds this constructed .bug file into the directory specified by
+\code{mcmc_options$bugsmodel.dir}.
 }
 
