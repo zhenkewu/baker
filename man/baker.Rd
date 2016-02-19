@@ -15,7 +15,7 @@ individual case, try \code{baker}.
 }
 \details{
 \code{baker} implements hierarchical Bayesian models to infer disease etiology
-for multivariate binary data. We created `baker` to catalyze effective
+for multivariate binary data. We created \code{baker} to catalyze effective
 communications between analysts and practicing clinicians that are vital to
 the success of etiology studies. The \code{baker} package offers
 modules to
