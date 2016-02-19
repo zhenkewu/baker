@@ -24,4 +24,7 @@ parameters to specify Beta prior for TPRs.
 Set true positive rate (TPR) prior ranges for bronze-standard data
 (for conditional independence models - currently also used for conditional dependence model).
 }
+\seealso{
+Other prior specification functions: \code{\link{overall_uniform}}
+}
 

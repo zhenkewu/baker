@@ -18,7 +18,6 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DI
 #' @return A figure of posterior predicted frequencies compared with the observed 
 #' frequencies of the most common patterns for the BrS data. 
 #' 
-#' @import ggplot2
 #' @importFrom gridExtra grid.arrange
 #' 
 #' @examples 
@@ -27,6 +26,9 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DI
 #' plot_check_common_pattern(DIR_list)
 #' plot_check_common_pattern(DIR_list[[1]])
 #' }
+#' 
+#' @family visualization functions
+#' @family model generating functions
 #' 
 #' @export
 
@@ -272,9 +274,12 @@ plot_check_common_pattern <- function(DIR_list,
       annotate("text", label = case_or_control, 
                x = length(case_pat_list[[1]])/2, 
                y = ymax*0.67, size = 8, colour = "red")+
-      geom_errorbar(stat = "hline", 
+      stat_summary(fun.y = identity,geom='errorbar', 
                     width=0.8,aes(yintercept = frequency,ymax=..y..,ymin=..y..),
                     color="blue",size=0.9,data=hline.data)
+      # geom_errorbar(stat = "hline", 
+      #               width=0.8,aes(yintercept = frequency,ymax=..y..,ymin=..y..),
+      #               color="blue",size=0.9,data=hline.data)
     gg1
   }
   

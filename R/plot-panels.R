@@ -27,6 +27,7 @@
 #' @param silent Default is TRUE to not print any warning messages; FALSE otherwise.
 #' @return A figure with two or three columns
 #'
+#' @family visualization functions
 #' @export
 
 plot_panels <- function(DIR_NPLCM,

@@ -9,7 +9,8 @@
 #' @param slice Default is 1, for the first slice of BrS data.
 #' @return A figure of posterior predicted log odds ratio compared with the observed 
 #' log odds ratio for the BrS data. The function generates this figure in your working directory automatically.
-#' 
+#' @family visualization functions
+#' @family model checking functions
 #' @export
 #' 
 

@@ -5,7 +5,7 @@
 #' @param cause_list a list of latent status
 #' 
 #' @return a vector of length \code{length(cause_list)}
-#' 
+#' @family prior specification functions
 #' @export
 #'
 overall_uniform <- function(alpha,cause_list) {

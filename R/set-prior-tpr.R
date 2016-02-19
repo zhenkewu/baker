@@ -9,7 +9,7 @@
 #' Alpha and beta is of the same length, the number of BrS measurement slices. 
 #' Each element of the alpha (beta) list is a numeric vector for alpha (beta) 
 #' parameters to specify Beta prior for TPRs.
-#'
+#' @family prior specification functions
 #' @export
 
 set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){

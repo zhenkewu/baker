@@ -15,7 +15,7 @@
 #' @param label_size the size of latent status labels on the right margin
 #' 
 #' @importFrom binom binom.confint
-#' 
+#' @family visualization functions
 #' @export
 
 plot_pie_panel <- function(model_options,

@@ -31,4 +31,14 @@ on the horizontal axis for the pie panel.}
 \description{
 Plot etiology (pie) panel
 }
+\seealso{
+Other visualization functions: \code{\link{plot_BrS_panel}};
+  \code{\link{plot_SS_panel}};
+  \code{\link{plot_check_common_pattern}};
+  \code{\link{plot_check_pairwise_SLORD}};
+  \code{\link{plot_etiology_side_by_side}};
+  \code{\link{plot_group_etiology}};
+  \code{\link{plot_panels}};
+  \code{\link{plot_selected_etiology}}
+}
 

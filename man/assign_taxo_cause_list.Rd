@@ -4,7 +4,7 @@
 \alias{assign_taxo_cause_list}
 \title{assign taxonomy information to cause list}
 \usage{
-assign_taxo_cause_list(cause_list, dir_taxo)
+assign_taxo_cause_list(cause_list, dir_taxo = NULL)
 }
 \arguments{
 \item{cause_list}{cause_list in model_options$likelihood}

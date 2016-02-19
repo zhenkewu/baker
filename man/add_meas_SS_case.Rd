@@ -22,4 +22,31 @@ that stores model parameters introduced by this plugged measurement slice
 \description{
 add likelihood for a SS measurement slice among cases (conditional independence)
 }
+\seealso{
+Other likelihood specification functions: \code{\link{add_meas_BrS_case_Nest_Slice_jags}};
+  \code{\link{add_meas_BrS_case_Nest_Slice}};
+  \code{\link{add_meas_BrS_case_NoNest_Slice_jags}};
+  \code{\link{add_meas_BrS_case_NoNest_Slice}};
+  \code{\link{add_meas_BrS_ctrl_Nest_Slice}};
+  \code{\link{add_meas_BrS_ctrl_NoNest_Slice}};
+  \code{\link{add_meas_BrS_param_Nest_Slice_jags}};
+  \code{\link{add_meas_BrS_param_Nest_Slice}};
+  \code{\link{add_meas_BrS_param_NoNest_Slice_jags}};
+  \code{\link{add_meas_BrS_param_NoNest_Slice}};
+  \code{\link{add_meas_BrS_subclass_Nest_Slice}};
+  \code{\link{add_meas_SS_param}}
+
+Other plug-and-play functions: \code{\link{add_meas_BrS_case_Nest_Slice_jags}};
+  \code{\link{add_meas_BrS_case_Nest_Slice}};
+  \code{\link{add_meas_BrS_case_NoNest_Slice_jags}};
+  \code{\link{add_meas_BrS_case_NoNest_Slice}};
+  \code{\link{add_meas_BrS_ctrl_Nest_Slice}};
+  \code{\link{add_meas_BrS_ctrl_NoNest_Slice}};
+  \code{\link{add_meas_BrS_param_Nest_Slice_jags}};
+  \code{\link{add_meas_BrS_param_Nest_Slice}};
+  \code{\link{add_meas_BrS_param_NoNest_Slice_jags}};
+  \code{\link{add_meas_BrS_param_NoNest_Slice}};
+  \code{\link{add_meas_BrS_subclass_Nest_Slice}};
+  \code{\link{add_meas_SS_param}}
+}
 

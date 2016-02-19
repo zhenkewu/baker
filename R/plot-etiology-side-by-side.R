@@ -35,7 +35,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #' plot_etiology_side_by_side(dir_list,
 #'   file.path(PATH,"pathogen_displayorder_lookup.csv"))
 #'}
-#'
+#' @family visualization functions
+#' @family comparison functions
 #'@export
 #'
 plot_etiology_side_by_side <- function(DIR_list,

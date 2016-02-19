@@ -29,4 +29,13 @@ DN: 1. the pathogens should have been ordered as in the perch_clean_data()
 function. This function picks out pathogens not based on pathogen category lookup
 table, but based on the order of pathogens that enter the analysis.
 }
+\seealso{
+Other visualization functions: \code{\link{plot_BrS_panel}};
+  \code{\link{plot_SS_panel}};
+  \code{\link{plot_check_common_pattern}};
+  \code{\link{plot_check_pairwise_SLORD}};
+  \code{\link{plot_etiology_side_by_side}};
+  \code{\link{plot_panels}}; \code{\link{plot_pie_panel}};
+  \code{\link{plot_selected_etiology}}
+}
 

@@ -34,4 +34,13 @@ plot_check_common_pattern(DIR_list)
 plot_check_common_pattern(DIR_list[[1]])
 }
 }
+\seealso{
+Other visualization functions: \code{\link{plot_BrS_panel}};
+  \code{\link{plot_SS_panel}};
+  \code{\link{plot_check_pairwise_SLORD}};
+  \code{\link{plot_etiology_side_by_side}};
+  \code{\link{plot_group_etiology}};
+  \code{\link{plot_panels}}; \code{\link{plot_pie_panel}};
+  \code{\link{plot_selected_etiology}}
+}
 

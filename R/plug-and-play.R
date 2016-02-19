@@ -11,7 +11,8 @@
 #' @return a list of two elements: the first is \code{plug}, the .bug code; 
 #' the second is \code{parameters} that stores model parameters introduced by this 
 #' plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
@@ -108,7 +109,8 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
@@ -187,7 +189,8 @@ add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions 
 #' @export
 
 add_meas_BrS_param_NoNest_Slice <- function(s,Mobs,cause_list) {
@@ -242,7 +245,8 @@ add_meas_BrS_param_NoNest_Slice <- function(s,Mobs,cause_list) {
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 #' 
 add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
@@ -338,7 +342,8 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 #' 
 add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
@@ -407,7 +412,8 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions 
 #' @export
 #' 
 
@@ -506,7 +512,8 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separa
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 
 add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
@@ -572,7 +579,8 @@ add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 
 add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
@@ -671,7 +679,8 @@ add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 
 add_meas_SS_param <- function(nslice,Mobs,prior,cause_list) {
@@ -843,7 +852,8 @@ add_meas_SS_param <- function(nslice,Mobs,prior,cause_list) {
 #' @return a list of two elements: the first is \code{plug}, the .bug code; 
 #' the second is \code{parameters} that stores model parameters introduced by this 
 #' plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
@@ -940,7 +950,8 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) {
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 
 add_meas_BrS_param_NoNest_Slice_jags <- function(s,Mobs,cause_list) {
@@ -994,7 +1005,8 @@ add_meas_BrS_param_NoNest_Slice_jags <- function(s,Mobs,cause_list) {
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 #' 
 add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
@@ -1091,7 +1103,8 @@ add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
-#' 
+#' @family likelihood specification functions
+#' @family plug-and-play functions
 #' @export
 #' 
 

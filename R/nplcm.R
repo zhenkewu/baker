@@ -1,9 +1,9 @@
 #' Fit nested partially latent class models (high-level)
 #'
-#' Uses WinBUGS in Windows system for Bayesian inference
-#' (see README file for an instruction to install WinBUGS on windows 7 or 8.).
+#' Uses WinBUGS/JAGS in Windows system or JAGS in OSX system for Bayesian inference
+#' (see README file for an instruction to install WinBUGS or JAGS).
 #' For stratification/regression functionalities, true positive rates are constant
-#' across stratum or covariate values.\cr
+#' across strata or covariate values.\cr
 #' 
 #' @details Developer Note (DN):\cr
 #' \itemize{
@@ -97,6 +97,7 @@
 #'          \item dependence model
 #'        }
 #' }
+#' 
 #'
 #' @export
 

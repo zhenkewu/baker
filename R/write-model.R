@@ -9,6 +9,8 @@
 #' chunk for measurements (plug-and-play); \link{insert_bugfile_chunk_noreg_etiology}
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
+#' @family model generation functions
+#' 
 #' @export
 #' 
 write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,

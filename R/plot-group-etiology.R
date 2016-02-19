@@ -15,6 +15,7 @@
 #' \code{5}, which represents the contour of the \code{95} percent support region.
 #' @return A figure with group etiology.
 #'
+#' @family visualization functions
 #' @export
 
 plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 5){
@@ -288,7 +289,7 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
 #' @param levellabel The contour line to be drawn in the final plot. Default is
 #' \code{5}, which represents the contour of the \code{95} percent support region.
 #' @return A figure with group etiology.
-#'
+#' @family visualization functions
 #' @export
 
 plot_selected_etiology <- function(selected, DIR_NPLCM,ksFrac = 1,levellabel = 5){

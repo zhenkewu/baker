@@ -22,6 +22,7 @@
 #' @param silent Default is TRUE to not print any warning messages; FALSE otherwise.
 #' @importFrom binom binom.confint
 #' 
+#' @family visualization functions
 #' @export
 
 plot_BrS_panel <- function(slice,data_nplcm,model_options,

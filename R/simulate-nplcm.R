@@ -74,7 +74,7 @@
 #'  pathogen_display <- rev(set_parameter$pathogen_BrS)
 #'  plot_logORmat(data_nplcm,pathogen_display)
 #'
-#'
+#' @family simulation functions
 #' @export
 
 simulate_nplcm <- function(set_parameter) {
@@ -114,6 +114,7 @@ simulate_nplcm <- function(set_parameter) {
 #'
 #' @return a list of latent status samples for use in sampling measurements. It
 #' also includes a template to look up measurement parameters for each type of causes.
+#' @family simulation functions
 #' @export
 #'
 simulate_latent <- function(set_parameter) {
@@ -163,6 +164,7 @@ simulate_latent <- function(set_parameter) {
 #'
 #' @return a data frame with first column being case-control status (case at top) and
 #' columns of bronze-standard measurements
+#' @family simulation functions
 #' @export
 simulate_brs <- function(set_parameter,latent_samples) {
   pathogen_BrS    <- set_parameter$pathogen_BrS
@@ -233,6 +235,7 @@ simulate_brs <- function(set_parameter,latent_samples) {
 #'
 #' @return a data frame with first column being case-control status (case at top) and
 #' columns of silver-standard measurements
+#' @family simulation functions
 #' @export
 simulate_ss <- function(set_parameter,latent_samples) {
   pathogen_SS    <- set_parameter$pathogen_SS
@@ -269,7 +272,7 @@ simulate_ss <- function(set_parameter,latent_samples) {
   
   ## organize case/control status, iL, BS, GS data into dataframes
   datacolnames    <- c("case", pathogen_SS)
-  #   datres <- data.frame(Y = c(rep(1,Nd),rep(0,Nu)),
+  #   datres <- data.frame(Y = c(rep(1,Nd),rep(0,Nu)),  n 
   #                        iLcat = iLcatAllnumeric,
   #                        iL = iLall,
   #                        MBS = rbind(Md,Mu))

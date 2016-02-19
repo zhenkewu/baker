@@ -47,4 +47,14 @@ latent disease status (etiology). It works for singleton or combo etiologies.
 Missing data for BrS or SS are dropped when calculating observed measurement
 positive rates
 }
+\seealso{
+Other visualization functions: \code{\link{plot_BrS_panel}};
+  \code{\link{plot_SS_panel}};
+  \code{\link{plot_check_common_pattern}};
+  \code{\link{plot_check_pairwise_SLORD}};
+  \code{\link{plot_etiology_side_by_side}};
+  \code{\link{plot_group_etiology}};
+  \code{\link{plot_pie_panel}};
+  \code{\link{plot_selected_etiology}}
+}
 

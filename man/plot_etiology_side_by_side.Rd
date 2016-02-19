@@ -45,4 +45,13 @@ plot_etiology_side_by_side(dir_list,
   file.path(PATH,"pathogen_displayorder_lookup.csv"))
 }
 }
+\seealso{
+Other visualization functions: \code{\link{plot_BrS_panel}};
+  \code{\link{plot_SS_panel}};
+  \code{\link{plot_check_common_pattern}};
+  \code{\link{plot_check_pairwise_SLORD}};
+  \code{\link{plot_group_etiology}};
+  \code{\link{plot_panels}}; \code{\link{plot_pie_panel}};
+  \code{\link{plot_selected_etiology}}
+}
 

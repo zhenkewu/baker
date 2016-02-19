@@ -387,14 +387,13 @@ assign_taxo <- function(meas_object, dir_taxo){
 #' @param cause_list cause_list in model_options$likelihood
 #' @param dir_taxo file path to the .csv file storing two columns of information:
 #' \code{pathogen}, and \code{pathogen_type}.
-#' 
 #' @return a vector of factors of taxonomy information (currently for "B","F","V"). 
 #' The names of the vector are pathogen names.
 #' 
 #' @export
 
 
-assign_taxo_cause_list <- function(cause_list, dir_taxo){
+assign_taxo_cause_list <- function(cause_list, dir_taxo=NULL){
   patho_taxo <- read.csv(dir_taxo,header=TRUE,stringsAsFactors = FALSE)
   patho_taxo$pathogen_type <- factor(patho_taxo$pathogen_type,levels=c("B","F","V"))
   res_taxo   <- patho_taxo$pathogen_type[match(cause_list,patho_taxo[,1])]

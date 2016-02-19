@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.2
-Date: 2016-02-03
+Version: 0.3
+Date: 2016-02-19
 Authors@R: as.person(c(
     "Zhenke Wu <zhwu@jhu.edu> [aut, cre]",
     "Wei Fu <wfu@jhu.edu> [ctb]",
@@ -14,7 +14,7 @@ Description: Nested Partially-Latent Class Models (npLCM) for Inference of
     usually call them "population etiology pie" and "individual etiology pie" for 
     their compositional nature, hence the name of the package.
 Depends: 
-    R(>= 3.2)
+    R(>= 3.2.3)
 Imports: 
     rjags(>= 3-14),
     R2WinBUGS(>= 2.1),
@@ -23,8 +23,8 @@ Imports:
     binom(>= 1.1),
     coda(>= 0.16),
     ks(>= 1.9),
-    robCompositions(>= 1.9),
-    ggplot2(>= 1.0),
+    robCompositions(>= 2.0),
+    ggplot2(>= 2.0),
     gridExtra(>= 2.0),
     reshape2(>= 1.4),
     mgcv(>= 1.8-6)

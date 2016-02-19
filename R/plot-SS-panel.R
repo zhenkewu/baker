@@ -21,7 +21,7 @@
 #' prior/posteriors of the TPR/FPRs of measurements.
 #' 
 #' @importFrom binom binom.confint
-#' 
+#' @family visualization functions
 #' @export
 
 

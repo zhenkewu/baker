@@ -85,5 +85,8 @@ set_parameter <- list(
 \seealso{
 \link{simulate_latent} for simulating discrete latent status, given
 which \link{simulate_brs} simulates bronze-standard data.
+
+Other simulation functions: \code{\link{simulate_brs}};
+  \code{\link{simulate_latent}}; \code{\link{simulate_ss}}
 }
 
