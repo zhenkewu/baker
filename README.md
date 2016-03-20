@@ -13,6 +13,14 @@ install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
 devtools::install_github("zhenkewu/baker")
 ```
 
+How to run baker user interface?
+--------------------------------
+```r
+install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
+devtools::install_github("zhenkewu/baker",ref="add_bakerUI")
+shiny::runGitHub("baker","zhenkewu",ref='add_bakerUI',subdir="inst/shiny")
+```
+
 Why should someone use `baker`?
 -------------------------------------
 
