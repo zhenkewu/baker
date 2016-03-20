@@ -1690,3 +1690,9 @@ check_dir_create <- function(path){
   } 
   dir.create(path)
 }
+
+
+nevercalled <- function(){
+  ignored <- shinyFiles::getVolumes()
+  ignored2 <- shinydashboard::box()
+}
