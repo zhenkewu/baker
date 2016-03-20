@@ -9,8 +9,8 @@
 # 1st version: March 17, 2016
 ################################################################################
 
-library(shinyFiles)
-library(shinydashboard)
+#library(shinyFiles)
+#library(shinydashboard)
 
 mywellPanel <- function(...){
   wellPanel(...)
