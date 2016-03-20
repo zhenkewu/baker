@@ -18,7 +18,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 
 nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     # Record the settings of current analysis:
-    cat("==Results stored in: ==","\n",mcmc_options$result.folder)
+    cat("==Results stored in: ==","\n",mcmc_options$result.folder,"\n")
     #model_options:
     dput(model_options,file.path(mcmc_options$result.folder,"model_options.txt"))
     #mcmc_options:

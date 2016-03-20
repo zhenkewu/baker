@@ -8,14 +8,14 @@ Authors@R: as.person(c(
     "Wei Fu <wfu@jhu.edu> [ctb]",
     "Scott Zeger <sz@jhu.edu> [aut]"
     ))
-Description: Nested Partially-Latent Class Models (npLCM) for Inference of
-    Population Disease Etiology and Individual Diagnosis. In the motivating 
+Description: Nested Partially-Latent Class Models (npLCM) for Inference
+    of Population Disease Etiology and Individual Diagnosis. In the motivating
     scientific study, Penumonia Etiology Research for Child Health, the scientists
-    usually call them "population etiology pie" and "individual etiology pie" for 
+    usually call them "population etiology pie" and "individual etiology pie" for
     their compositional nature, hence the name of the package.
-Depends: 
+Depends:
     R(>= 3.2)
-Imports: 
+Imports:
     rjags(>= 3-14),
     R2WinBUGS(>= 2.1),
     R2jags(>= 0.5),
@@ -27,12 +27,18 @@ Imports:
     ggplot2(>= 1.0),
     gridExtra(>= 2.0),
     reshape2(>= 1.4),
-    mgcv(>= 1.8-6)
+    mgcv(>= 1.8-6),
+    mvbutils(>= 2.7.4.1),
+    shiny(>= 0.12),
+    shinyFiles(>= 0.6),
+    shinydashboard(>= 0.5.1)
 License: MIT + file LICENSE
-SystemRequirements: JAGS (== 3.4.0) (http://mcmc-jags.sourceforge.net) or WinBUGS 1.4 (Windows-only)
-Suggests: 
+SystemRequirements: JAGS (== 3.4.0) (http://mcmc-jags.sourceforge.net) or
+    WinBUGS 1.4 (Windows-only)
+Suggests:
     knitr,
     testthat,
     bibtex,
     knitcitations
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

@@ -505,9 +505,9 @@ NA2dot <- function(s) {
 beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
                                       precision = 0.001,
                                       derivative.epsilon = 1e-3,
-                                      start.with.normal.approx = T,
+                                      start.with.normal.approx = TRUE,
                                       start = c(1, 1),
-                                      plot = F) {
+                                      plot = FALSE) {
   # Version 1.2.2 (December 2012)
   #
   # Function developed by
@@ -796,7 +796,12 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
         round(theta[2], digits = 5), ')'
       ), collapse = ''
     )
-    plot(x, h, type = 'l', ylab = ylab)
+    
+    if (abs(theta[1]-1)<0.0001 && abs(theta[2]-1)<0.0001){
+      plot(x, h, type = 'l', ylab = ylab,ylim=c(0,2))
+    }else{
+      plot(x, h, type = 'l', ylab = ylab)
+      }
     
     # fill in area on the left side of the distribution
     x <- seq(from = plot.xlim[1], to = q[1], length = 1000)
@@ -1296,7 +1301,8 @@ create_bugs_regressor_Eti <- function(n,dm_nm = "dm_Eti",
 #' \code{delete_start_with} is used for clean the column names in raw data.
 #' For example, R adds "X" at the start of variable names. This function deletes
 #' "X_"s from the column names. This can happen if the raw data have column
-#' names such as "\code{_CASE_ABX}".
+#' names such as "\code{_CASE_ABX}". Check \code{\link{clean_perch_data}} for 
+#' its actual usage.
 #'
 #' @param s the pattern (a single string) to be deleted from the start.
 #' @param vec a vector of strings with unwanted starting strings (specified by \code{s}).
@@ -1307,6 +1313,7 @@ create_bugs_regressor_Eti <- function(n,dm_nm = "dm_Eti",
 #' delete_start_with("X_",c("X_hello"))
 #' delete_start_with("X_",c("X_hello","hello2"))
 #' delete_start_with("X_",c("X_hello","hello2","X_hello3"))
+#' 
 #' @export
 
 
@@ -1385,19 +1392,26 @@ make_numbered_list <- function(...) {
 
 #' make a mapping template for model fitting
 #'
-#' \code{make_template} creates a mapping matrix so that a measurement is mapped
-#' to inform a particular latent status. Crucial for model fitting.
+#' \code{make_template} creates a mapping matrix (binary values). Each pathogen 
+#' in a measurement slice (e.g., nasal-pharyngeal PCR test) is mapped to inform
+#' one category of latent status. All the possible categories (e.g., causes of pneumonia) 
+#' remain the same regardless of the measurement slice used (e.g., NPPCR or BCX).
 #'
-#' @details The first argument has to be character substrings from the second argument. The
-#' second argument can have character strings not matched in the first argument. 
+#' @details The first argument has to be character substrings from the second argument. 
+#' For example, the two arguments can respectively be \code{"A"} and \code{"A_1"}, 
+#' or \code{"A"} and \code{"A+B"}.The second argument can have character strings not 
+#' matched in the first argument. If so, it means some causes of diseases are not 
+#' directly measured in the current measurement slice. 
 #' For each element of \code{patho}, the function matches from the start of the strings
-#' of \code{cause_list}. So, make sure that latent statuses from the same family 
-#' need to start with the same family name followed by subcategories.
+#' of \code{cause_list}. Therefore, make sure that latent statuses from the same family 
+#' (e.g., "PNEU_VT13" and "PNEU_NOVT13") need to start with the same family name 
+#' (e.g., "PNEU") followed by subcategories (e.g., "_VT13" and "_NOVT13").
 #' 
-#' @param patho a vector of pathogen names. \code{patho}
-#'  must be substring of some \code{cause_list} elements, e.g.,
-#'  "PNEU" is a substring of "PNEU_VT13". Also see examples.
-#' @param cause_list the list of potential latent status
+#' @param patho A vector of pathogen names for a particular measurement slice. 
+#' \code{patho} must be a substring of some elements in \code{cause_list}, e.g.,
+#'  "PNEU" is a substring of "PNEU_VT13". Also see Examples for this function.
+#'  
+#' @param cause_list A vector of characters; Potential categories of latent statuses.
 #'
 #' @examples
 #'
@@ -1453,7 +1467,7 @@ make_template <- function(patho, cause_list) {
   template
 }
 
-#' get position to store in data_nplcm$Mobs:
+#' Get position to store in data_nplcm$Mobs:
 #' 
 #' @details  also works for a vector
 #' 
@@ -1466,6 +1480,8 @@ make_template <- function(patho, cause_list) {
 #' lookup_quality("BrS")
 #' lookup_quality("HH")
 #' }
+#' 
+#' @seealso \code{\link{extract_data_raw}}
 #' 
 #' @export
 
@@ -1517,6 +1533,9 @@ parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
 
 
 #' convert one column data frame to a vector
+#' 
+#' @details WinBUGS/JAGS cannot accept a dataframe with one column; This function
+#' converts it to a vector, which WinBUGS/JAGS will allow.
 #' 
 #' @param x an one-column data.frame
 #' 
@@ -1632,6 +1651,42 @@ tsb <- function(u){
   w
 }
 
+#' Show function dependencies
+#' 
+#' @param fname Character string for one function
+#' @param pckg Package name; default is \code{"package:baker"}
+#' @param ... Other parameters accepted by \code{\link[mvbutils]{foodweb}}
+#' @return A figure showing function dependencies
+#' @importFrom mvbutils foodweb
+#' 
+#' @examples
+#' \dontrun{
+#' show_dep("nplcm",ancestor=FALSE)
+#' show_dep("nplcm",ancestor=FALSE)
+#' show_dep("nplcm_fit_NoReg",ancestor=FALSE)
+#' show_dep("nplcm_fit_NoReg")
+#' }
+#' 
+#' @export
+
+show_dep <- function(fname,pckg="package:baker",...){
+  suppressWarnings(mvbutils::foodweb(where = pckg, prune = fname,
+          #border = TRUE,
+          #expand.xbox = 2, 
+          boxcolor = "#FC6512",
+          textcolor = "black", cex = 1.0, lwd=2,...))
+  mtext(paste0("The ",fname," function foodweb"))
+}
 
 
-
+#' check existence and create folder if non-existent
+#' 
+#' @param path Folder path to check and create if not there.
+#' 
+#' @export
+check_dir_create <- function(path){
+  if (file.exists(path)){
+    return(NULL)
+  } 
+  dir.create(path)
+}

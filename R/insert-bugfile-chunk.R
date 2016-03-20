@@ -21,11 +21,11 @@
 insert_bugfile_chunk_noreg_meas <-
   function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
-      stop("==No BrS or SS measurements specified in the model! ==")
+      stop("==[baker] No BrS or SS measurements specified in the model! ==")
       }
     for (s in seq_along(Mobs$MBS)){
       if (k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){
-        stop("== Cannot do nested modeling for BrS measurements with only one column! ==")
+        stop("==[baker] Cannot do nested modeling for BrS measurements with only one column! ==")
         }  
     }
     

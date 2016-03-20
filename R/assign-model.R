@@ -1,29 +1,37 @@
 #' Interpret the model specified by user
 #'
-#' \code{assign_model} recognizes the model to fit from user input.
+#' \code{assign_model} translates options specified by a user (e.g., in 
+#' \code{model_options}) into information that can be understood by \code{baker}.
 #' 
 #' @details \code{assign_model} will be modified to check if data are conformable
 #' to specified model.
-#' @param data_nplcm Data for model fitting.
+#' 
+#' @param data_nplcm Data.
 #' @param model_options See \code{\link{nplcm}} function.
-#' @param silent Default is TRUE for no messages; FALSE otherwise.
-#' @return A list of information for the selected model:
+#' @param silent Default is \code{TRUE} for no messages; \code{FALSE} otherwise.
+#' @return A list of model specifications:
 #' \itemize{
-#'    \item \code{num_slice} a vector counting the no. of measurement slices for every
-#'    level of measurement quality
-#'    \item \code{nested} TRUE for nested models in BrS data (conditional dependence); 
-#'    FALSE for non-nested models (conditional independence). One for each slice.
+#'    \item \code{num_slice} A vector counting the No. of measurement slices for each
+#'    level of measurement quality;
+#'    \item \code{nested} Local dependence specification for modeling bronze-standard
+#'    data. \code{TRUE} for nested models (conditional dependence); 
+#'    \code{FALSE} for non-nested models (conditional independence). 
+#'    One for each BrS slice.
 #'    \item \code{regression}
 #'        \itemize{
-#'            \item \code{do_reg_Eti} TRUE for doing regression on etiology (latent status); 
-#'            FALSE otherwise
-#'            \item \code{do_reg_FPR} TRUE for doing regression on false positive rates 
-#'            (for every slice of bronze-standard); FALSE otherwise
+#'            \item \code{do_reg_Eti} \code{TRUE} for doing etiology regression.
+#'            It means let the etiology fractions to change with covariates. 
+#'            \code{FALSE} otherwise;
+#'            \item \code{do_reg_FPR} \code{TRUE} for doing false positive rate 
+#'            regression (for every slice of bronze-standard). It means the false
+#'            positive rates, usually estimatable from controls, can vary with 
+#'            covariates. \code{FALSE} otherwise.
 #'        }
 #' }
 #'
+#' @family specification checking functions
+#' 
 #' @export
-
 assign_model <- function(model_options,data_nplcm, silent=TRUE){
   # load options:
   likelihood       <- model_options$likelihood
@@ -41,7 +49,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   use_data_sources   <- c("MBS","MSS","MGS")[lookup_quality(use_measurements)]
   input_data_sources <-  names(Mobs)
   if (!all(use_data_sources%in%input_data_sources)){
-    stop("==Please supply actual datasets as specified by 'use_measurements' in 'model_options'.==")
+    stop("==[baker] Please supply actual datasets as specified by 'use_measurements' in 'model_options'.==")
   }
   
   # get the length of each measurement quality:
@@ -50,7 +58,6 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   for (i in seq_along(use_data_sources)){
     num_slice[use_data_sources[i]] <- length(Mobs[[use_data_sources[i]]])
   }
-  
   
   # specify regression for FPR:
   do_reg_FPR <- list() #  <---- a regression for each measurement slice?
@@ -76,6 +83,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   prior_SS <- model_options$prior$TPR_prior$SS
   grp_spec <- (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 )
   if (grp_spec) {SS_grp <- TRUE}
+  
   ## <-------- the following are more strict grp specifications (may cause error when running old folders):
 #   val_spec <- (num_slice["MSS"]>0 && any(lapply(prior_SS$val,length)>1))
 #   
@@ -88,34 +96,6 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   # return results:
   make_list(num_slice, nested, regression,SS_grp)
 }
-
-# 
-# #' check if SS measurements have stratified TPRs
-# #' 
-# #' @param model_options See \link{nplcm}
-# #' 
-# #' 
-# #' @return TRUE for stratified TPRs; FALSE otherwise
-# #' 
-# #' @export
-# check_SS_grp <- function(model_options){
-#   res <- FALSE
-#   prior_SS <- model_options$prior$TPR_prior$SS
-#   if (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 ){
-#     res <- TRUE
-#   }
-#   res
-# }
-
-
-# #' check the compatibility of model and parameter specification
-# #' 
-# #' 
-# #' 
-# check_spec <- function(data_nplcm, model_options, clean_options){
-#   
-# }
-# 
 
 
 

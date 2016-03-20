@@ -116,7 +116,7 @@ plot_pie_panel <- function(model_options,
   #
   op <- par(mar=c(5.1,0,4.1,10))
   
-  cat("\n == Plotting pies == ")
+  cat("\n == Plotting pies == \n")
   
   first <- TRUE
   for (e in seq_along(latent_seq)){

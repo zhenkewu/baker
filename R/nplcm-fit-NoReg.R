@@ -1,7 +1,9 @@
 #' Fit nested partially-latent class model (low-level)
 #'
-#' @details This function includes preparing data (specify hyperparameters in priors),
-#' initialize the chain, write the model file, and fit the model. Features:
+#' @details This function prepares data, specifies hyperparameters in priors 
+#' (true positive rates and etiology fractions), initializes the posterior
+#' sampling chain, writes the model file (for JAGS or WinBUGS with slight differences
+#' in syntax), and fits the model. Features:
 #' \itemize{
 #' \item no regression;
 #' \item no nested
@@ -13,17 +15,15 @@
 #' @return BUGS fit results.
 #' 
 #' @seealso \link{write_model_NoReg} for constructing .bug model file; This function
-#' adds this constructed .bug file into the directory specified by 
-#' \code{mcmc_options$bugsmodel.dir}.
+#' then put it in the folder \code{mcmc_options$bugsmodel.dir}.
+#' 
+#' @family model fitting functions 
 #' 
 #' @export
-#' 
-#' 
 nplcm_fit_NoReg<-
   function(data_nplcm,model_options,mcmc_options){
-  
     # Record the settings of current analysis:
-    cat("==Results stored in: ==","\n",mcmc_options$result.folder)
+    cat("==[baker] Results stored in: ==","\n",mcmc_options$result.folder,"\n")
     #model_options:
     dput(model_options,file.path(mcmc_options$result.folder,"model_options.txt"))
     #mcmc_options:
@@ -51,10 +51,8 @@ nplcm_fit_NoReg<-
     Jcause      <- length(cause_list)
     
     in_data <- in_init <- out_parameter <- NULL
-    
 
     if ("BrS" %in% use_measurements){
-      
       #
       # BrS measurement data: 
       #
@@ -64,7 +62,7 @@ nplcm_fit_NoReg<-
       template_BrS_list <- lapply(patho_BrS_list,make_template,cause_list)
       for (s in seq_along(template_BrS_list)){
         if (sum(template_BrS_list[[s]])==0){
-          warning(paste0("== Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+          warning(paste0("==[baker] Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
         }
       }
       
@@ -74,7 +72,7 @@ nplcm_fit_NoReg<-
       for (i in seq_along(MBS.case_list)){
         MBS_list[[i]]      <- rbind(MBS.case_list[[i]],MBS.ctrl_list[[i]])
       }
-      names(MBS_list) <- names(MBS.case_list)
+      names(MBS_list)   <- names(MBS.case_list)
       
       single_column_MBS <- which(lapply(MBS_list,ncol)==1)
       
@@ -84,8 +82,9 @@ nplcm_fit_NoReg<-
         assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))   
       }
       
+      # summarize into one name (for all measurements):
       if (length(single_column_MBS)==0){
-        # summarize into one name (for all measurements):
+        # if all slices have >2 columns:
         in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
                            paste("JBrS",1:length(JBrS_list),sep="_"),
                            paste("MBS",1:length(JBrS_list),sep="_"),
@@ -94,9 +93,9 @@ nplcm_fit_NoReg<-
                           # paste("betaB",1:length(JBrS_list),sep="_")
         )
       } else {
-        # summarize into one name (for all measurements):
+        # if there exist slices with 1 column:
         in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
-                           paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS],
+                           paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS], # <---- no need to iterate in .bug file for a slice with one column.
                            paste("MBS",1:length(JBrS_list),sep="_"),
                            paste("templateBS",1:length(JBrS_list),sep="_")
                           # paste("alphaB",1:length(JBrS_list),sep="_"),
@@ -108,11 +107,11 @@ nplcm_fit_NoReg<-
       # hyper-parameters:
       #
       
-      # set BrS measurement priors:
+      # Set BrS measurement priors:
       # hyperparameter for sensitivity (can add for specificity if necessary): 
       
       for (s in seq_along(Mobs$MBS)){
-        if (likelihood$k_subclass[s]==1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
+        if (likelihood$k_subclass[s] == 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
         if (likelihood$k_subclass[s] > 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
         
         assign(paste("alphaB", s, sep = "_"), BrS_tpr_prior[[1]]$alpha)     # <---- input BrS TPR prior here.

@@ -1,44 +1,41 @@
 #' Clean PERCH data
 #'
-#' \code{clean_perch_data} transforms a raw data table (row for subject, column
-#' for variable - usually \code{\{pathogen name\}_\{specimen\}_\{test\}} and other covariate
-#' names) into a list. It is specific for PERCH data format.
+#' \code{clean_perch_data} transforms a raw data table (row for subjects, column
+#' for variables - named as \code{\{pathogen name\}_\{specimen\}\{test\}} for lab tests
+#' or other covariates) into a list. It is designed for PERCH data format.
 #'
 #' @param clean_options The list of options for cleaning PERCH data.
 #' Its elements are defined as follows:
+#' 
 #' \itemize{
 #' \item{\code{raw_meas_dir}}{: The file path to the raw data;}
-#' \item{\code{case_def}}{: variable name in raw data for case definition;}
-#' \item{\code{case_def_val}}{: The value for case definition;}
-#' \item{\code{ctrl_def}}{: variable name in raw data for control definition;}
-#' \item{\code{ctrl_def_val}}{: The value for control definition;}
+#' \item{\code{case_def}}{: Variable name in raw data for \strong{case} definition;}
+#' \item{\code{case_def_val}}{: The value for \strong{case} definition;}
+#' \item{\code{ctrl_def}}{: Variable name in raw data for \strong{control} definition;}
+#' \item{\code{ctrl_def_val}}{: The value for \strong{control} definition;}
 #' \item{\code{X_strat}}{: A vector of variable names for stratifying the data
 #' to perform SEPARATE analyses;}
 #' \item{\code{X_strat_val}}{: A list of values for \code{X_strat}. The output
-#' data will only correspond to those with \code{identical(X_strat,X_strat_val)==TRUE}.
+#' data only have individuals with \code{identical(X_strat,X_strat_val)==TRUE}.
 #' To perform analysis on a single site, say \code{"02GAM"}, use \code{X_strat="newSITE"} and
 #' \code{X_strat_val=list("02GAM")};}
-#' \item{\code{BrS_objects}}{: a list of BrS objects built by \code{\link{make_meas_object}};}
-#' \item{\code{SS_objects}}{: a list of SS objects built by \code{\link{make_meas_object}};}
+#' \item{\code{BrS_objects}}{: A list of BrS objects built by \code{\link{make_meas_object}};}
+#' \item{\code{SS_objects}}{: A list of SS objects built by \code{\link{make_meas_object}};}
 #' \item{\code{X_extra}}{: A vector of covariate names for regression
 #' or visualization;}
 #' \item{\code{patho_taxo_dir}}{: The file path to the pathogen category or taxonomy
-#' information (.csv). The information should be as complete as possible to
-#' display all pathogens considered in an actual study;}
-#' \item{\code{allow_missing}}{: \code{TRUE} for using an observation that has
-#' either BrS missing, or SS missing. Set it to \code{TRUE} if we want to use
-#' the SS information from some cases who missed BrS measurements.
-#' In other words, all the subjects' data will be used if \code{allow_missing} is
-#' set to \code{TRUE}.}
+#' information (.csv). The information should be as complete as possible for a particular
+#' analysis. If not, the pathogen without taxonomy information could not be
+#' assigned to bacterial or viral groups (see \code{\link{plot_group_etiology}});
+#' See \code{\link{assign_taxo_cause_list}} that requires this taxonomy information.}.
 #'}
 #'
 #'
 #' @return A List: \code{list(Mobs,Y,X)}
 #' \itemize{
 #' \item \code{Mobs} A list of bronze- (\code{MBS}), silver- (\code{MSS}),
-#' and gold-standard (\code{MGS}, if available) measurements.
-#' It is produced by \code{\link{extract_data_raw}}. Please see the description
-#' of the returned value therein.
+#' and gold-standard (\code{MGS}, if available) measurements. See the formats
+#'  of these measurements in \code{\link{extract_data_raw}}.
 #' \item \code{Y} 1 for case; 0 for control;
 #' \item \code{X} Data frame of covariates for cases and controls. The covariate
 #' names are specified in \code{X_extra};
@@ -49,6 +46,8 @@
 #' type of measurement; \link{extract_data_raw} for reading raw data table
 #' and organizing them into \code{data_nplcm} format. Also see \link{clean_combine_subsites}
 #' for combining subsites and \link[lubridate]{parse_date_time} for parsing date.
+#' 
+#' @family data tidying functions
 #' @export
 
 clean_perch_data <- function(clean_options) {
@@ -65,8 +64,6 @@ clean_perch_data <- function(clean_options) {
   BrS_objects  <- clean_options$BrS_objects
   SS_objects   <- clean_options$SS_objects
   X_extra      <- clean_options$X_extra
-  #patho_taxo_dir    <- clean_options$patho_taxo_dir
-  allow_missing     <- clean_options
   
   # clean dates: use specified date format; if not specified, try the formats
   # specified in the "else" sub-clause:
@@ -98,7 +95,7 @@ clean_perch_data <- function(clean_options) {
   #rm(PERCH_data_with_newSITE)
   
   #
-  # read in prepared data:
+  # import prepared data:
   #
   
   # stratify on variables:
@@ -181,66 +178,42 @@ clean_perch_data <- function(clean_options) {
                    Y   = all_Y)
 }
 
-#' Wrap the information about a particular type of measurement
+#' Import Raw PERCH Data
+#'  
+#' \code{extract_data_raw} imports and converts the raw data to analyzable format
 #'
-#'@param patho a vector of pathogen names
-#'@param specimen specimen name
-#'@param test test name
-#'@param quality quality category: any of "BrS", "SS" or "GS".
-#'@param cause_list the list of potential latent status
-#'
-#'@return a list with measurement information
-#'\itemize{
-#'\item{\code{quality}} same as argument
-#'\item{\code{patho}} same as argument
-#'\item{\code{name_in_data}} the names used in the raw data to locate these measurements
-#'\item{\code{template}} a mapping from \code{patho} to \code{cause_list}.
-#'\code{NROW = length(cause_list)+1};
-#'\code{NCOL = length(patho)}. This value is crucial in model fitting to determine
-#'which measurements are informative of a particular category of latent status.
-#'\item{\code{specimen}} same as argument
-#'\item{\code{test}} same as argument
-#'\item{\code{nm_spec_test}} paste \code{specimen} and \code{test} together
-#'}
-#'
-#'@export
-
-make_meas_object <-
-  function(patho,specimen,test,quality,cause_list) {
-    nm_spec_test <- paste0(specimen,test)
-    name_in_data <- paste(patho,nm_spec_test,sep = "_")
-    template <- make_template(patho,cause_list)
-    make_list(quality,patho,name_in_data,template,specimen,test,nm_spec_test)
-  }
-
-#' Convert raw data to analyzable format
-#'
-#' @param dat_prepared  The data set prepared in \code{clean_perch_data}
+#' @param dat_prepared  The data set prepared in \code{clean_perch_data}.
 #' @param strat_nm        The vector of covariate names to separately extract data.
-#'    For example, in PERCH data cleaning, \code{X = c("newSITE","CASECONT")}
+#'    For example, in PERCH data cleaning, \code{X = c("newSITE","CASECONT")}.
 #' @param strat_val     The list of covariate values to stratify data.
-#'    Each element corresponds to that in \code{X}. For example, in PERCH
-#'    data cleaning, \code{Xval = list("02GAM","1")}
-#' @param meas_object a list of bronze-standard or silver-standard measurement
-#' objects made by function \code{\link{make_meas_object}}
+#'    Each element corresponds to elements in \code{X}. For example, in PERCH
+#'    data cleaning, \code{Xval = list("02GAM","1")}.
+#' @param meas_object A list of bronze-standard or silver-standard measurement
+#' objects made by function \code{\link{make_meas_object}}.
 #' @param extra_covariates The vector of covariate name for regression purposes.
-#'   The default is NULL, which means no such covariate is necessary.
+#'   The default is NULL, which means not reading in any covariate.
 #'
 #' @return A list of data.
 #' \itemize{
 #' \item{Mobs}{
 #'    \itemize{
-#'    \item{MBS} A list of bronze-standard measurements.
-#'    The names of the list are the (specimen, test) pair. Each element of the list is a data frame.
-#'    The rows of the data frame are subjects; the columns are (pathogen, specimen, test) trios.
-#'    \item{MSS} A list of silver-standard measurements. Formats are the same as \code{MBS} above.
-#'    \item{MGS} A list of gold-standard measurements. If none provided, it is \code{NULL}.
+#'    \item{MBS} A list of Bronze-Standard (BrS) measurements.
+#'    The names of the list take the form of \code{specimen}_\code{test}. 
+#'    Each element of the list is a data frame. The rows of the data frame 
+#'    are for subjects; the columns are for measured pathogens.
+#'    \item{MSS} A list of Silver-Standard (SS) measurements. 
+#'    The formats are the same as \code{MBS} above.
+#'    \item{MGS} A list of Gold-Standard (GS) measurements. 
+#'    It equals \code{NULL} if no GS data exist.
 #'    }
 #' }
-#' \item{X} A data frame with columns specified by \code{extra_covariates} plus the
-#' constant-valued \code{strat_nm} (equals \code{strat_val} by definition).
+#' \item{X} A data frame with columns specified by \code{extra_covariates}.
 #' }
-#'
+#' 
+#' @family raw data importing functions
+#' 
+#' @seealso \code{\link{clean_perch_data}}
+#' 
 #' @export
 
 extract_data_raw <- function(dat_prepared,strat_nm,strat_val,
@@ -256,18 +229,6 @@ extract_data_raw <- function(dat_prepared,strat_nm,strat_val,
                                             !is.na(dat_prepared[ind_this_strat,strat_nm[j]]))]
   }
   dat = dat_prepared[ind_this_strat,]
-  
-  read_meas_object <- function(object,data) {
-    position <- lookup_quality(object$quality)
-    exist <- sapply(object$name_in_data,grep,colnames(data))
-    not_exist_index <- which(unlist(lapply(exist,length))==0)
-    if (length(not_exist_index)>0){
-      stop(paste0("==",paste(object$name_in_data[not_exist_index],collapse=", ")," is not in data!=="))  
-    }
-    meas <- data[,object$name_in_data,drop = FALSE]
-    colnames(meas) <- object$patho
-    make_list(meas,position)
-  }
   
   #
   # get lab measurements:
@@ -290,12 +251,12 @@ extract_data_raw <- function(dat_prepared,strat_nm,strat_val,
   Mobs[which(count == 0)] <- NULL
   
   
-  #' get extra covariates used for regression purposes:
+  # get extra covariates used for regression purposes:
   X <- list()
   if (!is.null(extra_covariates)) {
     for (i in seq_along(extra_covariates)) {
       if (!extra_covariates[i] %in% colnames(dat)) {
-        stop("==",extra_covariates[i]," is not in the data set. Delete this covariate.==","\n")
+        stop("==[baker]",extra_covariates[i]," is not in the data set. Delete this covariate.==","\n")
       } else {
         X[[i]] = dat[,extra_covariates[i]]
       }
@@ -311,27 +272,6 @@ extract_data_raw <- function(dat_prepared,strat_nm,strat_val,
   make_list(Mobs,X)
 }
 
-
-#' get an individual's data from the output of \code{\link{clean_perch_data}}
-#'
-#' @param data_nplcm data for fitting nplcm; See \link{nplcm}
-#' @param ID patient id: \code{patid}.
-#'
-#' @return a list with the inquired patient's data
-#'
-#' @export
-show_individual <- function(data_nplcm,ID) {
-  index <- which(data_nplcm$X$patid == ID)
-  Mobs  <- list()
-  for (i in seq_along(data_nplcm$Mobs)) {
-    Mobs[[i]] <- lapply(data_nplcm$Mobs[[i]],function(df)
-      df[index,])
-  }
-  list(Mobs = Mobs,
-       X    = data$X[index,])
-}
-
-
 #' Combine subsites in raw PERCH data set
 #'
 #' In the Actual PERCH data set, a study site may have multiple subsites.
@@ -345,13 +285,12 @@ show_individual <- function(data_nplcm,ID) {
 #' @return A data frame with combined sites
 #'
 #' @export
-
 clean_combine_subsites <-
   function(raw_meas_dir,subsites_list,newsites_vec) {
     if (length(subsites_list) != length(newsites_vec)) {
       stop(
-        "The length of new site names is not equal to the number of subsite groups!
-        Make them equal."
+        "==[baker] The length of new site names is not equal to the number of subsite groups!
+        Make them equal.=="
       )
     } else{
       tmp.dat         <- read.csv(raw_meas_dir)
@@ -363,36 +302,77 @@ clean_combine_subsites <-
     }
   }
 
-#' assign taxonomy information to every slice of measurements
+#' Make measurement slice
 #' 
-#' @param meas_object measurement object constructed by \link{make_meas_object}
-#' @param dir_taxo file path to the .csv file storing two columns of information:
-#' \code{pathogen}, and \code{pathogen_type}.
-#' 
-#' @return a vector of factors of taxonomy information (currently for "B","F","V"). 
-#' The names of the vector are pathogen names.
-#' 
-#' @export 
+#' Wrap the information about a particular type of measurement, e.g., NPPCR.
+#'
+#'@param patho A vector of pathogen names
+#'@param specimen Specimen name
+#'@param test Test name
+#'@param quality Quality category: any of "BrS", "SS" or "GS".
+#'@param cause_list The vector of potential latent status
+#'
+#'@return A list with measurement information
+#'\itemize{
+#'\item{\code{quality}} same as argument
+#'\item{\code{patho}} same as argument
+#'\item{\code{name_in_data}} the names used in the raw data to locate these measurements
+#'\item{\code{template}} a mapping from \code{patho} to \code{cause_list}.
+#'\code{NROW = length(cause_list)+1};
+#'\code{NCOL = length(patho)}. This value is crucial in model fitting to determine
+#'which measurements are informative of a particular category of latent status.
+#'\item{\code{specimen}} same as argument
+#'\item{\code{test}} same as argument
+#'\item{\code{nm_spec_test}} paste \code{specimen} and \code{test} together
+#'}
+#'
+#'@family data standardization functions
+#'
+#'@seealso \code{\link{make_template}}
+#'@export
+make_meas_object <-
+  function(patho,specimen,test,quality,cause_list) {
+    nm_spec_test <- paste0(specimen,test)
+    name_in_data <- paste(patho,nm_spec_test,sep = "_")
+    template <- make_template(patho,cause_list)
+    make_list(quality,patho,name_in_data,template,specimen,test,nm_spec_test)
+  }
 
-assign_taxo <- function(meas_object, dir_taxo){
-  patho_taxo <- read.csv(dir_taxo,header=TRUE,stringsAsFactors = FALSE)
-  patho_taxo$pathogen_type <- factor(patho_taxo$pathogen_type,levels=c("B","F","V"))
-  res_taxo   <- patho_taxo$pathogen_type[match(meas_object$patho,patho_taxo[,1])]
-  names(res_taxo) <- meas_object$patho
-  res_taxo
+#' Read measurement slices
+#' 
+#' @param object Outputs from \code{\link{make_meas_object}} 
+#' @param data Raw data with column names 
+#' \code{\{pathogen name\}_\{specimen\}\{test\}}
+#' 
+#' @return A list with two elements: \code{meas}-data frame with measurements;
+#' \code{position}-see \code{\link{lookup_quality}}
+#' 
+#' @family raw data importing functions
+#' @export
+#' 
+read_meas_object <- function(object,data) {
+  position <- lookup_quality(object$quality)
+  exist <- sapply(object$name_in_data,grep,colnames(data))
+  not_exist_index <- which(unlist(lapply(exist,length))==0)
+  if (length(not_exist_index)>0){
+    stop(paste0("==[baker]",paste(object$name_in_data[not_exist_index],collapse=", ")," is not in data!=="))  
+  }
+  meas <- data[,object$name_in_data,drop = FALSE]
+  colnames(meas) <- object$patho
+  make_list(meas,position)
 }
+
 
 #' assign taxonomy information to cause list
 #' 
-#' @param cause_list cause_list in model_options$likelihood
-#' @param dir_taxo file path to the .csv file storing two columns of information:
+#' @param cause_list See \code{cause_list} in \code{model_options$likelihood} (see 
+#' parameter settings in \code{\link{nplcm}})
+#' @param dir_taxo File path to the .csv file storing two columns of information:
 #' \code{pathogen}, and \code{pathogen_type}.
-#' @return a vector of factors of taxonomy information (currently for "B","F","V"). 
+#' @return A vector of factors of taxonomy information (currently for "B","F","V"). 
 #' The names of the vector are pathogen names.
 #' 
 #' @export
-
-
 assign_taxo_cause_list <- function(cause_list, dir_taxo=NULL){
   patho_taxo <- read.csv(dir_taxo,header=TRUE,stringsAsFactors = FALSE)
   patho_taxo$pathogen_type <- factor(patho_taxo$pathogen_type,levels=c("B","F","V"))

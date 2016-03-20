@@ -1,3 +1,29 @@
+#' get an individual's data from the output of \code{\link{clean_perch_data}}
+#'
+#' @param data_nplcm data for fitting nplcm; See \link{nplcm}
+#' @param ID patient id: \code{patid}.
+#'
+#' @return a list with the inquired patient's data
+#'
+#' @examples 
+#' \dontrun{
+#' show_individual(data_nplcm,"G01431")
+#' }
+#' 
+#' @family exploratory data analysis functions
+#' @export
+show_individual <- function(data_nplcm,ID) {
+  index <- which(data_nplcm$X$patid == ID)
+  Mobs  <- list()
+  for (i in seq_along(data_nplcm$Mobs)) {
+    Mobs[[i]] <- lapply(data_nplcm$Mobs[[i]],function(df)
+      df[index,])
+  }
+  list(Mobs = Mobs,
+       X    = data_nplcm$X[index,])
+}
+
+
 #' Visualize pairwise log odds ratios (LOR) for data that are available in
 #' both cases and controls
 #'
@@ -15,6 +41,8 @@
 #' @param logOR_rounding Rounding number of the log odds ratio. Default is 2.
 #' 
 #' @return Figure of LOR matrix and relavent s.e. and significance information.
+#' 
+#' @family exploratory data analysis functions
 #' @export
 
 plot_logORmat = function(data_nplcm,
@@ -168,8 +196,13 @@ plot_logORmat = function(data_nplcm,
 #' 
 #' @return a vector of number of positives
 #' 
+#' @examples 
+#' \dontrun{
+#' summarize_SS(data_nplcm$Mobs$MSS[[1]], data_nplcm$Y)
+#' }
+#' 
+#' @family exploratory data analysis functions
 #' @export
-
 summarize_SS <- function(SS_dat, Y){
   # get observed rates' summaries:
   Nd <- sum(Y==1)
@@ -193,7 +226,7 @@ summarize_SS <- function(SS_dat, Y){
   make_list(count, NA_count, Nd, MSS_mean, MSS_q1, MSS_q2, MSS_nm)
 }
 
-#summarize_SS(data_nplcm$Mobs$MSS[[1]], data_nplcm$Y)
+
 
 #' summarize bronze-standard data
 #' 
@@ -202,6 +235,12 @@ summarize_SS <- function(SS_dat, Y){
 #' @param Y A vector of case/control status: 1 for case; 0 for control
 #' 
 #' @return a list of summaries for BrS data
+#' @examples 
+#' \dontrun{
+#' summarize_BrS(data_nplcm$Mobs$MBS[[1]], data_nplcm$Y)
+#' }
+#' 
+#' @family exploratory data analysis functions
 #' @export
 
 summarize_BrS <- function(BrS_dat,Y){
@@ -254,8 +293,9 @@ summarize_BrS <- function(BrS_dat,Y){
 #' \code{pattern_names}; \code{exist_other} - if
 #' actual no. of patterns is larger than \code{n_pat}; \code{N}- No. of individuals
 #' with \code{Y = case_status}.
+#' 
+#' @family exploratory data analysis functions
 #' @export
-
 get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
   # getting data:
   
@@ -331,6 +371,9 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
 #' 
 #' @return A figure with smoothed positive rate and confidence bands for cases
 #' and controls, respectively. The right margin shows marginal positive rates.
+#' 
+#' 
+#' @family exploratory data analysis functions
 #' 
 #' @export
 
@@ -440,7 +483,7 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   points(fitted_ctrl ~ date_plot,data=dat_ctrl,
          pch=2,cex=2,col="dodgerblue2",lwd=5,type="l",lty=1)
   
-  ma <- function(x,n=60){filter(x,rep(1/n,n), sides=2)}
+  ma <- function(x,n=60){stats::filter(x,rep(1/n,n), sides=2)}
   
   dat_ctrl$runmean <- ma(response.ctrl)
   points(runmean ~ date_plot,data=dat_ctrl,lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")
@@ -511,12 +554,15 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   
   if (!is.null(data_nplcm$Mobs$MSS) && 
       colnames(curr_MBS)[patho]%in%colnames(data_nplcm$Mobs$MSS[[slice_SS]])){
+    
+    patho_SS <- which(colnames(data_nplcm$Mobs$MSS[[slice_SS]])==colnames(curr_MBS)[patho])
+    
     curr_MSS <- data_nplcm$Mobs$MSS[[slice_SS]][ord_all,,drop=FALSE]
-    ind_BrS_not_missing <- which(!is.na(curr_MSS[,patho]))
+    ind_BrS_not_missing <- which(!is.na(curr_MSS[,patho_SS]))
     points(dat_case$date_plot[ind_BrS_not_missing],
-           c(-0.5,1.3)[curr_MSS[ind_BrS_not_missing,patho]+1],pch="|",col="red",lwd=2)
+           c(-0.5,1.3)[curr_MSS[ind_BrS_not_missing,patho_SS]+1],pch="|",col="red",lwd=2)
     text(case.overall.loc,1.3,
-         paste0(names(data_nplcm$Mobs$MSS)[slice_SS],"(+)%:",round(100*mean(curr_MSS[ind_BrS_not_missing,patho]),2),"%"),
+         paste0(names(data_nplcm$Mobs$MSS)[slice_SS],"(+)%:",round(100*mean(curr_MSS[ind_BrS_not_missing,patho_SS]),2),"%"),
          cex=2,col=2)
   }
   

@@ -98,6 +98,8 @@ plot_panels <- function(DIR_NPLCM,
       height_leftmost <- sum(rowSums(make_template(select_latent,model_options$likelihood$cause_list))>0)
     }    
   }
+  
+  cat("\n == Plotting Panels of Measurements and Marginal Posterior of Etiology Fractions == \n")
   plot_leftmost(model_options,height_leftmost)
   
   if (!is.null(slices$MBS)){
@@ -118,6 +120,8 @@ plot_panels <- function(DIR_NPLCM,
     }
   }
   plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color = bg_color,select_latent,exact)
+  
+  cat("\n == Done. == \n")
   
 #   
 #   if (!any(unlist(parsing$reg))){

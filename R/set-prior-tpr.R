@@ -1,19 +1,24 @@
-#' Set true positive rate (TPR) prior ranges for bronze-standard data
-#' (for conditional independence models - currently also used for conditional dependence model).
+#' Set true positive rate (TPR) prior ranges for bronze-standard (BrS) data
 #' 
-#' @param slice the index of BrS measurement under consideration
+#' \code{set_prior_tpr_BrS_NoNest} is for for conditional independence models.
+#' We currently also use it for conditional dependence model: subclass TPRs
+#' are independently assigned a beta prior. Ongoing work will enable specifying
+#' priors for the marginal TPR, i.e. TPRs for a disease class, not for the 
+#' finer subclass.
+#' 
+#' @param slice The BrS measurement slice under consideration.
 #' @param model_options See \code{\link{nplcm}} function.
 #' @param data_nplcm See \code{\link{assign_model}} function.
 #' 
-#' @return Parameters for the TPR priors for BrS data. It is a list of two lists (alpha and beta).
-#' Alpha and beta is of the same length, the number of BrS measurement slices. 
+#' @return Parameters for the BrS dta TPR priors. It is a list of two lists 
+#' (alpha and beta). Alpha and beta are of the same length, the number of BrS measurement slices. 
 #' Each element of the alpha (beta) list is a numeric vector for alpha (beta) 
-#' parameters to specify Beta prior for TPRs.
+#' parameters as in BETA distribution.
+#' 
 #' @family prior specification functions
 #' @export
-
+#' 
 set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
-
   parsed_model <- assign_model(model_options,data_nplcm)
   if (parsed_model$num_slice["MBS"] == 0){stop("== No BrS data! ==")}
     
@@ -80,18 +85,18 @@ set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
 #' @param model_options See \code{\link{nplcm}} function.
 #' @param data_nplcm See \code{\link{assign_model}} function.
 #' 
-#' @return Parameters for the TPR priors for BrS data. It is a list of two lists (alpha and beta).
-#' Alpha and beta is of the same length, the number of BrS measurement slices. 
-#' Each element of the alpha (beta) list is a numeric vector for alpha (beta) 
-#' parameters to specify Beta prior for TPRs.
+#' @return Parameters for the SS data TPR priors. It is a list of two lists 
+#' (alpha and beta). Alpha and beta are of the same length, the number of 
+#' BrS measurement slices. Each element of the alpha (beta) list is a 
+#' numeric vector for alpha (beta) parameters to specify Beta prior for TPRs.
 #'
+#' @family prior specification functions
 #' @export
-#' 
 #' 
 set_prior_tpr_SS <- function(model_options,data_nplcm){
   
   parsed_model <- assign_model(model_options,data_nplcm)
-  if (parsed_model$num_slice["MSS"] == 0){stop("== No SS data! ==")}
+  if (parsed_model$num_slice["MSS"] == 0){stop("==[baker] No SS data! ==")}
   
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
@@ -113,9 +118,9 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
   names(res_all_slice) <- names(Mobs$MSS)
   for (s in seq_along(Mobs$MSS)){ #iterate over slices:
     res_all_grp <- vector("list",length= GSS_TPR)
-    if (prior_SS$info == "non-informative"){ # <------ not correct; also need to stratify by group.
-      stop("== Not implemented. Please contact maintainer for an update, or 
-               comment on the github page. Thanks. ==")
+    if (prior_SS$info == "non-informative"){ # <------ not correct; need to stratify by group.
+      stop("==[baker] Not implemented: baker always need sensitivity prior or meta-data. 
+                      Please contact maintainer for an update, or comment on the github page. Thanks. ==")
     }
     
     if (prior_SS$info == "informative"){
@@ -145,15 +150,15 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
       if (prior_SS$input == "direct_beta_param") {
         for (g in 1:GSS_TPR){
           tmp_alpha <- curr_val[[g]]$alpha; names(tmp_alpha) <- colnames(Mobs$MSS[[s]])
-          tmp_beta <- curr_val[[g]]$beta; names(tmp_beta) <- colnames(Mobs$MSS[[s]])
+          tmp_beta  <- curr_val[[g]]$beta;  names(tmp_beta)  <- colnames(Mobs$MSS[[s]])
           res_all_grp[[g]] <- list(alpha =  tmp_alpha, beta = tmp_beta)# <--- note here we lost column names for each measurements.
         }
       }
       
       res_all_slice[[s]] <- res_all_grp
     } # end informative.
-    return(res_all_slice)
   }# end iterate over slices.
+  return(res_all_slice)
 }
 
 
