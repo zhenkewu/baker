@@ -20,7 +20,7 @@
 #' 
 set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
   parsed_model <- assign_model(model_options,data_nplcm)
-  if (parsed_model$num_slice["MBS"] == 0){stop("== No BrS data! ==")}
+  if (parsed_model$num_slice["MBS"] == 0){stop("==[baker] No BrS data! ==\n")}
     
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
@@ -120,7 +120,7 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
     res_all_grp <- vector("list",length= GSS_TPR)
     if (prior_SS$info == "non-informative"){ # <------ not correct; need to stratify by group.
       stop("==[baker] Not implemented: baker always need sensitivity prior or meta-data. 
-                      Please contact maintainer for an update, or comment on the github page. Thanks. ==")
+                      Please contact maintainer for an update, or comment on the github page. Thanks. \n==")
     }
     
     if (prior_SS$info == "informative"){

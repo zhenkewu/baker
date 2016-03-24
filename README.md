@@ -10,7 +10,7 @@ How to install?
 --------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/baker")
+devtools::install_github("zhenkewu/baker",ref="add_bakerUI")
 ```
 
 How to run baker user interface?
@@ -46,7 +46,8 @@ What are the main functions?
 
 Platform
 ---------
-- Windows 10 (use [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) - also install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) or [JAGS 3.4.0](http://mcmc-jags.sourceforge.net/))
+- Windows 10 (use [JAGS 3.4.0](http://mcmc-jags.sourceforge.net/) or use [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) - also install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/))
+    + Running JAGS on Windows 10: install JAGS 3.4.0 and set environmental variable to JAGS terminal. See [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables.
 - Mac OSX 10.11 El Capitan (use JAGS 3.4.0). 
     - If package `ks` cannot be loaded due to failure of loading package `rgl`, follow the following steps:
           + install X11 by going [here](http://xquartz.macosforge.org/trac/wiki/X112.7.7);

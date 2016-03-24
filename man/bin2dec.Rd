@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{bin2dec}
 \alias{bin2dec}
-\title{Convert 0/1 binary coded sequence into decimal digits}
+\title{Convert a 0/1 binary-coded sequence into decimal digits}
 \usage{
 bin2dec(binary_vector)
 }

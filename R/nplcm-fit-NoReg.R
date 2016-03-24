@@ -153,7 +153,8 @@ nplcm_fit_NoReg<-
       
       for (s in seq_along(template_SS_list)){
         if (sum(template_SS_list[[s]])==0){
-          warning(paste0("== Silver-standard slice ", names(data_nplcm$Mobs$MSS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+          warning(paste0("==[baker] Silver-standard slice ", names(data_nplcm$Mobs$MSS)[s], 
+                         " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.==\n"))  
         }
       }
       
@@ -169,7 +170,7 @@ nplcm_fit_NoReg<-
       
       # setup groupwise TPR for SS:
       SS_TPR_strat <- FALSE
-      prior_SS <- model_options$prior$TPR_prior$SS
+      prior_SS     <- model_options$prior$TPR_prior$SS
       parsed_model <- assign_model(model_options,data_nplcm)
       if (parsed_model$SS_grp){
         SS_TPR_strat <- TRUE
@@ -194,11 +195,13 @@ nplcm_fit_NoReg<-
       
       # set SS measurement priors: 
       # hyper-parameters for sensitivity:
+      
+      alpha_mat <- list() # dimension for slices.
+      beta_mat  <- list()
+      
       for(i in seq_along(JSS_list)){
         
         GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
-        alpha_mat <- list() # dimension for slices.
-        beta_mat  <- list()
         alpha_mat[[i]] <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
         beta_mat[[i]]  <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
         
@@ -209,7 +212,6 @@ nplcm_fit_NoReg<-
           alpha_mat[[i]][g,] <- unlist(SS_tpr_prior[[i]][[g]]$alpha)
           beta_mat[[i]][g,]  <- unlist(SS_tpr_prior[[i]][[g]]$beta)
         }
-        names(alpha_mat) <- names(beta_mat) <- names(Mobs$MSS)
         
         if (GSS_TPR_curr>1){
           assign(paste("alphaS", i, sep = "_"), alpha_mat[[i]])    # <---- input SS TPR prior here.
@@ -219,6 +221,7 @@ nplcm_fit_NoReg<-
           assign(paste("betaS", i, sep = "_"),  c(beta_mat[[i]]))    
         }
       }
+      names(alpha_mat) <- names(beta_mat)<- names(Mobs$MSS)
       
       if (!SS_TPR_strat){
         if (length(single_column_MSS)==0){
@@ -311,10 +314,11 @@ nplcm_fit_NoReg<-
                                        nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
           }
           if (i==1){
-            if (length(JSS_list)>1){
-              warning("==Only the first slice of silver-standard data is used to initialize 'Icat' in JAGS fitting. Choose wisely!==")
-            }  
-            tmp_Icat_case[[i]] <- init_latent_jags(MSS_list[[i]],likelihood$cause_list)
+            #if (length(JSS_list)>1){
+            #  warning("==[baker] Only the first slice of silver-standard data is used to 
+            #          initialize 'Icat' in JAGS fitting. Choose wisely!\n ==")
+            #}  
+            tmp_Icat_case[[i]] <- init_latent_jags_multipleSS(MSS_list,likelihood$cause_list)
           }
         }
         
@@ -362,10 +366,11 @@ nplcm_fit_NoReg<-
             tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
           }
           if (i==1){
-            if (length(JSS_list)>1){
-             warning("==Only the first slice of silver-standard data is used to initialize 'Icat' in JAGS fitting. Choose wisely!==")
-            }
-            tmp_Icat_case[[i]] <- init_latent_jags(MSS_list[[i]],likelihood$cause_list)
+            #if (length(JSS_list)>1){
+            # warning("==[baker] Only the first slice of silver-standard data is
+            #         used to initialize 'Icat' in JAGS fitting. Choose wisely!==\n ")
+            #}
+            tmp_Icat_case[[i]] <- init_latent_jags_multipleSS(MSS_list,likelihood$cause_list)
           }
         }
         res2 <- c(tmp_thetaSS,tmp_Icat_case)
@@ -466,7 +471,7 @@ nplcm_fit_NoReg<-
 #' @param patho A vector of measured pathogen name for MSS; default is \code{colnames(MSS)}
 #' 
 #' @return a list of numbers, indicating categories of individual latent causes.
-#' 
+#' @family initialization functions
 #' @export
 
 init_latent_jags <- function(MSS,cause_list,patho=colnames(MSS)){
@@ -475,8 +480,8 @@ init_latent_jags <- function(MSS,cause_list,patho=colnames(MSS)){
   res <- sample.int(length(cause_list),size = nrow(MSS), replace=TRUE)
   vec <- sapply(ind_positive, function(i) paste(patho[which(MSS[i,]==1)],collapse="+"))
   res[ind_positive] <- match_cause(cause_list,vec)
-  if (sum(is.na(ind_positive))>0){
-    ind_NA <- which(is.na(ind_positive))
+  if (sum(is.na(res[ind_positive]))>0){ # <--- corrected to add res[].
+    ind_NA <- which(is.na(res))
     stop(paste0("== Case(s) No.: ",paste(ind_NA,collapse=", "), " have positive silver-standard
                 measurements on pathogen combinations not specified in the 'cause_list' of 
                 'model_options$likelihood'! Please consider if you want to delete these cases,
@@ -484,3 +489,47 @@ init_latent_jags <- function(MSS,cause_list,patho=colnames(MSS)){
   }
   res
 }
+
+
+#' Initialize individual latent status (only for JAGS)
+#' 
+#' @details In JAGS 3.4.0, if an initial value contradicts the probablistic specification, e.g.
+#' \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
+#' then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
+#' silver-standard data is 1. Note: this is not a problem in WinBUGS.
+#' 
+#' 
+#' @param MSS_list Silver-standard measurement data, possibly with more than one 
+#' slices; see \code{data_nplcm} argument in \code{\link{nplcm}}
+#' @param cause_list See \code{model_options} arguments in \code{\link{nplcm}}
+#' @param patho A vector of measured pathogen name for MSS; default is \code{colnames(MSS)}
+#' 
+#' @return a list of numbers, indicating categories of individual latent causes.
+#' 
+#' 
+#' @family initialization functions
+#' @export
+
+init_latent_jags_multipleSS <- function(MSS_list,cause_list,
+                                        patho=unlist(lapply(MSS_list,colnames))){
+  # <--- revising for multiple silver-standard data.
+  #table(apply(MSS,1,function(v) paste(v,collapse="")))
+  MSS <- do.call(cbind,MSS_list)
+  ind_positive <- which( apply(MSS,1,sum)>0)
+  res <- sample.int(length(cause_list),size = nrow(MSS), replace=TRUE)
+  vec <- sapply(ind_positive, function(i) paste(unique(patho[which(MSS[i,]==1)]),collapse="+"))
+  res[ind_positive] <- match_cause(cause_list,vec)
+  if (sum(is.na(res[ind_positive]))>0){ # <--- corrected to add res[].
+    ind_NA <- which(is.na(res))
+    stop(paste0("==[baker] Case(s) No.: ",paste(ind_NA,collapse=", "), " have positive silver-standard
+                measurements on pathogen combinations not specified in the 'cause_list' of 
+                'model_options$likelihood'! Please consider if you want to delete these cases,
+                or to add these combinations into 'cause_list'.==\n"))
+  }
+  res
+  }
+
+
+
+
+

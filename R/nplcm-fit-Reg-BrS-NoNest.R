@@ -18,7 +18,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 
 nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     # Record the settings of current analysis:
-    cat("==Results stored in: ==","\n",mcmc_options$result.folder,"\n")
+    cat("==[baker] Results stored in: ==","\n",mcmc_options$result.folder,"\n")
     #model_options:
     dput(model_options,file.path(mcmc_options$result.folder,"model_options.txt"))
     #mcmc_options:
@@ -69,7 +69,7 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     Nd      <- sum(Y==1)
     Nu      <- sum(Y==0)
     
-    cat("==True positive rate (TPR) prior(s) for ==\n",
+    cat("==[baker] True positive rate (TPR) prior(s) for ==\n",
         model_options$M_use,"\n",
         " is(are respectively): \n",
         model_options$TPR_prior,"\n")
@@ -86,7 +86,6 @@ nplcm_fit_Reg_BrS_NoNest <- function(data_nplcm,model_options,mcmc_options){
     # number of all causes possible: singletons, combos, NoA, i.e.
     # the number of rows in the template:
     Jcause      <- length(cause_list)
-    
     
     # get design matrices:
     dm_FPR <- try(model.matrix(model_options$X_reg_FPR,

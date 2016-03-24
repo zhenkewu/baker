@@ -75,10 +75,7 @@ rvbern <-
 
 
 
-
-
-
-#' Convert 0/1 binary coded sequence into decimal digits
+#' Convert a 0/1 binary-coded sequence into decimal digits
 #'
 #' Useful when try to list all the binary patterns. One can group the binary
 #' sequences according to their equivalent decimal values.

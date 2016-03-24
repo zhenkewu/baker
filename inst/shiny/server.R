@@ -732,35 +732,95 @@ shinyServer(function(input,output,session) {
     if (input$refresh_button > 0 ){
       #isolate({
       
+      #
+      # bronze-standard:
+      #
       BrS_vals <- list()
-      if (!is.null(input$patho_BrS_NPPCR)){
-        BrS_vals[["NPPCR"]] <- list(up  = rep(input$val_NPPCR_up,length(input$patho_BrS_NPPCR)),
-                                    low = rep(input$val_NPPCR_down,length(input$patho_BrS_NPPCR)))
+      if (input$TPR_prior_BrS_info=="informative"){
+        if ( input$TPR_prior_BrS_input=="match_range"){
+          if (!is.null(input$patho_BrS_NPPCR)){
+            BrS_vals[["NPPCR"]] <- list(up  = rep(input$val_NPPCR_up,length(input$patho_BrS_NPPCR)),
+                                        low = rep(input$val_NPPCR_down,length(input$patho_BrS_NPPCR)))
+          }
+          
+          if (!is.null(input$patho_BrS_WBPCR)){
+            BrS_vals[["WBPCR"]] <- list(up  = rep(input$val_WBPCR_up,length(input$patho_BrS_WBPCR)),
+                                        low = rep(input$val_WBPCR_down,length(input$patho_BrS_WBPCR)))
+          }
+          
+          if (!is.null(input$patho_BrS_NPCX_VT13)){
+            BrS_vals[["NPCX"]] <- list(up  = rep(input$val_NPCX_up,length(input$patho_BrS_NPCX_VT13)),
+                                       low = rep(input$val_NPCX_down,length(input$patho_BrS_NPCX_VT13)))
+          }
+        } else {
+          if (!is.null(input$patho_BrS_NPPCR)){
+            BrS_vals[["NPPCR"]] <- list(alpha  = rep(input$val_NPPCR_alpha,length(input$patho_BrS_NPPCR)),
+                                        beta = rep(input$val_NPPCR_beta,length(input$patho_BrS_NPPCR)))
+          }
+          
+          if (!is.null(input$patho_BrS_WBPCR)){
+            BrS_vals[["WBPCR"]] <- list(alpha  = rep(input$val_WBPCR_alpha,length(input$patho_BrS_WBPCR)),
+                                        beta = rep(input$val_WBPCR_beta,length(input$patho_BrS_WBPCR)))
+          }
+          
+          if (!is.null(input$patho_BrS_NPCX_VT13)){
+            BrS_vals[["NPCX"]] <- list(alpha  = rep(input$val_NPCX_alpha,length(input$patho_BrS_NPCX_VT13)),
+                                       beta = rep(input$val_NPCX_beta,length(input$patho_BrS_NPCX_VT13)))
+          }
+        }
+      } else{
+        BrS_vals <- list()
+        if (!is.null(input$patho_BrS_NPPCR)){
+          BrS_vals[["NPPCR"]] <- list(alpha  = rep(input$val_NPPCR_alpha_flat,length(input$patho_BrS_NPPCR)),
+                                      beta   = rep(input$val_NPPCR_beta_flat,length(input$patho_BrS_NPPCR)))
+        }
+        
+        if (!is.null(input$patho_BrS_WBPCR)){
+          BrS_vals[["WBPCR"]] <- list(alpha  = rep(input$val_WBPCR_alpha_flat,length(input$patho_BrS_WBPCR)),
+                                      beta = rep(input$val_WBPCR_beta_flat,length(input$patho_BrS_WBPCR)))
+        }
+        
+        if (!is.null(input$patho_BrS_NPCX_VT13)){
+          BrS_vals[["NPCX"]] <- list(alpha  = rep(input$val_NPCX_alpha_flat,length(input$patho_BrS_NPCX_VT13)),
+                                     beta = rep(input$val_NPCX_beta_flat,length(input$patho_BrS_NPCX_VT13)))
+        }
       }
       
-      if (!is.null(input$patho_BrS_WBPCR)){
-        BrS_vals[["WBPCR"]] <- list(up  = rep(input$val_WBPCR_up,length(input$patho_BrS_WBPCR)),
-                                    low = rep(input$val_WBPCR_down,length(input$patho_BrS_WBPCR)))
-      }
-      
-      if (!is.null(input$patho_BrS_NPCX_VT13)){
-        BrS_vals[["NPCX"]] <- list(up  = rep(input$val_NPCX_up,length(input$patho_BrS_NPCX_VT13)),
-                                   low = rep(input$val_NPCX_down,length(input$patho_BrS_NPCX_VT13)))
-      }
-      
+      #
+      # silver-standard:
+      #
       SS_vals <- list()
-      if (!is.null(input$patho_SS_BCX)){
-        SS_vals[["BCX"]] <- list(list(up = rep(input$val_BCX_up,length(input$patho_SS_BCX)),
-                                      low = rep(input$val_BCX_down,length(input$patho_SS_BCX))))
+      if (input$TPR_prior_SS_info=="informative") {
+        if (input$TPR_prior_SS_input=="match_range") {
+          if (!is.null(input$patho_SS_BCX)){
+            SS_vals[["BCX"]] <- list(list(up = rep(input$val_BCX_up,length(input$patho_SS_BCX)),
+                                          low = rep(input$val_BCX_down,length(input$patho_SS_BCX))))
+          }
+          
+          if (!is.null(input$patho_SS_LA_ADJ)){
+            SS_vals[["LA_ADJ"]] <- list(list(up = rep(input$val_LA_ADJ_up,length(input$patho_SS_LA_ADJ)),
+                                             low = rep(input$val_LA_ADJ_down,length(input$patho_SS_LA_ADJ))))
+          }
+          
+          if (!is.null(input$patho_SS_PF_ADJ)){
+            SS_vals[["PF_ADJ"]] <- list(list(up  = rep(input$val_PF_ADJ_up,length(input$patho_SS_PF_ADJ)),
+                                             low = rep(input$val_PF_ADJ_down,length(input$patho_SS_PF_ADJ))))
+          }
+        } else {
+          if (!is.null(input$patho_SS_BCX)){
+            SS_vals[["BCX"]] <- list(list(alpha = rep(input$val_BCX_alpha,length(input$patho_SS_BCX)),
+                                          beta = rep(input$val_BCX_beta,length(input$patho_SS_BCX))))
+          }
+          if (!is.null(input$patho_SS_LA_ADJ)){
+            SS_vals[["LA_ADJ"]] <- list(list(alpha = rep(input$val_LA_ADJ_alpha,length(input$patho_SS_LA_ADJ)),
+                                             beta = rep(input$val_LA_ADJ_beta,length(input$patho_SS_LA_ADJ))))
+          }
+          if (!is.null(input$patho_SS_PF_ADJ)){
+            SS_vals[["PF_ADJ"]] <- list(list(alpha  = rep(input$val_PF_ADJ_alpha,length(input$patho_SS_PF_ADJ)),
+                                             beta = rep(input$val_PF_ADJ_beta,length(input$patho_SS_PF_ADJ))))
+          }
+        }
       }
-      
-      # if (!is.null(input$patho_SS_LA_ADJ)){
-      #   SS_objects[[2]] <- make_meas_object(input$patho_SS_LA_ADJ,"LA","_ADJ","SS",input$cause_list)
-      # }
-      # 
-      # if (!is.null(input$patho_SS_PF_ADJ)){
-      #   SS_objects[[3]] <- make_meas_object(input$patho_SS_PF_ADJ,"PF","_ADJ","SS",input$cause_list)  
-      # }
       
       list(
         likelihood   = list(
@@ -774,7 +834,7 @@ shinyServer(function(input,output,session) {
         prior        = list(Eti_prior   = overall_uniform(input$sym_dirichlet_alpha, input$cause_list) ,                       # <--- etiology prior. 
                             TPR_prior   = list(
                               BrS  = list(info  = input$TPR_prior_BrS_info,
-                                          input =  input$TPR_prior_BrS_input,
+                                          input = input$TPR_prior_BrS_input,
                                           val   = BrS_vals
                               ),
                               SS   = list(info   = input$TPR_prior_SS_info,
@@ -887,7 +947,7 @@ shinyServer(function(input,output,session) {
       
       # include stratification information in file name:
       fit_option_vars$fullname <- paste0(fit_option_vars$working_dir, Date,"_",
-                                                    paste(unlist(clean_options$X_strat_val),sep="_"),"_output_",nrow(mat))
+                                                    paste(unlist(clean_options$X_strat_val),sep="_"),"_output")
       
       # for finer scenarios, e.g., different types of analysis applicable to the
       # same data set. Here we just perform one analysis:

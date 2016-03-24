@@ -124,7 +124,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
                   label = "conditional OR")
     }else{
       if (!silent){
-        print("Conditional OR not calculatable. Switch to mariginal OR.")
+        print("==[baker] Conditional OR not calculatable. Switch to mariginal OR.\n")
       }
       res0 = matrix(NA,nrow=1,ncol=3)
       res0 = data.frame(res0)
@@ -380,7 +380,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   if (!is_length_all_one(pos_vec)){
     #stop("== Not implemented for combo latent status.==")
-    warning("== Combo latent status implemented with measurements overlapping in BrS columns! ==")
+    warning("==[baker] Combo latent status implemented with measurements overlapping in BrS columns! ==\n")
   }
   
   first  <- TRUE
@@ -429,7 +429,8 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   
   if (sum(template_ord)==0){
-    warning(paste0("== Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[slice], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+    warning(paste0("==[baker] Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[slice], 
+                   " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.==\n"))  
     plotat <- c(sapply(seq_along(latent_seq),get_plot_num,length(latent_seq)))
     plot(rep(0,length(plotat)),
          plotat,

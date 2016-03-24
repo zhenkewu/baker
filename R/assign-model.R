@@ -49,7 +49,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   use_data_sources   <- c("MBS","MSS","MGS")[lookup_quality(use_measurements)]
   input_data_sources <-  names(Mobs)
   if (!all(use_data_sources%in%input_data_sources)){
-    stop("==[baker] Please supply actual datasets as specified by 'use_measurements' in 'model_options'.==")
+    stop("==[baker] Please supply actual datasets as specified by 'use_measurements' in 'model_options'.\n==")
   }
   
   # get the length of each measurement quality:

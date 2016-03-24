@@ -63,7 +63,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   
   if (!any(unlist(parsed_model$regression))){
     
-    if (parsed_model$SS_grp){stop("== Panel plot not available for stratified SS TPRs. Please contact maintainer. ==")}
+    if (parsed_model$SS_grp){stop("==[baker] Panel plot not available for stratified SS TPRs. Please contact maintainer. ==\n")}
     #
     # plcm (just obtain TPR and FPR estimates):
     #
@@ -269,7 +269,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   
   if (!is_length_all_one(pos_vec)){
     #stop("== Not implemented for combo latent status.==")
-    warning("== Combo latent status implemented with measurements overlapping in SS columns! ==")
+    warning("==[baker] Combo latent status implemented with measurements overlapping in SS columns! ==\n")
   }
   
   first  <- TRUE
@@ -310,7 +310,8 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   }
   
   if (sum(template_ord)==0){
-    warning(paste0("== Silver-standard slice ", names(data_nplcm$Mobs$MSS)[slice], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+    warning(paste0("==[baker] Silver-standard slice ", names(data_nplcm$Mobs$MSS)[slice], 
+                   " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.==\n"))  
     plotat <- c(sapply(seq_along(latent_seq),get_plot_num,length(latent_seq)))
     plot(rep(0,length(plotat)),
            plotat,
