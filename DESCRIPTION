@@ -16,7 +16,7 @@ Description: Nested Partially-Latent Class Models (npLCM) for Inference
 Depends:
     R(>= 3.2)
 Imports:
-    rjags(>= 3-14),
+    rjags(== 3-15),
     R2WinBUGS(>= 2.1),
     R2jags(>= 0.5),
     lubridate(>= 1.3),
