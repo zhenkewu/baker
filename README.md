@@ -46,13 +46,19 @@ What are the main functions?
 
 Platform
 ---------
-- Windows 10 (use [JAGS 3.4.0](http://mcmc-jags.sourceforge.net/) or use [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) - also install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/))
-    + Running JAGS on Windows 10: install JAGS 3.4.0 and set environmental variable to JAGS terminal. See [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables.
+- Windows 10 (use [JAGS 3.4.0](http://mcmc-jags.sourceforge.net/))
+    + Install JAGS 3.4.0 and set environmental variable to JAGS terminal. See [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables;
+	+ Install `Rtools` (to build packages and to install pacakge from sources); Go [here](https://cran.r-project.org/bin/windows/Rtools/);
 	+ Install `rjags` package Version 3-15 from [here](https://cran.r-project.org/src/contrib/Archive/rjags/rjags_3-15.tar.gz).
+	
+- Windows 10 or earlier versions (use [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) 
+    + also install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/))
+
 - Mac OSX 10.11 El Capitan (use JAGS 3.4.0). 
     - If package `ks` cannot be loaded due to failure of loading package `rgl`, follow the following steps:
           + install X11 by going [here](http://xquartz.macosforge.org/trac/wiki/X112.7.7);
           + `install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1200.tar.gz",repo=NULL,type="source")`
+		  
 - Linux (use JAGS 3.4.0)
 
 Maintainer:
