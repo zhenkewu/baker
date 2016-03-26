@@ -8,7 +8,7 @@ init_latent_jags_multipleSS(MSS_list, cause_list,
   patho = unlist(lapply(MSS_list, colnames)))
 }
 \arguments{
-\item{MSS_list}{Silver-standard measurement data, possibly with more than one 
+\item{MSS_list}{A list of silver-standard measurement data, possibly with more than one 
 slices; see \code{data_nplcm} argument in \code{\link{nplcm}}}
 
 \item{cause_list}{See \code{model_options} arguments in \code{\link{nplcm}}}
@@ -26,8 +26,5 @@ In JAGS 3.4.0, if an initial value contradicts the probablistic specification, e
 \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
 then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
 silver-standard data is 1. Note: this is not a problem in WinBUGS.
-}
-\seealso{
-Other initialization functions: \code{\link{init_latent_jags}}
 }
 

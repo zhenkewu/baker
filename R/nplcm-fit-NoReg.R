@@ -183,7 +183,7 @@ nplcm_fit_NoReg<-
       # add GSS_TPR_1, or 2 if we want to index by slices:
       for (i in seq_along(JSS_list)){
         if (!is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
-          assign(paste("GSS_TPR", i, sep = "_"), length(unique(prior_SS$grp)))
+          assign(paste("GSS_TPR", i, sep = "_"), length(unique(prior_SS$grp))) # <--- need to change to depending on i if grp change wrt specimen.
         }
         if (is.null(prior_SS$grp)){ # <--- need to change to list if we have multiple slices.
           assign(paste("GSS_TPR", i, sep = "_"), 1)
@@ -454,9 +454,6 @@ nplcm_fit_NoReg<-
     }
 }
 
-
-
-
 #' Initialize individual latent status (only for JAGS)
 #' 
 #' @details In JAGS 3.4.0, if an initial value contradicts the probablistic specification, e.g.
@@ -465,51 +462,15 @@ nplcm_fit_NoReg<-
 #' silver-standard data is 1. Note: this is not a problem in WinBUGS.
 #' 
 #' 
-#' @param MSS a slice of silver-standard measurement; see \code{data_nplcm} argument in
-#' \code{\link{nplcm}}
-#' @param cause_list See \code{model_options} arguments in \code{\link{nplcm}}
-#' @param patho A vector of measured pathogen name for MSS; default is \code{colnames(MSS)}
-#' 
-#' @return a list of numbers, indicating categories of individual latent causes.
-#' @family initialization functions
-#' @export
-
-init_latent_jags <- function(MSS,cause_list,patho=colnames(MSS)){
-  #table(apply(MSS,1,function(v) paste(v,collapse="")))
-  ind_positive <- which( apply(MSS,1,sum)>0)
-  res <- sample.int(length(cause_list),size = nrow(MSS), replace=TRUE)
-  vec <- sapply(ind_positive, function(i) paste(patho[which(MSS[i,]==1)],collapse="+"))
-  res[ind_positive] <- match_cause(cause_list,vec)
-  if (sum(is.na(res[ind_positive]))>0){ # <--- corrected to add res[].
-    ind_NA <- which(is.na(res))
-    stop(paste0("== Case(s) No.: ",paste(ind_NA,collapse=", "), " have positive silver-standard
-                measurements on pathogen combinations not specified in the 'cause_list' of 
-                'model_options$likelihood'! Please consider if you want to delete these cases,
-                or to add these combinations into 'cause_list'.=="))
-  }
-  res
-}
-
-
-#' Initialize individual latent status (only for JAGS)
-#' 
-#' @details In JAGS 3.4.0, if an initial value contradicts the probablistic specification, e.g.
-#' \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
-#' then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
-#' silver-standard data is 1. Note: this is not a problem in WinBUGS.
-#' 
-#' 
-#' @param MSS_list Silver-standard measurement data, possibly with more than one 
+#' @param MSS_list A list of silver-standard measurement data, possibly with more than one 
 #' slices; see \code{data_nplcm} argument in \code{\link{nplcm}}
 #' @param cause_list See \code{model_options} arguments in \code{\link{nplcm}}
 #' @param patho A vector of measured pathogen name for MSS; default is \code{colnames(MSS)}
 #' 
 #' @return a list of numbers, indicating categories of individual latent causes.
 #' 
-#' 
 #' @family initialization functions
 #' @export
-
 init_latent_jags_multipleSS <- function(MSS_list,cause_list,
                                         patho=unlist(lapply(MSS_list,colnames))){
   # <--- revising for multiple silver-standard data.
@@ -527,7 +488,7 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
                 or to add these combinations into 'cause_list'.==\n"))
   }
   res
-  }
+}
 
 
 
