@@ -10,14 +10,15 @@ How to install?
 --------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/baker",ref="add_bakerUI")
+devtools::install_github("zhenkewu/baker",ref="add_bakerUI",dependencies=FALSE)
 ```
+Here we have set `dependencies=FALSE` to not automatically install the `rjags` package. Please see below for how to install `rjags` package (Version 3-14) for JAGS 3.14.
 
 How to run baker user interface?
 --------------------------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/baker",ref="add_bakerUI")
+devtools::install_github("zhenkewu/baker",ref="add_bakerUI",dependencies=FALSE)
 shiny::runGitHub("baker","zhenkewu",ref='add_bakerUI',subdir="inst/shiny")
 ```
 
@@ -46,20 +47,24 @@ What are the main functions?
 
 Platform
 ---------
-- Windows 10 (use [JAGS 3.4.0](http://mcmc-jags.sourceforge.net/))
-    + Install JAGS 3.4.0 and set environmental variable to JAGS terminal. See [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables;
-	+ Install `Rtools` (to build packages and to install pacakge from sources); Go [here](https://cran.r-project.org/bin/windows/Rtools/);
-	+ Install `rjags` package Version 3-14 from [here](https://cran.r-project.org/src/contrib/Archive/rjags/rjags_3-14.tar.gz).
-	
-- Windows 10 or earlier versions (use [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) 
-    + also install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/))
+The `baker` package is compatible with OSX, Linux and Windows systems, each requiring slightly different setups as described below. The major differences are how to install JAGS 3.4.0, and let R know where to find it, as well as how to install `rjags` package to run JAGS 3.4.0. Currently all programs are written to be compatible with JAGS 3.4.0. We will modify our code to be compatible with a latest version of JAGS 4.x.x soon. 
 
-- Mac OSX 10.11 El Capitan (use JAGS 3.4.0). 
+Please contact the maintainer or chat by clicking the `gitter` button at the top of this README file. 
+
+- Mac OSX 10.11 El Capitan, or Linux on High Performance Computing facilities (use JAGS 3.4.0). 
+    - Install JAGS 3.4.0
+    - Download [here](https://www.dropbox.com/sh/90wzl0pjc7umo29/AAAWq0EP45b3FK8ogJerI8mZa?dl=0), unzip and copy the `rjags` folder to your R library folder (might be in `/Users/Tyler/Library/R/3.2/library`). The folder contains compiled `rjags` (3-14) package for the OSX or Linux system.
     - If package `ks` cannot be loaded due to failure of loading package `rgl`, follow the following steps:
           + install X11 by going [here](http://xquartz.macosforge.org/trac/wiki/X112.7.7);
           + `install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1200.tar.gz",repo=NULL,type="source")`
 		  
-- Linux (use JAGS 3.4.0)
+- Windows (if using [JAGS 3.4.0](http://mcmc-jags.sourceforge.net/))
+    + Install JAGS 3.4.0; Add the path to JAGS 3.4.0 into the environmental variable (essential for R to find the jags program). See [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables;
+	  + Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) (for building and installing R pacakges from source); Add the path to `Rtools` (e.g. `C:\Rtools\`) into your environmental variables so that R knows where to find it. 
+	  + Download [here](https://www.dropbox.com/sh/ufc3dqjn3xzj44w/AABft5d6FJBWKqLKpDDKzkEca?dl=0), unzip and copy the `rjags` folder to your R library folder (might be in `C:\Users\Tyler\Documents\R\win-library`). The folder contains compiled `rjags` (3-14) package for the Windows system.
+	
+- Windows (if using [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/))
+    + Also remember to install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) and follow other instructions.
 
 Maintainer:
 --------------------------
