@@ -12,7 +12,7 @@ How to install?
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
 devtools::install_github("zhenkewu/baker",ref="add_bakerUI",dependencies=FALSE)
 ```
-Here we have set `dependencies=FALSE` to not automatically install the `rjags` package. Please see below for how to install `rjags` package (Version 3-14) for JAGS 3.14.
+Here we have set `dependencies=FALSE` to not automatically install the `rjags` package. Please see below for how to install `rjags` package (Version 3-14) for JAGS 3.4.0.
 
 How to run baker user interface?
 --------------------------------
@@ -47,7 +47,7 @@ What are the main functions?
 
 Platform
 ---------
-The `baker` package is compatible with OSX, Linux and Windows systems, each requiring slightly different setups as described below. The major differences are how to install JAGS 3.4.0, and let R know where to find it, as well as how to install `rjags` package to run JAGS 3.4.0. Currently all programs are written to be compatible with JAGS 3.4.0. We will modify our code to be compatible with a latest version of JAGS 4.x.x soon. 
+The `baker` package is compatible with OSX, Linux and Windows systems, each requiring slightly different setups as described below. The major differences are how to install JAGS 3.4.0, and let R know where to find it, as well as how to install `rjags` package to run JAGS 3.4.0. Currently all programs are written to be compatible with JAGS 3.4.0. We will modify our code to be compatible with a latest version of JAGS 4.x (released Jan 16, 2016) soon. 
 
 Please contact the maintainer or chat by clicking the `gitter` button at the top of this README file. 
 
