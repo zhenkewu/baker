@@ -49,7 +49,7 @@ Platform
 - Windows 10 (use [JAGS 3.4.0](http://mcmc-jags.sourceforge.net/))
     + Install JAGS 3.4.0 and set environmental variable to JAGS terminal. See [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables;
 	+ Install `Rtools` (to build packages and to install pacakge from sources); Go [here](https://cran.r-project.org/bin/windows/Rtools/);
-	+ Install `rjags` package Version 3-15 from [here](https://cran.r-project.org/src/contrib/Archive/rjags/rjags_3-15.tar.gz).
+	+ Install `rjags` package Version 3-14 from [here](https://cran.r-project.org/src/contrib/Archive/rjags/rjags_3-14.tar.gz).
 	
 - Windows 10 or earlier versions (use [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) 
     + also install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/))
