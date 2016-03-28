@@ -47,13 +47,14 @@ What are the main functions?
 
 Platform
 ---------
-The `baker` package is compatible with OSX, Linux and Windows systems, each requiring slightly different setups as described below. The major differences are how to install JAGS 3.4.0, and let R know where to find it, as well as how to install `rjags` package to run JAGS 3.4.0. Currently all programs are written to be compatible with JAGS 3.4.0. We will modify our code to be compatible with a latest version of JAGS 4.x (released Jan 16, 2016) soon. 
+The `baker` package is compatible with OSX, Linux and Windows systems, each requiring a slightly different setup as described below. The major differences are how to install JAGS 3.4.0, and let R know where to find it, as well as how to install `rjags` package to run JAGS 3.4.0. Currently all programs are written to be compatible with JAGS 3.4.0. We will modify our code to be compatible with a latest version of JAGS 4.x (released Jan 16, 2016) soon. 
 
-Please contact the maintainer or chat by clicking the `gitter` button at the top of this README file. 
+If you need a help to speed up installation and analysis, please contact the maintainer or chat by clicking the `gitter` button at the top of this README file. 
 
 - Mac OSX 10.11 El Capitan, or Linux on High Performance Computing facilities (use JAGS 3.4.0). 
     - Install JAGS 3.4.0
     - Download [here](https://www.dropbox.com/sh/90wzl0pjc7umo29/AAAWq0EP45b3FK8ogJerI8mZa?dl=0), unzip and copy the `rjags` folder to your R library folder (might be in `/Users/Tyler/Library/R/3.2/library`). The folder contains compiled `rjags` (3-14) package for the OSX or Linux system.
+
     - If package `ks` cannot be loaded due to failure of loading package `rgl`, follow the following steps:
           + install X11 by going [here](http://xquartz.macosforge.org/trac/wiki/X112.7.7);
           + `install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1200.tar.gz",repo=NULL,type="source")`
@@ -62,7 +63,16 @@ Please contact the maintainer or chat by clicking the `gitter` button at the top
     + Install JAGS 3.4.0; Add the path to JAGS 3.4.0 into the environmental variable (essential for R to find the jags program). See [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables;
 	  + Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) (for building and installing R pacakges from source); Add the path to `Rtools` (e.g. `C:\Rtools\`) into your environmental variables so that R knows where to find it. 
 	  + Download [here](https://www.dropbox.com/sh/ufc3dqjn3xzj44w/AABft5d6FJBWKqLKpDDKzkEca?dl=0), unzip and copy the `rjags` folder to your R library folder (might be in `C:\Users\Tyler\Documents\R\win-library`). The folder contains compiled `rjags` (3-14) package for the Windows system.
-	
+
+After finishing the above setups, run `library(rjags)` in R console; you'll see some notes like this:
+
+~~~r
+>library(rjags)
+Loading required package: coda
+Linked to JAGS 3.4.0
+Loaded modules: basemod,bugs
+~~~
+
 - Windows (if using [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/))
     + Also remember to install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) and follow other instructions.
 
