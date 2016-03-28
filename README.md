@@ -10,7 +10,7 @@ How to install?
 --------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/baker",ref="add_bakerUI",dependencies=FALSE)
+devtools::install_github("zhenkewu/baker",dependencies=FALSE)
 ```
 Here we have set `dependencies=FALSE` to not automatically install the `rjags` package. Please see below for how to install `rjags` package (Version 3-14) for JAGS 3.4.0.
 
@@ -18,8 +18,8 @@ How to run baker user interface?
 --------------------------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/baker",ref="add_bakerUI",dependencies=FALSE)
-shiny::runGitHub("baker","zhenkewu",ref='add_bakerUI',subdir="inst/shiny")
+devtools::install_github("zhenkewu/baker",dependencies=FALSE)
+shiny::runGitHub("baker","zhenkewu",subdir="inst/shiny")
 ```
 
 Why should someone use `baker`?
