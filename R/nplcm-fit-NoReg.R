@@ -476,7 +476,7 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
   # <--- revising for multiple silver-standard data.
   #table(apply(MSS,1,function(v) paste(v,collapse="")))
   MSS <- do.call(cbind,MSS_list)
-  ind_positive <- which( apply(MSS,1,sum)>0)
+  ind_positive <- which(apply(MSS,1,sum,na.rm=TRUE)>0)
   res <- sample.int(length(cause_list),size = nrow(MSS), replace=TRUE)
   vec <- sapply(ind_positive, function(i) paste(unique(patho[which(MSS[i,]==1)]),collapse="+"))
   res[ind_positive] <- match_cause(cause_list,vec)
@@ -489,8 +489,10 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
   }
   res
 }
-
-
-
-
-
+# 
+# MSS_list <- data_nplcm$Mobs$MSS
+# cause_list <- model_options$likelihood$cause_list
+# patho <- unlist(lapply(MSS_list,colnames))
+# 
+# 
+# 
