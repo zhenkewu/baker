@@ -12,12 +12,12 @@
 #' @export
 #'
 compute_logOR_single_cause <- function(set_parameter){
-  eti <- set_parameter$etiology
+  eti  <- set_parameter$etiology
   theta <- set_parameter$ThetaBS
-  psi <- set_parameter$PsiBS
+  psi   <- set_parameter$PsiBS
   lambda <- set_parameter$Lambda
   eta <- set_parameter$Eta
-  K <- max(sum(lambda!=0), sum(eta[1,]!=0))
+  K   <- max(sum(lambda!=0), sum(eta[1,]!=0))
   k_ind_case <- 1:K
   k_ind_ctrl <- 1:K
   if (K==1){

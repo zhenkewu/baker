@@ -200,3 +200,4 @@ is_jags_folder <- function(DIR_NPLCM){
   mcmc_options  <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
   !is.null(mcmc_options$use_jags) && mcmc_options$use_jags
 }
+

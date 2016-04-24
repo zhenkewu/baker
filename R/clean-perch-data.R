@@ -221,14 +221,14 @@ extract_data_raw <- function(dat_prepared,strat_nm,strat_val,
                              extra_covariates = NULL) {
   #dat_prepared <-
   #  read.csv(meas_dir,header = TRUE,stringsAsFactors = FALSE)
-  cleanName    <- colnames(dat_prepared)
+  cleanName      <- colnames(dat_prepared)
   ind_this_strat  <- 1:nrow(dat_prepared)
   for (j in 1:length(strat_nm)) {
     ind_this_strat = ind_this_strat[which(dat_prepared[ind_this_strat,strat_nm[j]] ==
                                             strat_val[[j]] &
                                             !is.na(dat_prepared[ind_this_strat,strat_nm[j]]))]
   }
-  dat = dat_prepared[ind_this_strat,]
+  dat <- dat_prepared[ind_this_strat,]
   
   #
   # get lab measurements:

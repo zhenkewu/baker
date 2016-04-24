@@ -63,7 +63,8 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   
   if (!any(unlist(parsed_model$regression))){
     
-    if (parsed_model$SS_grp){stop("==[baker] Panel plot not available for stratified SS TPRs. Please contact maintainer. ==\n")}
+    if (parsed_model$SS_grp){stop("==[baker] Panel plot not available for 
+                                  stratified SS TPRs. Please contact maintainer. ==\n")}
     #
     # plcm (just obtain TPR and FPR estimates):
     #

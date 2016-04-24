@@ -982,11 +982,13 @@ shinyServer(function(input,output,session) {
           model_options <- curr_model_options()
           
           # create folder
-          check_dir_create(fit_option_vars$fullname)
+          #check_dir_create(fit_option_vars$fullname)
+          dir.create(fit_option_vars$fullname)
           
           # for finer scenarios, e.g., different types of analysis applicable to the
           # same data set. Here we just perform one analysis:
-          check_dir_create(fit_option_vars$result_folder)
+          #check_dir_create(fit_option_vars$result_folder)
+          dir.create(fit_option_vars$result_folder)
           
           # <----because the UI allows one to fit many models; so we have to remove the contents (may ask user to save them first):
           #file.remove(file.path(fit_option_vars$mcmc_options$result.folder, list.files(fit_option_vars$mcmc_options$result.folder))) 

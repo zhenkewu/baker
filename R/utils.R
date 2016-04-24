@@ -1693,3 +1693,12 @@ nevercalled <- function(){
   ignored <- shinyFiles::getVolumes()
   ignored2 <- shinydashboard::box()
 }
+
+
+total_loc <- function(DIR="R"){
+  files <- list.files(DIR,pattern="*.R", 
+                      recursive=TRUE, full.names=TRUE)
+  N <- 0
+  for (f in files){N <- N+ length(readLines(f))}
+  N
+}
