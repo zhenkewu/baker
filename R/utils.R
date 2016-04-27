@@ -1627,14 +1627,15 @@ loadOneName <- function(objName, file, envir = parent.frame(),
 #' 
 #' @examples 
 #' 
-#' par(mfrow=c(3,3),oma=c(2,2,5,2))
+#' par(mfrow=c(3,3),oma=c(0,1,5,0),
+#'    mar=c(1,2,1,1))
 #' for (iter in 1:9){
-#'    u   <- c(rbeta(9,1,1),1)
-#'    res <- tsb(u)
-#'    barplot(res,ylim=c(0,1),main=paste0("Random Sample #", iter))
+#'  u   <- c(rbeta(9,1,0.8),1)
+#'  res <- tsb(u)
+#'  barplot(res,ylim=c(0,1),main=paste0("Random Sample #", iter),ylab="Probability")
 #' }
-#' mtext("Random Samples: Truncated Stick-Breaking Dist. (10 segements)",
-#' 3,outer=TRUE,cex=1.5)
+#' mtext("Truncated Stick-Breaking Dist. (10 segments)",3,
+#'      outer=TRUE,cex=1.5,line=1.5)
 #' @export
 #' 
 tsb <- function(u){
