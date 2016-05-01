@@ -1302,17 +1302,21 @@ add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) 
 #' regression model with no nested subclasses
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_reg_Slice_jags
+#' @param FPR_formula False positive regression formula for slice s of BrS data.
+#' Check \code{model_options$likelihood$FPR_formula[[s]]}.
 #' 
 #' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
 #' @export
-add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list) {
+add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,FPR_formula) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
   template_BrS_list <-
     lapply(patho_BrS_list,make_template,cause_list) # key.
+  
+  has_basis <- ifelse(length(grep("s_date",FPR_formula[[s]]))==0,FALSE,TRUE)
   
   # create variable names:
   BrS_nm   <- names(Mobs$MBS)
@@ -1343,29 +1347,32 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list) {
       ",linpred_psiBS_nm[s]," <- ",Z_FPR_nm[s],"%*%",betaFPR_nm[s]," # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
       
       for (j in 1:",JBrS_nm[s],"){
-      ",thetaBS_nm[s],"[j]~ dbeta(",alphaB_nm[s],"[j],",betaB_nm[s],"[j])
-      # B-spline basis coefficients:
-      ",betaFPR_nm[s],"[",basis_id_nm[s],"[1],j] ~ dnorm(0,",prec_first_nm[s],")
-      for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
-      ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],j] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],j],",taubeta_nm[s],"[j])
-      }
-      # select flexible semiparametric regression:
-      ",taubeta0_nm[s],"[j,1]      ~ dgamma(3,2)               # <-------- flexible fit.
-      ",taubeta_inv_nm[s],"[j]     ~ dpar(1.5,0.0025)          # <--------constant fit.
-      ",taubeta0_nm[s],"[j,2]      <- pow(",taubeta_inv_nm[s],"[j],-1)
-      ",flexible_select_nm[s],"[j] ~ dbern(",p_flexible_nm[s],")
-      ",ind_flex_select_nm[s],"[j] <- 2-",flexible_select_nm[s],"[j]
-      ",taubeta_nm[s],"[j]         <- ",taubeta0_nm[s],"[j,",ind_flex_select_nm[s],"[j]]
-      
-      # non-basis coefficients:
-      for (l in ",non_basis_id_nm[s],"){
-      ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_first_nm[s],")
-      }
-      }
-      ",prec_first_nm[s]," <- 1/4
-      # hyperprior of smoothness:
-      ",p_flexible_nm[s]," ~ dbeta(1,1)
-      "
+          ",thetaBS_nm[s],"[j]~ dbeta(",alphaB_nm[s],"[j],",betaB_nm[s],"[j])\n")
+    if(has_basis){
+    plug <- paste0(plug,
+          "# B-spline basis coefficients:
+          ",betaFPR_nm[s],"[",basis_id_nm[s],"[1],j] ~ dnorm(0,",prec_first_nm[s],")
+          for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
+          ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],j] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],j],",taubeta_nm[s],"[j])
+          }
+          # select flexible semiparametric regression:
+          ",taubeta0_nm[s],"[j,1]      ~ dgamma(3,2)               # <-------- flexible fit.
+          ",taubeta_inv_nm[s],"[j]     ~ dpar(1.5,0.0025)          # <--------constant fit.
+          ",taubeta0_nm[s],"[j,2]      <- pow(",taubeta_inv_nm[s],"[j],-1)
+          ",flexible_select_nm[s],"[j] ~ dbern(",p_flexible_nm[s],")
+          ",ind_flex_select_nm[s],"[j] <- 2-",flexible_select_nm[s],"[j]
+          ",taubeta_nm[s],"[j]         <- ",taubeta0_nm[s],"[j,",ind_flex_select_nm[s],"[j]]\n")
+    }
+    plug <- paste0(plug,
+          "# non-basis coefficients:
+          for (l in ",non_basis_id_nm[s],"){
+          ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_first_nm[s],")
+          }
+        }
+        ",prec_first_nm[s]," <- 1/4
+        # hyperprior of smoothness:
+        ",p_flexible_nm[s]," ~ dbeta(1,1) # <--- useless if no basis functions are used.
+        "
     )
   } else{
     plug <-
@@ -1374,8 +1381,12 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list) {
         
         ",linpred_psiBS_nm[s]," <- ",Z_FPR_nm[s],"%*%",betaFPR_nm[s]," # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
         # BrS measurement characteristics - non-nested (only one column):
-        ",thetaBS_nm[s],"~ dbeta(",alphaB_nm[s],",",betaB_nm[s],")
-        # B-spline basis coefficients:
+        ",thetaBS_nm[s],"~ dbeta(",alphaB_nm[s],",",betaB_nm[s],")\n")
+    if(has_basis){
+    plug <-
+      paste0(plug,
+
+        "# B-spline basis coefficients:
         ",betaFPR_nm[s],"[",basis_id_nm[s],"[1]] ~ dnorm(0,",prec_first_nm[s],")
         for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
         ",betaFPR_nm[s],"[",basis_id_nm[s],"[l]] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1]],",taubeta_nm[s],")
@@ -1386,15 +1397,17 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list) {
         ",taubeta0_nm[s],"[2]      <- pow(",taubeta_inv_nm[s],",-1)
         ",flexible_select_nm[s]," ~ dbern(",p_flexible_nm[s],")
         ",ind_flex_select_nm[s],"   <- 2-",flexible_select_nm[s],"
-        ",taubeta_nm[s],"        <- ",taubeta0_nm[s],"[",ind_flex_select_nm[s],"]
-        
-        # non-basis coefficients:
+        ",taubeta_nm[s],"        <- ",taubeta0_nm[s],"[",ind_flex_select_nm[s],"]\n")
+    }
+    plug <-
+      paste0(plug,
+        "# non-basis coefficients:
         for (l in ",non_basis_id_nm[s],"){
         ",betaFPR_nm[s],"[l] ~ dnorm(0,",prec_first_nm[s],")
         }
         ",prec_first_nm[s]," <- 1/4
         # hyperprior of smoothness:
-        ",p_flexible_nm[s]," ~ dbeta(1,1)
+        ",p_flexible_nm[s]," ~ dbeta(1,1)  # <--- useless if no basis functions are used.
         \n"
       )
   }

@@ -37,7 +37,8 @@ write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,
 #' \code{model_options}
 #' 
 #' @inheritParams insert_bugfile_chunk_reg_nonest_meas
-#' 
+#' @param FPR_formula A list of FPR regression formula; check 
+#' \code{model_options$likelihood$FPR_formula}
 #' @return a long character string to be written into .bug file.
 #' 
 #' @seealso 
@@ -49,10 +50,10 @@ write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,
 #' 
 #' @export
 #' 
-write_model_Reg_NoNest <- function(Mobs,prior,cause_list,
+write_model_Reg_NoNest <- function(Mobs,prior,cause_list,FPR_formula,
                                    use_measurements,ppd=NULL,use_jags=FALSE){
   chunk1 <- insert_bugfile_chunk_reg_nonest_meas(Mobs,
-                                                 prior,cause_list,use_measurements,ppd,use_jags)
+                                                 prior,cause_list,FPR_formula,use_measurements,ppd,use_jags)
   chunk2 <- insert_bugfile_chunk_reg_etiology(ppd) #DONE.
   
   paste0("model{#BEGIN OF MODEL:\n",

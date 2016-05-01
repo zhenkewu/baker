@@ -4,7 +4,7 @@
 \alias{add_meas_BrS_param_NoNest_reg_Slice_jags}
 \title{add parameters for a BrS measurement slice among cases and controls}
 \usage{
-add_meas_BrS_param_NoNest_reg_Slice_jags(s, Mobs, cause_list)
+add_meas_BrS_param_NoNest_reg_Slice_jags(s, Mobs, cause_list, FPR_formula)
 }
 \arguments{
 \item{s}{the slice}
@@ -12,6 +12,9 @@ add_meas_BrS_param_NoNest_reg_Slice_jags(s, Mobs, cause_list)
 \item{Mobs}{See \code{data_nplcm} described in \code{\link{nplcm}}}
 
 \item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}}
+
+\item{FPR_formula}{False positive regression formula for slice s of BrS data.
+Check \code{model_options$likelihood$FPR_formula[[s]]}.}
 }
 \value{
 a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}

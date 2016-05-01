@@ -36,21 +36,20 @@ data, not design matrix for regression models.
 
 \item \code{likelihood}{
     \itemize{
-         \item{cause_list}The vector of latent status;
+         \item{cause_list} The vector of latent status;
          \item{k_subclass} The number of nested subclasses. 1 for conditional independence,
 >1 for conditional dependence; It is a vector of length equal to the number of slices
 of BrS measurements;
          \item{Eti_formula} formula for etiology regressions. You can use 
-\code{\link{dm_Rdate_Eti}} to specify the design matrix for R format enrollment date;
-it will produce natural cubic splines for every date. Specify \code{~0} if no
+\code{\link{s_date_Eti}} to specify the design matrix for R format enrollment date;
+it will produce natural cubic spline basis. Specify \code{~0} if no
 regression is intended.
          \item{FPR_formula}formula for false positive rates (FPR) regressions; see
-\code{\link{formula}}. You can use \code{\link{dm_Rdate_FPR}} to specify part
-of the design matrix for R format enrollment date; it will produce thin-plate
-regression spline basis for every date (if \code{effect="random"} and \code{num_knots_FPR} is
-specified to a positive integer, e.g., 10.). If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
-will just specify a design matrix with appropirately standardized dates. Specify \code{~0} if no
-regression is intended.
+\code{\link{formula}}. You can use \code{\link{s_date_FPR}} to specify part
+of the design matrix for R format enrollment date; it will produce penalized-spline
+basis (based on B-splines). Specify \code{~0} if no
+regression is intended. NB: If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
+will just specify a design matrix with appropirately standardized dates. 
     }
 }
 \item \code{use_measurements}{
@@ -82,18 +81,21 @@ model fitting;
 \item \code{result.folder} Path to folder storing the results;
 \item \code{bugsmodel.dir} Path to WinBUGS model files;
 \item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
+\item \code{use_jags} \code{TRUE} for using JAGS 4.x.x; \code{FALSE} if using
+WinBUGS 1.4 (then \code{winbugs.dir} must be specified).
 }}
 }
 \value{
-A WinBUGS or JAGS result, fitted by function \code{bugs()} from
-the \code{\link{R2WinBUGS}} package. Current implemented models follow the hierarchy below:
+A WinBUGS or JAGS result, fitted by function \code{\link[R2WinBUGS]{bugs}} from
+the \code{\link{R2WinBUGS}} package, or \code{\link[R2jags]{jags2}} from \code{R2jags}. 
+Current implemented models follow the hierarchy below:
 \itemize{
 \item no regression:  \link{write_model_NoReg}
        
-\item regression: [NOT DONE.]
+\item regression: 
       \itemize{
-         \item independence model: 
-         \item dependence model
+         \item independence model: \link{write_model_Reg_NoNest} 
+         \item dependence model [NOT DONE.]
        }
 }
 }
@@ -102,12 +104,5 @@ Uses WinBUGS/JAGS in Windows system or JAGS in OSX system for Bayesian inference
 (see README file for an instruction to install WinBUGS or JAGS).
 For stratification/regression functionalities, true positive rates are constant
 across strata or covariate values.\cr
-}
-\details{
-Developer Note (DN):\cr
-\itemize{
-\item need to add checking empty cell functionality when performing
-         stratification
-}
 }
 

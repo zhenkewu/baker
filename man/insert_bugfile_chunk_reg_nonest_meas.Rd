@@ -4,16 +4,18 @@
 \alias{insert_bugfile_chunk_reg_nonest_meas}
 \title{Insert measurement likelihood (with regression) code chunks into .bug model file}
 \usage{
-insert_bugfile_chunk_reg_nonest_meas(Mobs, prior, cause_list,
+insert_bugfile_chunk_reg_nonest_meas(Mobs, prior, cause_list, FPR_formula,
   use_measurements = "BrS", ppd = NULL, use_jags = FALSE)
 }
 \arguments{
-\item{Mobs}{measurement data in the form of \code{data_nplcm}}
+\item{Mobs}{Measurement data in the form of \code{data_nplcm}}
 
-\item{prior}{prior specification from \code{model_options}}
+\item{prior}{Prior specification from \code{model_options}}
 
-\item{cause_list}{a list of latent status names (crucial for building templates; 
+\item{cause_list}{A list of latent status names (crucial for building templates; 
 see \code{\link{make_template}})}
+
+\item{FPR_formula}{A list of FPR regression formula; check \code{model_options$likelihood$FPR_formula}}
 
 \item{use_measurements}{"BrS", or "SS"}
 
@@ -22,7 +24,7 @@ see \code{\link{make_template}})}
 \item{use_jags}{Default is FALSE; set to TRUE if want to use JAGS for model fitting.}
 }
 \value{
-a long character string to be inserted into .bug model file as measurement
+A long character string to be inserted into .bug model file as measurement
 likelihood
 }
 \description{

@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.3
-Date: 2016-02-19
+Version: 0.4.1
+Date: 2016-05-01
 Authors@R: as.person(c(
     "Zhenke Wu <zhwu@jhu.edu> [aut, cre]",
     "Wei Fu <wfu@jhu.edu> [ctb]",

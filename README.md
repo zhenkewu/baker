@@ -10,8 +10,10 @@ How to install?
 --------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/baker")
+devtools::install_github("zhenkewu/baker",ref="baker_regression")
 ```
+Note: run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package is reported
+as missing.
 
 How to run baker user interface?
 --------------------------------

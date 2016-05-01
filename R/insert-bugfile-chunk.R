@@ -150,15 +150,16 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
 
 #' Insert measurement likelihood (with regression) code chunks into .bug model file
 #' 
-#' @param Mobs measurement data in the form of \code{data_nplcm}
-#' @param prior prior specification from \code{model_options}
-#' @param cause_list a list of latent status names (crucial for building templates; 
+#' @param Mobs Measurement data in the form of \code{data_nplcm}
+#' @param prior Prior specification from \code{model_options}
+#' @param cause_list A list of latent status names (crucial for building templates; 
 #' see \code{\link{make_template}})
+#' @param FPR_formula A list of FPR regression formula; check \code{model_options$likelihood$FPR_formula}
 #' @param use_measurements "BrS", or "SS"
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking
 #' @param use_jags Default is FALSE; set to TRUE if want to use JAGS for model fitting.
 #' 
-#' @return a long character string to be inserted into .bug model file as measurement
+#' @return A long character string to be inserted into .bug model file as measurement
 #' likelihood
 #' 
 #' @seealso It is used in \link{write_model_Reg_NoNest} for constructing a .bug file along with
@@ -166,7 +167,7 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
 #' 
 #' @export
 insert_bugfile_chunk_reg_nonest_meas <-
-  function(Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
+  function(Mobs,prior,cause_list,FPR_formula,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
       stop("==[baker] No BrS or SS measurements specified in the model! ==")
     }
@@ -191,7 +192,7 @@ insert_bugfile_chunk_reg_nonest_meas <-
           #chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_reg_Slice_jags(s,Mobs,cause_list)$plug)
         } else{# use jags:
           chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_reg_Slice_jags(s,Mobs,cause_list,ppd)$plug)
-          chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_reg_Slice_jags(s,Mobs,cause_list)$plug)
+          chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_reg_Slice_jags(s,Mobs,cause_list,FPR_formula)$plug)
         }
         chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_NoNest_reg_Slice_jags(s,Mobs,cause_list,ppd)$plug)
         # }

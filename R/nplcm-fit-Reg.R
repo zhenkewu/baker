@@ -61,7 +61,7 @@ nplcm_fit_Reg_NoNest <-
     FPR_formula <- likelihood$FPR_formula
     
     # design matrix for etiology regression:
-    Z_Eti   <- model.matrix(Eti_formula,data.frame(X,Y))
+    Z_Eti       <- model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
     ncol_dm_Eti <- ncol(Z_Eti)
     attributes(Z_Eti)[names(attributes(Z_Eti))!="dim"] <- NULL
     
@@ -91,12 +91,33 @@ nplcm_fit_Reg_NoNest <-
       
       # input design matrix for FPR regressions:
       int_Y <- as.integer(Y)
-      if (any(int_Y[1:sum(int_Y)]==0) | any(int_Y[-(1:sum(int_Y))])==1){stop("==[baker] Please put cases at the top of controls in `data_nplcm`.==\n")}
+      if (any(int_Y[1:sum(int_Y)]==0) | any(int_Y[-(1:sum(int_Y))])==1){
+        stop("==[baker] Please put cases at the top of controls in `data_nplcm`.==\n")
+        }
       Z_FPR_list <- lapply(FPR_formula,function(form){model.matrix(form,data.frame(X,Y))}) # <-- make sure that the row orders are the same.
       
-      basis_id_list <- lapply(Z_FPR_list, function(Z) {0+which(attributes(Z)$assign==1)})
+      has_basis_list <- lapply(Z_FPR_list, function(Z) {
+        if (length(grep("^s_",dimnames(Z)[[2]]))==0){
+          FALSE
+        } else{
+          TRUE
+        }
+      })
+      basis_id_list <- lapply(Z_FPR_list, function(Z) {
+        if (length(grep("^s_",dimnames(Z)[[2]]))==0){
+          NULL
+        } else{
+          0+grep("^s_",dimnames(Z)[[2]])
+        }
+      })
       n_basis_list  <- lapply(basis_id_list,length) 
-      non_basis_id_list <- lapply(Z_FPR_list,function(Z){(1:ncol(Z))[-which(attributes(Z)$assign==1)]})
+      non_basis_id_list <- lapply(Z_FPR_list,function(Z){
+        if (length(grep("^s_",dimnames(Z)[[2]]))==0){
+          0+(1:ncol(Z))
+        } else{
+          (1:ncol(Z))[-grep("^s_",dimnames(Z)[[2]])]
+        }
+      })
       
       for(i in seq_along(JBrS_list)){
         attributes(Z_FPR_list[[i]])[names(attributes(Z_FPR_list[[i]]))!="dim"] <- NULL
@@ -118,8 +139,8 @@ nplcm_fit_Reg_NoNest <-
                            paste("MBS",1:length(JBrS_list),sep="_"),
                            paste("templateBS",1:length(JBrS_list),sep="_"),
                            paste("Z_FPR",1:length(JBrS_list),sep="_"),
-                           paste("basis_id",1:length(JBrS_list),sep="_"),
-                           paste("n_basis",1:length(JBrS_list),sep="_"),
+                           paste("basis_id",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
+                           paste("n_basis",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
                            paste("non_basis_id",1:length(JBrS_list),sep="_")
                            # paste("alphaB",1:length(JBrS_list),sep="_"),
                            # paste("betaB",1:length(JBrS_list),sep="_")
@@ -131,8 +152,8 @@ nplcm_fit_Reg_NoNest <-
                            paste("MBS",1:length(JBrS_list),sep="_"),
                            paste("templateBS",1:length(JBrS_list),sep="_"),
                            paste("Z_FPR",1:length(JBrS_list),sep="_"),
-                           paste("basis_id",1:length(JBrS_list),sep="_"),
-                           paste("n_basis",1:length(JBrS_list),sep="_"),
+                           paste("basis_id",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
+                           paste("n_basis",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
                            paste("non_basis_id",1:length(JBrS_list),sep="_")
                            # paste("alphaB",1:length(JBrS_list),sep="_"),
                            # paste("betaB",1:length(JBrS_list),sep="_")
@@ -154,8 +175,8 @@ nplcm_fit_Reg_NoNest <-
         assign(paste("betaB", s, sep = "_"),  BrS_tpr_prior[[1]]$beta)    
         
         if (likelihood$k_subclass[s]==1){
-          
-          out_parameter <- c(out_parameter,paste(c("thetaBS","betaFPR","taubeta"), s, sep="_"))  
+          out_parameter <- c(out_parameter,paste(c("thetaBS","betaFPR"), s, sep="_"))
+          out_parameter <- c(out_parameter,paste(c("taubeta"), s, sep="_")[unlist(has_basis_list)])
         }else{
           stop("==[baker] Regression with nested subclasses coming soon.==\n")
           #assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
@@ -441,6 +462,7 @@ nplcm_fit_Reg_NoNest <-
     model_func         <- write_model_Reg_NoNest(data_nplcm$Mobs,
                                                  model_options$prior,
                                                  model_options$likelihood$cause_list,
+                                                 model_options$likelihood$FPR_formula,
                                                  model_options$use_measurements,
                                                  mcmc_options$ppd,
                                                  use_jags)
