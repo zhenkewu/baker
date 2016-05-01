@@ -974,7 +974,6 @@ set_strat <- function(X,X_reg) {
   list(N_grp = N_grp, group = group)
 }
 
-
 #' Check if covariates are discrete
 #'
 #' \code{is_discrete} checks if the specified covariates could be regarded as discrete
@@ -1063,11 +1062,10 @@ sym_diff_month <- function(Rdate1, Rdate2) {
   return(res)
 }
 
-
-
 #' Make FPR design matrix for dates with R format.
 #'
-#' \code{dm_Rdate_FPR} creates design matrices for false positive rate regressions.
+#' \code{dm_Rdate_FPR} creates design matrices for false positive rate regressions; 
+#' can also be used to standardize dates.
 #'
 #' @param Rdate a vector of dates of R format
 #' @param Y binary case/control status; 1 for case; 0 for controls
@@ -1098,7 +1096,7 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
   if (is.null(num_knots_FPR) & effect == "random") {
     stop(
-      "==Please specify number of knots for FPR in thin-plate regression spline using 'num_knots_FPR'.=="
+      "==[baker] Please specify number of knots for FPR in thin-plate regression spline using 'num_knots_FPR'.=="
     )
   }
   
@@ -1150,7 +1148,7 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
     return(res)
   }
   
-  if (effect == "fixed") {
+  if (effect == "fixed" && is.null(num_knots_FPR)) {
     ind <- which(Y == 1)
     res <- matrix(NA,nrow = length(Y),ncol = 1)
     res[ind,1] <- df$outgrp_std_num_date[ind]
@@ -1512,7 +1510,7 @@ lookup_quality <- function(quality_nm) {
 #' @export
 parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
   if (is.null(data_nplcm$X)) {
-    if(!silent){print(" == There are no covariate data in `data_nplcm` ==")}; 
+    if(!silent){print(" ==[baker] There are no covariate data in `data_nplcm`. ==\n")}; 
     return(FALSE)
   }
   
@@ -1703,3 +1701,116 @@ total_loc <- function(DIR="R"){
   for (f in files){N <- N+ length(readLines(f))}
   N
 }
+
+
+#' Make Etiology design matrix for dates with R format.
+#'
+#' \code{s_date_Eti} creates design matrices for etiology regressions; 
+#' 
+#' @param Rdate a vector of dates of R format
+#' @param Y Binary case/control status; 1 for case; 0 for controls
+#' @param basis "ncs" for natural cubic splines; "ps" for penalized-splines based
+#' on B-spline basis functions
+#' @param dof Degree-of-freedom for the bases. For "ncs" basis, \code{dof} is
+#' the number of columns; For "ps" basis,  the number of columns is \code{dof}
+#' if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.
+#' @param ... Other arguments as in \code{\link[splines]{bs}}
+#' @seealso \code{\link{nplcm}}
+#' @return 
+#' \itemize{
+#' \item \code{Z_Eti} design matrix for etiology regression on dates.
+#' }
+#' @export
+s_date_Eti <- function(Rdate,Y,basis = "ncs",dof=ifelse(basis=="ncs",5,10),...) {
+  #       #
+  #       # test:
+  #       #
+  #       Rdate <- data_nplcm$X$ENRLDATE
+  #       Y <- data_nplcm$Y
+  #       num_knots_Eti <- 5
+  #       basis_Eti = "ncs"
+  #       #
+  #       #
+  #       #
+  #
+  # standardization:
+  df    <- data.frame(Y = Y,num_date = as.numeric(Rdate))
+  grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
+  grp_sd <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
+  df$ingrp_std_num_date <-
+    (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  df$outgrp_std_num_date <- (df$num_date - grp_mean[1]) / grp_sd[1]
+  df$outgrp_std_num_date[df$Y == 0] <- NA
+  
+  case_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 1]
+  if (basis == "ncs") {
+    # for etiology regression:
+    Z_Eti <- splines::ns(case_ingrp_std_num_date,df = dof,...)
+  }
+  
+  if (basis == "ps"){ # for penalized-splines based on B-spline basis:
+    # for etiology regression:
+    x       <- case_ingrp_std_num_date
+    myknots <- quantile(x,seq(0,1,length = (dof - 2))[-c(1,(dof - 2))])
+    Z_Eti      <- matrix(splines::bs(x,knots= myknots,...),nrow=length(x))
+    # if intercept=FALSE, then ncol(Z_Eti) = dof-1.
+  }
+  ind <- which(Y == 1)
+  res <- matrix(NA,nrow = length(Y),ncol = ncol(Z_Eti))
+  res[ind,]  <- Z_Eti
+  # colnames(res) <- paste("date.basis.eti",1:ncol(Z_Eti),sep=".")
+  res
+}
+
+#' Make false positive rate (FPR) design matrix for dates with R format.
+#'
+#' \code{s_date_FPR} creates design matrices for FPR regressions; 
+#' 
+#' @param Rdate a vector of dates of R format
+#' @param Y Binary case/control status; 1 for case; 0 for controls
+#' @param basis "ps" for penalized-splines based
+#' on B-spline basis functions
+#' @param dof Degree-of-freedom for the bases.For "ps" basis,  
+#' the number of columns is \code{dof}
+#' if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.
+#' @param ... Other arguments as in \code{\link[splines]{bs}}
+#'
+#' @seealso \code{\link{nplcm}}
+#' @return Design matrix for FPR regression, with cases' rows on top of
+#' controls'.
+#' @export
+s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
+  # standardization:
+  df       <- data.frame(Y = Y,num_date = as.numeric(Rdate))
+  grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
+  grp_sd   <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
+  df$ingrp_std_num_date <-
+    (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  df$outgrp_std_num_date <- (df$num_date - grp_mean[1]) / grp_sd[1]
+  df$outgrp_std_num_date[df$Y == 0] <- NA
+  
+  ctrl_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 0]
+  # borrowing FPR regression from controls to cases:
+  case_outgrp_std_num_date <- df$outgrp_std_num_date[df$Y == 1]
+  if (basis=="ps"){
+    x       <- ctrl_ingrp_std_num_date
+    myknots <- quantile(unique(x),seq(0,1,length = (dof - 2))[-c(1,(dof - 2))])
+    Z_FPR_ctrl      <- matrix(splines::bs(x,knots= myknots,...),nrow=length(x))
+    
+    # borrowing FPR regression from controls to cases:
+    x       <- case_outgrp_std_num_date
+    Z_FPR_case      <- matrix(splines::bs(x,knots= myknots,...),nrow=length(x))
+    
+    ind <- which(Y == 1)
+    res <- matrix(NA,nrow = length(Y),ncol = ncol(Z_FPR_case))
+    res[ind,]  <- Z_FPR_case
+    res[-ind,] <- Z_FPR_ctrl
+    return(res)
+  }
+}
+
+
+
+

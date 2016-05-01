@@ -30,7 +30,6 @@
 #' }
 #'
 #' @family specification checking functions
-#' 
 #' @export
 assign_model <- function(model_options,data_nplcm, silent=TRUE){
   # load options:
@@ -59,9 +58,9 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
     num_slice[use_data_sources[i]] <- length(Mobs[[use_data_sources[i]]])
   }
   
-  # specify regression for FPR:
+  # specify regression for FPR: (only available for bronze-standard data. Silver-standard data automatically have FPR==0.)
   do_reg_FPR <- list() #  <---- a regression for each measurement slice?
-  for (i in seq_along(Mobs$MBS)) {
+  for (i in seq_along(Mobs$MBS)){
     ind_tmp <-
       which(names(likelihood$FPR_formula) == names(Mobs$MBS)[i])
     if (!length(ind_tmp)) { # don't do regression if no regression formula is found:
@@ -73,10 +72,41 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   }
   names(do_reg_FPR) <- names(Mobs$MBS)
   
+  #
+  # specify regression for TPR: (every measurement slice has it.)
+  #
+  do_reg_TPR <- list() #  <---- a regression for each measurement slice?
+  for (i in seq_along(Mobs$MBS)){
+    ind_tmp <-
+      which(names(likelihood$TPR_formula) == names(Mobs$MBS)[i])
+    if (!length(ind_tmp)) { # don't do regression if no regression formula is found:
+      do_reg_TPR[[i]] <- FALSE
+    } else{ # do regression if there is matched regression formula:
+      do_reg_TPR[[i]] <-
+        parse_nplcm_reg(as.formula(likelihood$TPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
+    }
+  }
+  
+  names(do_reg_TPR) <- names(Mobs$MBS)
+  
+  # if using silver-standard data:
+  if ("MSS"%in% use_data_sources){
+    for (i in length(Mobs$MBS)+seq_along(Mobs$MSS)){
+      ind_tmp <-
+        which(names(likelihood$TPR_formula) == names(Mobs$MSS)[i])
+      if (!length(ind_tmp)) { # don't do regression if no regression formula is found:
+        do_reg_TPR[[i]] <- FALSE
+      } else{ # do regression if there is matched regression formula:
+        do_reg_TPR[[i]] <-
+          parse_nplcm_reg(as.formula(likelihood$TPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
+      }
+    }
+    names(do_reg_TPR) <- c(names(Mobs$MBS),names(Mobs$MSS))
+  }
   # specify regression for etiology:
   form_tmp   <- as.formula(likelihood$Eti_formula)
   do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
-  regression <- make_list(do_reg_Eti, do_reg_FPR)
+  regression <- make_list(do_reg_Eti, do_reg_FPR, do_reg_TPR)
   
   # check SS group:
   SS_grp <- FALSE

@@ -86,7 +86,7 @@
 #' \item \code{bugsmodel.dir} Path to WinBUGS model files;
 #' \item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
 #' }
-#' @return A WinBUGS result, fitted by function \code{bugs()} from
+#' @return A WinBUGS or JAGS result, fitted by function \code{bugs()} from
 #' the \code{\link{R2WinBUGS}} package. Current implemented models follow the hierarchy below:
 #' \itemize{
 #' \item no regression:  \link{write_model_NoReg}
@@ -113,74 +113,13 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   
   if(!do_reg){
       res <- nplcm_fit_NoReg(data_nplcm,model_options,mcmc_options)
+  } 
+  if (do_reg & !(parsed_model$nested)){
+      res <- nplcm_fit_Reg_NoNest(data_nplcm,model_options,mcmc_options)
   }
-  
+  if (do_reg & parsed_model$nested){
+    #res <- nplcm_fit_Reg_Nest(data_nplcm,model_options,mcmc_options)
+    stop("==[baker] Regression model with nested subclasses coming soon. Please contact maintainer for technical issues. ==\n")
+  }
   res
-#   if (!any(unlist(parsing$reg))){
-#     # if no stratification or regression:
-#     if (parsing$measurement$quality=="BrS+SS"){
-#           if (!parsing$measurement$SSonly){
-#               if (!parsing$measurement$nest){
-#                 # model 1, DONE
-#                     res <- nplcm_fit_NoReg_BrSandSS_NoNest(data_nplcm,model_options,mcmc_options)
-#               }else{
-#                 # model 2, DONE
-#                     res <- nplcm_fit_NoReg_BrSandSS_Nest(data_nplcm,model_options,mcmc_options)
-#               }
-#           } else{
-#               if (!parsing$measurement$nest){
-#                 # model 3, DONE
-#                 res <- nplcm_fit_NoReg_BrSandSS_NoNest_SSonly(data_nplcm,model_options,mcmc_options)
-#               }else{
-#                 # model 4, DONE
-#                 res <- nplcm_fit_NoReg_BrSandSS_Nest_SSonly(data_nplcm,model_options,mcmc_options)
-#               }
-#           }
-#     }else if (parsing$measurement$quality=="BrS"){
-#           if (!parsing$measurement$SSonly){
-#               if (!parsing$measurement$nest){
-#                 # model 5, DONE
-#                    res <- nplcm_fit_NoReg_BrS_NoNest(data_nplcm,model_options,mcmc_options)
-#               }else{
-#                 # model 6, DONE
-#                    res <- nplcm_fit_NoReg_BrS_Nest(data_nplcm,model_options,mcmc_options)
-#               }
-#           }
-#     }
-#   } else{
-#       # if stratification or regression:
-#       if (parsing$measurement$quality=="BrS+SS"){
-#         if (!parsing$measurement$SSonly){
-#           if (!parsing$measurement$nest){
-#             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
-#           }else{
-#             # model 2, DONE
-#             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
-#             
-#           }
-#         } else{
-#           if (!parsing$measurement$nest){
-#             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
-#           }else{
-#             # model 4, DONE
-#             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
-#           }
-#         }
-#       }else if (parsing$measurement$quality=="BrS"){
-#         if (!parsing$measurement$SSonly){
-#           if (!parsing$measurement$nest){
-#             #if (is_discrete(X,c(model_options$X_reg_FPR,model_options$X_reg_Eti))){
-#             #    res <- nplcm_fit_Strat_BrS_NoNest(data_nplcm,model_options,mcmc_options)
-#             #} else{
-#             #  stop("==Not done.==")
-#             #}
-#             
-#             res <- nplcm_fit_Reg_BrS_NoNest(data_nplcm,model_options,mcmc_options)
-#           }else{
-#             stop("== Done but need to clean code. Please contact maintainer. Thanks.")
-#           }
-#         }
-#       }
-#   }
-  
 }

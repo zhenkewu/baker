@@ -85,7 +85,7 @@ model fitting;
 }}
 }
 \value{
-A WinBUGS result, fitted by function \code{bugs()} from
+A WinBUGS or JAGS result, fitted by function \code{bugs()} from
 the \code{\link{R2WinBUGS}} package. Current implemented models follow the hierarchy below:
 \itemize{
 \item no regression:  \link{write_model_NoReg}
