@@ -478,8 +478,10 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
   MSS <- do.call(cbind,MSS_list)
   ind_positive <- which(apply(MSS,1,sum,na.rm=TRUE)>0)
   res <- sample.int(length(cause_list),size = nrow(MSS), replace=TRUE)
-  vec <- sapply(ind_positive, function(i) paste(unique(patho[which(MSS[i,]==1)]),collapse="+"))
-  res[ind_positive] <- match_cause(cause_list,vec)
+  if (length(ind_positive)>0){
+    vec <- sapply(ind_positive, function(i) paste(unique(patho[which(MSS[i,]==1)]),collapse="+"))
+    res[ind_positive] <- match_cause(cause_list,vec)
+  }
   if (sum(is.na(res[ind_positive]))>0){ # <--- corrected to add res[].
     ind_NA <- which(is.na(res))
     stop(paste0("==[baker] Case(s) No.: ",paste(ind_NA,collapse=", "), " have positive silver-standard
@@ -489,10 +491,10 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
   }
   res
 }
-# 
+
 # MSS_list <- data_nplcm$Mobs$MSS
 # cause_list <- model_options$likelihood$cause_list
 # patho <- unlist(lapply(MSS_list,colnames))
 # 
-# 
+# init_latent_jags_multipleSS(MSS_list,cause_list)
 # 
