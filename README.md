@@ -79,9 +79,9 @@ Loaded modules: basemod,bugs
 Here we use [JHPCE](https://jhpce.jhu.edu/) as an example. [The complete installation guide](https://sourceforge.net/projects/mcmc-jags/files/Manuals/4.x/) offers 
 extra information. 
 
-1. Download source code for [JAGS 4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/JAGS-4.2.0.tar.gz/download)
+1. Download source code for [JAGS 4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/JAGS-4.2.0.tar.gz/download);
 
-2. Suppose you've download it in `~/local/jags/4.2.0`. Follow the bash commands below:
+2. Suppose you've downloaded it in `~/local/jags/4.2.0`. Follow the bash commands below:
 
 ~~~bash
 # decompress files:
@@ -109,8 +109,8 @@ export PKG_CONFIG_PATH=$HOME/local/jags/4.2.0/usr/lib64/pkgconfig
 module load R
 R> install.packages("rjags")
 ~~~ 
-
 3. Also check out the [INSTALLATION](https://cran.r-project.org/web/packages/rjags/INSTALL) file for `rjags` package.
+
 
 
 #### Windows (if using JAGS 4.2.0)
