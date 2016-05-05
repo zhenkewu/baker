@@ -86,7 +86,7 @@ extra information.
     tar zxvf JAGS-4.2.0.tar.gz
     
     # change to the directory with newly decompressed files:
-    cd ~/local/jags/4.2.0 
+    cd ~/local/jags/4.2.0/JAGS-4.2.0
     
     # specify new JAGS home:
     export JAGS_HOME=$HOME/local/jags/4.2.0/usr
