@@ -22,11 +22,11 @@ insert_bugfile_chunk_noreg_meas <-
   function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
       stop("==[baker] No BrS or SS measurements specified in the model! ==")
-      }
+    }
     for (s in seq_along(Mobs$MBS)){
       if (k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){
         stop("==[baker] Cannot do nested modeling for BrS measurements with only one column! ==")
-        }  
+      }  
     }
     
     # generate file:
@@ -61,7 +61,7 @@ insert_bugfile_chunk_noreg_meas <-
         }
       }# end iterate over slices.
     }
-
+    
     if ("BrS" %in% use_measurements & !("SS" %in% use_measurements)) {
       chunk <- paste0(
         "# BrS measurements:
@@ -95,7 +95,7 @@ insert_bugfile_chunk_noreg_meas <-
 
         # measurement characteristics:
         ",chunk_BrS_param,
-          add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
+        add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
     }
     
@@ -113,7 +113,7 @@ insert_bugfile_chunk_noreg_meas <-
     }
     
     paste0(chunk,"\n")
-}
+  }
 
 
 
@@ -135,10 +135,10 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
                       for (i in 1:Nd){
                         Icat[i] ~ dcat(pEti[1:Jcause])
                         ",
-                        ppd_seg,"
+                           ppd_seg,"
                       }
                       pEti[1:Jcause]~ddirch(alpha[])"
-                           )
+  )
   
   paste0(chunk_etiology,"\n")
 }
@@ -146,7 +146,6 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
 ##############################################################################
 ###############  REGRESSION MODELS                           #################
 ##############################################################################
-
 
 #' Insert measurement likelihood (with regression) code chunks into .bug model file
 #' 
@@ -224,7 +223,7 @@ insert_bugfile_chunk_reg_nonest_meas <-
         # bronze-standard measurement characteristics:
         ",chunk_BrS_param
       )
-  }
+    }
     
     if ("BrS" %in% use_measurements & ("SS" %in% use_measurements)) {
       nslice_SS <- length(Mobs$MSS)
@@ -244,7 +243,7 @@ insert_bugfile_chunk_reg_nonest_meas <-
         ",chunk_BrS_param,
         add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
-  }
+    }
     
     if (!("BrS" %in% use_measurements) & ("SS" %in% use_measurements)) {
       nslice_SS <- length(Mobs$MSS)
@@ -257,10 +256,10 @@ insert_bugfile_chunk_reg_nonest_meas <-
         # silver-standard measurement characteristics:
         ",add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
-  }
+    }
     
     paste0(chunk,"\n")
-    }
+  }
 
 
 
@@ -274,11 +273,11 @@ insert_bugfile_chunk_reg_nonest_meas <-
 #' @export
 insert_bugfile_chunk_reg_etiology <- function(ppd = NULL){
   ppd_seg <- ""
-  if (!is.null(ppd) && ppd){ppd_seg <- "Icat.new[i] ~ dcat(pEti[1:Jcause])
-                                 "}
+  if (!is.null(ppd) && ppd){ppd_seg <- "
+                               Icat.new[i] ~ dcat(pEti[1:Jcause])
+                               "}
   chunk_etiology <- paste0("
                            # etiology priors:
-
                            mu_Eti_mat <- Z_Eti%*%betaEti # <--- Z_Eti with rows for cases, columns for covariates; betaEti: rows for covariates, columns for 1:Jcause.
                            for (i in 1:Nd){
                                Icat[i] ~ dcat(pEti[i,1:Jcause])

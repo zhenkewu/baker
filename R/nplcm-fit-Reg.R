@@ -55,7 +55,6 @@ nplcm_fit_Reg_NoNest <-
     
     in_data <- in_init <- out_parameter <- NULL
     
-    
     # generate design matrix for etiology regression:
     Eti_formula <- likelihood$Eti_formula
     FPR_formula <- likelihood$FPR_formula

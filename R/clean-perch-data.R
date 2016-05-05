@@ -70,7 +70,7 @@ clean_perch_data <- function(clean_options) {
   if (!is.null(clean_options$date_formats)) {
     date_formats      <- clean_options$date_formats
   }else{
-    date_formats      <- c("%d%B%Y","%d%B%y")
+    date_formats      <- c("%d%B%Y","%d%B%y","%d%b%Y")
   }
   
   #

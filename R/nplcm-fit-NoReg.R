@@ -484,7 +484,7 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
   }
   if (sum(is.na(res[ind_positive]))>0){ # <--- corrected to add res[].
     ind_NA <- which(is.na(res))
-    stop(paste0("==[baker] Case(s) No.: ",paste(ind_NA,collapse=", "), " have positive silver-standard
+    stop(paste0("==[baker] Case(s) The ",paste(ind_NA,collapse=", "), "-th subject(s) have positive silver-standard
                 measurements on pathogen combinations not specified in the 'cause_list' of 
                 'model_options$likelihood'! Please consider if you want to delete these cases,
                 or to add these combinations into 'cause_list'.==\n"))

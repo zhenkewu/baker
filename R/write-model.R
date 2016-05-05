@@ -53,7 +53,8 @@ write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,
 write_model_Reg_NoNest <- function(Mobs,prior,cause_list,FPR_formula,
                                    use_measurements,ppd=NULL,use_jags=FALSE){
   chunk1 <- insert_bugfile_chunk_reg_nonest_meas(Mobs,
-                                                 prior,cause_list,FPR_formula,use_measurements,ppd,use_jags)
+                                                 prior,cause_list,FPR_formula,
+                                                 use_measurements,ppd,use_jags)
   chunk2 <- insert_bugfile_chunk_reg_etiology(ppd) #DONE.
   
   paste0("model{#BEGIN OF MODEL:\n",
