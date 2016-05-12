@@ -64,8 +64,8 @@ plot_logORmat = function(data_nplcm,
   # this plotting function will change graphical paramter "mar"; use
   # on.exit function to reset the graphical parameters after we have executed 
   # the function:
-  default_par <- list(mar = par("mar"))
-  on.exit(par(default_par))
+  default_par <- list(mar = graphics::par("mar"))
+  on.exit(graphics::par(default_par))
   
   J   <- ncol(MBS.case)
   Nd  <-  sum(Y)
@@ -89,7 +89,7 @@ plot_logORmat = function(data_nplcm,
       x = MBS.case[,j2]
       y = MBS.case[,j1]
       
-      fit = glm(y~x,family = binomial(link="logit"))
+      fit = stats::glm(y~x,family = stats::binomial(link="logit"))
       
       if ("x" %in% rownames(summary(fit)$coef)){
         logORmat[j2,j1] = round(summary(fit)$coef["x",1],3)
@@ -99,7 +99,7 @@ plot_logORmat = function(data_nplcm,
       x = MBS.ctrl[,j2]
       y = MBS.ctrl[,j1]
       
-      fit = glm(y~x,family = binomial(link="logit"))
+      fit = stats::glm(y~x,family = stats::binomial(link="logit"))
       
       if ("x" %in% rownames(summary(fit)$coef)){
         logORmat[j1,j2] = round(summary(fit)$coef["x",1],3)
@@ -127,35 +127,35 @@ plot_logORmat = function(data_nplcm,
     cex_main= min(2,20/n)
     cex_se  = min(1.5,15/n)
     
-    par(mar = c(0, 0, 5, 0), bg = "white",xpd=TRUE)
-    plot(c(0, n + 0.8), c(0, n + 0.8), axes = axes, xlab = "",
+    graphics::par(mar = c(0, 0, 5, 0), bg = "white",xpd=TRUE)
+    graphics::plot(c(0, n + 0.8), c(0, n + 0.8), axes = axes, xlab = "",
          ylab = "", asp = 1, type = "n")
     ##add grid
-    segments(rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5, n + 1),
+    graphics::segments(rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5, n + 1),
              0.5 + 0:n, col = "gray")
-    segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
+    graphics::segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
                                                         n), col = "gray")
     cor.txt<- round(t(cor)[,n:1],logOR_rounding)
     cor.se.txt <-round(t(cor.se)[,n:1],logOR_rounding)
     cor.txt3<- round(t(cor)[,n:1],3)
     cor.se.txt3 <-round(t(cor.se)[,n:1],3)
     
-    text(1,J+0.3,"logOR",cex=cex_main/2)
-    text(1,J,"s.e.",cex=cex_se/2)
-    text(1,J-0.3,"std.logOR",cex=cex_se/2)
+    graphics::text(1,J+0.3,"logOR",cex=cex_main/2)
+    graphics::text(1,J,"s.e.",cex=cex_se/2)
+    graphics::text(1,J-0.3,"std.logOR",cex=cex_se/2)
     
     for (i in 1:n){
       for (j in 1:n){
-        text(i,j+0.3,cor.txt[i,j],col=ifelse(cor.txt[i,j]>0,"red","blue"),cex=cex_main)
-        text(i,j,cor.se.txt[i,j],col=ifelse(cor.txt[i,j]>0,"red","blue")
+        graphics::text(i,j+0.3,cor.txt[i,j],col=ifelse(cor.txt[i,j]>0,"red","blue"),cex=cex_main)
+        graphics::text(i,j,cor.se.txt[i,j],col=ifelse(cor.txt[i,j]>0,"red","blue")
              ,cex=cex_se)
         abs.std.logOR <- abs(cor.txt3[i,j]/cor.se.txt3[i,j])
         if (!is.na(abs.std.logOR) && abs.std.logOR>1){
           if (abs.std.logOR>2){
-            text(i,j-0.3,round(cor.txt3[i,j]/cor.se.txt3[i,j],1),
+            graphics::text(i,j-0.3,round(cor.txt3[i,j]/cor.se.txt3[i,j],1),
                  col=ifelse(cor.txt[i,j]>0,"red","blue"),cex=cex_se)
           }else{
-            text(i,j-0.3,ifelse(cor.txt[i,j]>0,"+","-"),
+            graphics::text(i,j-0.3,ifelse(cor.txt[i,j]>0,"+","-"),
                  col=ifelse(cor.txt[i,j]>0,"red","blue"),cex=cex_se)
           }
         }
@@ -163,8 +163,8 @@ plot_logORmat = function(data_nplcm,
       }
     }
     # diagonal line:
-    segments(0.5+1,.5+n-1,.5+n,0.5,col="black",lty=3,lwd=3)
-    mtext(title,3,cex=1,line=1)
+    graphics::segments(0.5+1,.5+n-1,.5+n,0.5,col="black",lty=3,lwd=3)
+    graphics::mtext(title,3,cex=1,line=1)
   }
   
   # put texts in the boxes:
@@ -172,15 +172,15 @@ plot_logORmat = function(data_nplcm,
   
   # put pathogen names on rows and columns:
   for (s in rev(1:length(pathogen_name))){
-    #   text(-2,par("usr")[1]+0.03*(length(pathogen_name)-s)*diff(par("usr")[1:2])+5,
+    #   graphics::text(-2,graphics::par("usr")[1]+0.03*(length(pathogen_name)-s)*diff(graphics::par("usr")[1:2])+5,
     #        paste0(s,":",pathogen_name[s]),las=2,
     #        cex=1)
-    text(-0,J-s+1,paste0(pathogen_name[s],":(",s,")"),cex=min(1.5,20/J),adj=1)
-    text(s,J+0.7,paste0("(",s,"):",pathogen_name[s]),cex=min(1.5,20/J),srt=45,adj=0)
+    graphics::text(-0,J-s+1,paste0(pathogen_name[s],":(",s,")"),cex=min(1.5,20/J),adj=1)
+    graphics::text(s,J+0.7,paste0("(",s,"):",pathogen_name[s]),cex=min(1.5,20/J),srt=45,adj=0)
   }
   # labels for cases and controls:
-  text(J+1,J/2,"cases",cex=2,srt=-90)
-  text(J/2,0,"controls",cex=2)
+  graphics::text(J+1,J/2,"cases",cex=2,srt=-90)
+  graphics::text(J/2,0,"controls",cex=2)
 }
 
 
@@ -367,7 +367,7 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
 #' @param slice_SS the slice of SS data to add onto BrS plots; default is 1, usually
 #' representing blood culture measurements.
 #' 
-#' @importFrom mgcv gam
+#' @import mgcv
 #' 
 #' @return A figure with smoothed positive rate and confidence bands for cases
 #' and controls, respectively. The right margin shows marginal positive rates.
@@ -395,19 +395,19 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
     pred_date1    <- seq(min(std_date[Y==1]),max(std_date[Y==1]),length=1000)
     datcase_path  <- data.frame(M = curr_MBS[Y==1,patho],Rdate = std_date[Y==1])
     fit_case      <- gam(M~s(Rdate,bs="ps",k=10,m=c(2,1)),  
-                         data = datcase_path,family=binomial(logit),method="REML")
+                         data = datcase_path,family=stats::binomial(logit),method="REML")
     
-    fitted_case  <- predict(fit_case,type="response")[1:Nd]
-    pred_case    <- predict(fit_case,data.frame(Rdate=pred_date1), type = "link", se.fit = TRUE)
+    fitted_case  <- mgcv::predict.gam(fit_case,type="response")[1:Nd]
+    pred_case    <- mgcv::predict.gam(fit_case,data.frame(Rdate=pred_date1), type = "link", se.fit = TRUE)
     
     # control fit and predict:
     pred_date0   <- seq(min(std_date[Y==0]),max(std_date[Y==0]),length=1000)
     datctrl_path <- data.frame(M = curr_MBS[Y==0,patho],Rdate = std_date[Y==0])
     fit_ctrl     <- gam(M~s(Rdate,bs="ps",k=10,m=c(2,1)), 
-                        data = datctrl_path,family=binomial(logit),method="REML")
+                        data = datctrl_path,family=stats::binomial(logit),method="REML")
     
-    fitted_ctrl  <- predict(fit_ctrl,type="response")[1:Nu]
-    pred_ctrl    <- predict(fit_ctrl,data.frame(Rdate=pred_date0), type = "link", se.fit = TRUE)
+    fitted_ctrl  <- mgcv::predict.gam(fit_ctrl,type="response")[1:Nu]
+    pred_ctrl    <- mgcv::predict.gam(fit_ctrl,data.frame(Rdate=pred_date0), type = "link", se.fit = TRUE)
     
     make_list(fitted_case,fitted_ctrl,fit_case,fit_ctrl,pred_case,pred_ctrl,
               pred_date1,pred_date0,std_date)
@@ -429,8 +429,8 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   std_date   <- out$std_date
   
   # because pred_date1/0 are standardized, transform back to original scale:
-  pred.date.case.plot <- pred_date1*sd(curr_dat$Rdate[Y==0])+mean(curr_dat$Rdate[Y==0])
-  pred.date.ctrl.plot <- pred_date0*sd(curr_dat$Rdate[Y==0])+mean(curr_dat$Rdate[Y==0])
+  pred.date.case.plot <- pred_date1*stats::sd(curr_dat$Rdate[Y==0])+mean(curr_dat$Rdate[Y==0])
+  pred.date.ctrl.plot <- pred_date0*stats::sd(curr_dat$Rdate[Y==0])+mean(curr_dat$Rdate[Y==0])
   
   #
   # plotting raw data:
@@ -440,15 +440,15 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
   X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
   
-  color2 <- rgb(190, 190, 190, alpha=200, maxColorValue=255)
-  color1 <- rgb(216,191,216, alpha=200, maxColorValue=255)
+  color2 <- grDevices::rgb(190, 190, 190, alpha=200, maxColorValue=255)
+  color1 <- grDevices::rgb(216,191,216, alpha=200, maxColorValue=255)
   #
   #cases:
   #
   
   dat_case <- cbind(X[Y==1,],fitted_case)
   # fitted curve:
-  plot(fitted_case ~ date_plot, data=dat_case,
+  graphics::plot(fitted_case ~ date_plot, data=dat_case,
        type = "l",lwd=4,
        xlab = "",xaxt = "n", axes=F,xlim=c(min(X$date_plot),max(X$date_plot)+80),
        ylab = colnames(curr_MBS)[patho],ylim=c(-.2,1.4))
@@ -456,16 +456,16 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   
   last_interval <- max(X$date_month)
   lubridate::month(last_interval) <- lubridate::month(last_interval) +2
-  axis(1, c(X$date_month,last_interval), format(c(X$date_month,last_interval), "%Y %b"), 
+  graphics::axis(1, c(X$date_month,last_interval), format(c(X$date_month,last_interval), "%Y %b"), 
        cex.axis = .7)
-  axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2))
+  graphics::axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2))
   
   
-  #points(upr~as.Date(pred.date.case.plot),lty=2,type="l",lwd=2)
-  #points(lwr~as.Date(pred.date.case.plot),lty=2,type="l",lwd=2)
+  #graphics::points(upr~as.Date(pred.date.case.plot),lty=2,type="l",lwd=2)
+  #graphics::points(lwr~as.Date(pred.date.case.plot),lty=2,type="l",lwd=2)
   
   #rug plot:
-  points(dat_case$date_plot,c(-0.1,1.15)[response.case+1],pch="|")
+  graphics::points(dat_case$date_plot,c(-0.1,1.15)[response.case+1],pch="|")
   
   #
   # controls:
@@ -477,21 +477,21 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   # transform to the right scale:
   upr <- fit_ctrl$family$linkinv(upr)
   lwr <- fit_ctrl$family$linkinv(lwr)
-  polygon(c(as.Date(pred.date.ctrl.plot), rev(as.Date(pred.date.ctrl.plot))),
+  graphics::polygon(c(as.Date(pred.date.ctrl.plot), rev(as.Date(pred.date.ctrl.plot))),
           c(lwr,rev(upr)),col=color2,border=NA)
   #plot control actual data:
-  points(fitted_ctrl ~ date_plot,data=dat_ctrl,
+  graphics::points(fitted_ctrl ~ date_plot,data=dat_ctrl,
          pch=2,cex=2,col="dodgerblue2",lwd=5,type="l",lty=1)
   
   ma <- function(x,n=60){stats::filter(x,rep(1/n,n), sides=2)}
   
   dat_ctrl$runmean <- ma(response.ctrl)
-  points(runmean ~ date_plot,data=dat_ctrl,lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")
+  graphics::points(runmean ~ date_plot,data=dat_ctrl,lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")
   
   
   # raw moving-window prevalences:
   # interval_raw <- aggregate(response.ctrl~dat_ctrl$date_month_centered, FUN=mean)
-  # points(interval_raw[,2]~as.Date(interval_raw[,1]),
+  # graphics::points(interval_raw[,2]~as.Date(interval_raw[,1]),
   #        lty=2,pch=1,cex=0.7,col="dodgerblue2",type="o",
   #        lwd=1)
   
@@ -502,25 +502,25 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   # transform back to the right scale:
   upr <- fit_case$family$linkinv(upr)
   lwr <- fit_case$family$linkinv(lwr)
-  polygon(c(as.Date(pred.date.case.plot), rev(as.Date(pred.date.case.plot))),
+  graphics::polygon(c(as.Date(pred.date.case.plot), rev(as.Date(pred.date.case.plot))),
           c(lwr,rev(upr)),col=color1,border=NA)
   
-  points(fitted_case ~ date_plot, data=dat_case,
+  graphics::points(fitted_case ~ date_plot, data=dat_case,
          type = "l",lwd=4)
   
   # raw moving-window prevalences:
   #interval_raw <- aggregate(response.case~dat_case$date_month_centered, FUN=mean)
-  #points(interval_raw[,2]~as.Date(interval_raw[,1]),
+  #graphics::points(interval_raw[,2]~as.Date(interval_raw[,1]),
   #       lty=1,pch=20,cex=0.7,type="o")
   
   dat_case$runmean <- ma(response.case)
-  points(runmean ~ date_plot,data=dat_case,lty=1,pch=20,cex=0.5)
+  graphics::points(runmean ~ date_plot,data=dat_case,lty=1,pch=20,cex=0.5)
   
   
-  #points(upr~as.Date(pred.date.ctrl.plot),lty=2,type="l",col="dodgerblue2",lwd=2)
-  #points(lwr~as.Date(pred.date.ctrl.plot),lty=2,type="l",col="dodgerblue2",lwd=2)
+  #graphics::points(upr~as.Date(pred.date.ctrl.plot),lty=2,type="l",col="dodgerblue2",lwd=2)
+  #graphics::points(lwr~as.Date(pred.date.ctrl.plot),lty=2,type="l",col="dodgerblue2",lwd=2)
   # rug plot:
-  points(dat_ctrl$date_plot,c(-0.2,1.05)[response.ctrl+1],pch="|", col="dodgerblue2")
+  graphics::points(dat_ctrl$date_plot,c(-0.2,1.05)[response.ctrl+1],pch="|", col="dodgerblue2")
   
   
   #
@@ -530,9 +530,9 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   case.overall.loc <- max(X$date_plot)+10
   ctrl.overall.loc <- case.overall.loc+delta
   
-  text(case.overall.loc,mean(response.case)+0.3,
+  graphics::text(case.overall.loc,mean(response.case)+0.3,
        paste0(round(mean(response.case)*100,1),"%"),col="black",pch=20,srt=90,cex=2)
-  text(ctrl.overall.loc,mean(response.ctrl)+0.3,
+  graphics::text(ctrl.overall.loc,mean(response.ctrl)+0.3,
        paste0(round(mean(response.ctrl)*100,1),"%"),col="dodgerblue2",pch=20,srt=90,cex=2)
   
   ncase = length(response.case)
@@ -543,12 +543,12 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   Bcompq1 = rbind(tmp.case[,c("lower")],tmp.ctrl[,c("lower")])
   Bcompq2 = rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")])
   
-  points(case.overall.loc,mean(response.case),col="black",pch=20,cex=2)
-  points(ctrl.overall.loc,mean(response.ctrl),col="dodgerblue2",pch=20,cex=2)
+  graphics::points(case.overall.loc,mean(response.case),col="black",pch=20,cex=2)
+  graphics::points(ctrl.overall.loc,mean(response.ctrl),col="dodgerblue2",pch=20,cex=2)
   
-  segments(case.overall.loc,mean(response.case),ctrl.overall.loc,mean(response.ctrl))
-  segments(case.overall.loc,Bcompq1[1,],case.overall.loc,Bcompq2[1,])
-  segments(ctrl.overall.loc,Bcompq1[2,],ctrl.overall.loc,Bcompq2[2,],col="dodgerblue2")
+  graphics::segments(case.overall.loc,mean(response.case),ctrl.overall.loc,mean(response.ctrl))
+  graphics::segments(case.overall.loc,Bcompq1[1,],case.overall.loc,Bcompq2[1,])
+  graphics::segments(ctrl.overall.loc,Bcompq1[2,],ctrl.overall.loc,Bcompq2[2,],col="dodgerblue2")
   
   ## plot silver-standard data
   
@@ -559,9 +559,9 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
     
     curr_MSS <- data_nplcm$Mobs$MSS[[slice_SS]][ord_all,,drop=FALSE]
     ind_BrS_not_missing <- which(!is.na(curr_MSS[,patho_SS]))
-    points(dat_case$date_plot[ind_BrS_not_missing],
+    graphics::points(dat_case$date_plot[ind_BrS_not_missing],
            c(-0.5,1.3)[curr_MSS[ind_BrS_not_missing,patho_SS]+1],pch="|",col="red",lwd=2)
-    text(case.overall.loc,1.3,
+    graphics::text(case.overall.loc,1.3,
          paste0(names(data_nplcm$Mobs$MSS)[slice_SS],"(+)%:",round(100*mean(curr_MSS[ind_BrS_not_missing,patho_SS]),2),"%"),
          cex=2,col=2)
   }

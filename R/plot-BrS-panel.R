@@ -116,10 +116,10 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     y <- c(rep(1,Nd), rep(0,Nu))
     brs.data <- as.data.frame(rbind(MBS_case_curr,MBS_ctrl_curr))
     dat.reg  <- as.data.frame(cbind(y,brs.data))
-    fit      <- glm(y~.,data=dat.reg,family=binomial,na.action="na.omit")
+    fit      <- stats::glm(y~.,data=dat.reg,family=stats::binomial,na.action="na.omit")
     
-    if (sum(is.na(coef(fit)))==0 & sum(diag(vcov(fit))>100)==0){
-      res0 = cbind(exp(suppressMessages(confint(fit))),exp(fit$coef))[-1,]
+    if (sum(is.na(stats::coef(fit)))==0 & sum(diag(stats::vcov(fit))>100)==0){
+      res0 = cbind(exp(suppressMessages(stats::confint(fit))),exp(fit$coef))[-1,]
       res  = list(ORinterval = matrix(res0,nrow = ncol(brs.data),ncol=3)[pos,],
                   label = "conditional OR")
     }else{
@@ -129,10 +129,10 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       res0 = matrix(NA,nrow=1,ncol=3)
       res0 = data.frame(res0)
       tb <- table(dat.reg$y,brs.data[,pos])
-      fit_tmp  <- glm(y~brs.data[,pos],family=binomial,na.action = "na.omit")
-      if (length(vcov(fit_tmp))>1 && vcov(fit_tmp)[2,2]<100 && ncol(tb)==2){
+      fit_tmp  <- stats::glm(y~brs.data[,pos],family=stats::binomial,na.action = "na.omit")
+      if (length(stats::vcov(fit_tmp))>1 && stats::vcov(fit_tmp)[2,2]<100 && ncol(tb)==2){
         #print(l)
-        res0 <- cbind(exp(suppressMessages(confint(fit_tmp))),exp(fit_tmp$coef))[-1,]
+        res0 <- cbind(exp(suppressMessages(stats::confint(fit_tmp))),exp(fit_tmp$coef))[-1,]
       }
       res = list(ORinterval=res0,label="marginal OR")
     }
@@ -142,7 +142,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   plot_BrS_cell  <- function(lat_pos, pos, height,gap = 0){
     plotat <- get_plot_num(lat_pos,height) + gap
     
-    plot(c(fittedmean_case[pos],MBS_mean[,pos]),
+    graphics::plot(c(fittedmean_case[pos],MBS_mean[,pos]),
          plotat,
          xlim=c(0,top_BrS),
          ylim=c(0.5, height+0.5),
@@ -153,18 +153,18 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
          cex = c(1,2,2))
     
     
-    points(c(theta_mean[pos],MBS_q2[,pos]),
+    graphics::points(c(theta_mean[pos],MBS_q2[,pos]),
            plotat,
            pch = c("+","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
-    points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
+    graphics::points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
            plotat,
            pch = c("*","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
     # connect case and control rates:
-    segments(
+    graphics::segments(
       x0 = MBS_mean[1,pos],x1 = MBS_mean[2,pos],
       y0 = plotat[2],y1 = plotat[3],
       lty = 1,
@@ -172,25 +172,25 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       lwd = 2
     )
     # case: rates
-    segments(
+    graphics::segments(
       x0 = MBS_q1[1,pos],x1 = MBS_q2[1,pos],
       y0 = plotat[2], y1 = plotat[2],
       lty = 1
     )
     tmp.hpos <- ifelse(MBS_q2[1,pos]+0.15>0.95,MBS_q1[1,pos]-0.2,MBS_q2[1,pos]+0.15 )
-    text(tmp.hpos, plotat[2], paste0(round(100*MBS_mean[1,pos],1),"%"),
+    graphics::text(tmp.hpos, plotat[2], paste0(round(100*MBS_mean[1,pos],1),"%"),
          srt=srtval,cex=cexval)
     # control:rates
-    segments(
+    graphics::segments(
       x0 = MBS_q1[2,pos],x1 = MBS_q2[2,pos],
       y0 = plotat[3], y1 = plotat[3],
       lty = 1
     )
     tmp.hpos <- ifelse(MBS_q2[2,pos]+0.15>0.95,MBS_q1[2,pos]-0.2,MBS_q2[2,pos]+0.15 )
-    text(tmp.hpos, plotat[3], paste0(round(100*MBS_mean[2,pos],1),"%"),
+    graphics::text(tmp.hpos, plotat[3], paste0(round(100*MBS_mean[2,pos],1),"%"),
          srt=srtval,cex=cexval)
     # poster means of TPR, FPR and fitted marginal rate:
-    segments(
+    graphics::segments(
       x0 = theta_mean[pos],x1 = psi_mean[pos],
       y0 = plotat[1], y1 = plotat[1],
       lty = 4,col="gray"
@@ -201,31 +201,31 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       if (prior_shape == "interval") {
         # prior of TPR:
         prior_plot_at <- lat_pos - .45 + gap
-        tmp = qbeta(c(0.025,0.975,0.25,0.75),alphaB[pos],betaB[pos])
-        points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
-        segments(tmp[1],prior_plot_at,
+        tmp = stats::qbeta(c(0.025,0.975,0.25,0.75),alphaB[pos],betaB[pos])
+        graphics::points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
+        graphics::segments(tmp[1],prior_plot_at,
                  tmp[2],prior_plot_at,lty = 1,col="gray")
-        segments(tmp[3],prior_plot_at,
+        graphics::segments(tmp[3],prior_plot_at,
                  tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
         
         # posterior of TPR:
         post_plot_at <- lat_pos - .35 + gap
         tmp.post = as.matrix(theta_mat)[,pos]
-        tmp  = quantile(tmp.post, c(0.025,0.975,0.25,0.75))
-        points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
-        segments(tmp[1],post_plot_at,
+        tmp  = stats::quantile(tmp.post, c(0.025,0.975,0.25,0.75))
+        graphics::points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
+        graphics::segments(tmp[1],post_plot_at,
                  tmp[2],post_plot_at,lty = 1)
-        segments(tmp[3],post_plot_at,
+        graphics::segments(tmp[3],post_plot_at,
                  tmp[4],post_plot_at,lty = 1,lwd=2)
       } else if (prior_shape == "boxplot") {
-        tmp = rbeta(10000,alphaB[pos],betaB[pos])
-        boxplot(
+        tmp = stats::rbeta(10000,alphaB[pos],betaB[pos])
+        graphics::boxplot(
           tmp,at = prior_plot_at, boxwex = 1 / 10 , col = "gray",
           add = TRUE,horizontal = TRUE,outline = FALSE,xaxt =
             "n"
         )
         tmp.post = as.matrix(theta_mat)[,pos]
-        boxplot(
+        graphics::boxplot(
           tmp.post,at = post_plot_at,boxwex = 1 / 10,add = TRUE,
           horizontal = TRUE,outline = FALSE,xaxt = "n"
         )
@@ -239,16 +239,16 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       C <-  round(tmp[3],1)
       R <-  round(tmp[2],1)
       
-      text(top_BrS - 0.12,lat_pos + .3, colnames(MBS_case_curr)[pos],cex=1 )
-      text(top_BrS - 0.12,lat_pos + 1 / (2 * Jcause),C,cex = 1.5)
-      text(top_BrS - 0.12,lat_pos - .2,paste(c(L,"   ",R),collapse = " "),
+      graphics::text(top_BrS - 0.12,lat_pos + .3, colnames(MBS_case_curr)[pos],cex=1 )
+      graphics::text(top_BrS - 0.12,lat_pos + 1 / (2 * Jcause),C,cex = 1.5)
+      graphics::text(top_BrS - 0.12,lat_pos - .2,paste(c(L,"   ",R),collapse = " "),
            cex = 1.2)
-      legend("topright",tmp0$label,bty = "n")
+      graphics::legend("topright",tmp0$label,bty = "n")
     }
     
     # x-axis for each cell:
     if (lat_pos>1){
-      axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
+      graphics::axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
            pos = seq(.6, height +.6,by = 1)[lat_pos], cex.axis = 0.8,
            lty = 2,col = "blue"
       )
@@ -258,7 +258,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   points_BrS_cell     <- function(lat_pos,pos,height,gap=0){ # pos for the measurement dimension, usually used as pos_vec[e].
     plotat <- get_plot_num(lat_pos,height) + gap
     
-    points(c(fittedmean_case[pos],MBS_mean[,pos]),
+    graphics::points(c(fittedmean_case[pos],MBS_mean[,pos]),
            plotat,
            xlim=c(0,top_BrS),
            ylim=c(0.5, height+0.5),
@@ -269,18 +269,18 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
            cex = c(1,2,2))
     
     
-    points(c(theta_mean[pos],MBS_q2[,pos]),
+    graphics::points(c(theta_mean[pos],MBS_q2[,pos]),
            plotat,
            pch = c("+","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
-    points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
+    graphics::points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
            plotat,
            pch = c("*","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
     # connect case and control rates:
-    segments(
+    graphics::segments(
       x0 = MBS_mean[1,pos],x1 = MBS_mean[2,pos],
       y0 = plotat[2],y1 = plotat[3],
       lty = 1,
@@ -288,25 +288,25 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       lwd = 2
     )
     # case: rates
-    segments(
+    graphics::segments(
       x0 = MBS_q1[1,pos],x1 = MBS_q2[1,pos],
       y0 = plotat[2], y1 = plotat[2],
       lty = 1
     )
     tmp.hpos <- ifelse(MBS_q2[1,pos]+0.15>0.95,MBS_q1[1,pos]-0.2,MBS_q2[1,pos]+0.15 )
-    text(tmp.hpos, plotat[2], paste0(round(100*MBS_mean[1,pos],1),"%"),
+    graphics::text(tmp.hpos, plotat[2], paste0(round(100*MBS_mean[1,pos],1),"%"),
          srt=srtval,cex=cexval)
     # control:rates
-    segments(
+    graphics::segments(
       x0 = MBS_q1[2,pos],x1 = MBS_q2[2,pos],
       y0 = plotat[3], y1 = plotat[3],
       lty = 1
     )
     tmp.hpos <- ifelse(MBS_q2[2,pos]+0.15>0.95,MBS_q1[2,pos]-0.2,MBS_q2[2,pos]+0.15 )
-    text(tmp.hpos, plotat[3], paste0(round(100*MBS_mean[2,pos],1),"%"),
+    graphics::text(tmp.hpos, plotat[3], paste0(round(100*MBS_mean[2,pos],1),"%"),
          srt=srtval,cex=cexval)
     # poster means of TPR, FPR and fitted marginal rate:
-    segments(
+    graphics::segments(
       x0 = theta_mean[pos],x1 = psi_mean[pos],
       y0 = plotat[1], y1 = plotat[1],
       lty = 4,col="gray"
@@ -317,31 +317,31 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       if (prior_shape == "interval") {
         # prior of TPR:
         prior_plot_at <- lat_pos - .45 + gap
-        tmp = qbeta(c(0.025,0.975,0.25,0.75),alphaB[pos],betaB[pos])
-        points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
-        segments(tmp[1],prior_plot_at,
+        tmp = stats::qbeta(c(0.025,0.975,0.25,0.75),alphaB[pos],betaB[pos])
+        graphics::points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
+        graphics::segments(tmp[1],prior_plot_at,
                  tmp[2],prior_plot_at,lty = 1,col="gray")
-        segments(tmp[3],prior_plot_at,
+        graphics::segments(tmp[3],prior_plot_at,
                  tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
         
         # posterior of TPR:
         post_plot_at <- lat_pos - .35 + gap
         tmp.post = as.matrix(theta_mat)[,pos]
-        tmp  = quantile(tmp.post, c(0.025,0.975,0.25,0.75))
-        points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
-        segments(tmp[1],post_plot_at,
+        tmp  = stats::quantile(tmp.post, c(0.025,0.975,0.25,0.75))
+        graphics::points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
+        graphics::segments(tmp[1],post_plot_at,
                  tmp[2],post_plot_at,lty = 1)
-        segments(tmp[3],post_plot_at,
+        graphics::segments(tmp[3],post_plot_at,
                  tmp[4],post_plot_at,lty = 1,lwd=2)
       } else if (prior_shape == "boxplot") {
-        tmp = rbeta(10000,alphaB[pos],betaB[pos])
-        boxplot(
+        tmp = stats::rbeta(10000,alphaB[pos],betaB[pos])
+        graphics::boxplot(
           tmp,at = prior_plot_at, boxwex = 1 / 10 , col = "gray",
           add = TRUE,horizontal = TRUE,outline = FALSE,xaxt =
             "n"
         )
         tmp.post = as.matrix(theta_mat)[,pos]
-        boxplot(
+        graphics::boxplot(
           tmp.post,at = post_plot_at,boxwex = 1 / 10,add = TRUE,
           horizontal = TRUE,outline = FALSE,xaxt = "n"
         )
@@ -355,16 +355,16 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       C <-  round(tmp[3],1)
       R <-  round(tmp[2],1)
       
-      text(top_BrS - 0.12,lat_pos + .3+gap, colnames(MBS_case_curr)[pos],cex=1 )
-      text(top_BrS - 0.12,lat_pos + 1 / (2 * Jcause)+gap,C,cex = 1.5)
-      text(top_BrS - 0.12,lat_pos - .2+gap,paste(c(L,"   ",R),collapse = " "),
+      graphics::text(top_BrS - 0.12,lat_pos + .3+gap, colnames(MBS_case_curr)[pos],cex=1 )
+      graphics::text(top_BrS - 0.12,lat_pos + 1 / (2 * Jcause)+gap,C,cex = 1.5)
+      graphics::text(top_BrS - 0.12,lat_pos - .2+gap,paste(c(L,"   ",R),collapse = " "),
            cex = 1.2)
-      legend("topright",tmp0$label,bty = "n")
+      graphics::legend("topright",tmp0$label,bty = "n")
     }
     
     # x-axis for each cell:
     if (lat_pos>1){
-      axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
+      graphics::axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
            pos = seq(.6,height +.6,by = 1)[lat_pos], cex.axis = 0.8,
            lty = 2,col = "blue"
       )
@@ -375,8 +375,8 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   #
   # plotting:
   #
-  #op <- par(mar=c(5.1,4.1,4.1,0))
-  op <- par(mar=c(5.1,0,4.1,0))
+  #op <- graphics::par(mar=c(5.1,4.1,4.1,0))
+  op <- graphics::par(mar=c(5.1,0,4.1,0))
   
   if (!is_length_all_one(pos_vec)){
     #stop("== Not implemented for combo latent status.==")
@@ -401,7 +401,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   }
   
   if (!is.null(bg_color) && !is.null(bg_color$BrS)){
-    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+    graphics::rect(graphics::par("usr")[1], graphics::par("usr")[3], graphics::par("usr")[2], graphics::par("usr")[4], col = 
            bg_color$BrS)
     
     for (e in 1:nrow(template_ord)){
@@ -420,11 +420,11 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     }
   }
   
-  #   #add axis labels on the left:
-  #   axis(2,at = c(sapply(1:Jcause,get_plot_num,height=Jcause)),
+  #   #add graphics::axis labels on the left:
+  #   graphics::axis(2,at = c(sapply(1:Jcause,get_plot_num,height=Jcause)),
   #        labels=rep(c("","case","ctrl"),Jcause),las=2)
-  #   axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
-  #   axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
+  #   graphics::axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
+  #   graphics::axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
   #   
   
   
@@ -432,7 +432,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     warning(paste0("==[baker] Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[slice], 
                    " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.==\n"))  
     plotat <- c(sapply(seq_along(latent_seq),get_plot_num,length(latent_seq)))
-    plot(rep(0,length(plotat)),
+    graphics::plot(rep(0,length(plotat)),
          plotat,
          xlim=c(0,top_BrS),
          ylim=c(0.5, length(latent_seq)+0.5),
@@ -441,16 +441,16 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
          pch = c("","",""))
   }
   #add ticks from 0 to 1 for x-bar:
-  axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= as.character(c(0,0.2,0.4,0.6,0.8,1)),las=1)
+  graphics::axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= as.character(c(0,0.2,0.4,0.6,0.8,1)),las=1)
   
   #add dashed lines to separate cells:
   if (length(latent_seq) > 1){
-    abline(h=seq(1.5,length(latent_seq)-.5,by=1),lty=2,lwd=0.5,col="gray")
+    graphics::abline(h=seq(1.5,length(latent_seq)-.5,by=1),lty=2,lwd=0.5,col="gray")
   }
-  abline(v=1,lty=2,lwd=.5,col="gray")
+  graphics::abline(v=1,lty=2,lwd=.5,col="gray")
   
   #add some texts:
-  mtext(eval(paste0("BrS: ", names(data_nplcm$Mobs$MBS)[slice])),
+  graphics::mtext(eval(paste0("BrS: ", names(data_nplcm$Mobs$MBS)[slice])),
         line=1,cex=1.8)
 }
 

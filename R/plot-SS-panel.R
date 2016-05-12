@@ -123,7 +123,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   
   plot_SS_cell <- function(lat_pos, pos, height,gap = 0){
     plotat <- get_plot_num(lat_pos,height) + gap
-    plot(c(fittedmean_case[pos],MSS_mean[,pos]),
+    graphics::plot(c(fittedmean_case[pos],MSS_mean[,pos]),
          plotat[-3],
          xlim=c(0,top_SS),
          ylim=c(0.5, height+0.5),
@@ -132,25 +132,25 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
          pch = c(2,20),
          col = c("purple", "dodgerblue2"),
          cex = c(1,2))
-    points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
+    graphics::points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
            plotat[c(1,2,2)],
            pch = c("+","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
     # label posterior mean of TPR:
     tmp.post <- as.matrix(theta_mat)[,pos]
-    tmp.hpos <- quantile(tmp.post,0.975) + 0.15
-    text(tmp.hpos, lat_pos-0.35+gap, paste0(round(100*theta_mean[pos],1),"%"),
+    tmp.hpos <- stats::quantile(tmp.post,0.975) + 0.15
+    graphics::text(tmp.hpos, lat_pos-0.35+gap, paste0(round(100*theta_mean[pos],1),"%"),
          srt=srtval,cex=cexval,col="purple")
     
     # case: rates
-    segments(
+    graphics::segments(
       x0 = MSS_q1[1,pos],x1 = MSS_q2[1,pos],
       y0 =plotat[2], y1 = plotat[2],
       lty = 1
     )
     tmp.hpos <- ifelse(MSS_q2[1,pos]+0.15>0.95,MSS_q1[1,pos]-0.2,MSS_q2[1,pos]+0.15 )
-    text(tmp.hpos, plotat[2], paste0(round(100*MSS_mean[1,pos],1),"%"),
+    graphics::text(tmp.hpos, plotat[2], paste0(round(100*MSS_mean[1,pos],1),"%"),
          srt=srtval,cex=cexval)
     
     if (!is.null(pos) && !is.na(pos)){#some pos can be NA: because certain cause has no measurements.
@@ -158,43 +158,43 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
       if (prior_shape == "interval") {
         # prior of TPR:
         prior_plot_at <- lat_pos - .45 +gap
-        tmp = qbeta(c(0.025,0.975,0.25,0.75),alphaS[pos],betaS[pos])
-        points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
-        segments(tmp[1],prior_plot_at,
+        tmp = stats::qbeta(c(0.025,0.975,0.25,0.75),alphaS[pos],betaS[pos])
+        graphics::points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
+        graphics::segments(tmp[1],prior_plot_at,
                  tmp[2],prior_plot_at,lty = 1,col="gray")
-        segments(tmp[3],prior_plot_at,
+        graphics::segments(tmp[3],prior_plot_at,
                  tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
         
         # posterior of TPR:
         post_plot_at <- lat_pos - .35 +gap
         tmp.post = as.matrix(theta_mat)[,pos]
-        tmp  = quantile(tmp.post, c(0.025,0.975,0.25,0.75))
-        points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
-        segments(tmp[1],post_plot_at,
+        tmp  = stats::quantile(tmp.post, c(0.025,0.975,0.25,0.75))
+        graphics::points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
+        graphics::segments(tmp[1],post_plot_at,
                  tmp[2],post_plot_at,lty = 1,col = "black")
-        segments(tmp[3],post_plot_at,
+        graphics::segments(tmp[3],post_plot_at,
                  tmp[4],post_plot_at,lty = 1,col = "black",lwd=2)
       } else if (prior_shape == "boxplot") {
-        tmp = rbeta(10000,alphaS[pos],betaS[pos])
-        boxplot(
+        tmp = stats::rbeta(10000,alphaS[pos],betaS[pos])
+        graphics::boxplot(
           tmp,at = prior_plot_at, boxwex = 1 / 10 , col = "gray",
           add = TRUE,horizontal = TRUE,outline = FALSE,xaxt =
             "n"
         )
         tmp.post = as.matrix(theta_mat)[,pos]
-        boxplot(
+        graphics::boxplot(
           tmp.post,at = post_plot_at,boxwex = 1 / 10,add = TRUE,
           horizontal = TRUE,outline = FALSE,xaxt = "n"
         )
       }
       # print name of the dimension (e.g., pathogen):
-      text(top_SS - 0.12,lat_pos + .3+gap, colnames(MSS_case_curr)[pos],cex=1 )
+      graphics::text(top_SS - 0.12,lat_pos + .3+gap, colnames(MSS_case_curr)[pos],cex=1 )
     }
   }
   
   points_SS_cell <- function(lat_pos, pos, height,gap=0){ # pos for the measurement dimension, usually used as pos_vec[e].
     plotat <- get_plot_num(lat_pos,height) +gap
-    points(c(fittedmean_case[pos],MSS_mean[,pos]),
+    graphics::points(c(fittedmean_case[pos],MSS_mean[,pos]),
            plotat[-3],
            xlim=c(0,top_SS),
            ylim=c(0.5, height+0.5),
@@ -203,25 +203,25 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
            pch = c(2,20),
            col = c("purple", "dodgerblue2"),
            cex = c(1,2))
-    points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
+    graphics::points(c(theta_mean[pos],MSS_q1[,pos],MSS_q2[,pos]), # <--- different than BrS here.
            plotat[c(1,2,2)],
            pch = c("+","|","|"),
            col = c("purple",1,1),
            cex = c(2,1,1))
     # label posterior mean of TPR:
     tmp.post <- as.matrix(theta_mat)[,pos]
-    tmp.hpos <- quantile(tmp.post,0.975) + 0.15
-    text(tmp.hpos, lat_pos-0.35+gap, paste0(round(100*theta_mean[pos],1),"%"),
+    tmp.hpos <- stats::quantile(tmp.post,0.975) + 0.15
+    graphics::text(tmp.hpos, lat_pos-0.35+gap, paste0(round(100*theta_mean[pos],1),"%"),
          srt=srtval,cex=cexval,col="purple")
     
     # case: rates
-    segments(
+    graphics::segments(
       x0 = MSS_q1[1,pos],x1 = MSS_q2[1,pos],
       y0 =plotat[2], y1 = plotat[2],
       lty = 1
     )
     tmp.hpos <- ifelse(MSS_q2[1,pos]+0.15>0.95,MSS_q1[1,pos]-0.2,MSS_q2[1,pos]+0.15 )
-    text(tmp.hpos, plotat[2], paste0(round(100*MSS_mean[1,pos],1),"%"),
+    graphics::text(tmp.hpos, plotat[2], paste0(round(100*MSS_mean[1,pos],1),"%"),
          srt=srtval,cex=cexval)
     
     if (!is.null(pos) && !is.na(pos)){#some pos can be NA: because certain cause has no measurements.
@@ -229,36 +229,36 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
       if (prior_shape == "interval") {
         # prior of TPR:
         prior_plot_at <- lat_pos - .45 +gap
-        tmp = qbeta(c(0.025,0.975,0.25,0.75),alphaS[pos],betaS[pos])
-        points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
-        segments(tmp[1],prior_plot_at,
+        tmp = stats::qbeta(c(0.025,0.975,0.25,0.75),alphaS[pos],betaS[pos])
+        graphics::points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
+        graphics::segments(tmp[1],prior_plot_at,
                  tmp[2],prior_plot_at,lty = 1,col="gray")
-        segments(tmp[3],prior_plot_at,
+        graphics::segments(tmp[3],prior_plot_at,
                  tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
         
         # posterior of TPR:
         post_plot_at <- lat_pos - .35 +gap
         tmp.post = as.matrix(theta_mat)[,pos]
-        tmp  = quantile(tmp.post, c(0.025,0.975,0.25,0.75))
-        points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
-        segments(tmp[1],post_plot_at,
+        tmp  = stats::quantile(tmp.post, c(0.025,0.975,0.25,0.75))
+        graphics::points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
+        graphics::segments(tmp[1],post_plot_at,
                  tmp[2],post_plot_at,lty = 1,col = "black")
-        segments(tmp[3],post_plot_at,
+        graphics::segments(tmp[3],post_plot_at,
                  tmp[4],post_plot_at,lty = 1,col = "black",lwd=2)
       } else if (prior_shape == "boxplot") {
-        tmp = rbeta(10000,alphaS[pos],betaS[pos])
-        boxplot(
+        tmp = stats::rbeta(10000,alphaS[pos],betaS[pos])
+        graphics::boxplot(
           tmp,at = prior_plot_at, boxwex = 1 / 10 , col = "gray",
           add = TRUE,horizontal = TRUE,outline = FALSE,xaxt =
             "n"
         )
         tmp.post = as.matrix(theta_mat)[,pos]
-        boxplot(
+        graphics::boxplot(
           tmp.post,at = post_plot_at,boxwex = 1 / 10,add = TRUE,
           horizontal = TRUE,outline = FALSE,xaxt = "n"
         )
       }
-      text(top_SS - 0.12,lat_pos + .3+gap, colnames(MSS_case_curr)[pos],cex=1 )
+      graphics::text(top_SS - 0.12,lat_pos + .3+gap, colnames(MSS_case_curr)[pos],cex=1 )
     }
   }
   
@@ -266,7 +266,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   #
   # plotting:
   #
-  op <- par(mar=c(5.1,0,4.1,0))
+  op <- graphics::par(mar=c(5.1,0,4.1,0))
   
   if (!is_length_all_one(pos_vec)){
     #stop("== Not implemented for combo latent status.==")
@@ -291,7 +291,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   }
   
   if (!is.null(bg_color) && !is.null(bg_color$SS)){
-    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
+    graphics::rect(graphics::par("usr")[1], graphics::par("usr")[3], graphics::par("usr")[2], graphics::par("usr")[4], col = 
            bg_color$SS)
     
     for (e in 1:nrow(template_ord)){
@@ -314,7 +314,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
     warning(paste0("==[baker] Silver-standard slice ", names(data_nplcm$Mobs$MSS)[slice], 
                    " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.==\n"))  
     plotat <- c(sapply(seq_along(latent_seq),get_plot_num,length(latent_seq)))
-    plot(rep(0,length(plotat)),
+    graphics::plot(rep(0,length(plotat)),
            plotat,
            xlim=c(0,top_SS),
            ylim=c(0.5, length(latent_seq)+0.5),
@@ -324,15 +324,15 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   }
   
   #add ticks from 0 to 1 for x-bar:
-  axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
+  graphics::axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= c(0,0.2,0.4,0.6,0.8,1),las=1)
   
   #add dashed lines to separate cells:
   if (length(latent_seq) > 1){
-    abline(h=seq(1.5,length(latent_seq)-.5,by=1),lty=2,lwd=0.5,col="gray")
+    graphics::abline(h=seq(1.5,length(latent_seq)-.5,by=1),lty=2,lwd=0.5,col="gray")
   }
   
   #add some texts:
-  mtext(eval(paste0("SS: ", names(data_nplcm$Mobs$MSS)[slice])),
+  graphics::mtext(eval(paste0("SS: ", names(data_nplcm$Mobs$MSS)[slice])),
         line=1,cex=1.8)
 }
 

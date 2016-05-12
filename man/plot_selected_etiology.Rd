@@ -14,7 +14,7 @@ to visualize.}
 \item{DIR_NPLCM}{The file path to the result folder}
 
 \item{ksFrac}{A number between 0 and 1, which is the fraction of samples used to
-calculate kernel density}
+calculate kernel stats::density}
 
 \item{levellabel}{The contour line to be drawn in the final plot. Default is
 \code{5}, which represents the contour of the \code{95} percent support region.}

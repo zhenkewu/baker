@@ -220,7 +220,7 @@ extract_data_raw <- function(dat_prepared,strat_nm,strat_val,
                              meas_object,
                              extra_covariates = NULL) {
   #dat_prepared <-
-  #  read.csv(meas_dir,header = TRUE,stringsAsFactors = FALSE)
+  #  utils::read.csv(meas_dir,header = TRUE,stringsAsFactors = FALSE)
   cleanName      <- colnames(dat_prepared)
   ind_this_strat  <- 1:nrow(dat_prepared)
   for (j in 1:length(strat_nm)) {
@@ -293,7 +293,7 @@ clean_combine_subsites <-
         Make them equal.=="
       )
     } else{
-      tmp.dat         <- read.csv(raw_meas_dir)
+      tmp.dat         <- utils::read.csv(raw_meas_dir)
       tmp.dat$newSITE <- as.character(tmp.dat$SITE)
       for (i in 1:length(newsites_vec)) {
         tmp.dat$newSITE[which(tmp.dat$SITE %in% subsites_list[[i]])] = newsites_vec[i]
@@ -374,7 +374,7 @@ read_meas_object <- function(object,data) {
 #' 
 #' @export
 assign_taxo_cause_list <- function(cause_list, dir_taxo=NULL){
-  patho_taxo <- read.csv(dir_taxo,header=TRUE,stringsAsFactors = FALSE)
+  patho_taxo <- utils::read.csv(dir_taxo,header=TRUE,stringsAsFactors = FALSE)
   patho_taxo$pathogen_type <- factor(patho_taxo$pathogen_type,levels=c("B","F","V"))
   res_taxo   <- patho_taxo$pathogen_type[match(cause_list,patho_taxo[,1])]
   names(res_taxo) <- cause_list

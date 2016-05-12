@@ -60,7 +60,7 @@ nplcm_fit_Reg_NoNest <-
     FPR_formula <- likelihood$FPR_formula
     
     # design matrix for etiology regression:
-    Z_Eti       <- model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
+    Z_Eti       <- stats::model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
     ncol_dm_Eti <- ncol(Z_Eti)
     attributes(Z_Eti)[names(attributes(Z_Eti))!="dim"] <- NULL
     
@@ -93,7 +93,7 @@ nplcm_fit_Reg_NoNest <-
       if (any(int_Y[1:sum(int_Y)]==0) | any(int_Y[-(1:sum(int_Y))])==1){
         stop("==[baker] Please put cases at the top of controls in `data_nplcm`.==\n")
         }
-      Z_FPR_list <- lapply(FPR_formula,function(form){model.matrix(form,data.frame(X,Y))}) # <-- make sure that the row orders are the same.
+      Z_FPR_list <- lapply(FPR_formula,function(form){stats::model.matrix(form,data.frame(X,Y))}) # <-- make sure that the row orders are the same.
       
       has_basis_list <- lapply(Z_FPR_list, function(Z) {
         if (length(grep("^s_",dimnames(Z)[[2]]))==0){
@@ -330,7 +330,7 @@ nplcm_fit_Reg_NoNest <-
         for (s in seq_along(Mobs$MBS)){
           res_curr <- list()
           if (likelihood$k_subclass[s]==1){
-            res_curr[[1]] <- rbeta(JBrS_list[[s]],1,1)
+            res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
             res_curr[[2]] <- matrix(0,nrow=ncol(Z_FPR_list[[s]]),ncol=JBrS_list[[s]])
             names(res_curr) <- paste(c("thetaBS","betaFPR"),s,sep="_")
             
@@ -367,9 +367,9 @@ nplcm_fit_Reg_NoNest <-
         for(i in seq_along(JSS_list)){
           GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
           if (GSS_TPR_curr==1){
-            tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+            tmp_thetaSS[[i]] <- stats::rbeta(JSS_list[[i]],1,1)
           } else{
-            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),
+            tmp_thetaSS[[i]] <- matrix(stats::rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),
                                        nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
           }
           if (i==1){
@@ -393,7 +393,7 @@ nplcm_fit_Reg_NoNest <-
         for (s in seq_along(Mobs$MBS)){
           res_curr <- list()
           if (likelihood$k_subclass[s]==1){
-            res_curr[[1]] <- rbeta(JBrS_list[[s]],1,1)
+            res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
             res_curr[[2]] <- matrix(0,nrow=ncol(Z_FPR_list[[s]]),ncol=JBrS_list[[s]])
             names(res_curr) <- paste(c("thetaBS","betaFPR"),s,sep="_")
             res <- c(res,res_curr)
@@ -421,9 +421,9 @@ nplcm_fit_Reg_NoNest <-
         for(i in seq_along(JSS_list)){
           GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
           if (GSS_TPR_curr==1){
-            tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+            tmp_thetaSS[[i]] <- stats::rbeta(JSS_list[[i]],1,1)
           } else{
-            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+            tmp_thetaSS[[i]] <- matrix(stats::rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
           }
           if (i==1){
             #if (length(JSS_list)>1){
@@ -452,6 +452,8 @@ nplcm_fit_Reg_NoNest <-
     if (!is.null(mcmc_options$individual.pred) && mcmc_options$individual.pred){out_parameter <- c(out_parameter,"Icat")}
     # get posterior predictive distribution of BrS measurments:
     if (!is.null(mcmc_options$ppd) && mcmc_options$ppd){out_parameter <- c(out_parameter,paste("MBS.new",seq_along(Mobs$MBS),sep = "_"))}
+    # get pEti: (for regression models; besides the coefficients of etiology regressions are always recorded)
+    if (!is.null(mcmc_options$get.pEti) && mcmc_options$get.pEti){out_parameter <- c(out_parameter,"pEti")}
     
     #
     # write the .bug files into mcmc_options$bugsmodel.dir; 

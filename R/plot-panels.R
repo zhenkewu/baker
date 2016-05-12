@@ -40,8 +40,8 @@ plot_panels <- function(DIR_NPLCM,
                         SS_upperlimit=1,
                         eti_upperlimit=1,
                         silent=TRUE){#BEGIN function
-  old_par <- par(no.readonly=TRUE)
-  on.exit(par(old_par))
+  old_par <- graphics::par(no.readonly=TRUE)
+  on.exit(graphics::par(old_par))
   
   # read NPLCM outputs:
   out           <- nplcm_read_folder(DIR_NPLCM)
@@ -86,9 +86,9 @@ plot_panels <- function(DIR_NPLCM,
   
   n_total_meas <- length(unlist(slices))
   
-  it <- layout(matrix(1:(n_total_meas+2),1,n_total_meas+1+1,byrow = TRUE),
+  it <- graphics::layout(matrix(1:(n_total_meas+2),1,n_total_meas+1+1,byrow = TRUE),
                widths=c(1.5,rep(2.5,n_total_meas),3),heights=c(8))
-  ## layout.show(it)
+  ## graphics::layout.show(it)
 
   # the labels on the left margin:
   height_leftmost <- length(model_options$likelihood$cause_list)
@@ -136,7 +136,7 @@ plot_panels <- function(DIR_NPLCM,
 #         #
 #         # Plot - put layout in place for three panels:
 #         #
-#         layout(matrix(c(1,2,3),1,3,byrow = TRUE),
+#         graphics::layout(matrix(c(1,2,3),1,3,byrow = TRUE),
 #                widths=c(3,2,3),heights=c(8))
 # 
 #         # BrS panel:
@@ -253,8 +253,8 @@ get_plot_num <- function(e, height){
 
 plot_leftmost <- function(model_options,height){
   
-  op <- par(mar=c(5.1,4,4.1,0))
-  plot(rep(0,3*height),
+  op <- graphics::par(mar=c(5.1,4,4.1,0))
+  graphics::plot(rep(0,3*height),
        c(sapply(1:height,get_plot_num,height)),
        xlim=c(0,0.1),
        ylim=c(0.5, height+0.5),
@@ -266,13 +266,13 @@ plot_leftmost <- function(model_options,height){
   # axis(2,at=(1:Jcause)-.45,labels=rep("",Jcause),las=2,cex.axis=.5)
   # axis(2,at=(1:Jcause)-.35,labels=rep("",Jcause),las=2,cex.axis=.5)
   
-  text(0.1,c(sapply(1:height,get_plot_num,height)),
+  graphics::text(0.1,c(sapply(1:height,get_plot_num,height)),
        labels=rep(c(expression(paste(symbol("\052"),"(FPR)--",Delta,"(fitted)--+(TPR)")),
                     "case","control"),height),adj=1,cex=c(1,2,2),
        col=c("purple",1,1))
-  text(0.1,c(sapply(1:height,get_plot_num,height))+0.1,
+  graphics::text(0.1,c(sapply(1:height,get_plot_num,height))+0.1,
        labels=rep(c(expression(italic("posterior mean:")),"",
                     expression(italic("data:"))),height),col=c("purple",1,1),adj=1)
-  text(0.1,(1:height)-.35,labels=rep("posterior CI: '|'-95%;'[]'-50%",height),col="purple",adj=1)
-  text(0.1,(1:height)-.45,labels=rep("prior: '|'-95%;'[]'-50%",height),adj=1)
+  graphics::text(0.1,(1:height)-.35,labels=rep("posterior CI: '|'-95%;'[]'-50%",height),col="purple",adj=1)
+  graphics::text(0.1,(1:height)-.45,labels=rep("prior: '|'-95%;'[]'-50%",height),adj=1)
 }

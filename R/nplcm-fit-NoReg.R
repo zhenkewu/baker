@@ -276,8 +276,8 @@ nplcm_fit_NoReg<-
         for (s in seq_along(Mobs$MBS)){
           res_curr <- list()
           if (likelihood$k_subclass[s]==1){
-            res_curr[[1]] <- rbeta(JBrS_list[[s]],1,1)
-            res_curr[[2]] <- rbeta(JBrS_list[[s]],1,1)
+            res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            res_curr[[2]] <- stats::rbeta(JBrS_list[[s]],1,1)
             names(res_curr) <- paste(c("thetaBS","psiBS"),s,sep="_")
             res <- c(res,res_curr)
           }
@@ -308,9 +308,9 @@ nplcm_fit_NoReg<-
         for(i in seq_along(JSS_list)){
           GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
           if (GSS_TPR_curr==1){
-            tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+            tmp_thetaSS[[i]] <- stats::rbeta(JSS_list[[i]],1,1)
           } else{
-            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),
+            tmp_thetaSS[[i]] <- matrix(stats::rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),
                                        nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
           }
           if (i==1){
@@ -334,8 +334,8 @@ nplcm_fit_NoReg<-
         for (s in seq_along(Mobs$MBS)){
           res_curr <- list()
           if (likelihood$k_subclass[s]==1){
-            res_curr[[1]] <- rbeta(JBrS_list[[s]],1,1)
-            res_curr[[2]] <- rbeta(JBrS_list[[s]],1,1)
+            res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            res_curr[[2]] <- stats::rbeta(JBrS_list[[s]],1,1)
             names(res_curr) <- paste(c("thetaBS","psiBS"),s,sep="_")
             res <- c(res,res_curr)
           }
@@ -361,9 +361,9 @@ nplcm_fit_NoReg<-
         for(i in seq_along(JSS_list)){
           GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
           if (GSS_TPR_curr==1){
-            tmp_thetaSS[[i]] <- rbeta(JSS_list[[i]],1,1)
+            tmp_thetaSS[[i]] <- stats::rbeta(JSS_list[[i]],1,1)
           } else{
-            tmp_thetaSS[[i]] <- matrix(rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
+            tmp_thetaSS[[i]] <- matrix(stats::rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
           }
           if (i==1){
             #if (length(JSS_list)>1){

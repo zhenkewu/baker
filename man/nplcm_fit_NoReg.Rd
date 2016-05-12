@@ -76,8 +76,14 @@ model fitting;
 \item \code{n.chains} Number of MCMC chains;
 \item \code{n.burnin} Number of burn-in samples;
 \item \code{n.thin} To keep every other \code{n.thin} samples after burn-in period;
-\item \code{individual.pred} whether to perform individual prediction;
-\item \code{ppd} whether to perform posterior predictive (ppd) checking;
+\item \code{individual.pred} \code{TRUE} to perform individual prediction (\code{Icat}
+variables in the \code{.bug} file);
+\code{FALSE} otherwise;
+\item \code{ppd} \code{TRUE} to simulate new data (\code{XXX.new}
+variables in the \code{.bug} file) from the posterior predictive 
+distribution (ppd); \code{FALSE} otherwise;
+\item \code{get.pEti} \code{TRUE} for getting posterior samples of etiologic fractions; 
+\code{FALSE} otherwise;
 \item \code{result.folder} Path to folder storing the results;
 \item \code{bugsmodel.dir} Path to WinBUGS model files;
 \item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.

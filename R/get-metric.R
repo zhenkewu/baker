@@ -40,7 +40,7 @@ get_metric <- function(DIR_NPLCM,truth){
   #A = as.data.frame(true_pEti)
   my.var <- function(A){
     res <- cenLR(A)$x.clr
-    sum(diag(cov(res)))
+    sum(diag(stats::cov(res)))
   }
   
   #read in data from the folder directory:
@@ -182,8 +182,8 @@ get_coverage <- function(DIR_NPLCM,truth){
     
     # plain difference:
     diff_mat <- pEti_samp$pEti_mat - t(replicate(nrow(pEti_samp$pEti_mat),truth))
-    UL <- apply(diff_mat,2,quantile,0.975)
-    LL <- apply(diff_mat,2,quantile,0.025)
+    UL <- apply(diff_mat,2,stats::quantile,0.975)
+    LL <- apply(diff_mat,2,stats::quantile,0.025)
     res <- (UL>=0 & LL <=0)
     return(res)
 }

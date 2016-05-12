@@ -15,8 +15,8 @@
 #' 
 
 plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
-  old_par <- par(par("mfrow", "mar"))
-  on.exit(par(old_par))
+  old_par <- graphics::par(graphics::par("mfrow", "mar"))
+  on.exit(graphics::par(old_par))
   # read NPLCM outputs:
   out           <- nplcm_read_folder(DIR_NPLCM)
   # organize ouputs:
@@ -86,10 +86,10 @@ plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
   mean.logORmat.ppd <- apply(logORmat.ppd,c(1,2),
                              function(v) mean(v[!is.na(v)]))
   sd.logORmat.ppd <- apply(logORmat.ppd,c(1,2),
-                           function(v) sd(v[!is.na(v)]))
+                           function(v) stats::sd(v[!is.na(v)]))
   misfit.vis.mat <- (logORmat-mean.logORmat.ppd)/sd.logORmat.ppd
   
-  visualize_case_control_matrix(misfit.vis.mat,pathogen_name,cell_metrics="(obs-mean)/sd")
+  visualize_case_control_matrix(misfit.vis.mat,pathogen_name,cell_metrics="(obs-mean)/stats::sd")
   
   cat("==A figure is generated for model checking: pairwise standardized log odds ratio difference (SLORD). 
           Stored in ",DIR_NPLCM," ==")

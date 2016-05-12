@@ -43,10 +43,10 @@ plot_etiology_side_by_side <- function(DIR_list,
                                        DIR_pathogen_displayorder_lookup,
                                        dodge_val = 0.5,
                                        right_panel = TRUE){
-  old_par <- par(par("mfrow", "mar"))
-  on.exit(par(old_par))
+  old_par <- graphics::par(graphics::par("mfrow", "mar"))
+  on.exit(graphics::par(old_par))
   ## read in pathogen display order lookup table:
-  pathogen_displayorder_lookup <- read.csv(DIR_pathogen_displayorder_lookup)
+  pathogen_displayorder_lookup <- utils::read.csv(DIR_pathogen_displayorder_lookup)
   f                            <- pathogen_displayorder_lookup$Cause
   display_order                <- as.character(levels(f))[f] # <--- this is where the display order is specified.
   
@@ -120,7 +120,7 @@ plot_etiology_side_by_side <- function(DIR_list,
   # first build some functions to summarize posterior distribution 
   # (following ggplot2 syntax):
   f <- function(x) {
-    r <- quantile(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95))
+    r <- stats::quantile(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95))
     names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
     r
   }
@@ -130,7 +130,7 @@ plot_etiology_side_by_side <- function(DIR_list,
     r
   }
   mean_with_nm_txt <- function(x){
-    r <- c(ifelse(max(x)-quantile(x,.97)>0.02,quantile(x,.97)+0.02,max(x)),
+    r <- c(ifelse(max(x)-stats::quantile(x,.97)>0.02,stats::quantile(x,.97)+0.02,max(x)),
            round(mean(x),3),round(mean(x),3)*100)
     names(r)<-c("y","ymax","label")
     r

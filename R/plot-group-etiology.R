@@ -10,7 +10,7 @@
 #' If specified, it will overide \code{patho_taxo_dir} in \code{clean_options} read 
 #' from \code{DIR_NPLCM}.
 #' @param ksFrac A number between 0 and 1, which is the fraction of samples used to
-#' calculate kernel density
+#' calculate kernel stats::density
 #' @param levellabel The contour line to be drawn in the final plot. Default is
 #' \code{5}, which represents the contour of the \code{95} percent support region.
 #' @return A figure with group etiology.
@@ -65,15 +65,15 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
   
   
   
-  old_par <- par(no.readonly=TRUE)
-  on.exit(par(old_par))
+  old_par <- graphics::par(no.readonly=TRUE)
+  on.exit(graphics::par(old_par))
   
   
   # start plotting: ------------------------------------------------
   
-  layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE),
+  graphics::layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE),
            widths=c(4,4), heights=c(5,3))
-  #layout.show(n=3)
+  #graphics::layout.show(n=3)
   cexval <- 1
   srtval <- 0
   
@@ -100,11 +100,11 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
   ##############################################
   ## plot 1: pr (virus is a cause)
   ##############################################
-  #op<-par()
-  par(mai=c(0.5,3,1.09333,3))
+  #op<-graphics::par()
+  graphics::par(mai=c(0.5,3,1.09333,3))
   pr.v <- rowSums(pEti_mat[,ord[taxo_cause_list=="V"]])
   
-  plot(density(pr.v),type="l",xlim=c(0,1),xlab="",bty="n",
+  graphics::plot(stats::density(pr.v),type="l",xlim=c(0,1),xlab="",bty="n",
        ylab="",yaxt="n",lwd=5,main="",cex.lab=2,cex.axis=2)
   
   alphaE <- bugs.dat$alpha
@@ -114,16 +114,16 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
   #                      sum(alphaE[bacteria_index]))
   
   tmp.x  = seq(0.001,0.999,by=0.001)
-  tmp.y  = dbeta(tmp.x,sum(alphaE[-bacteria_index]),sum(alphaE[bacteria_index]))
-  points(tmp.x,tmp.y,type="l",lty=2,col="grey",lwd=5)
-  mtext("Probability of Viral Cause",side=3,line=0,cex=2)
+  tmp.y  = stats::dbeta(tmp.x,sum(alphaE[-bacteria_index]),sum(alphaE[bacteria_index]))
+  graphics::points(tmp.x,tmp.y,type="l",lty=2,col="grey",lwd=5)
+  graphics::mtext("Probability of Viral Cause",side=3,line=0,cex=2)
   #op
   
  if (length(bacteria_index)>=3){
       #################################################
       ## plot 2: pr(B1, B2, others | cause is a Bacteria)
       ################################################
-      par(mar = c(6.1,0,1,4.1),mai=c(.5,1,.5,.5),xpd=TRUE)
+      graphics::par(mar = c(6.1,0,1,4.1),mai=c(.5,1,.5,.5),xpd=TRUE)
       
       pEti0 = pEti_mat[,ord[which(ord %in% bacteria_index)]]
       
@@ -186,25 +186,25 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
       cont.levels     = paste(num.levels,"%",sep="")
       label.levels     = paste(100-num.levels,"%",sep="")
       
-      points(1/2*(postMean[3]+2*postMean[2]),sqrt(3)/2*postMean[3],
+      graphics::points(1/2*(postMean[3]+2*postMean[2]),sqrt(3)/2*postMean[3],
              cex=2,col="red",pch=15)
-      contour(coord1,coord2,tri.z,
+      graphics::contour(coord1,coord2,tri.z,
               levels =(fhat1$cont)[cont.levels],
               labels = label.levels,add=TRUE,lwd=4,col=c("blue"),lty=1)
       mcex=2
       name = names(pEti)
-      mtext(name[1], side = 1, line = 1, at = -0.1, cex = mcex)
-      mtext(name[2], side = 1, line = 1, at = 1.1, cex = mcex)
-      mtext(name[3], side = 3,  line= -1, at=0.5 ,cex = mcex)
+      graphics::mtext(name[1], side = 1, line = 1, at = -0.1, cex = mcex)
+      graphics::mtext(name[2], side = 1, line = 1, at = 1.1, cex = mcex)
+      graphics::mtext(name[3], side = 3,  line= -1, at=0.5 ,cex = mcex)
   }
   #################################################
   ## plot 3: pr(V1, V2, others | cause is a virus)
   ################################################
-  #op<-par()
+  #op<-graphics::par()
   
   if (length(virus_index)>=3){
-     if (length(bacteria_index)<3){frame()}
-      par(mar = c(6.1,4.1,1,2.1),mai=c(.5,.5,.5,1))
+     if (length(bacteria_index)<3){graphics::frame()}
+      graphics::par(mar = c(6.1,4.1,1,2.1),mai=c(.5,.5,.5,1))
       pEti0 = pEti_mat[,ord[which(ord %in% virus_index)]]
       pEti1  = data.frame(V2 = pEti0[,ncol(pEti0)-1],
                           others=rowSums(pEti0[,-c(ncol(pEti0)-1,ncol(pEti0)),drop=FALSE]),
@@ -259,16 +259,16 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
       cont.levels     = paste(num.levels,"%",sep="")
       label.levels     = paste(100-num.levels,"%",sep="")
       
-      points(1/2*(postMean[3]+2*postMean[2]),sqrt(3)/2*postMean[3],
+      graphics::points(1/2*(postMean[3]+2*postMean[2]),sqrt(3)/2*postMean[3],
              cex=2,col="red",pch=15)
-      contour(coord1,coord2,tri.z,
+      graphics::contour(coord1,coord2,tri.z,
               levels =(fhat1$cont)[cont.levels],
               labels = label.levels,add=TRUE,lwd=4,col=c("blue"),lty=1)
       mcex=2
       name = names(pEti)
-      mtext(name[1], side = 1, line = 1, at = -0.1, cex = mcex)
-      mtext(name[2], side = 1, line = 1, at = 1.1, cex = mcex)
-      mtext(name[3], side = 3,  line= -1, at=0.5 ,cex = mcex)
+      graphics::mtext(name[1], side = 1, line = 1, at = -0.1, cex = mcex)
+      graphics::mtext(name[2], side = 1, line = 1, at = 1.1, cex = mcex)
+      graphics::mtext(name[3], side = 3,  line= -1, at=0.5 ,cex = mcex)
       #op
     }
   }
@@ -285,7 +285,7 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
 #' to visualize.
 #' @param DIR_NPLCM The file path to the result folder
 #' @param ksFrac A number between 0 and 1, which is the fraction of samples used to
-#' calculate kernel density
+#' calculate kernel stats::density
 #' @param levellabel The contour line to be drawn in the final plot. Default is
 #' \code{5}, which represents the contour of the \code{95} percent support region.
 #' @return A figure with group etiology.
@@ -332,14 +332,14 @@ plot_selected_etiology <- function(selected, DIR_NPLCM,ksFrac = 1,levellabel = 5
   
   vis_index   <- match_index
   
-  old_par <- par(no.readonly=TRUE)
-  on.exit(par(old_par))
+  old_par <- graphics::par(no.readonly=TRUE)
+  on.exit(graphics::par(old_par))
   
   
   # start plotting: ------------------------------------------------
-  layout(matrix(c(1), 1, 1, byrow = TRUE),
+  graphics::layout(matrix(c(1), 1, 1, byrow = TRUE),
          widths=c(6), heights=c(6))
-  #layout.show(n=3)
+  #graphics::layout.show(n=3)
   cexval <- 1
   srtval <- 0
   
@@ -366,7 +366,7 @@ plot_selected_etiology <- function(selected, DIR_NPLCM,ksFrac = 1,levellabel = 5
   #################################################
   ## plot any three etiologies:
   ################################################
-  par(mar = c(6.1,0,1,4.1),mai=c(.5,1,.5,.5),oma=c(5,5,5,5),xpd=TRUE)
+  graphics::par(mar = c(6.1,0,1,4.1),mai=c(.5,1,.5,.5),oma=c(5,5,5,5),xpd=TRUE)
   
   
   pEti0 = pEti_mat[,ord[which(ord %in% vis_index)]]
@@ -430,15 +430,15 @@ plot_selected_etiology <- function(selected, DIR_NPLCM,ksFrac = 1,levellabel = 5
   cont.levels     = paste(num.levels,"%",sep="")
   label.levels     = paste(100-num.levels,"%",sep="")
   
-  points(1/2*(postMean[3]+2*postMean[2]),sqrt(3)/2*postMean[3],
+  graphics::points(1/2*(postMean[3]+2*postMean[2]),sqrt(3)/2*postMean[3],
          cex=2,col="red",pch=15)
-  contour(coord1,coord2,tri.z,
+  graphics::contour(coord1,coord2,tri.z,
           levels =(fhat1$cont)[cont.levels],
           labels = label.levels,add=TRUE,lwd=4,col=c("blue"),lty=1)
   mcex=2
   name = names(pEti)
-  mtext(name[1], side = 1, line = 1, at = -0.1, cex = mcex)
-  mtext(name[2], side = 1, line = 1, at = 1.1, cex = mcex)
-  mtext(name[3], side = 3,  line= -1, at=0.5 ,cex = mcex)
+  graphics::mtext(name[1], side = 1, line = 1, at = -0.1, cex = mcex)
+  graphics::mtext(name[2], side = 1, line = 1, at = 1.1, cex = mcex)
+  graphics::mtext(name[3], side = 3,  line= -1, at=0.5 ,cex = mcex)
   
 }

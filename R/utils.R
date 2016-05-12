@@ -68,7 +68,7 @@ expit <- function(x)
 #' @export
 rvbern <-
   function(p) {
-    U  <- runif(length(p),0,1)
+    U  <- stats::runif(length(p),0,1)
     res <- (U < p) + 0
     res
   }
@@ -198,8 +198,8 @@ Imat2cat <- function(binary_mat,cause_list,pathogen_list) {
 #' @export
 beta_plot = function(a,b) {
   x = seq(0,1,by = 0.001)
-  y = dbeta(x,a,b)
-  plot(x,y,type = "l",main = paste0("a=",a,",b=",b))
+  y = stats::dbeta(x,a,b)
+  graphics::plot(x,y,type = "l",main = paste0("a=",a,",b=",b))
 }
 
 
@@ -210,7 +210,7 @@ beta_plot = function(a,b) {
 #' @return None
 #' @export
 getPckg <- function(pckg) {
-  install.packages(pckg, repos = "http://cran.r-project.org")
+  utils::install.packages(pckg, repos = "http://cran.r-project.org")
 }
 
 
@@ -348,7 +348,7 @@ logOR <- function(MBS.case,MBS.ctrl) {
       x <- MBS.case[,j2]
       y <- MBS.case[,j1]
       
-      fit <- glm(y ~ x,family = binomial(link = "logit"))
+      fit <- stats::glm(y ~ x,family = stats::binomial(link = "logit"))
       
       if ("x" %in% rownames(summary(fit)$coef)) {
         logORmat[j2,j1] = round(summary(fit)$coef["x",1],3)
@@ -358,7 +358,7 @@ logOR <- function(MBS.case,MBS.ctrl) {
       x <- MBS.ctrl[,j2]
       y <- MBS.ctrl[,j1]
       
-      fit <- glm(y ~ x,family = binomial(link = "logit"))
+      fit <- stats::glm(y ~ x,family = stats::binomial(link = "logit"))
       
       if ("x" %in% rownames(summary(fit)$coef)) {
         logORmat[j1,j2] = round(summary(fit)$coef["x",1],3)
@@ -414,27 +414,27 @@ visualize_case_control_matrix <- function(mat, dim_names = ncol(mat),
   cex_main = min(2,20 / n)
   cex_se  = min(1.5,15 / n)
   
-  par(mar = c(0, 0, 5, 0), bg = "white",xpd = TRUE)
-  plot(
+  graphics::par(mar = c(0, 0, 5, 0), bg = "white",xpd = TRUE)
+  graphics::plot(
     c(0, n + 0.8), c(0, n + 0.8), axes = axes, xlab = "",
     ylab = "", asp = 1, type = "n"
   )
   ##add grid
-  segments(rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5, n + 1),
+  graphics::segments(rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5, n + 1),
            0.5 + 0:n, col = "gray")
-  segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
+  graphics::segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
                                                       n), col = "gray")
   mat.txt <- round(t(mat)[,n:1],1)
   mat.txt3 <- round(t(mat)[,n:1],3)
   
   # add meaning of the number in a cell:
-  text(1,J,cell_metrics,cex = cex_main / 2)
+  graphics::text(1,J,cell_metrics,cex = cex_main / 2)
   
   for (i in 1:n) {
     for (j in 1:n) {
       abs.mat <- abs(mat.txt[i,j])
       if ((!is.na(abs.mat)) && abs.mat > 2) {
-        text(
+        graphics::text(
           i,j,round(mat.txt3[i,j],1),
           col = ifelse(mat.txt3[i,j] > 0,"red","blue"),cex = cex_main
         )
@@ -445,25 +445,25 @@ visualize_case_control_matrix <- function(mat, dim_names = ncol(mat),
   
   if (folding_line) {
     # diagonal line:
-    segments(
+    graphics::segments(
       0.5 + 1,.5 + n - 1,.5 + n,0.5,col = "black",lty = 3,lwd = 3
     )
   }
   
   # put pathogen names on rows and columns:
   for (s in 1:J) {
-    text(
+    graphics::text(
       -0,J - s + 1,paste0(dim_names[s],":(",s,")"),cex = min(1.5,20 / J),adj =
         1
     )
-    text(
+    graphics::text(
       s,J + 0.7,paste0("(",s,"):",dim_names[s]),cex = min(1.5,20 / J),srt = 45,adj =
         0
     )
   }
   # labels for cases and controls:
-  text(J + 1,J / 2,"cases",cex = 2,srt = -90)
-  text(J / 2,0,"controls",cex = 2)
+  graphics::text(J + 1,J / 2,"cases",cex = 2,srt = -90)
+  graphics::text(J / 2,0,"controls",cex = 2)
 }
 
 #' convert 'NA' to '.'
@@ -520,15 +520,15 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
   
   f <-
     function(x, theta) {
-      dbeta(x, shape1 = theta[1], shape2 = theta[2])
+      stats::dbeta(x, shape1 = theta[1], shape2 = theta[2])
     }
   F.inv <-
     function(x, theta) {
-      qbeta(x, shape1 = theta[1], shape2 = theta[2])
+      stats::qbeta(x, shape1 = theta[1], shape2 = theta[2])
     }
   f.cum <-
     function(x, theta) {
-      pbeta(x, shape1 = theta[1], shape2 = theta[2])
+      stats::pbeta(x, shape1 = theta[1], shape2 = theta[2])
     }
   f.mode <- function(theta) {
     a <- theta[1]; b <- theta[2];
@@ -540,7 +540,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
     }
   plot.xlim <- c(0, 1)
   
-  dens.label <- 'dbeta'
+  dens.label <- 'stats::dbeta'
   parms.names <- c('a', 'b')
   
   if (length(p) != 2)
@@ -555,13 +555,13 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
                               theta, mode, cex, plot.xlim, M = 30, M0 =
                                 50)
   {
-    par.usr <- par('usr')
-    par.din <- par('din')
+    par.usr <- graphics::par('usr')
+    par.din <- graphics::par('din')
     
     p.string <-
       as.character(round(c(0,1) + c(1,-1) * p.check, digits = 4))
-    str.width <- strwidth(p.string, cex = cex)
-    str.height <- strheight("0", cex = cex)
+    str.width <- graphics::strwidth(p.string, cex = cex)
+    str.height <- graphics::strheight("0", cex = cex)
     
     J <- matrix(1, nrow = M0, ncol = 1)
     
@@ -624,13 +624,13 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
     
     if (length(x))
     {
-      text(
+      graphics::text(
         x, y, labels = p.string[1], adj = c(1,0), col = 'gray', cex = cex
       )
     }
     else
     {
-      text(
+      graphics::text(
         plot.xlim[1], mean(par.usr[c(3,4)]), labels = p.string[1],
         col = 'gray', cex = cex, srt = 90, adj = c(1,0)
       )
@@ -693,13 +693,13 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
     
     if (length(x))
     {
-      text(
+      graphics::text(
         x, y, labels = p.string[2], adj = c(0,0), col = 'gray', cex = cex
       )
     }
     else
     {
-      text(
+      graphics::text(
         plot.xlim[2], mean(par.usr[c(3,4)]), labels = p.string[2],
         col = 'gray', cex = cex, srt = -90, adj = c(1,0)
       )
@@ -719,7 +719,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
       # Probably not a very good universal choice,
       # but proved good in most cases in practice
       m <-  diff(q) / diff(p) * (0.5 - p[1]) + q[1]
-      v <- (diff(q) / diff(qnorm(p))) ^ 2
+      v <- (diff(q) / diff(stats::qnorm(p))) ^ 2
       theta <- theta.from.moments(m, v)
     }
     else
@@ -775,7 +775,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
       if (is.infinite(plot.xlim[2]))
       {
         tmp <- max(c(0.999, 1 - (1 - p[2]) / 10))
-        plot.xlim[2] <- F.inv(tmp, theta)
+       plot.xlim[2] <- F.inv(tmp, theta)
       }
     }
     plot.xlim <- sort(plot.xlim)
@@ -795,38 +795,38 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
     )
     
     if (abs(theta[1]-1)<0.0001 && abs(theta[2]-1)<0.0001){
-      plot(x, h, type = 'l', ylab = ylab,ylim=c(0,2))
+      graphics::plot(x, h, type = 'l', ylab = ylab,ylim=c(0,2))
     }else{
-      plot(x, h, type = 'l', ylab = ylab)
+      graphics::plot(x, h, type = 'l', ylab = ylab)
       }
     
     # fill in area on the left side of the distribution
     x <- seq(from = plot.xlim[1], to = q[1], length = 1000)
     y <- f(x, theta)
     x <- c(x, q[1], plot.xlim[1]); y <- c(y, 0, 0)
-    polygon(x, y, col = 'lightgrey', border = 'lightgray')
+    graphics::polygon(x, y, col = 'lightgrey', border = 'lightgray')
     # fill in area on the right side of the distribution
     x <- seq(from = max(plot.xlim), to = q[2], length = 1000)
     y <- f(x, theta)
     x <- c(x, q[2], plot.xlim[2]); y <- c(y, 0, 0)
-    polygon(x, y, col = 'lightgrey', border = 'lightgray')
+    graphics::polygon(x, y, col = 'lightgrey', border = 'lightgray')
     # draw distrn again
-    points(x0, f0, type = 'l')
+    graphics::points(x0, f0, type = 'l')
     h <- f(q, theta)
-    points(rep(q[1], 2), c(0, h[1]), type = 'l', col = 'orange')
-    points(rep(q[2], 2), c(0, h[2]), type = 'l', col = 'orange')
+    graphics::points(rep(q[1], 2), c(0, h[1]), type = 'l', col = 'orange')
+    graphics::points(rep(q[2], 2), c(0, h[2]), type = 'l', col = 'orange')
     # place text on both ends areas
     print.area.text(p, p.check, q, f, f.cum, F.inv, theta, mode, cex, plot.xlim)
     
-    xaxp <- par("xaxp")
+    xaxp <- graphics::par("xaxp")
     x.ticks <- seq(from = xaxp[1], to = xaxp[2], length = xaxp[3] + 1)
     q2print <-
       as.double(setdiff(as.character(q), as.character(x.ticks)))
     
-    mtext(
+    graphics::mtext(
       q2print, side = 1, col = 'orange', at = q2print, cex = 0.6, line = 2.1
     )
-    points(q, rep(par('usr')[3] + 0.15 * par('cxy')[2], 2), pch = 17, col =
+    graphics::points(q, rep(graphics::par('usr')[3] + 0.15 * graphics::par('cxy')[2], 2), pch = 17, col =
              'orange')
   }
   
@@ -842,9 +842,9 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
   p.check <- f.cum(q, parms$theta)
   
   if (plot)
-    plot.density(
+   plot.density(
       p, q, f, f.cum, F.inv, f.mode(parms$theta),
-      parms$theta, plot.xlim, dens.label, parms.names, 0.8
+      parms$theta,plot.xlim, dens.label, parms.names, 0.8
     )
   
   list(
@@ -880,13 +880,13 @@ load_or_install <-
   function(package_names,repos = "http://lib.stat.cmu.edu/R/CRAN") {
     is_installed <-
       function(mypkg)
-        is.element(mypkg, installed.packages()[,1])
+        is.element(mypkg, utils::installed.packages()[,1])
     
     for (package_name in package_names)
     {
       if (!is_installed(package_name))
       {
-        install.packages(package_name,repos)
+        utils::install.packages(package_name,repos)
       }
       library(
         package_name,character.only = TRUE,quietly = TRUE,verbose = FALSE
@@ -947,15 +947,15 @@ set_strat <- function(X,X_reg) {
   X_group$group_names <- apply(X_group,1,paste,collapse = "&")
   X_group$ID          <- 1:nrow(X_group)
   
-  form_agg <- as.formula(paste0("cbind(group_names,ID)~",
+  form_agg <- stats::as.formula(paste0("cbind(group_names,ID)~",
                                 paste(X_reg,collapse = "+")))
   
-  grouping <- aggregate(form_agg,X_group,identity)
+  grouping <- stats::aggregate(form_agg,X_group,identity)
   
   ## temporary code to get the count of observations in each group:
-  #form_agg2 <- as.formula(paste0("cbind(group_names,ID)~",
+  #form_agg2 <- stats::as.formula(paste0("cbind(group_names,ID)~",
   #                              paste(c("Y",model_options$X_reg),collapse="+")))
-  #aggregate(form_agg2,X_group,length)
+  #stats::aggregate(form_agg2,X_group,length)
   
   group_nm <-
     lapply(grouping$group_names,function(v)
@@ -1107,17 +1107,17 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
   # standardization:
   df       <- data.frame(Y = Y,num_date = as.numeric(Rdate))
   grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
-  grp_sd   <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
+  grp_sd   <- c(stats::sd(df$num_date[Y == 0]),stats::sd(df$num_date[Y == 1]))
   df$ingrp_std_num_date <-
     (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
-  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and stats::sd:
   df$outgrp_std_num_date <- (df$num_date - grp_mean[1]) / grp_sd[1]
   df$outgrp_std_num_date[df$Y == 0] <- NA
   
   if (effect == "random") {
     # for FPR regression in controls:
     ctrl_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 0]
-    knots_FPR <- quantile(unique(ctrl_ingrp_std_num_date),
+    knots_FPR <- stats::quantile(unique(ctrl_ingrp_std_num_date),
                           seq(0,1,length = (num_knots_FPR + 2))[-c(1,(num_knots_FPR +
                                                                         2))])
     
@@ -1200,10 +1200,10 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
   # standardization:
   df    <- data.frame(Y = Y,num_date = as.numeric(Rdate))
   grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
-  grp_sd <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
+  grp_sd <- c(stats::sd(df$num_date[Y == 0]),stats::sd(df$num_date[Y == 1]))
   df$ingrp_std_num_date <-
     (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
-  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and stats::sd:
   df$outgrp_std_num_date <- (df$num_date - grp_mean[1]) / grp_sd[1]
   df$outgrp_std_num_date[df$Y == 0] <- NA
   
@@ -1217,7 +1217,7 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
     stop("==Under development. Please contact maintainer. Thanks.==")
     # for etiology regression:
     case_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 1]
-    knots_Eti <- quantile(unique(case_ingrp_std_num_date),
+    knots_Eti <- stats::quantile(unique(case_ingrp_std_num_date),
                           seq(0,1,length = (num_knots_Eti + 2))[-c(1,(num_knots_Eti +
                                                                         2))])
     
@@ -1515,11 +1515,11 @@ parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
   }
   
   res <-
-    try(model.matrix(form,data.frame(data_nplcm$X,Y = data_nplcm$Y)))
+    try(stats::model.matrix(form,data.frame(data_nplcm$X,Y = data_nplcm$Y)))
   if (is.error(res)) {
     stop()
   }
-  if (is.empty.model(form)) {
+  if (stats::is.empty.model(form)) {
     return(FALSE)
   } else{
     return(TRUE)
@@ -1625,14 +1625,14 @@ loadOneName <- function(objName, file, envir = parent.frame(),
 #' 
 #' @examples 
 #' 
-#' par(mfrow=c(3,3),oma=c(0,1,5,0),
+#' graphics::par(mfrow=c(3,3),oma=c(0,1,5,0),
 #'    mar=c(1,2,1,1))
 #' for (iter in 1:9){
 #'  u   <- c(rbeta(9,1,0.8),1)
 #'  res <- tsb(u)
 #'  barplot(res,ylim=c(0,1),main=paste0("Random Sample #", iter),ylab="Probability")
 #' }
-#' mtext("Truncated Stick-Breaking Dist. (10 segments)",3,
+#' graphics::mtext("Truncated Stick-Breaking Dist. (10 segments)",3,
 #'      outer=TRUE,cex=1.5,line=1.5)
 #' @export
 #' 
@@ -1671,7 +1671,7 @@ show_dep <- function(fname,pckg="package:baker",...){
           #expand.xbox = 2, 
           boxcolor = "#FC6512",
           textcolor = "black", cex = 1.0, lwd=2,...))
-  mtext(paste0("The ",fname," function foodweb"))
+  graphics::mtext(paste0("The ",fname," function foodweb"))
 }
 
 
@@ -1736,10 +1736,10 @@ s_date_Eti <- function(Rdate,Y,basis = "ncs",dof=ifelse(basis=="ncs",5,10),...) 
   # standardization:
   df    <- data.frame(Y = Y,num_date = as.numeric(Rdate))
   grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
-  grp_sd <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
+  grp_sd <- c(stats::sd(df$num_date[Y == 0]),stats::sd(df$num_date[Y == 1]))
   df$ingrp_std_num_date <-
     (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
-  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and stats::sd:
   df$outgrp_std_num_date <- (df$num_date - grp_mean[1]) / grp_sd[1]
   df$outgrp_std_num_date[df$Y == 0] <- NA
   
@@ -1752,7 +1752,7 @@ s_date_Eti <- function(Rdate,Y,basis = "ncs",dof=ifelse(basis=="ncs",5,10),...) 
   if (basis == "ps"){ # for penalized-splines based on B-spline basis:
     # for etiology regression:
     x       <- case_ingrp_std_num_date
-    myknots <- quantile(x,seq(0,1,length = (dof - 2))[-c(1,(dof - 2))])
+    myknots <- stats::quantile(x,seq(0,1,length = (dof - 2))[-c(1,(dof - 2))])
     Z_Eti      <- matrix(splines::bs(x,knots= myknots,...),nrow=length(x))
     # if intercept=FALSE, then ncol(Z_Eti) = dof-1.
   }
@@ -1784,10 +1784,10 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
   # standardization:
   df       <- data.frame(Y = Y,num_date = as.numeric(Rdate))
   grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
-  grp_sd   <- c(sd(df$num_date[Y == 0]),sd(df$num_date[Y == 1]))
+  grp_sd   <- c(stats::sd(df$num_date[Y == 0]),stats::sd(df$num_date[Y == 1]))
   df$ingrp_std_num_date <-
     (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
-  #outgrp_std_num_date standardizes the cases' dates using controls' mean and sd:
+  #outgrp_std_num_date standardizes the cases' dates using controls' mean and stats::sd:
   df$outgrp_std_num_date <- (df$num_date - grp_mean[1]) / grp_sd[1]
   df$outgrp_std_num_date[df$Y == 0] <- NA
   
@@ -1796,7 +1796,7 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
   case_outgrp_std_num_date <- df$outgrp_std_num_date[df$Y == 1]
   if (basis=="ps"){
     x       <- ctrl_ingrp_std_num_date
-    myknots <- quantile(unique(x),seq(0,1,length = (dof - 2))[-c(1,(dof - 2))])
+    myknots <- stats::quantile(unique(x),seq(0,1,length = (dof - 2))[-c(1,(dof - 2))])
     Z_FPR_ctrl      <- matrix(splines::bs(x,knots= myknots,...),nrow=length(x))
     
     # borrowing FPR regression from controls to cases:

@@ -67,7 +67,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
       do_reg_FPR[[i]] <- FALSE
     } else{ # do regression if there is matched regression formula:
       do_reg_FPR[[i]] <-
-        parse_nplcm_reg(as.formula(likelihood$FPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
+        parse_nplcm_reg(stats::as.formula(likelihood$FPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
     }
   }
   names(do_reg_FPR) <- names(Mobs$MBS)
@@ -83,7 +83,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
       do_reg_TPR[[i]] <- FALSE
     } else{ # do regression if there is matched regression formula:
       do_reg_TPR[[i]] <-
-        parse_nplcm_reg(as.formula(likelihood$TPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
+        parse_nplcm_reg(stats::as.formula(likelihood$TPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
     }
   }
   
@@ -98,13 +98,13 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
         do_reg_TPR[[i]] <- FALSE
       } else{ # do regression if there is matched regression formula:
         do_reg_TPR[[i]] <-
-          parse_nplcm_reg(as.formula(likelihood$TPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
+          parse_nplcm_reg(stats::as.formula(likelihood$TPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
       }
     }
     names(do_reg_TPR) <- c(names(Mobs$MBS),names(Mobs$MSS))
   }
   # specify regression for etiology:
-  form_tmp   <- as.formula(likelihood$Eti_formula)
+  form_tmp   <- stats::as.formula(likelihood$Eti_formula)
   do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
   regression <- make_list(do_reg_Eti, do_reg_FPR, do_reg_TPR)
   

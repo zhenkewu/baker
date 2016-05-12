@@ -221,7 +221,7 @@ plot_check_common_pattern <- function(DIR_list,
     # first build some functions to summarize posterior distribution 
     # (following ggplot2 syntax):
     f <- function(x) {
-      r <- quantile(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95))
+      r <- stats::quantile(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95))
       names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
       r
     }
@@ -231,7 +231,7 @@ plot_check_common_pattern <- function(DIR_list,
       r
     }
     mean_with_nm_txt <- function(x){
-      r <- c(ifelse(max(x)-quantile(x,.97)>0.02,quantile(x,.97)+0.02,max(x)),
+      r <- c(ifelse(max(x)-stats::quantile(x,.97)>0.02,stats::quantile(x,.97)+0.02,max(x)),
              round(mean(x),3),round(mean(x),3)*100)
       names(r)<-c("y","ymax","label")
       r
@@ -339,7 +339,7 @@ plot_check_common_pattern <- function(DIR_list,
 #   # first build some functions to summarize posterior distribution 
 #   # (following ggplot2 syntax):
 #   f <- function(x) {
-#     r <- quantile(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95))
+#     r <- stats::quantile(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95))
 #     names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
 #     r
 #   }
@@ -349,7 +349,7 @@ plot_check_common_pattern <- function(DIR_list,
 #     r
 #   }
 #   mean_with_nm_txt <- function(x){
-#     r <- c(ifelse(max(x)-quantile(x,.97)>0.02,quantile(x,.97)+0.02,max(x)),
+#     r <- c(ifelse(max(x)-stats::quantile(x,.97)>0.02,stats::quantile(x,.97)+0.02,max(x)),
 #            round(mean(x),3),round(mean(x),3)*100)
 #     names(r)<-c("y","ymax","label")
 #     r
