@@ -1371,7 +1371,8 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,FPR_formu
           ",taubeta_nm[s],"[j]         <- ",taubeta0_nm[s],"[j,",ind_flex_select_nm[s],"[j]]\n")
     }
     plug <- paste0(plug,
-          "# non-basis coefficients:
+          "
+          # non-basis coefficients:
           for (l in ",non_basis_id_nm[s],"){
               ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_first_nm[s],")
           }
@@ -1417,7 +1418,8 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,FPR_formu
     }
     plug <-
       paste0(plug,
-        "# non-basis coefficients:
+        "
+        # non-basis coefficients:
         for (l in ",non_basis_id_nm[s],"){
             ",betaFPR_nm[s],"[l,1] ~ dnorm(0,",prec_first_nm[s],")
         }

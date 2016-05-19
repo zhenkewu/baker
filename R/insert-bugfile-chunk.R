@@ -282,7 +282,8 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, ppd = NULL){
           "}
   if (!constant_Eti){
   chunk_etiology <- paste0(
-          "# etiology priors:
+          "
+          # etiology priors:
           mu_Eti_mat <- Z_Eti%*%betaEti # <--- Z_Eti with rows for cases, columns for covariates; betaEti: rows for covariates, columns for 1:Jcause.
           ")
   } else{
@@ -305,13 +306,13 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, ppd = NULL){
                 pEti[i,j] <- phi[i,j]/sum(phi[i,])
                 log(phi[i,j]) <- mu_Eti_mat[i,j]
                 }
-           }
-           for (p in 1:(ncol_dm_Eti)){
+          }
+          for (p in 1:(ncol_dm_Eti)){
                 for (j in 1:(Jcause-1)){
                       betaEti[p,j] ~ dnorm(0,0.1)
                  }
                 betaEti[p,Jcause] <- 0
-            }")
+          }")
   paste0(chunk_etiology,"\n")
 }
 
