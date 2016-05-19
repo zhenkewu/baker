@@ -1517,14 +1517,36 @@ parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
   res <-
     try(stats::model.matrix(form,data.frame(data_nplcm$X,Y = data_nplcm$Y)))
   if (is.error(res)) {
-    stop()
+    stop("==[baker] Cannot parse regression formula.==\n")
   }
+  
   if (stats::is.empty.model(form)) {
+    stop("==[baker] An empty regression model is specified. Please replace it by 
+         `~ 1` for no regression or `~1+X1+X2` for regression with intercept, X1 and X2 (additive). ==\n")
+  } else if (ncol(res)==1 & all(res==1)){
     return(FALSE)
   } else{
     return(TRUE)
   }
 }
+
+
+#‘ check if the formula is intercept only
+#' 
+#' outputs logical values for a formula; to identify intercept-only formula.
+#' 
+#' @param form Regression formula
+#' 
+#' @return \code{TRUE} for intercept-only; \code{FALSE} otherwise
+#' 
+#' @export
+is_intercept_only <- function(form){
+  form_remove_space <- gsub(" ","",form,fixed=TRUE)
+  formula_parts <- strsplit(form_remove_space[2],"+",fixed=TRUE)[[1]]
+  res <- length(formula_parts)==1 && formula_parts=="1"
+  return(res)
+}
+
 
 
 #' convert one column data frame to a vector

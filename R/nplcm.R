@@ -115,10 +115,10 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   if(!do_reg){
       res <- nplcm_fit_NoReg(data_nplcm,model_options,mcmc_options)
   } 
-  if (do_reg & !(parsed_model$nested)){
+  if (do_reg & !any(do_nested)){
       res <- nplcm_fit_Reg_NoNest(data_nplcm,model_options,mcmc_options)
   }
-  if (do_reg & parsed_model$nested){
+  if (do_reg & any(do_nested)){
     #res <- nplcm_fit_Reg_Nest(data_nplcm,model_options,mcmc_options)
     stop("==[baker] Regression model with nested subclasses coming soon. Please contact maintainer for technical issues. ==\n")
   }

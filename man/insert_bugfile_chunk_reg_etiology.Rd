@@ -4,9 +4,11 @@
 \alias{insert_bugfile_chunk_reg_etiology}
 \title{insert etiology regression for latent status code chunk into .bug file}
 \usage{
-insert_bugfile_chunk_reg_etiology(ppd = NULL)
+insert_bugfile_chunk_reg_etiology(Eti_formula, ppd = NULL)
 }
 \arguments{
+\item{Eti_formula}{Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.}
+
 \item{ppd}{Default is NULL; set to TRUE for posterior predictive checking}
 }
 \value{

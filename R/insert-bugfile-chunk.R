@@ -266,34 +266,52 @@ insert_bugfile_chunk_reg_nonest_meas <-
 #' insert etiology regression for latent status code chunk into .bug file
 #' 
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking 
+#' @param Eti_formula Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.
 #' 
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status
 #' 
 #' @export
-insert_bugfile_chunk_reg_etiology <- function(ppd = NULL){
+insert_bugfile_chunk_reg_etiology <- function(Eti_formula, ppd = NULL){
+  constant_Eti <- is_intercept_only(Eti_formula)
+  
   ppd_seg <- ""
-  if (!is.null(ppd) && ppd){ppd_seg <- "
-                               Icat.new[i] ~ dcat(pEti[1:Jcause])
-                               "}
-  chunk_etiology <- paste0("
-                           # etiology priors:
-                           mu_Eti_mat <- Z_Eti%*%betaEti # <--- Z_Eti with rows for cases, columns for covariates; betaEti: rows for covariates, columns for 1:Jcause.
-                           for (i in 1:Nd){
-                               Icat[i] ~ dcat(pEti[i,1:Jcause])
-                               ",
-                           ppd_seg,
-                           "for (j in 1:Jcause){ 
-                                 pEti[i,j] <- phi[i,j]/sum(phi[i,])
-                                 log(phi[i,j]) <- mu_Eti_mat[i,j]
-                              }
-                           }
-                           for (p in 1:(ncol_dm_Eti)){
-                                for (j in 1:(Jcause-1)){
-                                    betaEti[p,j] ~ dnorm(0,0.1)
-                                }
-                                betaEti[p,Jcause] <- 0
-                           }")
+  if (!is.null(ppd) && ppd){ppd_seg <- 
+          "
+          Icat.new[i] ~ dcat(pEti[1:Jcause])
+          "}
+  if (!constant_Eti){
+  chunk_etiology <- paste0(
+          "# etiology priors:
+          mu_Eti_mat <- Z_Eti%*%betaEti # <--- Z_Eti with rows for cases, columns for covariates; betaEti: rows for covariates, columns for 1:Jcause.
+          ")
+  } else{
+  chunk_etiology <- paste0(
+          "
+          # etiology priors:
+          for (j in 1:Jcause){
+                mu_Eti_mat[1:Nd,j] <- Z_Eti*betaEti[1,j] 
+          }
+          ")
+  }
+  
+  chunk_etiology <- paste0(chunk_etiology,
+           "
+          for (i in 1:Nd){
+                 Icat[i] ~ dcat(pEti[i,1:Jcause])
+           ",
+          ppd_seg,
+          "for (j in 1:Jcause){ 
+                pEti[i,j] <- phi[i,j]/sum(phi[i,])
+                log(phi[i,j]) <- mu_Eti_mat[i,j]
+                }
+           }
+           for (p in 1:(ncol_dm_Eti)){
+                for (j in 1:(Jcause-1)){
+                      betaEti[p,j] ~ dnorm(0,0.1)
+                 }
+                betaEti[p,Jcause] <- 0
+            }")
   paste0(chunk_etiology,"\n")
 }
 

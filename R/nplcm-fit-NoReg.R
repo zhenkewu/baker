@@ -435,7 +435,9 @@ nplcm_fit_NoReg<-
       ##JAGS
       in_data.list <- lapply(as.list(in_data),get, envir= here)
       names(in_data.list) <- in_data
-      lapply(names(in_data.list), dump, append = TRUE, envir = here,
+      #lapply(names(in_data.list), dump, append = TRUE, envir = here,
+      #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+      dump(names(in_data.list), append = FALSE, envir = here,
              file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
       gs <- R2jags::jags2(data   = in_data,
                           inits  = in_init,

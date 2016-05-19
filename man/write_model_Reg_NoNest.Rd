@@ -4,8 +4,8 @@
 \alias{write_model_Reg_NoNest}
 \title{Write .bug model file for regression model without nested subclasses}
 \usage{
-write_model_Reg_NoNest(Mobs, prior, cause_list, FPR_formula, use_measurements,
-  ppd = NULL, use_jags = FALSE)
+write_model_Reg_NoNest(Mobs, prior, cause_list, Eti_formula, FPR_formula,
+  use_measurements, ppd = NULL, use_jags = FALSE)
 }
 \arguments{
 \item{Mobs}{Measurement data in the form of \code{data_nplcm}}
@@ -14,6 +14,8 @@ write_model_Reg_NoNest(Mobs, prior, cause_list, FPR_formula, use_measurements,
 
 \item{cause_list}{A list of latent status names (crucial for building templates; 
 see \code{\link{make_template}})}
+
+\item{Eti_formula}{Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.}
 
 \item{FPR_formula}{A list of FPR regression formula; check 
 \code{model_options$likelihood$FPR_formula}}

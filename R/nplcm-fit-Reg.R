@@ -88,12 +88,16 @@ nplcm_fit_Reg_NoNest <-
       
       single_column_MBS <- which(lapply(MBS_list,ncol)==1)
       
+      
       # input design matrix for FPR regressions:
       int_Y <- as.integer(Y)
       if (any(int_Y[1:sum(int_Y)]==0) | any(int_Y[-(1:sum(int_Y))])==1){
         stop("==[baker] Please put cases at the top of controls in `data_nplcm`.==\n")
-        }
+      }
+      
       Z_FPR_list <- lapply(FPR_formula,function(form){stats::model.matrix(form,data.frame(X,Y))}) # <-- make sure that the row orders are the same.
+      
+      #intercept_only_MBS <- which(lapply(Z_FPR_list,function(x) (ncol(x)==1 & all(x==1)))==TRUE)
       
       has_basis_list <- lapply(Z_FPR_list, function(Z) {
         if (length(grep("^s_",dimnames(Z)[[2]]))==0){
@@ -165,7 +169,6 @@ nplcm_fit_Reg_NoNest <-
       
       # Set BrS measurement priors:
       # hyperparameter for sensitivity (can add for specificity if necessary): 
-      
       for (s in seq_along(Mobs$MBS)){
         if (likelihood$k_subclass[s] == 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
         if (likelihood$k_subclass[s] > 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
@@ -463,6 +466,7 @@ nplcm_fit_Reg_NoNest <-
     model_func         <- write_model_Reg_NoNest(data_nplcm$Mobs,
                                                  model_options$prior,
                                                  model_options$likelihood$cause_list,
+                                                 model_options$likelihood$Eti_formula,
                                                  model_options$likelihood$FPR_formula,
                                                  model_options$use_measurements,
                                                  mcmc_options$ppd,
@@ -493,11 +497,14 @@ nplcm_fit_Reg_NoNest <-
     }
     
     here <- environment()
+    
     if (use_jags){
       ##JAGS
-      in_data.list <- lapply(as.list(in_data),get, envir= here)
+      in_data.list <- lapply(as.list(in_data), get, envir= here)
       names(in_data.list) <- in_data
-      lapply(names(in_data.list), dump, append = TRUE, envir = here,
+      #lapply(names(in_data.list), dump, append = TRUE, envir = here,
+      #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+      dump(names(in_data.list), append = FALSE, envir = here,
              file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
       gs <- R2jags::jags2(data   = in_data,
                           inits  = in_init,
