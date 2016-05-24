@@ -64,12 +64,13 @@ insert_bugfile_chunk_noreg_meas <-
     
     if ("BrS" %in% use_measurements & !("SS" %in% use_measurements)) {
       chunk <- paste0(
-        "# BrS measurements:
+        "
+        # BrS measurements:
         for (i in 1:Nd){
-        ",chunk_BrS_case,"
+            ",chunk_BrS_case,"
         }
         for (i in (Nd+1):(Nd+Nu)){
-        ",chunk_BrS_ctrl,"
+            ",chunk_BrS_ctrl,"
         }
  
         ",chunk_BrS_subclass,"
@@ -82,18 +83,19 @@ insert_bugfile_chunk_noreg_meas <-
     if ("BrS" %in% use_measurements & ("SS" %in% use_measurements)) {
       nslice_SS <- length(Mobs$MSS)
       chunk <- paste0(
-        "# BrS and SS measurements:
+        "
+        # BrS and SS measurements:
         for (i in 1:Nd){
-        ",chunk_BrS_case,"
-        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
+            ",chunk_BrS_case,"
+            ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
         }
         for (i in (Nd+1):(Nd+Nu)){
-        ",chunk_BrS_ctrl,"
+           ",chunk_BrS_ctrl,"
         }
         
         ",chunk_BrS_subclass,"
 
-        # measurement characteristics:
+        # BrS and SS measurement characteristics:
         ",chunk_BrS_param,
         add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
@@ -102,12 +104,13 @@ insert_bugfile_chunk_noreg_meas <-
     if (!("BrS" %in% use_measurements) & ("SS" %in% use_measurements)) {
       nslice_SS <- length(Mobs$MSS)
       chunk <- paste0(
-        "# SS measurements:
+        "
+        # SS measurements:
         for (i in 1:Nd){
-        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
+            ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
         }
         
-        # silver-standard measurement characteristics:
+        # SS measurement characteristics:
         ",add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
     }
@@ -130,14 +133,15 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
   if (!is.null(ppd) && ppd){
     ppd_seg <- paste0("Icat.new[i] ~ dcat(pEti[1:Jcause])")
   }
-  chunk_etiology <- paste0("
-                      # etiology priors
-                      for (i in 1:Nd){
-                        Icat[i] ~ dcat(pEti[1:Jcause])
-                        ",
-                           ppd_seg,"
-                      }
-                      pEti[1:Jcause]~ddirch(alpha[])"
+  chunk_etiology <- paste0(
+          "
+          # etiology priors
+          for (i in 1:Nd){
+                Icat[i] ~ dcat(pEti[1:Jcause])
+          ",
+               ppd_seg,"
+          }
+          pEti[1:Jcause]~ddirch(alphaEti[])"
   )
   
   paste0(chunk_etiology,"\n")
@@ -212,15 +216,16 @@ insert_bugfile_chunk_reg_nonest_meas <-
     
     if ("BrS" %in% use_measurements & !("SS" %in% use_measurements)) {
       chunk <- paste0(
-        "# BrS measurements:
+        "
+        # BrS measurements:
         for (i in 1:Nd){
-        ",chunk_BrS_case,"
+            ",chunk_BrS_case,"
         }
         for (i in (Nd+1):(Nd+Nu)){
-        ",chunk_BrS_ctrl,"
+            ",chunk_BrS_ctrl,"
         }
         ",chunk_BrS_subclass,"
-        # bronze-standard measurement characteristics:
+        # BrS measurement characteristics:
         ",chunk_BrS_param
       )
     }
@@ -228,18 +233,19 @@ insert_bugfile_chunk_reg_nonest_meas <-
     if ("BrS" %in% use_measurements & ("SS" %in% use_measurements)) {
       nslice_SS <- length(Mobs$MSS)
       chunk <- paste0(
-        "# BrS and SS measurements:
+        "
+        # BrS and SS measurements:
         for (i in 1:Nd){
-        ",chunk_BrS_case,"
-        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
+            ",chunk_BrS_case,"
+            ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
         }
         for (i in (Nd+1):(Nd+Nu)){
-        ",chunk_BrS_ctrl,"
+            ",chunk_BrS_ctrl,"
         }
         
         ",chunk_BrS_subclass,"
         
-        # measurement characteristics:
+        # BrS and SS measurement characteristics:
         ",chunk_BrS_param,
         add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
@@ -248,12 +254,13 @@ insert_bugfile_chunk_reg_nonest_meas <-
     if (!("BrS" %in% use_measurements) & ("SS" %in% use_measurements)) {
       nslice_SS <- length(Mobs$MSS)
       chunk <- paste0(
-        "# SS measurements:
+        "
+        # SS measurements:
         for (i in 1:Nd){
-        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
+            ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
         }
         
-        # silver-standard measurement characteristics:
+        # SS measurement characteristics:
         ",add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
       )
     }
@@ -265,14 +272,16 @@ insert_bugfile_chunk_reg_nonest_meas <-
 
 #' insert etiology regression for latent status code chunk into .bug file
 #' 
-#' @param ppd Default is NULL; set to TRUE for posterior predictive checking 
 #' @param Eti_formula Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.
+#' @param ppd Default is NULL; set to TRUE for posterior predictive checking 
+#' @param Jcause The number of distinct causes, i.e., categories of latent health
+#' status; equals \code{length(model_options$likelihood$cause_list)}.
 #' 
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status
 #' 
 #' @export
-insert_bugfile_chunk_reg_etiology <- function(Eti_formula, ppd = NULL){
+insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
   constant_Eti <- is_intercept_only(Eti_formula)
   
   ppd_seg <- ""
@@ -296,6 +305,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, ppd = NULL){
           ")
   }
   
+  if (Jcause > 2) {
   chunk_etiology <- paste0(chunk_etiology,
            "
           for (i in 1:Nd){
@@ -308,11 +318,26 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, ppd = NULL){
                 }
           }
           for (p in 1:(ncol_dm_Eti)){
-                for (j in 1:(Jcause-1)){
-                      betaEti[p,j] ~ dnorm(0,0.1)
-                 }
+                betaEti[p,1:(Jcause-1)] ~ dmnorm(zero_Jcause_1,0.1*I_Jcause_1)
                 betaEti[p,Jcause] <- 0
           }")
+  } else{
+  chunk_etiology <- paste0(chunk_etiology,
+          "
+          for (i in 1:Nd){
+                 Icat[i] ~ dcat(pEti[i,1:Jcause])
+          ",
+          ppd_seg,
+          "for (j in 1:Jcause){ 
+               pEti[i,j] <- phi[i,j]/sum(phi[i,])
+               log(phi[i,j]) <- mu_Eti_mat[i,j]
+               }
+          }
+          for (p in 1:(ncol_dm_Eti)){
+               betaEti[p,1] ~ dnorm(0,0.1)
+               betaEti[p,Jcause] <- 0
+          }")    
+  }
   paste0(chunk_etiology,"\n")
 }
 

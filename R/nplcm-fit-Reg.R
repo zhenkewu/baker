@@ -475,6 +475,26 @@ nplcm_fit_Reg_NoNest <-
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
     writeLines(model_func, filename)
+    
+    in_data <- unique(in_data)
+    
+    if (Jcause > 2){ # use dmnorm to speed up JAGS calculations, so we need mean 
+      # and covariance vector.
+      zero_Jcause_1 <- rep(0,Jcause-1)
+      I_Jcause_1    <- diag(1,Jcause-1)
+      in_data <- c(in_data,"zero_Jcause_1","I_Jcause_1")
+    } 
+    
+    for (s in seq_along(JBrS_list)){
+      if (JBrS_list[[s]]>1){
+          assign(paste("zero_JBrS", s, sep = "_"), rep(0,JBrS_list[[s]]))    
+          assign(paste("I_JBrS", s, sep = "_"), diag(1,JBrS_list[[s]]))    
+          in_data <- c(in_data,
+                       paste("zero_JBrS", s, sep = "_"),
+                       paste("I_JBrS", s, sep = "_"))
+      }
+    }
+    
     #
     # run the model:
     #

@@ -85,7 +85,7 @@ nplcm_fit_NoReg<-
       # summarize into one name (for all measurements):
       if (length(single_column_MBS)==0){
         # if all slices have >2 columns:
-        in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
+        in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
                            paste("JBrS",1:length(JBrS_list),sep="_"),
                            paste("MBS",1:length(JBrS_list),sep="_"),
                            paste("templateBS",1:length(JBrS_list),sep="_")
@@ -94,7 +94,7 @@ nplcm_fit_NoReg<-
         )
       } else {
         # if there exist slices with 1 column:
-        in_data       <- c(in_data,"Nd","Nu","Jcause","alpha",
+        in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
                            paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS], # <---- no need to iterate in .bug file for a slice with one column.
                            paste("MBS",1:length(JBrS_list),sep="_"),
                            paste("templateBS",1:length(JBrS_list),sep="_")
@@ -226,14 +226,14 @@ nplcm_fit_NoReg<-
       if (!SS_TPR_strat){
         if (length(single_column_MSS)==0){
           # summarize into one name (for all measurements):
-          in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
+          in_data       <- unique(c(in_data,"Nd","Jcause","alphaEti",
                                     paste("JSS",1:length(JSS_list),sep="_"),
                                     paste("MSS",1:length(JSS_list),sep="_"),
                                     paste("templateSS",1:length(JSS_list),sep="_"),
                                     paste("alphaS",1:length(JSS_list),sep="_"),   
                                     paste("betaS",1:length(JSS_list),sep="_")))
         } else{
-          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
+          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alphaEti",
                                     paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
                                     paste("MSS",1:length(JSS_list),sep="_"),
                                     paste("templateSS",1:length(JSS_list),sep="_"),
@@ -243,7 +243,7 @@ nplcm_fit_NoReg<-
       }else {
         if (length(single_column_MSS)==0){
           # summarize into one name (for all measurements):
-          in_data       <- unique(c(in_data,"Nd","Jcause","alpha",
+          in_data       <- unique(c(in_data,"Nd","Jcause","alphaEti",
                                     paste("JSS",1:length(JSS_list),sep="_"),
                                     paste("GSS_TPR",1:length(JSS_list),sep="_"),
                                     paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
@@ -252,7 +252,7 @@ nplcm_fit_NoReg<-
                                     paste("alphaS",1:length(JSS_list),sep="_"),   
                                     paste("betaS",1:length(JSS_list),sep="_")))
         } else{
-          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alpha",
+          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alphaEti",
                                     paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
                                     paste("GSS_TPR",1:length(JSS_list),sep="_"),
                                     paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
@@ -381,7 +381,7 @@ nplcm_fit_NoReg<-
     }
     
     # etiology (measurement independent)
-    alpha          <- prior$Eti_prior    # <-------- input etiology prior here.
+    alphaEti          <- prior$Eti_prior    # <-------- input etiology prior here.
   
     #
     # fit model :

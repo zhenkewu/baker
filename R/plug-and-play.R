@@ -38,7 +38,7 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
         "
           # case BrS measurement; non-nested:
           for (j in 1:",JBrS_nm[s],"){
-          ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+          ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
           ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
           ",mu_bs_nm[s],"[i,j]<-", indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm[s],"[i,j])*",psiBS.cut_nm[s],"[j]
           }
@@ -50,7 +50,7 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
         "
            
           # case BrS measurement; non-nested (with only one column):
-          ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
+          ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
           ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
           ",mu_bs_nm[s],"[i]<-", indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm[s],"[i])*",psiBS.cut_nm[s],"
           "
@@ -70,11 +70,11 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
           "
           # case BrS measurement; non-nested:
           for (j in 1:",JBrS_nm[s],"){
-          ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+          ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
           ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
           ",mu_bs_nm[s],"[i,j]<-", indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm[s],"[i,j])*",psiBS.cut_nm[s],"[j]
           # posterior predictive distribution:
-          ",indBS_nm.new[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i],j])
+          ",indBS_nm.new[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm.new,"[i],j]
           ",MBS_nm.new[s],"[i,j] ~ dbern(",mu_bs_nm.new[s],"[i,j])
           ",mu_bs_nm.new[s],"[i,j]<-", indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm.new[s],"[i,j])*",psiBS.cut_nm[s],"[j]
           }
@@ -86,11 +86,11 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
           "
            
           # case BrS measurement; non-nested (with only one column):
-          ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
+          ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
           ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
           ",mu_bs_nm[s],"[i]<-", indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm[s],"[i])*",psiBS.cut_nm[s],"
           # posterior predictive distribution:
-          ",indBS_nm.new[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i]])
+          ",indBS_nm.new[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm.new,"[i]]
           ",MBS_nm.new[s],"[i] ~ dbern(",mu_bs_nm.new[s],"[i])
           ",mu_bs_nm.new[s],"[i]<-", indBS_nm.new[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm.new[s],"[i])*",psiBS.cut_nm[s],"
           
@@ -283,7 +283,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
       "
           ## case BrS measurements; with subclasses:
           for (j in 1:",JBrS_nm[s],"){
-            ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+            ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
             ",MBS_nm[s],"[i,j]~dbern(",mu_bs.bound_nm[s],"[i,j])
             ",mu_bs.bound_nm[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm[s],"[i,j]))
             ",mu_bs_nm[s],"[i,j]<-",PR_BS_nm[s],"[i,j,",Z_nm[s],"[i]]
@@ -310,7 +310,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
         "
           ## case BrS measurements; with subclasses:
           for (j in 1:",JBrS_nm[s],"){
-            ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+            ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
             ",MBS_nm[s],"[i,j]~dbern(",mu_bs.bound_nm[s],"[i,j])
             ",mu_bs.bound_nm[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm[s],"[i,j]))
             ",mu_bs_nm[s],"[i,j]<-",PR_BS_nm[s],"[i,j,",Z_nm[s],"[i]]
@@ -319,7 +319,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
               ",PR_BS_nm[s],"[i,j,s]<-",PsiBS.cut_nm[s],"[j,s]*(1-",indBS_nm[s],"[i,j])+",ThetaBS_nm[s],"[j,s]*",indBS_nm[s],"[i,j]
             }
           ## posterior predictive distribution:
-            ",indBS_nm.new[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i],j])
+            ",indBS_nm.new[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm.new,"[i],j]
             ",MBS_nm.new[s],"[i,j]~dbern(",mu_bs.bound_nm.new[s],"[i,j])
             ",mu_bs.bound_nm.new[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm.new[s],"[i,j]))
             ",mu_bs_nm.new[s],"[i,j]<-",PR_BS_nm.new[s],"[i,j,",Z_nm.new[s],"[i]]
@@ -626,7 +626,7 @@ add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
           "
           # cases' SS measurements:
           for (j in 1:",JSS_nm[s],"){
-              ",indSS_nm[s],"[i,j] <- equals(1,",templateSS_nm[s],"[Icat[i],j])
+              ",indSS_nm[s],"[i,j] <- ",templateSS_nm[s],"[Icat[i],j]
               ",MSS_nm[s],"[i,j] ~ dbern(",mu_ss_nm[s],"[i,j])
               ",mu_ss_nm[s],"[i,j]<-", indSS_nm[s],"[i,j]*",thetaSS_nm[s],"[j]+(1-", indSS_nm[s],"[i,j])*",psiSS_nm[s],"[j]
           }
@@ -637,7 +637,7 @@ add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
           paste0(
           "
           # cases' SS measurements (only one column):
-          ",indSS_nm[s],"[i] <- equals(1,",templateSS_nm[s],"[Icat[i]])
+          ",indSS_nm[s],"[i] <- ",templateSS_nm[s],"[Icat[i]]
           ",MSS_nm[s],"[i] ~ dbern(",mu_ss_nm[s],"[i])
           ",mu_ss_nm[s],"[i]<-", indSS_nm[s],"[i]*",thetaSS_nm[s],"+(1-",indSS_nm[s],"[i])*",psiSS_nm[s],"\n"
           )
@@ -649,7 +649,7 @@ add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
             "
           # cases' SS measurements:
           for (j in 1:",JSS_nm[s],"){
-                ",indSS_nm[s],"[i,j] <- equals(1,",templateSS_nm[s],"[Icat[i],j])
+                ",indSS_nm[s],"[i,j] <- ",templateSS_nm[s],"[Icat[i],j]
                 ",MSS_nm[s],"[i,j] ~ dbern(",mu_ss_nm[s],"[i,j])
                 ",mu_ss_nm[s],"[i,j]<-", indSS_nm[s],"[i,j]*",thetaSS_nm[s],"[",SS_TPR_grp_nm[s],"[i], j]+(1-", indSS_nm[s],"[i,j])*",psiSS_nm[s],"[j]
           }
@@ -659,7 +659,7 @@ add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
           paste0(
           "
           # cases' SS measurements (only one column):
-          ",indSS_nm[s],"[i] <- equals(1,",templateSS_nm[s],"[Icat[i]])
+          ",indSS_nm[s],"[i] <- ",templateSS_nm[s],"[Icat[i]]
           ",MSS_nm[s],"[i] ~ dbern(",mu_ss_nm[s],"[i])
           ",mu_ss_nm[s],"[i]<-", indSS_nm[s],"[i]*",thetaSS_nm[s],"[",SS_TPR_grp_nm[s],"[i]]+(1-", indSS_nm[s],"[i])*",psiSS_nm[s],"
           "
@@ -880,7 +880,7 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) {
         "
         # case BrS measurement; non-nested:
         for (j in 1:",JBrS_nm[s],"){
-        ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+        ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
         ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
         ",mu_bs_nm[s],"[i,j]<-", indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm[s],"[i,j])*",psiBS_nm[s],"[j]
         }","\n"
@@ -891,7 +891,7 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) {
         "
         
         # case BrS measurement; non-nested (with only one column):
-        ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
+        ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
         ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
         ",mu_bs_nm[s],"[i]<-", indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm[s],"[i])*",psiBS_nm[s],"\n"
       )
@@ -910,11 +910,11 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) {
           "
           # case BrS measurement; non-nested:
           for (j in 1:",JBrS_nm[s],"){
-          ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+          ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
           ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
           ",mu_bs_nm[s],"[i,j]<-", indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm[s],"[i,j])*",psiBS_nm[s],"[j]
           # posterior predictive distribution:
-          ",indBS_nm.new[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i],j])
+          ",indBS_nm.new[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm.new,"[i],j]
           ",MBS_nm.new[s],"[i,j] ~ dbern(",mu_bs_nm.new[s],"[i,j])
           ",mu_bs_nm.new[s],"[i,j]<-", indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-", indBS_nm.new[s],"[i,j])*",psiBS_nm[s],"[j]
           }","\n"
@@ -925,11 +925,11 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) {
           "
           
           # case BrS measurement; non-nested (with only one column):
-          ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
+          ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
           ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
           ",mu_bs_nm[s],"[i]<-", indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm[s],"[i])*",psiBS_nm[s],"
           # posterior predictive distribution:
-          ",indBS_nm.new[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i]])
+          ",indBS_nm.new[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm.new,"[i]]
           ",MBS_nm.new[s],"[i] ~ dbern(",mu_bs_nm.new[s],"[i])
           ",mu_bs_nm.new[s],"[i]<-", indBS_nm.new[s],"[i]*",thetaBS_nm[s],"+(1-", indBS_nm.new[s],"[i])*",psiBS_nm[s],"
           
@@ -1041,7 +1041,7 @@ add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
       "
       ## case BrS measurements; with subclasses:
       for (j in 1:",JBrS_nm[s],"){
-      ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+      ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
       ",MBS_nm[s],"[i,j]~dbern(",mu_bs.bound_nm[s],"[i,j])
       ",mu_bs.bound_nm[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm[s],"[i,j]))
       ",mu_bs_nm[s],"[i,j]<-",PR_BS_nm[s],"[i,j,",Z_nm[s],"[i]]
@@ -1068,7 +1068,7 @@ add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
         "
         ## case BrS measurements; with subclasses:
         for (j in 1:",JBrS_nm[s],"){
-        ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+        ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
         ",MBS_nm[s],"[i,j]~dbern(",mu_bs.bound_nm[s],"[i,j])
         ",mu_bs.bound_nm[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm[s],"[i,j]))
         ",mu_bs_nm[s],"[i,j]<-",PR_BS_nm[s],"[i,j,",Z_nm[s],"[i]]
@@ -1077,7 +1077,7 @@ add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
         ",PR_BS_nm[s],"[i,j,s]<-",PsiBS_nm[s],"[j,s]*(1-",indBS_nm[s],"[i,j])+",ThetaBS_nm[s],"[j,s]*",indBS_nm[s],"[i,j]
         }
         ## posterior predictive distribution:
-        ",indBS_nm.new[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new,"[i],j])
+        ",indBS_nm.new[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm.new,"[i],j]
         ",MBS_nm.new[s],"[i,j]~dbern(",mu_bs.bound_nm.new[s],"[i,j])
         ",mu_bs.bound_nm.new[s],"[i,j]<-max(0.000001,min(0.999999,",mu_bs_nm.new[s],"[i,j]))
         ",mu_bs_nm.new[s],"[i,j]<-",PR_BS_nm.new[s],"[i,j,",Z_nm.new[s],"[i]]
@@ -1232,7 +1232,7 @@ add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) 
         "
         # case BrS measurements; non-nested:
         for (j in 1:",JBrS_nm[s],"){
-        ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+        ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
         ",MBS_nm[s],"[i,j]   ~ dbern(",mu_bs_nm[s],"[i,j])
         ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-",indBS_nm[s],"[i,j])*ilogit(",linpred_psiBS_nm[s],"[i,j])
         }","\n"
@@ -1242,7 +1242,7 @@ add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) 
       paste0(
         "
         # case BrS measurement; non-nested (with only one column):
-        ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
+        ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
         ",MBS_nm[s],"[i]   ~ dbern(",mu_bs_nm[s],"[i])
         ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm[s],"[i])*ilogit(",linpred_psiBS_nm[s],"[i,1])
         \n"
@@ -1263,11 +1263,11 @@ add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) 
           "
           # case BrS measurement; non-nested:
           for (j in 1:",JBrS_nm[s],"){
-          ",indBS_nm[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i],j])
+          ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
           ",MBS_nm[s],"[i,j]   ~ dbern(",mu_bs_nm[s],"[i,j])
           ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-",indBS_nm[s],"[i,j])*ilogit(",linpred_psiBS_nm[s],"[i,j])
           # posterior predictive distribution:
-          ",indBS_nm.new[s],"[i,j] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new[s],"[i],j])
+          ",indBS_nm.new[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm.new[s],"[i],j]
           ",MBS_nm.new[s],"[i,j]   ~ dbern(",mu_bs_nm.new[s],"[i,j])
           ",mu_bs_nm.new[s],"[i,j] <- ",indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-",indBS_nm.new[s],"[i,j])*ilogit(",linpred_psiBS_nm[s],"[i,j])
           }","\n"
@@ -1277,15 +1277,15 @@ add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL) 
         paste0(
           "
           # case BrS measurement; non-nested (with only one column):
-          ",indBS_nm[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm,"[i]])
+          ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
           ",MBS_nm[s],"[i]   ~ dbern(",mu_bs_nm[s],"[i])
           ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm[s],"[i])*ilogit(",linpred_psiBS_nm[s],"[i,1])
           # posterior predictive distribution:
-          ",indBS_nm.new[s],"[i] <- equals(1,",templateBS_nm[s],"[",Icat_nm.new[s],"[i]])
+          ",indBS_nm.new[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm.new[s],"[i]]
           ",MBS_nm.new[s],"[i]   ~ dbern(",mu_bs_nm.new[s],"[i])
           ",mu_bs_nm.new[s],"[i] <- ",indBS_nm.new[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm.new[s],"[i])*ilogit(",linpred_psiBS_nm[s],"[i,1])
           
-          \n"
+          "
         )
     }
     parameters <- c(Icat_nm,Icat_nm.new, thetaBS_nm[s],linpred_psiBS_nm[s])
@@ -1338,30 +1338,31 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,FPR_formu
   p_flexible_nm     <- paste("p_flexible",seq_along(BrS_nm),sep = "_")#
   linpred_psiBS_nm     <- paste("linpred_psiBS",seq_along(BrS_nm),sep = "_")#
   Z_FPR_nm     <- paste("Z_FPR",seq_along(BrS_nm),sep = "_")#
+  I_JBrS_nm    <- paste("I_JBrS",seq_along(BrS_nm),sep = "_")#
+  zero_JBrS_nm    <- paste("zero_JBrS",seq_along(BrS_nm),sep = "_")#
   
-  if (length(patho_BrS_list[[s]]) > 1) {
+  if (length(patho_BrS_list[[s]]) > 1) { # <--- if the dimension is higher than 2:
     if (!constant_FPR){
     plug <- paste0(
-      "
-      # BrS measurement characteristics - non-nested:
-      ",linpred_psiBS_nm[s]," <- ",Z_FPR_nm[s],"%*%",betaFPR_nm[s]," # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
+          "
+          # BrS measurement characteristics - non-nested:
+          ",linpred_psiBS_nm[s]," <- ",Z_FPR_nm[s],"%*%",betaFPR_nm[s]," # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
       
-      for (j in 1:",JBrS_nm[s],"){
-          ",thetaBS_nm[s],"[j]~ dbeta(",alphaB_nm[s],"[j],",betaB_nm[s],"[j])\n")
+          for (j in 1:",JBrS_nm[s],"){
+              ",thetaBS_nm[s],"[j]~ dbeta(",alphaB_nm[s],"[j],",betaB_nm[s],"[j])
+          ")
     }else{
       plug <- paste0(
-        "
-        for (j in 1:",JBrS_nm[s],"){
-            ",thetaBS_nm[s],"[j]~ dbeta(",alphaB_nm[s],"[j],",betaB_nm[s],"[j])
-            # BrS measurement characteristics - non-nested:
-            ",linpred_psiBS_nm[s],"[1:(Nd+Nu),j] <- ",Z_FPR_nm[s],"*",betaFPR_nm[s],"[1,j] # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
-        \n")      
-      
+          "
+          for (j in 1:",JBrS_nm[s],"){
+              ",thetaBS_nm[s],"[j]~ dbeta(",alphaB_nm[s],"[j],",betaB_nm[s],"[j])
+              # BrS measurement characteristics - non-nested:
+              ",linpred_psiBS_nm[s],"[1:(Nd+Nu),j] <- ",Z_FPR_nm[s],"*",betaFPR_nm[s],"[1,j] # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
+          ")      
       }
     if(has_basis){
       plug <- paste0(plug,
-                     "# B-spline basis coefficients:
-          ",betaFPR_nm[s],"[",basis_id_nm[s],"[1],j] ~ dnorm(0,",prec_first_nm[s],")
+          "
           for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
             ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],j] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],j],",taubeta_nm[s],"[j])
           }
@@ -1371,29 +1372,32 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,FPR_formu
           ",taubeta0_nm[s],"[j,2]      <- pow(",taubeta_inv_nm[s],"[j],-1)
           ",flexible_select_nm[s],"[j] ~ dbern(",p_flexible_nm[s],")
           ",ind_flex_select_nm[s],"[j] <- 2-",flexible_select_nm[s],"[j]
-          ",taubeta_nm[s],"[j]         <- ",taubeta0_nm[s],"[j,",ind_flex_select_nm[s],"[j]]\n")
+          ",taubeta_nm[s],"[j]         <- ",taubeta0_nm[s],"[j,",ind_flex_select_nm[s],"[j]]
+          }
+          # B-spline basis coefficients:
+          ",betaFPR_nm[s],"[",basis_id_nm[s],"[1],1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
+          # hyperprior of smoothness:
+          ",p_flexible_nm[s]," ~ dbeta(1,1) 
+          ")
     }
     plug <- paste0(plug,
           "
-          # non-basis coefficients:
-          for (l in ",non_basis_id_nm[s],"){
-              ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_first_nm[s],")
           }
-        }
-        ",prec_first_nm[s]," <- 1/4
-        # hyperprior of smoothness:
-        ",p_flexible_nm[s]," ~ dbeta(1,1) # <--- useless if no basis functions are used.
-        "
+          for (l in ",non_basis_id_nm[s],"){
+             ",betaFPR_nm[s],"[l,1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
+          }
+          ",prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
+          "
     )
-  } else{
+  } else{ # <-- if the dimension equals 1:
     if (!constant_FPR){
     plug <-
       paste0(
-        "
-        ",linpred_psiBS_nm[s],"[1:(Nd+Nu),1] <- ",Z_FPR_nm[s],"%*%",betaFPR_nm[s],"[,1] # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
-        # BrS measurement characteristics - non-nested (only one column):
-        ",thetaBS_nm[s],"~ dbeta(",alphaB_nm[s],",",betaB_nm[s],")
-        ")
+          "
+          ",linpred_psiBS_nm[s],"[1:(Nd+Nu),1] <- ",Z_FPR_nm[s],"%*%",betaFPR_nm[s],"[,1] # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
+          # BrS measurement characteristics - non-nested (only one column):
+          ",thetaBS_nm[s],"~ dbeta(",alphaB_nm[s],",",betaB_nm[s],")
+          ")
     }else{
       plug <-
         paste0(
@@ -1406,30 +1410,32 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,FPR_formu
     if(has_basis){
       plug <-
         paste0(plug,
-        "# B-spline basis coefficients:
-        ",betaFPR_nm[s],"[",basis_id_nm[s],"[1],1] ~ dnorm(0,",prec_first_nm[s],")
-        for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
-            ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],1] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],1],",taubeta_nm[s],")
-        }
-        # select flexible semiparametric regression:
-        ",taubeta0_nm[s],"[1]     ~ dgamma(3,2)              # <-------- flexible fit.
-        ",taubeta_inv_nm[s],"     ~ dpar(1.5,0.0025)          # <--------constant fit.
-        ",taubeta0_nm[s],"[2]      <- pow(",taubeta_inv_nm[s],",-1)
-        ",flexible_select_nm[s]," ~ dbern(",p_flexible_nm[s],")
-        ",ind_flex_select_nm[s],"   <- 2-",flexible_select_nm[s],"
-        ",taubeta_nm[s],"        <- ",taubeta0_nm[s],"[",ind_flex_select_nm[s],"]\n")
+          "
+          # B-spline basis coefficients:
+          ",betaFPR_nm[s],"[",basis_id_nm[s],"[1],1] ~ dnorm(0,",prec_first_nm[s],")
+          for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
+              ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],1] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],1],",taubeta_nm[s],")
+          }
+          # select flexible semiparametric regression:
+          ",taubeta0_nm[s],"[1]     ~ dgamma(3,2)              # <-------- flexible fit.
+          ",taubeta_inv_nm[s],"     ~ dpar(1.5,0.0025)          # <--------constant fit.
+          ",taubeta0_nm[s],"[2]      <- pow(",taubeta_inv_nm[s],",-1)
+          ",flexible_select_nm[s]," ~ dbern(",p_flexible_nm[s],")
+          ",ind_flex_select_nm[s],"   <- 2-",flexible_select_nm[s],"
+          ",taubeta_nm[s],"        <- ",taubeta0_nm[s],"[",ind_flex_select_nm[s],"]
+          # hyperprior of smoothness:
+          ",p_flexible_nm[s]," ~ dbeta(1,1)  
+          ")
     }
     plug <-
       paste0(plug,
-        "
-        # non-basis coefficients:
-        for (l in ",non_basis_id_nm[s],"){
-            ",betaFPR_nm[s],"[l,1] ~ dnorm(0,",prec_first_nm[s],")
-        }
-        ",prec_first_nm[s]," <- 1/4
-        # hyperprior of smoothness:
-        ",p_flexible_nm[s]," ~ dbeta(1,1)  # <--- useless if no basis functions are used.
-        "
+          "
+          # non-basis coefficients:
+          for (l in ",non_basis_id_nm[s],"){
+              ",betaFPR_nm[s],"[l,1] ~ dnorm(0,",prec_first_nm[s],")
+          }
+          ",prec_first_nm[s]," <- 1/4
+          "
       )
   }
   parameters <- c(thetaBS_nm[s],betaFPR_nm[s],alphaB_nm[s],betaB_nm[s],taubeta_nm[s],p_flexible_nm[s])
@@ -1465,21 +1471,21 @@ add_meas_BrS_ctrl_NoNest_reg_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL)
   
   if (length(patho_BrS_list[[s]]) > 1) {
     plug <- paste0(
-      "       
-      ## control BrS measurements; no subclass:
-      for (j in 1:",JBrS_nm[s],"){
-      ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
-      logit(",mu_bs_nm[s],"[i,j]) <- ",linpred_psiBS_nm[s],"[i,j] 
-      }
-      "
+          "       
+          ## control BrS measurements; no subclass:
+          for (j in 1:",JBrS_nm[s],"){
+              ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
+              logit(",mu_bs_nm[s],"[i,j]) <- ",linpred_psiBS_nm[s],"[i,j] 
+          }
+          "
     )
   } else{
     plug <- paste0(
-      "
-      ## control BrS measurements; no subclass (only one column):
-      ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
-      logit(",mu_bs_nm[s],"[i]) <- ",linpred_psiBS_nm[s],"[i,1] 
-      \n"
+          "
+          ## control BrS measurements; no subclass (only one column):
+          ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
+          logit(",mu_bs_nm[s],"[i]) <- ",linpred_psiBS_nm[s],"[i,1] 
+          "
     )
   }
   
@@ -1490,25 +1496,25 @@ add_meas_BrS_ctrl_NoNest_reg_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL)
     
     if (length(patho_BrS_list[[s]]) > 1) {
       plug <- paste0(
-        "       
-        ## control BrS measurements; no subclass:
-        for (j in 1:",JBrS_nm[s],"){
-        ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
-        logit(",mu_bs_nm[s],"[i,j]) <- ",linpred_psiBS_nm[s],"[i,j]
-        ## posterior predictive distribution
-        ",MBS_nm.new[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
-        }
-        "
+          "       
+          ## control BrS measurements; no subclass:
+          for (j in 1:",JBrS_nm[s],"){
+              ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
+              logit(",mu_bs_nm[s],"[i,j]) <- ",linpred_psiBS_nm[s],"[i,j]
+              ## posterior predictive distribution
+              ",MBS_nm.new[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
+          }
+          "
       )
     } else{
       plug <- paste0(
-        "
-        ## control BrS measurements; no subclass (only one column):
-        ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
-        logit(",mu_bs_nm[s],"[i]) <- ",linpred_psiBS_nm[s],"[i,1]
-        ## posterior predictive distribution:
-        ",MBS_nm.new[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
-        \n"
+          "
+          ## control BrS measurements; no subclass (only one column):
+          ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
+          logit(",mu_bs_nm[s],"[i]) <- ",linpred_psiBS_nm[s],"[i,1]
+          ## posterior predictive distribution:
+          ",MBS_nm.new[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
+          "
       )
     }
   }

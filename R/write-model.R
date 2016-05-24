@@ -56,7 +56,7 @@ write_model_Reg_NoNest <- function(Mobs,prior,cause_list,Eti_formula,FPR_formula
   chunk1 <- insert_bugfile_chunk_reg_nonest_meas(Mobs,
                                                  prior,cause_list,FPR_formula,
                                                  use_measurements,ppd,use_jags)
-  chunk2 <- insert_bugfile_chunk_reg_etiology(Eti_formula,ppd) #DONE.
+  chunk2 <- insert_bugfile_chunk_reg_etiology(Eti_formula,length(cause_list),ppd) #DONE.
   
   paste0("model{#BEGIN OF MODEL:\n",
          chunk1,"\n",
