@@ -1379,10 +1379,14 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,cause_list,FPR_formu
           # hyperprior of smoothness:
           ",p_flexible_nm[s]," ~ dbeta(1,1) 
           ")
+    } else{
+      plug <- paste0(plug,
+          "
+          }
+          ")
     }
     plug <- paste0(plug,
           "
-          }
           for (l in ",non_basis_id_nm[s],"){
              ",betaFPR_nm[s],"[l,1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
           }

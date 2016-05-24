@@ -178,7 +178,7 @@ nplcm_fit_Reg_NoNest <-
         
         if (likelihood$k_subclass[s]==1){
           out_parameter <- c(out_parameter,paste(c("thetaBS","betaFPR"), s, sep="_"))
-          out_parameter <- c(out_parameter,paste(c("taubeta"), s, sep="_")[unlist(has_basis_list)])
+          out_parameter <- c(out_parameter,paste(c("taubeta"), s, sep="_")[unlist(has_basis_list)[s]])
         }else{
           stop("==[baker] Regression with nested subclasses coming soon.==\n")
           #assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
