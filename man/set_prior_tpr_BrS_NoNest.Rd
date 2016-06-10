@@ -15,9 +15,9 @@ set_prior_tpr_BrS_NoNest(slice, model_options, data_nplcm)
 }
 \value{
 Parameters for the BrS dta TPR priors. It is a list of two lists 
-(alpha and beta). Alpha and beta are of the same length, the number of BrS measurement slices. 
-Each element of the alpha (beta) list is a numeric vector for alpha (beta) 
-parameters as in BETA distribution.
+(alpha and beta). Alpha and beta are of the same length, the number of BrS 
+measurement slices. Each element of the alpha (beta) list is a numeric vector 
+for alpha (beta) parameters as in BETA distribution.
 }
 \description{
 \code{set_prior_tpr_BrS_NoNest} is for for conditional independence models.

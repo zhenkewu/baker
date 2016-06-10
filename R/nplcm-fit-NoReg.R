@@ -82,25 +82,108 @@ nplcm_fit_NoReg<-
         assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))   
       }
       
-      # summarize into one name (for all measurements):
-      if (length(single_column_MBS)==0){
-        # if all slices have >2 columns:
-        in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
-                           paste("JBrS",1:length(JBrS_list),sep="_"),
-                           paste("MBS",1:length(JBrS_list),sep="_"),
-                           paste("templateBS",1:length(JBrS_list),sep="_")
-                          # paste("alphaB",1:length(JBrS_list),sep="_"),
-                          # paste("betaB",1:length(JBrS_list),sep="_")
-        )
-      } else {
-        # if there exist slices with 1 column:
-        in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
-                           paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS], # <---- no need to iterate in .bug file for a slice with one column.
-                           paste("MBS",1:length(JBrS_list),sep="_"),
-                           paste("templateBS",1:length(JBrS_list),sep="_")
-                          # paste("alphaB",1:length(JBrS_list),sep="_"),
-                          # paste("betaB",1:length(JBrS_list),sep="_")
-        )
+      # setup groupwise TPR for BrS:
+      BrS_TPR_strat <- FALSE
+      prior_BrS     <- model_options$prior$TPR_prior$BrS
+      parsed_model <- assign_model(model_options,data_nplcm)
+      if (parsed_model$BrS_grp){
+        BrS_TPR_strat <- TRUE
+        for(i in seq_along(JBrS_list)){
+          assign(paste("GBrS_TPR", i, sep = "_"),  length(unique(prior_BrS$grp)))    
+          assign(paste("BrS_TPR_grp", i, sep = "_"),  prior_BrS$grp)    
+        }
+      }
+      
+      # add GBrS_TPR_1, or 2 if we want to index by slices:
+      for (i in seq_along(JBrS_list)){
+        if (!is.null(prior_BrS$grp)){ # <--- need to change to list if we have multiple slices.
+          assign(paste("GBrS_TPR", i, sep = "_"), length(unique(prior_BrS$grp))) # <--- need to change to depending on i if grp change wrt specimen.
+        }
+        if (is.null(prior_BrS$grp)){ # <--- need to change to list if we have multiple slices.
+          assign(paste("GBrS_TPR", i, sep = "_"), 1)
+        }
+      }
+      
+      # set BrS measurement priors: 
+      # hyper-parameters for sensitivity:
+      
+      alpha_mat <- list() # dimension for slices.
+      beta_mat  <- list()
+      
+      for(i in seq_along(JBrS_list)){
+        
+        if (likelihood$k_subclass[i] == 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(i,model_options,data_nplcm)}
+        if (likelihood$k_subclass[i] > 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(i,model_options,data_nplcm)}
+        
+        GBrS_TPR_curr <- eval(parse(text = paste0("GBrS_TPR_",i)))
+        alpha_mat[[i]] <- matrix(NA, nrow=GBrS_TPR_curr,ncol=JBrS_list[[i]])
+        beta_mat[[i]]  <- matrix(NA, nrow=GBrS_TPR_curr,ncol=JBrS_list[[i]])
+        
+        colnames(alpha_mat[[i]]) <- patho_BrS_list[[i]]
+        colnames(beta_mat[[i]]) <- patho_BrS_list[[i]]
+        
+        for (g in 1:GBrS_TPR_curr){
+          alpha_mat[[i]][g,] <- unlist(BrS_tpr_prior[[1]][[g]]$alpha)
+          beta_mat[[i]][g,]  <- unlist(BrS_tpr_prior[[1]][[g]]$beta)
+        }
+        
+        if (GBrS_TPR_curr>1){
+          assign(paste("alphaB", i, sep = "_"), alpha_mat[[i]])      # <---- input BrS TPR prior here.
+          assign(paste("betaB", i, sep = "_"),  beta_mat[[i]])    
+        }else{
+          assign(paste("alphaB", i, sep = "_"), c(alpha_mat[[i]]))   # <---- input BrS TPR prior here.
+          assign(paste("betaB", i, sep = "_"),  c(beta_mat[[i]]))    
+        }
+      }
+      names(alpha_mat) <- names(beta_mat)<- names(Mobs$MBS)
+      
+      if (!BrS_TPR_strat){
+        # summarize into one name (for all measurements):
+        if (length(single_column_MBS)==0){
+          # if all slices have >2 columns:
+          in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
+                             paste("JBrS",1:length(JBrS_list),sep="_"),
+                             paste("MBS",1:length(JBrS_list),sep="_"),
+                             paste("templateBS",1:length(JBrS_list),sep="_")
+                             # paste("alphaB",1:length(JBrS_list),sep="_"),
+                             # paste("betaB",1:length(JBrS_list),sep="_")
+          )
+        } else {
+          # if there exist slices with 1 column:
+          in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
+                             paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS], # <---- no need to iterate in .bug file for a slice with one column.
+                             paste("MBS",1:length(JBrS_list),sep="_"),
+                             paste("templateBS",1:length(JBrS_list),sep="_")
+                             # paste("alphaB",1:length(JBrS_list),sep="_"),
+                             # paste("betaB",1:length(JBrS_list),sep="_")
+          )
+        }
+      } else{
+        # summarize into one name (for all measurements):
+        if (length(single_column_MBS)==0){
+          # if all slices have >2 columns:
+          in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
+                             paste("JBrS",1:length(JBrS_list),sep="_"),
+                             paste("GBrS_TPR",1:length(JBrS_list),sep="_"),   # <-- added for TPR strata.
+                             paste("BrS_TPR_grp",1:length(JBrS_list),sep="_"),# <-- added for TPR strata.
+                             paste("MBS",1:length(JBrS_list),sep="_"),
+                             paste("templateBS",1:length(JBrS_list),sep="_")
+                             # paste("alphaB",1:length(JBrS_list),sep="_"),
+                             # paste("betaB",1:length(JBrS_list),sep="_")
+          )
+        } else {
+          # if there exist slices with 1 column:
+          in_data       <- c(in_data,"Nd","Nu","Jcause","alphaEti",
+                             paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS], # <---- no need to iterate in .bug file for a slice with one column.
+                             paste("GBrS_TPR",1:length(JBrS_list),sep="_"),   # <-- added for TPR strata.
+                             paste("BrS_TPR_grp",1:length(JBrS_list),sep="_"),# <-- added for TPR strata.
+                             paste("MBS",1:length(JBrS_list),sep="_"),
+                             paste("templateBS",1:length(JBrS_list),sep="_")
+                             # paste("alphaB",1:length(JBrS_list),sep="_"),
+                             # paste("betaB",1:length(JBrS_list),sep="_")
+          )
+        }
+        
       }
       
       #
@@ -111,21 +194,20 @@ nplcm_fit_NoReg<-
       # hyperparameter for sensitivity (can add for specificity if necessary): 
       
       for (s in seq_along(Mobs$MBS)){
-        if (likelihood$k_subclass[s] == 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
-        if (likelihood$k_subclass[s] > 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
+        #if (likelihood$k_subclass[s] == 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
+        #if (likelihood$k_subclass[s] > 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(s,model_options,data_nplcm)}
         
-        assign(paste("alphaB", s, sep = "_"), BrS_tpr_prior[[1]]$alpha)     # <---- input BrS TPR prior here.
-        assign(paste("betaB", s, sep = "_"),  BrS_tpr_prior[[1]]$beta)    
+        #assign(paste("alphaB", s, sep = "_"), BrS_tpr_prior[[1]]$alpha)     # <---- input BrS TPR prior here.
+        #assign(paste("betaB", s, sep = "_"),  BrS_tpr_prior[[1]]$beta)    
         
         if (likelihood$k_subclass[s]==1){
-         
          out_parameter <- c(out_parameter,paste(c("thetaBS","psiBS"), s, sep="_"))  
-        }else{
+        }else{  # <--- TPR stratification for BrS data not implemented for K>1.
          assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
-         in_data       <- c(in_data,paste0("K_",s)) # <---- not prior, but data about the subclasses for this slice.
-         out_parameter <- c(out_parameter,
+         in_data       <- unique(c(in_data,paste0("K_",s))) # <---- No. of subclasses for this slice.
+         out_parameter <- unique(c(out_parameter,
                             paste(c("ThetaBS","PsiBS","Lambda","Eta","alphadp0","alphadp0_case"),s,sep="_")
-                            )
+                            ))
         }
       }
       
@@ -245,8 +327,8 @@ nplcm_fit_NoReg<-
           # summarize into one name (for all measurements):
           in_data       <- unique(c(in_data,"Nd","Jcause","alphaEti",
                                     paste("JSS",1:length(JSS_list),sep="_"),
-                                    paste("GSS_TPR",1:length(JSS_list),sep="_"),
-                                    paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
+                                    paste("GSS_TPR",1:length(JSS_list),sep="_"),    # <-- added for TPR strata.
+                                    paste("SS_TPR_grp",1:length(JSS_list),sep="_"), # <-- added for TPR strata.
                                     paste("MSS",1:length(JSS_list),sep="_"),
                                     paste("templateSS",1:length(JSS_list),sep="_"),
                                     paste("alphaS",1:length(JSS_list),sep="_"),   
@@ -254,8 +336,8 @@ nplcm_fit_NoReg<-
         } else{
           in_data       <- unique(c(in_data,"Nd","Nu","Jcause","alphaEti",
                                     paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
-                                    paste("GSS_TPR",1:length(JSS_list),sep="_"),
-                                    paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
+                                    paste("GSS_TPR",1:length(JSS_list),sep="_"),   # <-- added for TPR strata.
+                                    paste("SS_TPR_grp",1:length(JSS_list),sep="_"),# <-- added for TPR strata.
                                     paste("MSS",1:length(JSS_list),sep="_"),
                                     paste("templateSS",1:length(JSS_list),sep="_"),
                                     paste("alphaS",1:length(JSS_list),sep="_"),
@@ -276,7 +358,18 @@ nplcm_fit_NoReg<-
         for (s in seq_along(Mobs$MBS)){
           res_curr <- list()
           if (likelihood$k_subclass[s]==1){
-            res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            #res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            
+            GBrS_TPR_curr <- eval(parse(text = paste0("GBrS_TPR_",s)))
+            if (GBrS_TPR_curr==1){
+              res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            } else{
+              res_curr[[1]] <- matrix(stats::rbeta(GBrS_TPR_curr*JBrS_list[[s]],1,1),
+                                         nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
+              if (JBrS_list[[s]]==1){
+                res_curr[[1]] <- c(res_curr[[1]])
+              }
+            }
             res_curr[[2]] <- stats::rbeta(JBrS_list[[s]],1,1)
             names(res_curr) <- paste(c("thetaBS","psiBS"),s,sep="_")
             res <- c(res,res_curr)
@@ -334,7 +427,17 @@ nplcm_fit_NoReg<-
         for (s in seq_along(Mobs$MBS)){
           res_curr <- list()
           if (likelihood$k_subclass[s]==1){
-            res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            #res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            GBrS_TPR_curr <- eval(parse(text = paste0("GBrS_TPR_",s)))
+            if (GBrS_TPR_curr==1){
+              res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
+            } else{
+              res_curr[[1]] <- matrix(stats::rbeta(GBrS_TPR_curr*JBrS_list[[s]],1,1),
+                                         nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
+              if (JBrS_list[[s]]==1){
+                res_curr[[1]] <- c(res_curr[[1]])
+              }
+            }
             res_curr[[2]] <- stats::rbeta(JBrS_list[[s]],1,1)
             names(res_curr) <- paste(c("thetaBS","psiBS"),s,sep="_")
             res <- c(res,res_curr)

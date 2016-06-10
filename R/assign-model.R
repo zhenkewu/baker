@@ -108,6 +108,24 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
   regression <- make_list(do_reg_Eti, do_reg_FPR)#, do_reg_TPR)
   
+  # check BrS group:
+  BrS_grp <- FALSE
+  prior_BrS <- model_options$prior$TPR_prior$BrS
+  GBrS_TPR <- length(unique(prior_BrS$grp))
+  grp_spec <- (!is.null(prior_BrS$grp) && GBrS_TPR >1 )
+  if (grp_spec) {
+    for (s in seq_along(prior_BrS$val)){
+      if (prior_BrS$input=="match_range" && 
+          (length(prior_BrS$val[[s]]$up)!=GBrS_TPR | 
+          length(prior_BrS$val[[s]]$low)!=GBrS_TPR) ){
+         stop(paste0("==[baker] ",names(prior_BrS$val)[s])," needs ", GBrS_TPR,
+              " sets of sensitivity ranges.==")
+        }
+    }
+    BrS_grp <- TRUE
+  }
+  
+  
   # check SS group:
   SS_grp <- FALSE
   prior_SS <- model_options$prior$TPR_prior$SS
@@ -124,7 +142,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
 #                                   but we have >1 sets of TPRs. ==")}
   
   # return results:
-  make_list(num_slice, nested, regression,SS_grp)
+  make_list(num_slice, nested, regression,BrS_grp,SS_grp)
 }
 
 

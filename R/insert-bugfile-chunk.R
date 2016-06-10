@@ -42,8 +42,8 @@ insert_bugfile_chunk_noreg_meas <-
             chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice(s,Mobs,cause_list,ppd)$plug)
             chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_Slice(s,Mobs,cause_list)$plug)
           } else{# use jags:
-            chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice_jags(s,Mobs,cause_list,ppd)$plug)
-            chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_Slice_jags(s,Mobs,cause_list)$plug)
+            chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_Slice_jags(s,Mobs,prior,cause_list,ppd)$plug)
+            chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_Slice_jags(s,Mobs,prior,cause_list)$plug)
           }
           chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_NoNest_Slice(s,Mobs,cause_list,ppd)$plug)
         }
@@ -194,8 +194,8 @@ insert_bugfile_chunk_reg_nonest_meas <-
           #chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_reg_Slice_jags(s,Mobs,cause_list,ppd)$plug)
           #chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_reg_Slice_jags(s,Mobs,cause_list)$plug)
         } else{# use jags:
-          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_reg_Slice_jags(s,Mobs,cause_list,ppd)$plug)
-          chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_reg_Slice_jags(s,Mobs,cause_list,FPR_formula)$plug)
+          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_reg_Slice_jags(s,Mobs,prior,cause_list,ppd)$plug)
+          chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_reg_Slice_jags(s,Mobs,prior,cause_list,FPR_formula)$plug)
         }
         chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl,  add_meas_BrS_ctrl_NoNest_reg_Slice_jags(s,Mobs,cause_list,ppd)$plug)
         # }

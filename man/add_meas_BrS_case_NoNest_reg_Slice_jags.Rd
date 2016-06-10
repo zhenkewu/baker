@@ -4,12 +4,15 @@
 \alias{add_meas_BrS_case_NoNest_reg_Slice_jags}
 \title{add likelihood component for a BrS measurement slice among cases}
 \usage{
-add_meas_BrS_case_NoNest_reg_Slice_jags(s, Mobs, cause_list, ppd = NULL)
+add_meas_BrS_case_NoNest_reg_Slice_jags(s, Mobs, prior, cause_list,
+  ppd = NULL)
 }
 \arguments{
 \item{s}{the slice}
 
 \item{Mobs}{See \code{data_nplcm} described in \code{\link{nplcm}}}
+
+\item{prior}{Prior specifications.}
 
 \item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}}
 

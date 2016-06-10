@@ -11,9 +11,9 @@
 #' @param data_nplcm See \code{\link{assign_model}} function.
 #' 
 #' @return Parameters for the BrS dta TPR priors. It is a list of two lists 
-#' (alpha and beta). Alpha and beta are of the same length, the number of BrS measurement slices. 
-#' Each element of the alpha (beta) list is a numeric vector for alpha (beta) 
-#' parameters as in BETA distribution.
+#' (alpha and beta). Alpha and beta are of the same length, the number of BrS 
+#' measurement slices. Each element of the alpha (beta) list is a numeric vector 
+#' for alpha (beta) parameters as in BETA distribution.
 #' 
 #' @family prior specification functions
 #' @export
@@ -21,65 +21,99 @@
 set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
   parsed_model <- assign_model(model_options,data_nplcm)
   if (parsed_model$num_slice["MBS"] == 0){stop("==[baker] No BrS data! ==\n")}
-    
+  
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
   X    <- data_nplcm$X
   
   Nd <- sum(Y)
   
-  if (parsed_model$num_slice["MBS"] > 0){
-    
-    # mapping template (by `make_template` function):
-    patho_BrS_list <- lapply(Mobs$MBS,colnames)
-    template_BrS_list <-
-      lapply(patho_BrS_list,make_template,model_options$likelihood$cause_list) # key.
-    
-    prior_BrS <- model_options$prior$TPR_prior$BrS
-    
-    res_all_slice <- vector("list",length=parsed_model$num_slice["MBS"])
-    names(res_all_slice) <- names(Mobs$MBS)
-    if (prior_BrS$info == "non-informative"){
-        for (s in seq_along(Mobs$MBS)){
-            res_all_slice[[s]] <- list(alpha = rep(1,ncol(Mobs$MBS[[s]])),
-                                       beta = rep(1,ncol(Mobs$MBS[[s]])))
+  # mapping template (by `make_template` function):
+  patho_BrS_list <- lapply(Mobs$MBS,colnames)
+  template_BrS_list <-
+    lapply(patho_BrS_list,make_template,model_options$likelihood$cause_list) # key.
+  
+  prior_BrS <- model_options$prior$TPR_prior$BrS
+  
+  GBrS_TPR <- 1
+  if (parsed_model$BrS_grp){GBrS_TPR <- length(unique(prior_BrS$grp))} # if there is a grouping variable,
+  
+  res_all_slice <- vector("list",length=parsed_model$num_slice["MBS"])
+  names(res_all_slice) <- names(Mobs$MBS)
+  if (prior_BrS$info == "non-informative"){
+    for (s in seq_along(Mobs$MBS)){
+      res_all_grp <- vector("list",length=GBrS_TPR)
+      for (g in 1:GBrS_TPR){
+          alpha_vec <- rep(1,ncol(Mobs$MBS[[s]]))
+          beta_vec  <- rep(1,ncol(Mobs$MBS[[s]]))
+          names(alpha_vec) <- names(beta_vec) <- colnames(Mobs$MBS[[s]])
+          res_all_grp[[g]] <- list(alpha=alpha_vec,beta=beta_vec)
         }
+      res_all_slice[[s]] <- res_all_grp
+    }
+    return(res_all_slice[slice])
+  }
+  
+  if (prior_BrS$info == "informative"){
+    if (prior_BrS$input == "match_range"){# begin match range:
+      for (s in seq_along(Mobs$MBS)){ #iterate over slices:
+        res_all_grp <- vector("list",length=GBrS_TPR)
+        curr_val <- prior_BrS$val[[s]]
+        for (g in 1:GBrS_TPR){
+          tmp_ab <- matrix(NA,nrow=2,ncol(Mobs$MBS[[s]]))
+          rownames(tmp_ab) <- c("alpha","beta")
+          colnames(tmp_ab) <- colnames(Mobs$MBS[[s]])
+          for (j in 1:ncol(Mobs$MBS[[s]]) ){ # iterate over dimensions:
+            low_tmp <- curr_val$low[[g]][j]
+            up_tmp  <- curr_val$up[[g]][j]
+            tmp <- beta_parms_from_quantiles(c(low_tmp,up_tmp),p=c(0.025,.975),plot=FALSE)
+            tmp_ab[,j] <- c(tmp$a,tmp$b)
+          }# end iterate over dimensions.
+          alpha_vec <- tmp_ab[1,]; names(alpha_vec) <- colnames(Mobs$MBS[[s]])
+          beta_vec  <- tmp_ab[2,]; names(beta_vec) <- colnames(Mobs$MBS[[s]])
+          res_all_grp[[g]] <- list(alpha=alpha_vec,beta=beta_vec)
+        }
+        res_all_slice[[s]] <- res_all_grp
+      }# end iterate over slices.
+      return(res_all_slice[slice])
+    }# end match range.
+    
+    
+    # if (prior_BrS$input == "match_range"){# begin match range:
+    #   for (s in seq_along(Mobs$MBS)){ #iterate over slices:
+    #     tmp_ab <- matrix(NA,nrow=2,ncol(Mobs$MBS[[s]]))
+    #     rownames(tmp_ab) <- c("alpha","beta")
+    #     colnames(tmp_ab) <- colnames(Mobs$MBS[[s]])
+    #     for (j in 1:ncol(Mobs$MBS[[s]]) ){ # iterate over dimensions:
+    #       low_tmp <- prior_BrS$val[[s]]$low[j]
+    #       up_tmp <- prior_BrS$val[[s]]$up[j]
+    #       tmp <- beta_parms_from_quantiles(c(low_tmp,up_tmp),p=c(0.025,.975),plot=FALSE)
+    #       tmp_ab[,j] <- c(tmp$a,tmp$b)
+    #     }# end iterate over dimensions.
+    #     alpha_vec <- tmp_ab[1,]; names(alpha_vec) <- colnames(Mobs$MBS[[s]])
+    #     beta_vec  <- tmp_ab[2,]; names(beta_vec) <- colnames(Mobs$MBS[[s]])
+    #     res_all_slice[[s]] <- list(alpha = alpha_vec,beta = beta_vec)
+    #   }# end iterate over slices.
+    #   return(res_all_slice[slice])
+    # }# end match range.
+    
+    # begin direct parameters for Beta:
+    if (prior_BrS$input == "direct_beta_param"){
+      for (s in seq_along(Mobs$MBS)){
+        curr_val    <- prior_BrS$val[[s]]
+        res_all_grp <- vector("list",length=GBrS_TPR)
+        for (g in 1:GBrS_TPR){
+          tmp_alpha <- curr_val$alpha[[g]]; names(tmp_alpha) <- colnames(Mobs$MBS[[s]])
+          tmp_beta  <- curr_val$beta[[g]]; names(tmp_beta) <- colnames(Mobs$MBS[[s]])
+          res_all_grp[[g]] <- list(alpha=tmp_alpha,beta=tmp_beta)
+        }
+        res_all_slice[[s]] <- res_all_grp
+      }
       return(res_all_slice[slice])
     }
-    
-    if (prior_BrS$info == "informative"){
-      if (prior_BrS$input == "match_range"){# begin match range:
-        for (s in seq_along(Mobs$MBS)){ #iterate over slices:
-            tmp_ab <- matrix(NA,nrow=2,ncol(Mobs$MBS[[s]]))
-            rownames(tmp_ab) <- c("alpha","beta")
-            colnames(tmp_ab) <- colnames(Mobs$MBS[[s]])
-            for (j in 1:ncol(Mobs$MBS[[s]]) ){ # iterate over dimensions:
-              low_tmp <- prior_BrS$val[[s]]$low[j]
-              up_tmp <- prior_BrS$val[[s]]$up[j]
-              tmp <- beta_parms_from_quantiles(c(low_tmp,up_tmp),p=c(0.025,.975),plot=FALSE)
-              tmp_ab[,j] <- c(tmp$a,tmp$b)
-            }# end iterate over dimensions.
-            alpha_vec <- tmp_ab[1,]; names(alpha_vec) <- colnames(Mobs$MBS[[s]])
-            beta_vec  <- tmp_ab[2,]; names(beta_vec) <- colnames(Mobs$MBS[[s]])
-            res_all_slice[[s]] <- list(alpha = alpha_vec,beta = beta_vec)
-        }# end iterate over slices.
-        return(res_all_slice[slice])
-      }# end match range.
-      
-      # begin direct parameters for Beta:
-      if (prior_BrS$input == "direct_beta_param") {
-        for (s in seq_along(Mobs$MBS)){
-          curr_val <- prior_BrS$val[[s]]
-          tmp_alpha <- curr_val$alpha; names(tmp_alpha) <- colnames(Mobs$MBS[[s]])
-          tmp_beta  <- curr_val$beta; names(tmp_beta) <- colnames(Mobs$MBS[[s]])
-          res_all_slice[[s]] <- list(alpha =  tmp_alpha, beta = tmp_beta)
-        }
-        return(res_all_slice[slice])
-      }
-    } # end informative.
-  }
+  } # end informative.
 }
-  
+
 #' Set true positive rate (TPR) prior ranges for silver-standard data. 
 #'
 #' @param model_options See \code{\link{nplcm}} function.
@@ -134,14 +168,14 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
           colnames(tmp_ab) <- colnames(Mobs$MSS[[s]])
           for (j in 1:ncol(Mobs$MSS[[s]])) {
             # iterate over dimensions:
-            low_tmp <- curr_val[[g]]$low[j]
-            up_tmp <- curr_val[[g]]$up[j]
+            low_tmp <- curr_val$low[[g]][j]
+            up_tmp <- curr_val$up[[g]][j]
             tmp <-
               beta_parms_from_quantiles(c(low_tmp,up_tmp),p = c(0.025,.975),plot = FALSE)
             tmp_ab [,j] <- c(tmp$a,tmp$b)
           }# end iterate over dimensions.
           alpha_vec <- tmp_ab[1,]; names(alpha_vec) <- colnames(Mobs$MSS[[s]])
-          beta_vec  <- tmp_ab[2,]; names(beta_vec) <- colnames(Mobs$MSS[[s]])
+          beta_vec  <- tmp_ab[2,]; names(beta_vec)  <- colnames(Mobs$MSS[[s]])
           res_all_grp[[g]] <- list(alpha = alpha_vec,beta = beta_vec)
         }# end iteration over group split.
       } # end match range.
@@ -149,8 +183,8 @@ set_prior_tpr_SS <- function(model_options,data_nplcm){
       # begin direct parameters for Beta:
       if (prior_SS$input == "direct_beta_param") {
         for (g in 1:GSS_TPR){
-          tmp_alpha <- curr_val[[g]]$alpha; names(tmp_alpha) <- colnames(Mobs$MSS[[s]])
-          tmp_beta  <- curr_val[[g]]$beta;  names(tmp_beta)  <- colnames(Mobs$MSS[[s]])
+          tmp_alpha <- curr_val$alpha[[g]]; names(tmp_alpha) <- colnames(Mobs$MSS[[s]])
+          tmp_beta  <- curr_val$beta[[g]];  names(tmp_beta)  <- colnames(Mobs$MSS[[s]])
           res_all_grp[[g]] <- list(alpha =  tmp_alpha, beta = tmp_beta)# <--- note here we lost column names for each measurements.
         }
       }

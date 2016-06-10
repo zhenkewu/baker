@@ -4,12 +4,14 @@
 \alias{add_meas_BrS_param_NoNest_Slice_jags}
 \title{add parameters for a BrS measurement slice among cases and controls (conditional independence)}
 \usage{
-add_meas_BrS_param_NoNest_Slice_jags(s, Mobs, cause_list)
+add_meas_BrS_param_NoNest_Slice_jags(s, Mobs, prior, cause_list)
 }
 \arguments{
 \item{s}{the slice}
 
 \item{Mobs}{See \code{data_nplcm} described in \code{\link{nplcm}}}
+
+\item{prior}{Prior specifications.}
 
 \item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}}
 }
