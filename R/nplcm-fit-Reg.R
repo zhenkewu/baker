@@ -61,6 +61,12 @@ nplcm_fit_Reg_NoNest <-
     
     # design matrix for etiology regression:
     Z_Eti       <- stats::model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
+    # Z_Eti0       <- stats::model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
+    # a.eig        <- eigen(t(Z_Eti0)%*%Z_Eti0)
+    # sqrt_Z_Eti0  <- a.eig$vectors %*% diag(sqrt(a.eig$values)) %*% solve(a.eig$vectors)
+    # 
+    # Z_Eti  <- Z_Eti0%*%solve(sqrt_Z_Eti0)
+    
     ncol_dm_Eti <- ncol(Z_Eti)
     attributes(Z_Eti)[names(attributes(Z_Eti))!="dim"] <- NULL
     
@@ -122,12 +128,20 @@ nplcm_fit_Reg_NoNest <-
         }
       })
       
+      #Z_FPR_list_orth <- list()
       for(i in seq_along(JBrS_list)){
         attributes(Z_FPR_list[[i]])[names(attributes(Z_FPR_list[[i]]))!="dim"] <- NULL
         
         assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
         assign(paste("MBS", i, sep = "_"), as.matrix_or_vec(MBS_list[[i]])) 
-        assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))   
+        assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))  
+        
+        # Z_FPR0       <- Z_FPR_list[[i]]
+        # a.eig        <- eigen(t(Z_FPR0)%*%Z_FPR0)
+        # sqrt_Z_FPR0  <- a.eig$vectors %*% diag(sqrt(a.eig$values)) %*% solve(a.eig$vectors)
+        # 
+        # Z_FPR_list_orth[[i]]  <- Z_FPR0%*%solve(sqrt_Z_FPR0)
+        # assign(paste("Z_FPR",i,sep="_"),Z_FPR_list_orth[[i]])
         assign(paste("Z_FPR",i,sep="_"),Z_FPR_list[[i]])
         assign(paste("basis_id",i,sep="_"),basis_id_list[[i]])
         assign(paste("n_basis",i,sep="_"),n_basis_list[[i]])
@@ -595,22 +609,25 @@ nplcm_fit_Reg_NoNest <-
     
     in_data <- unique(in_data)
     
-    if (Jcause > 2){ # use dmnorm to speed up JAGS calculations, so we need mean 
-      # and covariance vector.
-      zero_Jcause_1 <- rep(0,Jcause-1)
-      I_Jcause_1    <- diag(1,Jcause-1)
-      in_data <- c(in_data,"zero_Jcause_1","I_Jcause_1")
-    } 
-    
-    for (s in seq_along(JBrS_list)){
-      if (JBrS_list[[s]]>1){
-          assign(paste("zero_JBrS", s, sep = "_"), rep(0,JBrS_list[[s]]))    
-          assign(paste("I_JBrS", s, sep = "_"), diag(1,JBrS_list[[s]]))    
-          in_data <- c(in_data,
-                       paste("zero_JBrS", s, sep = "_"),
-                       paste("I_JBrS", s, sep = "_"))
-      }
-    }
+    # #
+    # # # uncomment below if using dmnorm for betaEti and betaFPR (also need to edit plug-and-play.R):
+    # #
+    # # if (Jcause > 2){ # use dmnorm to speed up JAGS calculations, so we need mean 
+    # #   # and covariance vector.
+    # #   zero_Jcause_1 <- rep(0,Jcause-1)
+    # #   I_Jcause_1    <- diag(1,Jcause-1)
+    # #   in_data <- c(in_data,"zero_Jcause_1","I_Jcause_1")
+    # # } 
+    # 
+    # # for (s in seq_along(JBrS_list)){
+    # #   if (JBrS_list[[s]]>1){
+    # #       assign(paste("zero_JBrS", s, sep = "_"), rep(0,JBrS_list[[s]]))    
+    # #       assign(paste("I_JBrS", s, sep = "_"), diag(1,JBrS_list[[s]]))    
+    # #       in_data <- c(in_data,
+    # #                    paste("zero_JBrS", s, sep = "_"),
+    # #                    paste("I_JBrS", s, sep = "_"))
+    # #   }
+    # # }
     
     #
     # run the model:

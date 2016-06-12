@@ -42,11 +42,11 @@ nplcm_fit_NoReg<-
     # 1. prepare data (including hyper-parameters):
     #####################################################################
     
-    # get sample sizes:
+    # sample sizes:
     Nd      <- sum(Y==1)
     Nu      <- sum(Y==0)
     
-    # get lengths of vectors:
+    # lengths of vectors:
     cause_list  <- likelihood$cause_list
     Jcause      <- length(cause_list)
     

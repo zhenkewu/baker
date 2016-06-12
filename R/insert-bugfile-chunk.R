@@ -317,8 +317,12 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
                 log(phi[i,j]) <- mu_Eti_mat[i,j]
                 }
           }
-          for (p in 1:(ncol_dm_Eti)){
-                betaEti[p,1:(Jcause-1)] ~ dmnorm(zero_Jcause_1,0.1*I_Jcause_1)
+          for (p in 1:(ncol_dm_Eti)){",
+              # betaEti[p,1:(Jcause-1)] ~ dmnorm(zero_Jcause_1,0.1*I_Jcause_1)
+          	  "
+               for (j in 1:(Jcause-1)){
+                betaEti[p,j] ~ dnorm(0,1/25)
+               }
                 betaEti[p,Jcause] <- 0
           }")
   } else{
@@ -334,7 +338,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
                }
           }
           for (p in 1:(ncol_dm_Eti)){
-               betaEti[p,1] ~ dnorm(0,0.1)
+               betaEti[p,1] ~ dnorm(0,1/25)
                betaEti[p,Jcause] <- 0
           }")    
   }
