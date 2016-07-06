@@ -52,7 +52,7 @@ plot_pie_panel <- function(model_options,
   
   
   Jcause <- length(model_options$likelihood$cause_list)
-  alpha_ord <- bugs.dat$alpha[ord]
+  alpha_ord <- bugs.dat$alphaEti[ord]
   
   plot_pie_cell_first <- function(lat_pos,height,dotcolor="black",add=FALSE){
     # posterior mean of etiology:
