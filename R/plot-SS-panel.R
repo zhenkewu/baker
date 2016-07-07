@@ -260,6 +260,14 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
       }
       graphics::text(top_SS - 0.12,lat_pos + .3+gap, colnames(MSS_case_curr)[pos],cex=1 )
     }
+    
+    # x-axis for each cell:
+    if (lat_pos>1){
+      graphics::axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
+                     pos = seq(.6,height +.6,by = 1)[lat_pos], cex.axis = 0.8,
+                     lty = 2,col = "blue"
+      )
+    }
   }
   
   Jcause <- length(model_options$likelihood$cause_list)
