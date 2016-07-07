@@ -54,8 +54,12 @@ nplcm_read_folder <- function(DIR_NPLCM){
   clean_options  <- dget(file.path(DIR_NPLCM,"data_clean_options.txt"))
   #some data preparation:
   Nd <- bugs.dat$Nd
-  Nu <- bugs.dat$Nu
-  Y  <- c(rep(1,Nd),rep(0,Nu))
+  Y  <- c(rep(1,Nd))
+  Nu <- 0
+  if (!is.null(bugs.dat$Nu)){
+    Nu <- bugs.dat$Nu
+    Y  <- c(rep(1,Nd),rep(0,Nu))
+  }
   
   
   get_MBS <- function(){
