@@ -321,7 +321,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
               # betaEti[p,1:(Jcause-1)] ~ dmnorm(zero_Jcause_1,0.1*I_Jcause_1)
           	  "
                for (j in 1:(Jcause-1)){
-                betaEti[p,j] ~ dnorm(0,1/25)
+                betaEti[p,j] ~ dnorm(0,1/2.25)
                }
                 betaEti[p,Jcause] <- 0
           }")
@@ -338,7 +338,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
                }
           }
           for (p in 1:(ncol_dm_Eti)){
-               betaEti[p,1] ~ dnorm(0,1/25)
+               betaEti[p,1] ~ dnorm(0,1/2.25)
                betaEti[p,Jcause] <- 0
           }")    
   }
