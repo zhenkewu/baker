@@ -607,7 +607,13 @@ nplcm_fit_Reg_NoNest <-
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
     writeLines(model_func, filename)
     
-    in_data <- unique(in_data)
+    if (length(prior$Eti_prior)>1){
+      stop("== [baker] Regression model used. Please change `model_options$prior$Eti_prior` 
+           into a single, positive real number representing
+           the stanadrd deviation of beta coefficients in etiology regression! ==")
+    }
+    sd_betaEti      <- prior$Eti_prior
+    in_data <- unique(c(in_data,"sd_betaEti"))
     
     # #
     # # # uncomment below if using dmnorm for betaEti and betaFPR (also need to edit plug-and-play.R):
