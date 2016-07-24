@@ -69,7 +69,7 @@ Connect `R` to `JAGS` or `WinBUGS`
 
 - Run `R` command `library(baker)`. If the package `ks` cannot be loaded due to failure of loading package `rgl`, first install X11 by going [here](http://xquartz.macosforge.org/trac/wiki/X112.7.7), followed by
     ```r
-    install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1200.tar.gz",repo=NULL,type="source")
+    install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1504.tar.gz",repo=NULL,type="source")
     ```
 
 #### Unix (Build from source without administrative privilege)
