@@ -509,6 +509,8 @@ nplcm_fit_NoReg<-
                                             model_options$use_measurements,
                                             mcmc_options$ppd,
                                             use_jags)
+  
+    
     model_bugfile_name <- "model_NoReg.bug"
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)

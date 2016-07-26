@@ -946,7 +946,7 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=NULL
     indBS_nm.new   <- paste("indBS.new",seq_along(BrS_nm),sep = "_")#
     Icat_nm.new    <- "Icat.new"  
     
-    if (!BrS_TPR_strat){ # no TPR stratification.
+    if (BrS_TPR_strat){ # TPR stratification.
       if (length(patho_BrS_list[[s]]) > 1) {
         plug <-
           paste0(
@@ -980,7 +980,7 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=NULL
           \n"
           )
       }
-    } else{ # with TPR stratification.
+    } else{ # without TPR stratification.
       if (length(patho_BrS_list[[s]]) > 1) {
         plug <-
           paste0(
