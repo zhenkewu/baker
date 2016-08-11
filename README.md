@@ -10,7 +10,7 @@ How to install?
 --------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
-devtools::install_github("zhenkewu/baker",ref="baker_regression")
+devtools::install_github("zhenkewu/baker")
 ```
 Note: run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package is reported
 as missing.
@@ -34,7 +34,7 @@ Details
 1. Implements hierarchical Bayesian models to infer disease etiology for multivariate binary data. The package builds in functionalities for data cleaning, exploratory data analyses, model specification, model estimation, visualization and model diagnostics and comparisons, catalyzing vital effective communications between analysts and practicing clinicians. 
 2. `baker` has implemented models for dependent measurements given disease status, regression analyses of etiology, multiple imperfect measurements, different priors for true positive rates among cases with differential measurement characteristics, and multiple-pathogen etiology.
 3. Scientists in [Pneumonia Etiology Research for Child Health](http://www.jhsph.edu/research/centers-and-institutes/ivac/projects/perch/) (PERCH) study usually refer to the etiology distribution as "*population etiology pie*" and "*individual etiology pie*" for their compositional nature, hence the name of the package.
-4. Reference publication can be found [here](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/abstract) and [here](http://biostats.bepress.com/jhubiostat/paper276/).
+4. Reference publication can be found [here](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/abstract) and [here](http://zhenkewu.com/papers/wu-2016-nested-plcm).
 
 How does it compare to other existing solutions?
 ------------------------------------------------
