@@ -113,7 +113,7 @@ nplcm_fit_NoReg<-
       for(i in seq_along(JBrS_list)){
         
         if (likelihood$k_subclass[i] == 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(i,model_options,data_nplcm)}
-        if (likelihood$k_subclass[i] > 1){BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(i,model_options,data_nplcm)}
+        if (likelihood$k_subclass[i] > 1) {BrS_tpr_prior <- set_prior_tpr_BrS_NoNest(i,model_options,data_nplcm)}
         
         GBrS_TPR_curr <- eval(parse(text = paste0("GBrS_TPR_",i)))
         alpha_mat[[i]] <- matrix(NA, nrow=GBrS_TPR_curr,ncol=JBrS_list[[i]])
