@@ -20,7 +20,6 @@
 #' @param prior_shape \code{interval} or \code{boxplot} - for how to represent
 #' prior/posteriors of the TPR/FPRs of measurements.
 #' @param silent Default is TRUE to not print any warning messages; FALSE otherwise.
-#' @importFrom binom binom.confint
 #' 
 #' @family visualization functions
 #' @export
@@ -90,13 +89,13 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   MBS_case_curr <- MBS_curr[1:Nd,,drop=FALSE]
   count    <- as.integer(do.call(cbind,lapply(MBS_case_curr,sum,na.rm=TRUE)))
   NA_count <- apply(MBS_case_curr,2,function(v) sum(is.na(v)))
-  tmp.case <- binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
+  tmp.case <- binom::binom.confint(count,Nd-NA_count,conf.level = 0.95, methods = "ac")
   
   #controls:
   MBS_ctrl_curr <- MBS_curr[-(1:Nd),,drop=FALSE]
   count    <- as.integer(do.call(cbind,lapply(MBS_ctrl_curr,sum,na.rm=TRUE)))
   NA_count <- apply(MBS_ctrl_curr,2,function(v) sum(is.na(v)))
-  tmp.ctrl <- binom.confint(count, Nu-NA_count, conf.level = 0.95, methods = "ac")
+  tmp.ctrl <- binom::binom.confint(count, Nu-NA_count, conf.level = 0.95, methods = "ac")
   
   # case and control positive rate, lower and upper limit
   MBS_mean  <- rbind(round(tmp.case$mean,5),round(tmp.ctrl$mean,5))
