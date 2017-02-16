@@ -37,9 +37,8 @@ is used to demonstrate use of the baker package tools.
 The data for the illustration are related to pathogen
 categorization in pneumonia.
 ```{r lkd}
-#demodat = read.csv(system.file("example_data/pathogen_category_simulation.csv", 
-#package="baker"))
-demodat = read.csv("./pathogen_category_simulation.csv")
+demodat = read.csv(system.file("example_data/pathogen_category_simulation.csv", 
+       package="baker"))
 kable(head(demodat))
 ```
 
