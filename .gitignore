@@ -6,5 +6,4 @@ baker.Rproj
 .DS_Store
 inst/doc
 dev-notes/
-vignettes/
 baker_package_manuscript/
