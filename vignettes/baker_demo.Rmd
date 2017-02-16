@@ -37,8 +37,9 @@ is used to demonstrate use of the baker package tools.
 The data for the illustration are related to pathogen
 categorization in pneumonia.
 ```{r lkd}
-demodat = read.csv(system.file("example_data/pathogen_category_simulation.csv", 
-package="baker"))
+#demodat = read.csv(system.file("example_data/pathogen_category_simulation.csv", 
+#package="baker"))
+demodat = read.csv("./pathogen_category_simulation.csv")
 kable(head(demodat))
 ```
 
@@ -259,7 +260,7 @@ plot_panels(result_folder,bg_color=NULL,
 ## plot the joint posterior of the etiology fraction for any three causes:
 
 This is not working, changes to robCompositions?
-```{r trysel,fig=FALSE,eval=FALSE}
+```{r trysel,fig=TRUE,eval=TRUE}
 plot_selected_etiology(selected = c("A","B","C"), result_folder, 1, 5)
 ```
 
@@ -267,11 +268,9 @@ plot_selected_etiology(selected = c("A","B","C"), result_folder, 1, 5)
 
 Seems broken
 
-```{r dodod,fig=FALSE}
-#system(paste("cp pathogen_category_simulation.csv", file.path(working_dir,"pathogen_category_simulation.csv")))
-
+```{r dodod,fig=TRUE}
 ## PROBLEM WITH robCompositions, VJC Feb 16 2017
-#plot_group_etiology(result_folder,dir_taxo = global_patho_taxo_dir)
+plot_group_etiology(result_folder,dir_taxo = global_patho_taxo_dir, ksFrac=1)
 ```
 
 ## model checking by comparing observed pairwise log odds ratios (LOR)
