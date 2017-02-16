@@ -148,7 +148,7 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
         lwd=3)
       
       ind.temp = floor(seq(1,nrow(pEti),len=floor(ksFrac*nrow(pEti))))
-      temp = robCompositions::isomLR(pEti)[ind.temp,]
+      temp = robCompositions::pivotCoord(pEti, fast=FALSE, base = exp(1), norm = "sqrt((D-i)/(D-i+1))")[ind.temp,]
       
       # a 2 dim grid with in [0,1]*[0,1]:
       coord1 = seq(0.001,0.999,by=0.01)
@@ -163,8 +163,10 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
                                    x=1-coord.grid$coord2/sqrt(0.75)-coord.grid$coord1+
                                      1/sqrt(3)*coord.grid$coord2)
       prob.grid = rev(prob.grid.temp)
+      neg_index <- apply(prob.grid,1,function(v) any(v<0))
+      prob.grid[neg_index,] <- c(1,1,1)
       
-      ilr.grid    = suppressWarnings(robCompositions::isomLR(prob.grid))
+      ilr.grid    = suppressWarnings(robCompositions::pivotCoord(prob.grid, fast=FALSE, base = exp(1), norm = "sqrt((D-i)/(D-i+1))"))
       
       fhat1       = ks::kde(x=temp,H=ks::Hpi(temp),compute.cont=T)
       fhat2       = ks::kde(x=temp,H=ks::Hpi(temp),eval.points=ilr.grid)
@@ -226,7 +228,7 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
       
       ind.temp = floor(seq(1,nrow(pEti),len=floor(ksFrac*nrow(pEti))))
       #temp = compositions::ilr(pEti)[ind.temp,]
-      temp = robCompositions::isomLR(pEti)[ind.temp,]
+      temp = robCompositions::pivotCoord(pEti, fast=FALSE, base = exp(1), norm = "sqrt((D-i)/(D-i+1))")[ind.temp,]
       
       coord1 = seq(0.001,0.999,by=0.01)
       coord2 = sqrt(0.75)*coord1
@@ -237,8 +239,10 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
                                    x=1-coord.grid$coord2/sqrt(0.75)-coord.grid$coord1+
                                      1/sqrt(3)*coord.grid$coord2)
       prob.grid = rev(prob.grid.temp)
+      neg_index <- apply(prob.grid,1,function(v) any(v<0))
+      prob.grid[neg_index,] <- c(1,1,1)
       
-      ilr.grid    = suppressWarnings(robCompositions::isomLR(prob.grid))
+      ilr.grid    = suppressWarnings(robCompositions::pivotCoord(prob.grid, fast=FALSE, base = exp(1), norm = "sqrt((D-i)/(D-i+1))"))
       
       fhat1       = ks::kde(x=temp,H=ks::Hpi(temp),compute.cont=T)
       fhat2       = ks::kde(x=temp,H=ks::Hpi(temp),eval.points=ilr.grid)
@@ -392,7 +396,7 @@ plot_selected_etiology <- function(selected, DIR_NPLCM,ksFrac = 1,levellabel = 5
     lwd=3)
   
   ind.temp = floor(seq(1,nrow(pEti),len=floor(ksFrac*nrow(pEti))))
-  temp = robCompositions::isomLR(pEti)[ind.temp,]
+  temp = robCompositions::pivotCoord(pEti, fast=FALSE, base = exp(1), norm = "sqrt((D-i)/(D-i+1))")[ind.temp,]
   
   # a 2 dim grid with in [0,1]*[0,1]:
   coord1 = seq(0.001,0.999,by=0.01)
@@ -407,8 +411,10 @@ plot_selected_etiology <- function(selected, DIR_NPLCM,ksFrac = 1,levellabel = 5
                                x=1-coord.grid$coord2/sqrt(0.75)-coord.grid$coord1+
                                  1/sqrt(3)*coord.grid$coord2)
   prob.grid = rev(prob.grid.temp)
+  neg_index <- apply(prob.grid,1,function(v) any(v<0))
+  prob.grid[neg_index,] <- c(1,1,1)
   
-  ilr.grid    = suppressWarnings(robCompositions::isomLR(prob.grid))
+  ilr.grid    = suppressWarnings(robCompositions::pivotCoord(prob.grid, fast=FALSE, base = exp(1), norm = "sqrt((D-i)/(D-i+1))"))
   
   fhat1       = ks::kde(x=temp,H=ks::Hpi(temp),compute.cont=T)
   fhat2       = ks::kde(x=temp,H=ks::Hpi(temp),eval.points=ilr.grid)
