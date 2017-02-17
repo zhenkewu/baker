@@ -30,10 +30,21 @@ devtools::install_github("zhenkewu/baker")
 shiny::runGitHub("baker","zhenkewu",subdir="inst/shiny")
 ```
 
-Analytic Goal of `baker`?
+Analytic Goal
 -------------------------------------
 
 - To study disease etiology from case-control data from multiple sources that have measurement errors. If you are interested in estimating the population etiology pie (fraction), and the probability of each cause for individual case, try `baker`.
+
+
+Comprison to Other Existing Solutions
+------------------------------------------------
+- Acknowledges various levels of measurement errors and combines multiple sources
+of data for optimal disease diagnosis.
+
+Main Functions
+-----------------------------
+- `nplcm()` that fits the model with or without covariates.
+
 
 Details
 -------------------------------------
@@ -42,15 +53,6 @@ Details
 2. `baker` has implemented models for dependent measurements given disease status, regression analyses of etiology, multiple imperfect measurements, different priors for true positive rates among cases with differential measurement characteristics, and multiple-pathogen etiology.
 3. Scientists in [Pneumonia Etiology Research for Child Health](http://www.jhsph.edu/research/centers-and-institutes/ivac/projects/perch/) (PERCH) study usually refer to the etiology distribution as "*population etiology pie*" and "*individual etiology pie*" for their compositional nature, hence the name of the package.
 4. Reference publication can be found [here](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/abstract) and [here](http://biostatistics.oxfordjournals.org/content/early/2016/08/19/biostatistics.kxw037.short?rss=1).
-
-How does it compare to other existing solutions?
-------------------------------------------------
-- Acknowledges various levels of measurement errors and combines multiple sources
-of data.
-
-What are the main functions?
------------------------------
-- `nplcm()` that fits the model with or without covariates.
 
 Platform
 ---------
