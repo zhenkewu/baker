@@ -258,17 +258,13 @@ plot_panels(result_folder,bg_color=NULL,
 
 ## plot the joint posterior of the etiology fraction for any three causes:
 
-This is not working, changes to robCompositions?
 ```{r trysel,fig=TRUE,eval=TRUE}
 plot_selected_etiology(selected = c("A","B","C"), result_folder, 1, 5)
 ```
 
 ## grouped etiology (e.g., bacteria (left) vs virus (right) )
 
-Seems broken
-
 ```{r dodod,fig=TRUE}
-## PROBLEM WITH robCompositions, VJC Feb 16 2017
 plot_group_etiology(result_folder,dir_taxo = global_patho_taxo_dir, ksFrac=1)
 ```
 
