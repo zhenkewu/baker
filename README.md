@@ -6,16 +6,23 @@
 
 [![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
 
-How to install?
+Installation
 --------------
 ```r
-install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
+install.packages("devtools",repos="https://cloud.r-project.org")
 devtools::install_github("zhenkewu/baker")
 ```
 Note: run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package is reported
 as missing.
 
-How to run `baker` graphical user interface?
+Vignettes
+-------------
+```r
+devtools::install_github("zhenkewu/baker", build_vignettes=TRUE) # will take extra time to run a few examples.
+browseVignettes("baker")
+```
+
+Graphical User Interface (GUI)
 --------------------------------
 ```r
 install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
@@ -23,7 +30,7 @@ devtools::install_github("zhenkewu/baker")
 shiny::runGitHub("baker","zhenkewu",subdir="inst/shiny")
 ```
 
-Why should someone use `baker`?
+Analytic Goal of `baker`?
 -------------------------------------
 
 - To study disease etiology from case-control data from multiple sources that have measurement errors. If you are interested in estimating the population etiology pie (fraction), and the probability of each cause for individual case, try `baker`.
