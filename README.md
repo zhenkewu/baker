@@ -59,8 +59,8 @@ Platform
 - The `baker` package is compatible with OSX, Linux and Windows systems, each requiring a slightly different setup as described below. If you need to speed up the installation and analysis, please contact the 
 maintainer or chat by clicking the `gitter` button at the top of this README file. 
 
-Connect `R` to `JAGS` or `WinBUGS`
-----------------------------------
+Connect `R` to `JAGS`/`WinBUGS`
+---------------------------------
 #### Mac OSX 10.11 El Capitan
 
 1. Use [Just Another Gibbs Sampler (JAGS)](http://mcmc-jags.sourceforge.net/)
