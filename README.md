@@ -143,11 +143,3 @@ extra information.
     1. Install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/)
     2. Install the WinBUGS 1.4.x [immortality key](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/)
 
-Maintainer:
---------------------------
-
-Zhenke Wu (zhwu@jhu.edu)
-
-Department of Biostatistics
-
-Johns Hopkins Bloomberg School of Public Health
