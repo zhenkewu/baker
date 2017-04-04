@@ -6,6 +6,17 @@
 
 [![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
 
+
+**Maintainer**: Zhenke Wu, zhenkewu@umich.edu
+
+**References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following paper:
+
+|       | Citation     | Paper Link
+| -------------  | -------------  | -------------  |
+| partially Latent Class Models (pLCM)    | Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. J. R. Stat. Soc. C, 65: 97–114. doi:10.1111/rssc.12101   |[Link](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/full)| 
+| nested pLCM    | Zhenke Wu, Maria Deloria-Knoll, Scott L. Zeger; Nested partially latent class models for dependent binary data; estimating disease etiology. Biostatistics 2017; 18 (2): 200-213. doi: 10.1093/biostatistics/kxw037   |[Link](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent)| 
+
+
 Installation
 --------------
 ```r
