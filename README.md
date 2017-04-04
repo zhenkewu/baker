@@ -2,7 +2,6 @@
 ------
 > An R Package for Fitting Bayesian [Nested Partially Latent Class Models](http://biostats.bepress.com/jhubiostat/paper276/) 
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/zhenkewu/baker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
 
@@ -16,7 +15,17 @@
 | partially Latent Class Models (pLCM)    | Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. J. R. Stat. Soc. C, 65: 97–114. doi:10.1111/rssc.12101   |[Link](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/full)| 
 | nested pLCM    | Wu, Z., Deloria-Knoll, M., Zeger, S.L.; Nested partially latent class models for dependent binary data; estimating disease etiology. Biostatistics 2017; 18 (2): 200-213. doi: 10.1093/biostatistics/kxw037   |[Link](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent)| 
 
+## Table of content
+- [1. Installation](#id-section1)
+- [2. Vignettes](#id-section2)
+- [3. Graphical User Interface (GUI)](#id-section3)
+- [4. Analytic Goal](#id-section4)
+- [5. Comprison to Other Existing Solutions](#id-section5)
+- [6. Details](#id-section6)
+- [7. Platform](#id-section7)
+- [8. Connect `R` to `JAGS`/`WinBUGS`](#id-section8)
 
+<div id='id-section1'/>
 Installation
 --------------
 ```r
@@ -26,6 +35,7 @@ devtools::install_github("zhenkewu/baker")
 Note: run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package is reported
 as missing.
 
+<div id='id-section2'/>
 Vignettes
 -------------
 ```r
@@ -33,6 +43,7 @@ devtools::install_github("zhenkewu/baker", build_vignettes=TRUE) # will take ext
 browseVignettes("baker")
 ```
 
+<div id='id-section3'/>
 Graphical User Interface (GUI)
 --------------------------------
 ```r
@@ -41,35 +52,36 @@ devtools::install_github("zhenkewu/baker")
 shiny::runGitHub("baker","zhenkewu",subdir="inst/shiny")
 ```
 
+<div id='id-section4'/>
 Analytic Goal
 -------------------------------------
 
 - To study disease etiology from case-control data from multiple sources that have measurement errors. If you are interested in estimating the population etiology pie (fraction), and the probability of each cause for individual case, try `baker`.
 
-
+<div id='id-section5'/>
 Comprison to Other Existing Solutions
 ------------------------------------------------
 - Acknowledges various levels of measurement errors and combines multiple sources
 of data for optimal disease diagnosis.
+- Main function: `nplcm()` that fits the model with or without covariates.
 
-Main Functions
------------------------------
-- `nplcm()` that fits the model with or without covariates.
-
-
+<div id='id-section6'/>
 Details
 -------------------------------------
 
 1. Implements hierarchical Bayesian models to infer disease etiology for multivariate binary data. The package builds in functionalities for data cleaning, exploratory data analyses, model specification, model estimation, visualization and model diagnostics and comparisons, catalyzing vital effective communications between analysts and practicing clinicians. 
 2. `baker` has implemented models for dependent measurements given disease status, regression analyses of etiology, multiple imperfect measurements, different priors for true positive rates among cases with differential measurement characteristics, and multiple-pathogen etiology.
 3. Scientists in [Pneumonia Etiology Research for Child Health](http://www.jhsph.edu/research/centers-and-institutes/ivac/projects/perch/) (PERCH) study usually refer to the etiology distribution as "*population etiology pie*" and "*individual etiology pie*" for their compositional nature, hence the name of the package.
-4. Reference publication can be found [here](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/abstract) and [here](http://biostatistics.oxfordjournals.org/content/early/2016/08/19/biostatistics.kxw037.short?rss=1).
 
+
+<div id='id-section7'/>
 Platform
 ---------
 - The `baker` package is compatible with OSX, Linux and Windows systems, each requiring a slightly different setup as described below. If you need to speed up the installation and analysis, please contact the 
 maintainer or chat by clicking the `gitter` button at the top of this README file. 
 
+
+<div id='id-section8'/>
 Connect `R` to `JAGS`/`WinBUGS`
 ---------------------------------
 #### Mac OSX 10.11 El Capitan
