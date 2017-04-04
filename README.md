@@ -26,6 +26,7 @@
 - [8. Connect `R` to `JAGS`/`WinBUGS`](#id-section8)
 
 <div id='id-section1'/>
+
 Installation
 --------------
 ```r
@@ -36,6 +37,7 @@ Note: run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package is rep
 as missing.
 
 <div id='id-section2'/>
+
 Vignettes
 -------------
 ```r
@@ -44,6 +46,7 @@ browseVignettes("baker")
 ```
 
 <div id='id-section3'/>
+
 Graphical User Interface (GUI)
 --------------------------------
 ```r
@@ -53,12 +56,14 @@ shiny::runGitHub("baker","zhenkewu",subdir="inst/shiny")
 ```
 
 <div id='id-section4'/>
+
 Analytic Goal
 -------------------------------------
 
 - To study disease etiology from case-control data from multiple sources that have measurement errors. If you are interested in estimating the population etiology pie (fraction), and the probability of each cause for individual case, try `baker`.
 
 <div id='id-section5'/>
+
 Comprison to Other Existing Solutions
 ------------------------------------------------
 - Acknowledges various levels of measurement errors and combines multiple sources
@@ -66,6 +71,7 @@ of data for optimal disease diagnosis.
 - Main function: `nplcm()` that fits the model with or without covariates.
 
 <div id='id-section6'/>
+
 Details
 -------------------------------------
 
@@ -75,6 +81,7 @@ Details
 
 
 <div id='id-section7'/>
+
 Platform
 ---------
 - The `baker` package is compatible with OSX, Linux and Windows systems, each requiring a slightly different setup as described below. If you need to speed up the installation and analysis, please contact the 
@@ -82,6 +89,7 @@ maintainer or chat by clicking the `gitter` button at the top of this README fil
 
 
 <div id='id-section8'/>
+
 Connect `R` to `JAGS`/`WinBUGS`
 ---------------------------------
 #### Mac OSX 10.11 El Capitan
