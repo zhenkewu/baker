@@ -1,34 +1,27 @@
 ---
 layout: page
-title: R/qtlcharts
-tagline: Interactive charts for QTL data
-description: R/qtlcharts is an R package to create interactive charts for quantitative trait locus (QTL) mapping data, for use with R/qtl.
+title: R/baker
+tagline: Bayesian Analytic Kit for Etiology Research
+description: baker is an R package to estimate disease etiology from multiple measurements with case-control design
 ---
 
-R/qtlcharts is an [R](http://www.r-project.org) package to create
-interactive charts for QTL data, for use
-with [R/qtl](http://www.rqtl.org).
+**baker**: Bayesian Analysis Kit for Etiology Research
+------
+> An [R](http://www.r-project.org) Package for Fitting Bayesian [Nested Partially Latent Class Models](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent) 
 
-A QTL is a _quantitative trait locus_: a genetic locus that
-contributes to variation in a quantitative trait. The
-goal of R/qtlcharts is to provide interactive data visualizations for QTL
-analyses, and to make these visualizations available from [R](https://www.r-project.org).
 
-The interactive visualizations are built with the JavaScript library
-[D3](https://d3js.org), and are viewed in a web browser. We are
-targeting Chrome and Safari and, as much as possible, Firefox.
+[![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
 
-A set of [reusable graphics panels](http://kbroman.org/d3panels) form the basis
-for the larger visualizations.
 
-The package was recently updated for [D3](https://d3js.org)
-[version 4](https://github.com/d3/d3/blob/master/API.md). This new
-version is not yet on [CRAN](https://cran.r-project.org), but can be
-installed with [devtools](https://github.com/hadley/devtools), using
-`devtools::install_github("kbroman/qtlcharts")`.
+**Maintainer**: Zhenke Wu, zhenkewu@umich.edu
 
-To cite R/qtlcharts in publications, please use
-[Broman KW (2015) R/qtlcharts: interactive graphics for quantitative trait locus mapping. Genetics 199:359-361](https://www.ncbi.nlm.nih.gov/pubmed/25527287).
+**References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following paper:
+
+|       | Citation     | Paper Link
+| -------------  | -------------  | -------------  |
+| partially Latent Class Models (pLCM)    | Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. J. R. Stat. Soc. C, 65: 97–114. doi:10.1111/rssc.12101   |[Link](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/full)| 
+| nested pLCM    | Wu, Z., Deloria-Knoll, M., Zeger, S.L.; Nested partially latent class models for dependent binary data; estimating disease etiology. Biostatistics 2017; 18 (2): 200-213. doi: 10.1093/biostatistics/kxw037   |[Link](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent)| 
+
 
 ---
 

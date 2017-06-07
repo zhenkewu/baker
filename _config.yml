@@ -8,15 +8,15 @@ highlighter: rouge
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : R/qtlcharts
+title : R/baker
 author :
-  name : Karl Broman
-  email : kbroman@gmail.com
-  github : kbroman
-  twitter : kwbroman
+  name : Zhenke Wu
+  email : zhenkewu@gmail.com
+  github : zhenkewu
+  twitter : ZhenkeWu
   feedburner : nil
 
-production_url : http://kbroman.github.io/qtlcharts
+production_url : http://zhenkewu.com/baker
 
 # Tell Github to use the Kramdown markdown interpreter
 # (see https://help.github.com/articles/migrating-your-pages-site-from-maruku)
@@ -26,6 +26,17 @@ markdown: kramdown
 #
 JB :
   version : 0.3.0
+
+
+  # Settings for analytics helper
+  # Set 'provider' to the analytics provider you want to use.
+  # Set 'provider' to false to turn analytics off globally.
+  #
+  analytics :
+    provider : google
+    google : 
+      tracking_id : 'UA-57530925-1'
+
 
   # All links will be namespaced by BASE_PATH if defined.
   # Links in your website should always be prefixed with {{BASE_PATH}}
@@ -49,7 +60,7 @@ JB :
   #   - Only the following values are falsy: ["", null, false]
   #   - When setting BASE_PATH it must be a valid url.
   #     This means always setting the protocol (http|https) or prefixing with "/"
-  BASE_PATH : http://kbroman.org/qtlcharts
+  BASE_PATH : http://zhenkewu.com/baker
 
   # By default, the asset_path is automatically defined relative to BASE_PATH plus the enabled theme.
   # ex: [BASE_PATH]/assets/themes/[THEME-NAME]
