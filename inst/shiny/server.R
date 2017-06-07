@@ -710,19 +710,19 @@ shinyServer(function(input,output,session) {
   # specify likelihood:
   #
   output$Eti_formula_UI <- renderUI({
-    textInput("Eti_formula_input","",value="~ 0")
+    textInput("Eti_formula_input","",value="~ 1")
   })
   
   output$FPR_formula_UI <- renderUI({
     tagList(
       conditionalPanel(condition = "output.status_patho_BrS_NPPCR",
-                       textInput("FPR_formula_input_NPPCR","NPPCR",value="~ 0")
+                       textInput("FPR_formula_input_NPPCR","NPPCR",value="~ 1")
       ),
       conditionalPanel(condition = "output.status_patho_BrS_WBPCR",
-                       textInput("FPR_formula_input_WBPCR","WBPCR",value="~ 0")
+                       textInput("FPR_formula_input_WBPCR","WBPCR",value="~ 1")
       ),
       conditionalPanel(condition = "output.status_patho_BrS_NPCX_VT13",
-                       textInput("FPR_formula_input_NPCX","NPCX",value="~ 0")
+                       textInput("FPR_formula_input_NPCX","NPCX",value="~ 1")
       )
     )
   })
@@ -739,50 +739,50 @@ shinyServer(function(input,output,session) {
       if (input$TPR_prior_BrS_info=="informative"){
         if ( input$TPR_prior_BrS_input=="match_range"){
           if (!is.null(input$patho_BrS_NPPCR)){
-            BrS_vals[["NPPCR"]] <- list(up  = rep(input$val_NPPCR_up,length(input$patho_BrS_NPPCR)),
-                                        low = rep(input$val_NPPCR_down,length(input$patho_BrS_NPPCR)))
+            BrS_vals[["NPPCR"]] <- list(up  = list(rep(input$val_NPPCR_up,length(input$patho_BrS_NPPCR))),
+                                        low = list(rep(input$val_NPPCR_down,length(input$patho_BrS_NPPCR))))
           }
           
           if (!is.null(input$patho_BrS_WBPCR)){
-            BrS_vals[["WBPCR"]] <- list(up  = rep(input$val_WBPCR_up,length(input$patho_BrS_WBPCR)),
-                                        low = rep(input$val_WBPCR_down,length(input$patho_BrS_WBPCR)))
+            BrS_vals[["WBPCR"]] <- list(up  = list(rep(input$val_WBPCR_up,length(input$patho_BrS_WBPCR))),
+                                        low = list(rep(input$val_WBPCR_down,length(input$patho_BrS_WBPCR))))
           }
           
           if (!is.null(input$patho_BrS_NPCX_VT13)){
-            BrS_vals[["NPCX"]] <- list(up  = rep(input$val_NPCX_up,length(input$patho_BrS_NPCX_VT13)),
-                                       low = rep(input$val_NPCX_down,length(input$patho_BrS_NPCX_VT13)))
+            BrS_vals[["NPCX"]] <- list(up  = list(rep(input$val_NPCX_up,length(input$patho_BrS_NPCX_VT13))),
+                                       low = list(rep(input$val_NPCX_down,length(input$patho_BrS_NPCX_VT13))))
           }
         } else {
           if (!is.null(input$patho_BrS_NPPCR)){
-            BrS_vals[["NPPCR"]] <- list(alpha  = rep(input$val_NPPCR_alpha,length(input$patho_BrS_NPPCR)),
-                                        beta = rep(input$val_NPPCR_beta,length(input$patho_BrS_NPPCR)))
+            BrS_vals[["NPPCR"]] <- list(alpha  = list(rep(input$val_NPPCR_alpha,length(input$patho_BrS_NPPCR))),
+                                        beta = list(rep(input$val_NPPCR_beta,length(input$patho_BrS_NPPCR))))
           }
           
           if (!is.null(input$patho_BrS_WBPCR)){
-            BrS_vals[["WBPCR"]] <- list(alpha  = rep(input$val_WBPCR_alpha,length(input$patho_BrS_WBPCR)),
-                                        beta = rep(input$val_WBPCR_beta,length(input$patho_BrS_WBPCR)))
+            BrS_vals[["WBPCR"]] <- list(alpha  = list(rep(input$val_WBPCR_alpha,length(input$patho_BrS_WBPCR))),
+                                        beta = list(rep(input$val_WBPCR_beta,length(input$patho_BrS_WBPCR))))
           }
           
           if (!is.null(input$patho_BrS_NPCX_VT13)){
-            BrS_vals[["NPCX"]] <- list(alpha  = rep(input$val_NPCX_alpha,length(input$patho_BrS_NPCX_VT13)),
-                                       beta = rep(input$val_NPCX_beta,length(input$patho_BrS_NPCX_VT13)))
+            BrS_vals[["NPCX"]] <- list(alpha  = list(rep(input$val_NPCX_alpha,length(input$patho_BrS_NPCX_VT13))),
+                                       beta = list(rep(input$val_NPCX_beta,length(input$patho_BrS_NPCX_VT13))))
           }
         }
       } else{
         BrS_vals <- list()
         if (!is.null(input$patho_BrS_NPPCR)){
-          BrS_vals[["NPPCR"]] <- list(alpha  = rep(input$val_NPPCR_alpha_flat,length(input$patho_BrS_NPPCR)),
-                                      beta   = rep(input$val_NPPCR_beta_flat,length(input$patho_BrS_NPPCR)))
+          BrS_vals[["NPPCR"]] <- list(alpha  = list(rep(input$val_NPPCR_alpha_flat,length(input$patho_BrS_NPPCR))),
+                                      beta   = list(rep(input$val_NPPCR_beta_flat,length(input$patho_BrS_NPPCR))))
         }
         
         if (!is.null(input$patho_BrS_WBPCR)){
-          BrS_vals[["WBPCR"]] <- list(alpha  = rep(input$val_WBPCR_alpha_flat,length(input$patho_BrS_WBPCR)),
-                                      beta = rep(input$val_WBPCR_beta_flat,length(input$patho_BrS_WBPCR)))
+          BrS_vals[["WBPCR"]] <- list(alpha  = list(rep(input$val_WBPCR_alpha_flat,length(input$patho_BrS_WBPCR))),
+                                      beta = list(rep(input$val_WBPCR_beta_flat,length(input$patho_BrS_WBPCR))))
         }
         
         if (!is.null(input$patho_BrS_NPCX_VT13)){
-          BrS_vals[["NPCX"]] <- list(alpha  = rep(input$val_NPCX_alpha_flat,length(input$patho_BrS_NPCX_VT13)),
-                                     beta = rep(input$val_NPCX_beta_flat,length(input$patho_BrS_NPCX_VT13)))
+          BrS_vals[["NPCX"]] <- list(alpha  = list(rep(input$val_NPCX_alpha_flat,length(input$patho_BrS_NPCX_VT13))),
+                                     beta = list(rep(input$val_NPCX_beta_flat,length(input$patho_BrS_NPCX_VT13))))
         }
       }
       
@@ -793,31 +793,31 @@ shinyServer(function(input,output,session) {
       if (input$TPR_prior_SS_info=="informative") {
         if (input$TPR_prior_SS_input=="match_range") {
           if (!is.null(input$patho_SS_BCX)){
-            SS_vals[["BCX"]] <- list(list(up = rep(input$val_BCX_up,length(input$patho_SS_BCX)),
-                                          low = rep(input$val_BCX_down,length(input$patho_SS_BCX))))
+            SS_vals[["BCX"]] <- list(up = list(rep(input$val_BCX_up,length(input$patho_SS_BCX))),
+                                          low = list(rep(input$val_BCX_down,length(input$patho_SS_BCX))))
           }
           
           if (!is.null(input$patho_SS_LA_ADJ)){
-            SS_vals[["LA_ADJ"]] <- list(list(up = rep(input$val_LA_ADJ_up,length(input$patho_SS_LA_ADJ)),
-                                             low = rep(input$val_LA_ADJ_down,length(input$patho_SS_LA_ADJ))))
+            SS_vals[["LA_ADJ"]] <- list(up = list(rep(input$val_LA_ADJ_up,length(input$patho_SS_LA_ADJ))),
+                                             low = list(rep(input$val_LA_ADJ_down,length(input$patho_SS_LA_ADJ))))
           }
           
           if (!is.null(input$patho_SS_PF_ADJ)){
-            SS_vals[["PF_ADJ"]] <- list(list(up  = rep(input$val_PF_ADJ_up,length(input$patho_SS_PF_ADJ)),
-                                             low = rep(input$val_PF_ADJ_down,length(input$patho_SS_PF_ADJ))))
+            SS_vals[["PF_ADJ"]] <- list(up  = list(rep(input$val_PF_ADJ_up,length(input$patho_SS_PF_ADJ))),
+                                             low = list(rep(input$val_PF_ADJ_down,length(input$patho_SS_PF_ADJ))))
           }
         } else {
           if (!is.null(input$patho_SS_BCX)){
-            SS_vals[["BCX"]] <- list(list(alpha = rep(input$val_BCX_alpha,length(input$patho_SS_BCX)),
-                                          beta = rep(input$val_BCX_beta,length(input$patho_SS_BCX))))
+            SS_vals[["BCX"]] <- list(alpha = list(rep(input$val_BCX_alpha,length(input$patho_SS_BCX))),
+                                          beta = list(rep(input$val_BCX_beta,length(input$patho_SS_BCX))))
           }
           if (!is.null(input$patho_SS_LA_ADJ)){
-            SS_vals[["LA_ADJ"]] <- list(list(alpha = rep(input$val_LA_ADJ_alpha,length(input$patho_SS_LA_ADJ)),
-                                             beta = rep(input$val_LA_ADJ_beta,length(input$patho_SS_LA_ADJ))))
+            SS_vals[["LA_ADJ"]] <- list(alpha = list(rep(input$val_LA_ADJ_alpha,length(input$patho_SS_LA_ADJ))),
+                                             beta = list(rep(input$val_LA_ADJ_beta,length(input$patho_SS_LA_ADJ))))
           }
           if (!is.null(input$patho_SS_PF_ADJ)){
-            SS_vals[["PF_ADJ"]] <- list(list(alpha  = rep(input$val_PF_ADJ_alpha,length(input$patho_SS_PF_ADJ)),
-                                             beta = rep(input$val_PF_ADJ_beta,length(input$patho_SS_PF_ADJ))))
+            SS_vals[["PF_ADJ"]] <- list(alpha  = list(rep(input$val_PF_ADJ_alpha,length(input$patho_SS_PF_ADJ))),
+                                             beta = list(rep(input$val_PF_ADJ_beta,length(input$patho_SS_PF_ADJ))))
           }
         }
       }
