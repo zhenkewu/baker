@@ -1,6 +1,6 @@
 ---
 layout: page
-title: R/baker
+title: baker
 tagline: Bayesian Analytic Kit for Etiology Research
 description: baker is an R package to estimate disease etiology from multiple measurements with case-control design
 ---
