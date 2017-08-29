@@ -19,12 +19,12 @@ before_install:
   - cat DESCRIPTION
   - jags_install  
 
+r_build_args: --no-manual --no-build-vignettes
+r_check_args: --no-manual --as-cran
 
 env:
  global:
   - NOT_CRAN=true
-  - R_BUILD_ARGS="--no-manual --no-build-vignettes"
-  - R_CHECK_ARGS="--no-manual --as-cran "
   - RGL_USE_NULL=TRUE
 
 apt_packages:
