@@ -38,6 +38,7 @@ Suggests:
     knitr,
     testthat,
     bibtex,
-    knitcitations
+    knitcitations,
+    rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000
