@@ -4,6 +4,10 @@ language: r
 warnings_are_errors: true
 sudo: required
 
+os:
+  - linux
+  - osx
+
 r_binary_packages: 
   - rjags 
   - r2jags
