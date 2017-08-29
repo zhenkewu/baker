@@ -23,7 +23,7 @@ before_install:
 env:
  global:
    - NOT_CRAN=true
-   - R_BUILD_ARGS="--no-manual "
+   - R_BUILD_ARGS="--no-manual --no-build-vignettes"
    - R_CHECK_ARGS="--no-manual --as-cran "
 
 apt_packages:
