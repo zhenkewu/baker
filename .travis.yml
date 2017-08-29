@@ -22,9 +22,10 @@ before_install:
 
 env:
  global:
-   - NOT_CRAN=true
-   - R_BUILD_ARGS="--no-manual --no-build-vignettes"
-   - R_CHECK_ARGS="--no-manual --as-cran "
+  - NOT_CRAN=true
+  - R_BUILD_ARGS="--no-manual --no-build-vignettes"
+  - R_CHECK_ARGS="--no-manual --as-cran "
+  - RGL_USE_NULL=TRUE
 
 apt_packages:
   - libv8-dev
