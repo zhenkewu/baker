@@ -22,4 +22,3 @@ Read measurement slices
 \seealso{
 Other raw data importing functions: \code{\link{extract_data_raw}}
 }
-

@@ -21,4 +21,3 @@ x <- c("A","B","A","CC+DD","DD+CC","E+F+G","B")
 unique_cause(x)
 
 }
-

@@ -15,4 +15,3 @@ a Probability between 0 and 1
 \description{
 expit function
 }
-

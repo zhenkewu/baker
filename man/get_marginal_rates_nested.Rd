@@ -22,4 +22,3 @@ equal to the no. of measurement dimensions within a slice.
 \description{
 get marginal TPR and FPR for nested model
 }
-

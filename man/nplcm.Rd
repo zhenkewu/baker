@@ -111,4 +111,3 @@ Uses WinBUGS/JAGS in Windows system or JAGS in OSX system for Bayesian inference
 For stratification/regression functionalities, true positive rates are constant
 across strata or covariate values.\cr
 }
-

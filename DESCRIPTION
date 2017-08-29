@@ -32,12 +32,12 @@ Imports:
     shinyFiles(>= 0.6),
     shinydashboard(>= 0.5.1)
 License: MIT + file LICENSE
-SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net) or
-    WinBUGS 1.4 (Windows-only)
+SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net),
+    WinBUGS (>= 1.4) (Windows-only)
 Suggests:
     knitr,
     testthat,
     bibtex,
     knitcitations
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1.9000

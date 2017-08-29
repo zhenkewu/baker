@@ -39,4 +39,3 @@ sample quantiles.
 \seealso{
 \code{\link{nplcm}}
 }
-

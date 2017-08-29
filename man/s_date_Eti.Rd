@@ -32,4 +32,3 @@ if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.}
 \seealso{
 \code{\link{nplcm}}
 }
-

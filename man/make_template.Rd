@@ -61,4 +61,3 @@ make_template(patho_BrS_NPPCR,cause_list)
  
  
 }
-

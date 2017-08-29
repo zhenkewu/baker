@@ -24,4 +24,3 @@ a list of length two. \code{diff} is the direct differences;
 Obtain direct bias that measure the discrepancy of a posterior
 distribution of pie and a true pie.
 }
-

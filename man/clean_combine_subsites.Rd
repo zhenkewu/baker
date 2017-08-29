@@ -22,4 +22,3 @@ A data frame with combined sites
 In the Actual PERCH data set, a study site may have multiple subsites.
 \code{clean_combine_subsites} combines all the study subjects from the same site.
 }
-

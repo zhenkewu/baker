@@ -15,4 +15,3 @@ None
 \description{
 Get package from CRAN website
 }
-

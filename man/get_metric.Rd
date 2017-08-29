@@ -22,4 +22,3 @@ The result is equivalent to Euclidean-type calculation after the
 compositional vector (e.g., etiologic fraction) is centered-log-ratio (CLRB) tranformed.
 For simulation only.
 }
-

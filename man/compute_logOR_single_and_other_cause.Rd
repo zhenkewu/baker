@@ -15,4 +15,3 @@ a matrix
 \description{
 Calculate marginal log odds ratios (with other causes)
 }
-

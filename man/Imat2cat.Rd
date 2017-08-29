@@ -23,4 +23,3 @@ Convert a matrix of binary indicators to categorial variables
 
 Imat2cat(rbind(diag(3),c(1,1,0),c(0,0,0)),c("A","B","C","A+B","NoA"),c("A","B","C"))
 }
-

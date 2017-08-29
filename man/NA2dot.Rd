@@ -15,4 +15,3 @@ A string of characters without 'NA'
 \description{
 convert 'NA' to '.'
 }
-

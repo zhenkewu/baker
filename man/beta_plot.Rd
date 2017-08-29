@@ -17,4 +17,3 @@ None
 \description{
 Plot beta density
 }
-

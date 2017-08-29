@@ -25,4 +25,3 @@ symb2I(c("A","B+C"),c("A","B","C")) # gives a 2 by 3 matrix.
 
 
 }
-

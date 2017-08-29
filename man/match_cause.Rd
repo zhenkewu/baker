@@ -30,4 +30,3 @@ vec     <- c(LETTERS[1:26],"Y+Z","Y+X","Z+A")
 match_cause(pattern,vec)
 
 }
-

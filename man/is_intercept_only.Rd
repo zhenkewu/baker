@@ -15,4 +15,3 @@ is_intercept_only(form)
 \description{
 outputs logical values for a formula; to identify intercept-only formula.
 }
-

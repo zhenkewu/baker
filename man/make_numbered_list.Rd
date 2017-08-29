@@ -15,4 +15,3 @@ a list with names numbered
 \description{
 To collect multiple measurements within the same category, e.g., bronze-standard.
 }
-

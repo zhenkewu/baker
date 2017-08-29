@@ -34,4 +34,3 @@ Insert measurement likelihood (with regression) code chunks into .bug model file
 It is used in \link{write_model_Reg_NoNest} for constructing a .bug file along with
 specification of latent status regression (\link{insert_bugfile_chunk_reg_etiology})
 }
-

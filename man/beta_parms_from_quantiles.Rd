@@ -38,4 +38,3 @@ in finding \code{a} and \code{b}.
 \url{http://www.medicine.mcgill.ca/epidemiology/
                  Joseph/PBelisle/BetaParmsFromQuantiles.html}
 }
-

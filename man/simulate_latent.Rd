@@ -20,4 +20,3 @@ Simulate Latent Status:
 Other simulation functions: \code{\link{simulate_brs}},
   \code{\link{simulate_nplcm}}, \code{\link{simulate_ss}}
 }
-

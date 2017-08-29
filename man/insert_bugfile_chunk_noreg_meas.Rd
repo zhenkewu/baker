@@ -36,4 +36,3 @@ Insert measurement likelihood (without regression) code chunks into .bug model f
 It is used in \link{write_model_NoReg} for constructing a .bug file along with
 specification of latent status distribution (\link{insert_bugfile_chunk_noreg_etiology})
 }
-

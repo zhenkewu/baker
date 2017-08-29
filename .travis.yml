@@ -4,25 +4,26 @@ language: r
 warnings_are_errors: true
 sudo: required
 
+r_binary_packages: 
+  - rjags 
+  - r2jags
 before_install:
-  - echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
-  - sudo add-apt-repository ppa:marutter/rrutter -y
-  - sudo apt-get update
-  - sudo apt-get install r-cran-rjags r-cran-r2jags
+  - if [ $TRAVIS_OS_NAME = linux ]; 
+    then 
+      sudo apt-get install jags; 
+    else 
+      brew install jags; 
+    fi
 
 
 env:
  global:
    - NOT_CRAN=true
-   - WARNINGS_ARE_ERRORS=1
-   - R_BUILD_ARGS=--no-manual 
-   - R_CHECK_ARGS=--no-manual --as-cran 
+   - R_BUILD_ARGS="--no-manual "
+   - R_CHECK_ARGS="--no-manual --as-cran "
 
 apt_packages:
   - libv8-dev
-
-r_packages:
-  - rjags
 
 notifications:
   email:

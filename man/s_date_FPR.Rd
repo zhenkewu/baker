@@ -30,4 +30,3 @@ controls'.
 \seealso{
 \code{\link{nplcm}}
 }
-

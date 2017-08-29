@@ -21,4 +21,3 @@ as distribution specification for latent status
 \description{
 insert etiology regression for latent status code chunk into .bug file
 }
-

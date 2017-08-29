@@ -22,4 +22,3 @@ A list with data, options and posterior samples.
 \description{
 Read data and other model information from a folder that stores model results.
 }
-

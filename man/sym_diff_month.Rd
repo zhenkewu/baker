@@ -16,4 +16,3 @@ sym_diff_month(Rdate1, Rdate2)
 \code{sym_diff_month} evaluates the symmetric difference between two sets
 of R-formated date
 }
-

@@ -42,10 +42,10 @@ compositional nature, hence the name of the package (baking the pie).
 
 \code{\link{nplcm}}
 }
+
 \seealso{
 \itemize{
 \item \url{https://github.com/zhenkewu/baker} for the source code
 and system/software requirements to use \code{baker} for your data.
 }
 }
-

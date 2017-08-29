@@ -9,4 +9,3 @@ bakerUI()
 \description{
 User Interface for baker
 }
-

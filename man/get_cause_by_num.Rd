@@ -26,4 +26,3 @@ num <- 2
 get_cause_by_num(x,num)
 
 }
-

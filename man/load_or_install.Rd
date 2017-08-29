@@ -24,4 +24,3 @@ loads it if it is, and installs it if not.
 Credit:
  \url{http://www.vikparuchuri.com/blog/loading-andor-installing-packages/}
 }
-

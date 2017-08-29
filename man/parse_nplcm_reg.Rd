@@ -21,4 +21,3 @@ TURE for doing regression; FALSE otherwise.
 parse regression components (either false positive rate or etiology regression)
 for fitting nplcm
 }
-
