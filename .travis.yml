@@ -7,13 +7,13 @@ sudo: required
 r_binary_packages: 
   - rjags 
   - r2jags
+
 before_install:
-  - if [ $TRAVIS_OS_NAME = linux ]; 
-    then 
-      sudo apt-get install jags; 
-    else 
-      brew install jags; 
-    fi
+  - fname=travis_helpers.sh
+  - wget -O ${fname} http://bit.ly/travis_helpers
+  - cat ${fname}; source ${fname}; rm ${fname}  
+  - cat DESCRIPTION
+  - jags_install  
 
 
 env:
