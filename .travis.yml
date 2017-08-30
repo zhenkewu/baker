@@ -8,6 +8,9 @@ os:
   - linux
   - osx
 
+r_build_args: --no-manual --no-build-vignettes
+r_check_args: --no-manual --as-cran
+
 r_binary_packages: 
   - rjags 
   - r2jags
@@ -18,10 +21,6 @@ before_install:
   - cat ${fname}; source ${fname}; rm ${fname}  
   - cat DESCRIPTION
   - jags_install  
-
-r_build_args: --no-manual --no-build-vignettes
-r_check_args: --no-manual --as-cran
-
 env:
  global:
   - NOT_CRAN=true
