@@ -22,11 +22,13 @@ output:
 -->
 
 ```{r setup,echo=FALSE,results="hide"}
-suppressPackageStartupMessages({
+# suppressPackageStartupMessages({
+library(rjags)
+library(R2jags)
 library(baker)
 library(binom)
 library(knitr)
-})
+# })
 ```
 
 # Introduction
@@ -37,8 +39,13 @@ is used to demonstrate use of the baker package tools.
 The data for the illustration are related to pathogen
 categorization in pneumonia.
 ```{r lkd}
-demodat = read.csv(system.file("example_data/pathogen_category_simulation.csv", 
-       package="baker"))
+fname = file.path(
+  "example_data", 
+  "pathogen_category_simulation.csv")
+fname = system.file(
+  fname, 
+  package = "baker")
+demodat = read.csv(fname, stringsAsFactors = FALSE)
 kable(head(demodat))
 ```
 
@@ -204,37 +211,49 @@ fullname <- dated_strat_name
 
 # for finer scenarios, e.g., different types of analysis applicable to the
 # same data set. Here we just perform one analysis:
-result_folder <- file.path(fullname,paste0("rep_",rep,"_kfit_",model_options$likelihood$k_subclass))
+result_folder <- file.path(
+  fullname,
+  paste0("rep_", rep, "_kfit_",
+         model_options$likelihood$k_subclass))
 dir.create(result_folder)
 
 
 # options for MCMC chains:
-mcmc_options <- list(debugstatus = !TRUE,
-                     individual.pred = !TRUE,
-                     ppd             = TRUE,
-                     n.chains   = 1,
-                     n.itermcmc = 100, #50000
-                     n.burnin   = 1, #10000
-                     n.thin     = 1, #50
-                     result.folder = result_folder,
-                     bugsmodel.dir = result_folder,
-                     jags.dir = "",
-                     use_jags = TRUE
+mcmc_options <- list(
+  debugstatus = !TRUE,
+  individual.pred = !TRUE,
+  ppd             = TRUE,
+  n.chains   = 1,
+  n.itermcmc = 100, #50000
+  n.burnin   = 1, #10000
+  n.thin     = 1, #50
+  result.folder = result_folder,
+  bugsmodel.dir = result_folder,
+  jags.dir = "",
+  use_jags = TRUE
 )
 
 # Record the settings of current analysis:
 # data clean options:
-  global_patho_taxo_dir = file.path(system.file("example_data/pathogen_category_simulation.csv", 
-                           package="baker"))
+fname = file.path(
+  "example_data", 
+  "pathogen_category_simulation.csv")
+fname = system.file(
+  fname, 
+  package = "baker")
+demodat = read.csv(fname, stringsAsFactors = FALSE)
+global_patho_taxo_dir = fname
 
 clean_options <- list (
   BrS_objects        =  make_list(BrS_object_1),         # <---- all bronze-standard measurements.
   patho_taxo_dir = global_patho_taxo_dir,
   allow_missing      = FALSE)
 
-dput(clean_options,file.path(mcmc_options$result.folder,"data_clean_options.txt"))
+dput(clean_options,
+     file.path(mcmc_options$result.folder,
+               "data_clean_options.txt"))
 
-gs <- nplcm(data_nplcm,model_options,mcmc_options)
+gs <- nplcm(data_nplcm, model_options, mcmc_options)
 ```
 
 # Visualizations
@@ -247,25 +266,31 @@ result_folder <- mcmc_options$result.folder
 
 
 ```{r lkpan,fig=TRUE}
-suppressWarnings(plot_panels(result_folder,bg_color=NULL))
+suppressWarnings(plot_panels(result_folder, bg_color=NULL))
 ```
 
 ## plot data, prior, and posterior for selected causes:
 ```{r lkpan2,fig=TRUE}
-plot_panels(result_folder,bg_color=NULL, 
-            select_latent = c("A","C"),exact=TRUE)
+plot_panels(
+  result_folder, bg_color = NULL, 
+  select_latent = c("A","C"), exact = TRUE)
 ```
 
 ## plot the joint posterior of the etiology fraction for any three causes:
 
 ```{r trysel,fig=TRUE,eval=TRUE}
-plot_selected_etiology(selected = c("A","B","C"), result_folder, 1, 5)
+plot_selected_etiology(
+  selected = c("A","B","C"), 
+  result_folder, 1, 5)
 ```
 
 ## grouped etiology (e.g., bacteria (left) vs virus (right) )
 
-```{r dodod,fig=TRUE}
-plot_group_etiology(result_folder,dir_taxo = global_patho_taxo_dir, ksFrac=1)
+```{r dodod, fig = TRUE}
+plot_group_etiology(
+  result_folder,
+  dir_taxo = global_patho_taxo_dir, 
+  ksFrac = 1)
 ```
 
 ## model checking by comparing observed pairwise log odds ratios (LOR)
@@ -275,7 +300,7 @@ plot_group_etiology(result_folder,dir_taxo = global_patho_taxo_dir, ksFrac=1)
  The closer to zero the better.
 
 ```{r doSLORD,fig=TRUE}
-plot_check_pairwise_SLORD(result_folder,slice=1)
+plot_check_pairwise_SLORD(result_folder, slice=1)
 ```
 
 ## model checking by comparing observed frequencies of binary patterns to the model-predicted ones

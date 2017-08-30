@@ -9,7 +9,7 @@ os:
   - osx
 
 r_build_args: --no-manual --no-build-vignettes
-r_check_args: --no-manual --as-cran
+r_check_args: --no-manual --as-cran --no-build-vignettes
 
 r_binary_packages: 
   - rjags 
@@ -21,6 +21,7 @@ before_install:
   - cat ${fname}; source ${fname}; rm ${fname}  
   - cat DESCRIPTION
   - jags_install  
+  - 
   
 env:
  global:
