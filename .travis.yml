@@ -8,8 +8,8 @@ os:
   - linux
   - osx
 
-r_build_args: --no-manual --no-build-vignettes
-r_check_args: --no-manual --as-cran --no-build-vignettes
+r_build_args: --no-manual 
+r_check_args: --no-manual --as-cran
 
 r_binary_packages: 
   - rjags 
