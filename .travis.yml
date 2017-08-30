@@ -13,7 +13,7 @@ r_check_args: --no-manual --as-cran
 
 r_binary_packages: 
   - rjags 
-  - r2jags
+  - R2jags
 
 before_install:
   - fname=travis_helpers.sh
@@ -26,9 +26,6 @@ env:
  global:
   - NOT_CRAN=true
   - RGL_USE_NULL=TRUE
-
-apt_packages:
-  - libv8-dev
 
 notifications:
   email:
