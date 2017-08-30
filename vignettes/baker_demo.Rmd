@@ -7,10 +7,8 @@ vignette: >
   %\VignetteIndexEntry{baker_demo}
   %\VignetteEncoding{UTF-8}
 output:
-  rmarkdown::html_document:
-    highlight: pygments
+  rmarkdown::html_vignette:
     number_sections: yes
-    theme: united
     toc: no
 ---
 
@@ -203,7 +201,11 @@ assign_model(model_options,data_nplcm)
 # date stamp for analysis:
 Date     <- gsub("-", "_", Sys.Date())
 # include stratification information in file name:
-dated_strat_name    <- file.path(working_dir,paste0("scn_",scn,"_mixiter_",iter))
+dated_strat_name    <- file.path(working_dir, 
+                                 paste0("scn_",scn,"_mixiter_",iter))
+if (dir.exists(dated_strat_name)) {
+  unlink(dated_strat_name, force = TRUE)
+}
 
 # create folder
 dir.create(dated_strat_name)
@@ -244,7 +246,7 @@ fname = system.file(
 demodat = read.csv(fname, stringsAsFactors = FALSE)
 global_patho_taxo_dir = fname
 
-clean_options <- list (
+clean_options <- list(
   BrS_objects        =  make_list(BrS_object_1),         # <---- all bronze-standard measurements.
   patho_taxo_dir = global_patho_taxo_dir,
   allow_missing      = FALSE)
@@ -265,12 +267,13 @@ result_folder <- mcmc_options$result.folder
 ## plot data, prior, and posteriors for all causitive pathogens:
 
 
-```{r lkpan,fig=TRUE}
+```{r lkpan,fig.height=10, fig.width=10, dpi = 300}
 suppressWarnings(plot_panels(result_folder, bg_color=NULL))
 ```
 
 ## plot data, prior, and posterior for selected causes:
-```{r lkpan2,fig=TRUE}
+
+```{r lkpan2,fig.height=10, fig.width=10, dpi = 300}
 plot_panels(
   result_folder, bg_color = NULL, 
   select_latent = c("A","C"), exact = TRUE)
