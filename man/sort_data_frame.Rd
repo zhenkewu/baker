@@ -25,4 +25,3 @@ Useage is either of the following:\cr
 sort.data.frame(~Block-Variety,Oats)\cr
 sort.data.frame(Oats,~-Variety+Block)\cr
 }
-

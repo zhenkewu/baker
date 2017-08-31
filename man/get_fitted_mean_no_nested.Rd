@@ -37,4 +37,3 @@ get_fitted_mean_no_nested(slice,out$res_nplcm,out$model_options,data_nplcm,
 colnames(out$Mobs$MBS[[slice]])
 }
 }
-

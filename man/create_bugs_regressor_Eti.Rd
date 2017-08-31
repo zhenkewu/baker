@@ -25,4 +25,3 @@ a character string with linear product form
 \code{create_bugs_regressor_Eti} creates linear product of coefficients
 and a row of design matrix used in regression
 }
-

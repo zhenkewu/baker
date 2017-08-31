@@ -19,4 +19,3 @@ convert one column data frame to a vector
 WinBUGS/JAGS cannot accept a dataframe with one column; This function
 converts it to a vector, which WinBUGS/JAGS will allow.
 }
-

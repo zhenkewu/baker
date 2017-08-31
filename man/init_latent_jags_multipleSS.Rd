@@ -27,4 +27,3 @@ In JAGS 3.4.0, if an initial value contradicts the probablistic specification, e
 then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
 silver-standard data is 1. Note: this is not a problem in WinBUGS.
 }
-

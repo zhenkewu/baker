@@ -27,4 +27,3 @@ the resuls from this function will help stratify etiology or FPR for
 different strata; the ways of stratification for etiology and FPR can be based
 on different covariates.
 }
-

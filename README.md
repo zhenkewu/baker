@@ -5,6 +5,9 @@
 
 [![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
 
+muschellij2 badges:
+[![Build Status](https://travis-ci.org/muschellij2/baker.svg?branch=master)](https://travis-ci.org/muschellij2/baker)
+
 
 **Maintainer**: Zhenke Wu, zhenkewu@umich.edu
 
@@ -30,7 +33,7 @@
 Installation
 --------------
 ```r
-install.packages("devtools",repos="https://cloud.r-project.org")
+# install.packages("devtools",repos="https://cloud.r-project.org")
 devtools::install_github("zhenkewu/baker")
 ```
 Note: run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package is reported
@@ -50,7 +53,7 @@ browseVignettes("baker")
 Graphical User Interface (GUI)
 --------------------------------
 ```r
-install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
+# install.packages("devtools",repos="http://watson.nci.nih.gov/cran_mirror/")
 devtools::install_github("zhenkewu/baker")
 shiny::runGitHub("baker","zhenkewu",subdir="inst/shiny")
 ```

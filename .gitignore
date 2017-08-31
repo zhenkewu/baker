@@ -4,7 +4,7 @@ baker.Rproj
 .RData
 .pdf
 .DS_Store
-inst/doc
 dev-notes/
+inst/doc
 baker_package_manuscript/
 web/

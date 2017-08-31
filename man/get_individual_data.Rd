@@ -17,4 +17,3 @@ a list of the same structure as \code{data_nplcm}; just with one row of values
 \description{
 get individual data
 }
-

@@ -15,4 +15,3 @@ A numeric vector
 \description{
 Convert factor to numeric without losing information on the label
 }
-

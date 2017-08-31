@@ -23,4 +23,3 @@ get_individual_prediction(nplcm_read_folder("C://2015_09_02_02GAM"))
 }
 
 }
-

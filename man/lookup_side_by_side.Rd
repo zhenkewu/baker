@@ -34,4 +34,3 @@ a function to match each model's result to the desired order:
                  c("C","A","E"))
   lookup_side_by_side(disp_order,union_nm,nm_list)
 }
-

@@ -16,4 +16,3 @@ a vector of characters with \code{month-year}, e.g., \code{4-2012}.
 \code{unique_month} converts observed dates into unique months
 to help visualize sampled months
 }
-

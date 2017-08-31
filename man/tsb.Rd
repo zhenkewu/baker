@@ -27,4 +27,3 @@ for (iter in 1:9){
 graphics::mtext("Truncated Stick-Breaking Dist. (10 segments)",3,
      outer=TRUE,cex=1.5,line=1.5)
 }
-

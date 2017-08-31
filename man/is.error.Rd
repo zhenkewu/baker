@@ -18,4 +18,3 @@ Test for 'try-error' class
 \references{
 \url{http://adv-r.had.co.nz/Exceptions-Debugging.html}
 }
-

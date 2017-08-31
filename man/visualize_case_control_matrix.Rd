@@ -33,4 +33,3 @@ line.}
 Special to case-control visualization: upper right for cases, lower left
 for controls.
 }
-

@@ -15,4 +15,3 @@ TRUE or FALSE
 \description{
 check if a list has elements all of length one
 }
-

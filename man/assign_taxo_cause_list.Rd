@@ -20,4 +20,3 @@ The names of the vector are pathogen names.
 \description{
 assign taxonomy information to cause list
 }
-

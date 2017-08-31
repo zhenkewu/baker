@@ -4,24 +4,29 @@ language: r
 warnings_are_errors: true
 sudo: required
 
-before_install:
-  - echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
-  - sudo add-apt-repository ppa:marutter/rrutter -y
-  - sudo apt-get update
-  - sudo apt-get install r-cran-rjags r-cran-R2jags
+os:
+  - linux
+  - osx
 
+r_build_args: --no-manual 
+r_check_args: --no-manual --as-cran
+
+r_binary_packages: 
+  - rjags 
+  - R2jags
+
+before_install:
+  - fname=travis_helpers.sh
+  - wget -O ${fname} http://bit.ly/travis_helpers
+  - cat ${fname}; source ${fname}; rm ${fname}  
+  - cat DESCRIPTION
+  - jags_install  
+  - 
+  
 env:
  global:
-   - NOT_CRAN=true
-   - WARNINGS_ARE_ERRORS=1
-   - R_BUILD_ARGS=--no-manual 
-   - R_CHECK_ARGS=--no-manual --as-cran 
-
-apt_packages:
-  - libv8-dev
-
-r_packages:
-  - rjags
+  - NOT_CRAN=true
+  - RGL_USE_NULL=TRUE
 
 notifications:
   email:

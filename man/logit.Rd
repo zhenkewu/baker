@@ -15,4 +15,3 @@ A real number
 \description{
 logit function
 }
-

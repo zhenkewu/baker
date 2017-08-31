@@ -14,4 +14,3 @@ logOR(MBS.case, MBS.ctrl)
 \description{
 Case at upper triangle; control at lower triangle
 }
-

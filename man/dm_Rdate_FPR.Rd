@@ -43,4 +43,3 @@ can also be used to standardize dates.
 \seealso{
 \code{\link{nplcm}}
 }
-

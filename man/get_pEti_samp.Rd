@@ -17,4 +17,3 @@ get_pEti_samp(res_nplcm, model_options)
 \description{
 get latent causes by names
 }
-

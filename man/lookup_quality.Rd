@@ -28,4 +28,3 @@ lookup_quality("HH")
 \seealso{
 \code{\link{extract_data_raw}}
 }
-

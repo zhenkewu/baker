@@ -15,4 +15,3 @@ a list of index vectors
 \description{
 get a list of measurement index where to look for data
 }
-

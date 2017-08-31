@@ -1,25 +1,4 @@
----
-title: "baker_demo -- demonstration of nested partially latent class model inference"
-author: "Zhenke Wu"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{baker_demo}
-  %\VignetteEncoding{UTF-8}
-output:
-  rmarkdown::html_vignette:
-    number_sections: yes
-    toc: no
----
-
-<!--
-#######################################################################
-# Simulated Examples for Nested Partially-Latent Class Models
-# Zhenke Wu | zhenkewu@gmail.com
-# Februrary 16, 2016
--->
-
-```{r setup,echo=FALSE,results="hide"}
+## ----setup,echo=FALSE,results="hide"-------------------------------------
 # suppressPackageStartupMessages({
 library(rjags)
 library(R2jags)
@@ -27,16 +6,8 @@ library(baker)
 library(binom)
 library(knitr)
 # })
-```
 
-# Introduction
-
-In this vignette, a sharply truncated sampling procedure
-is used to demonstrate use of the baker package tools.
-
-The data for the illustration are related to pathogen
-categorization in pneumonia.
-```{r lkd}
+## ----lkd-----------------------------------------------------------------
 fname = file.path(
   "example_data", 
   "pathogen_category_simulation.csv")
@@ -45,15 +16,8 @@ fname = system.file(
   package = "baker")
 demodat = read.csv(fname, stringsAsFactors = FALSE)
 kable(head(demodat))
-```
 
-
-
-# Setup
-
-
-
-```{r doit}
+## ----doit----------------------------------------------------------------
 # Note: the example will only run 100 Gibbs sampling steps to save computing time.
 # To produce useful posterior inferences, please modify "mcmc_options" as follows
 #                      "n.itermcmc" to 50000
@@ -145,11 +109,8 @@ set_parameter <- list(
 
 simu_out   <- simulate_nplcm(set_parameter)
 data_nplcm <- simu_out$data_nplcm
-```
 
-# Exploratory data analysis
-
-```{r expl}
+## ----expl----------------------------------------------------------------
 
 # specify cause list:
 cause_list <- set_parameter$cause_list
@@ -164,12 +125,8 @@ BrS_object_1        <- make_meas_object(patho_BrS_MBS1,"MBS","1","BrS",cause_lis
 # pairwise log odds ratio plot:
 pathogen_display <- BrS_object_1$patho
 plot_logORmat(data_nplcm,pathogen_display,1)
-```
 
-
-# Model specification
-
-```{r domod}
+## ----domod---------------------------------------------------------------
 m_opt1 <- list(likelihood   = list(cause_list = cause_list,               # <---- fitted causes.
                                    k_subclass = k_fit,                    # <---- no. of subclasses.
                                    Eti_formula = "~ 0",                   # <---- only apply FPR formula to specified slice of measurements; if not default to the first slice.
@@ -193,11 +150,8 @@ m_opt1 <- list(likelihood   = list(cause_list = cause_list,               # <---
 
 model_options <- m_opt1
 assign_model(model_options,data_nplcm)
-```
 
-# Fitting the model
-
-```{r dofit}
+## ----dofit---------------------------------------------------------------
 # date stamp for analysis:
 Date     <- gsub("-", "_", Sys.Date())
 # include stratification information in file name:
@@ -255,60 +209,33 @@ dput(clean_options,
                "data_clean_options.txt"))
 
 gs <- nplcm(data_nplcm, model_options, mcmc_options)
-```
 
-# Visualizations
-
-```{r dovizsetup}
+## ----dovizsetup----------------------------------------------------------
 result_folder <- mcmc_options$result.folder
-```
 
-## plot data, prior, and posteriors for all causitive pathogens:
-
-
-```{r lkpan,fig.height=10, fig.width=10}
+## ----lkpan,fig.height=10, fig.width=10-----------------------------------
 suppressWarnings(plot_panels(result_folder, bg_color=NULL))
-```
 
-## plot data, prior, and posterior for selected causes:
-
-```{r lkpan2,fig.height=10, fig.width=10}
+## ----lkpan2,fig.height=10, fig.width=10----------------------------------
 plot_panels(
   result_folder, bg_color = NULL, 
   select_latent = c("A","C"), exact = TRUE)
-```
 
-## plot the joint posterior of the etiology fraction for any three causes:
-
-```{r trysel,fig.height=10, fig.width=10}
+## ----trysel,fig.height=10, fig.width=10----------------------------------
 plot_selected_etiology(
   selected = c("A","B","C"), 
   result_folder, 1, 5)
-```
 
-## grouped etiology (e.g., bacteria (left) vs virus (right) )
-
-```{r dodod,fig.height=10, fig.width=10}
+## ----dodod,fig.height=10, fig.width=10-----------------------------------
 plot_group_etiology(
   result_folder,
   dir_taxo = global_patho_taxo_dir, 
   ksFrac = 1)
-```
 
-## model checking by comparing observed pairwise log odds ratios (LOR)
-
- We compare observed LOR to the posterior predictive distributions of pairwise LOR; The numbers are
- (predicted LOR - observed LOR)/ s.e. (posterior predictive distribution of LOR);
- The closer to zero the better.
-
-```{r doSLORD,fig.height=10, fig.width=10}
+## ----doSLORD,fig.height=10, fig.width=10---------------------------------
 plot_check_pairwise_SLORD(result_folder, slice=1)
-```
 
-## model checking by comparing observed frequencies of binary patterns to the model-predicted ones
-
-```{r doobsf,fig.height=10, fig.width=10}
+## ----doobsf,fig.height=10, fig.width=10----------------------------------
 dir_list <- as.list(c(result_folder))
 plot_check_common_pattern(dir_list,slice_vec =c(1,1))
-```
 

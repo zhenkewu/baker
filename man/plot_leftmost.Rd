@@ -20,4 +20,3 @@ plotting the labels on the left margin for panels plot
 \seealso{
 \link{plot_panels}
 }
-

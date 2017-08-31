@@ -56,4 +56,3 @@ Other plug-and-play functions: \code{\link{add_meas_BrS_case_Nest_Slice_jags}},
   \code{\link{add_meas_SS_case}},
   \code{\link{add_meas_SS_param}}
 }
-

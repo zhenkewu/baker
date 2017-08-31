@@ -1,7 +1,7 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.6-5001
+Version: 0.6-6001
 Date: 2017-02-16
 Authors@R: as.person(c(
     "Zhenke Wu <zhwu@jhu.edu> [aut, cre]",
@@ -32,12 +32,13 @@ Imports:
     shinyFiles(>= 0.6),
     shinydashboard(>= 0.5.1)
 License: MIT + file LICENSE
-SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net) or
-    WinBUGS 1.4 (Windows-only)
+SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net),
+    WinBUGS (>= 1.4) (Windows-only)
 Suggests:
     knitr,
     testthat,
     bibtex,
-    knitcitations
+    knitcitations,
+    rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1.9000

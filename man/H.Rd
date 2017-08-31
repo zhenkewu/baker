@@ -15,4 +15,3 @@ a non-negative number
 \description{
 Shannon entropy for multivariate discrete data
 }
-

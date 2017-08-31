@@ -17,4 +17,3 @@ a triple with numerical plotting positions
 \description{
 get the plotting positions (numeric) for the fitted means; 3 positions for each cell
 }
-

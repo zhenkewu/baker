@@ -15,4 +15,3 @@ A number
 \description{
 \code{null_as_zero} make \code{NULL} to be zero.
 }
-

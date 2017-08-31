@@ -90,4 +90,3 @@ which \link{simulate_brs} simulates bronze-standard data.
 Other simulation functions: \code{\link{simulate_brs}},
   \code{\link{simulate_latent}}, \code{\link{simulate_ss}}
 }
-

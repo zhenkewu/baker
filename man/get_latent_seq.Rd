@@ -21,4 +21,3 @@ a vector of indices
 \description{
 get index of latent status
 }
-

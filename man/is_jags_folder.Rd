@@ -16,4 +16,3 @@ TRUE for from JAGS; FALSE otherwise.
 \description{
 See if a result folder is obtained by JAGS
 }
-

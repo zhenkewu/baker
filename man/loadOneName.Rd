@@ -21,4 +21,3 @@ a new environment
 \description{
 load an object from .RDATA file
 }
-

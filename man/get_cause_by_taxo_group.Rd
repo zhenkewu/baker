@@ -20,4 +20,3 @@ a vector of indices indicating if each element belongs to
 \description{
 pick categories from a vector of causes
 }
-

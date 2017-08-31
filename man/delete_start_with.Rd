@@ -27,4 +27,3 @@ delete_start_with("X_",c("X_hello","hello2"))
 delete_start_with("X_",c("X_hello","hello2","X_hello3"))
 
 }
-

@@ -18,4 +18,3 @@ Sample a vector of Bernoulli variables with higher speed
 (same length with \code{"p"}).
 The Bernoulli random variables can have different means.
 }
-

@@ -16,4 +16,3 @@ as distribution specification for latent status
 \description{
 insert distribution for latent status code chunk into .bug file
 }
-

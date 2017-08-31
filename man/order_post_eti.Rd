@@ -17,4 +17,3 @@ a list with order (\code{ord}) and ordered posterior samples (by column)
 \description{
 order latent status by posterior mean
 }
-
