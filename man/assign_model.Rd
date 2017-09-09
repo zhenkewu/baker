@@ -31,6 +31,9 @@ A list of model specifications:
            regression (for every slice of bronze-standard). It means the false
            positive rates, usually estimatable from controls, can vary with 
            covariates. \code{FALSE} otherwise.
+           \item code{is_discrete_predictor} A list of names "Eti", and 
+           the names for every slice of bronze-standard data. \code{TRUE}
+           for having all discrete predictors, \code{FALSE} otherwise.
        }
 }
 }

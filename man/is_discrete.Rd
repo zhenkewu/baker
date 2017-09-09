@@ -10,10 +10,11 @@ is_discrete(X, X_reg)
 \item{X}{A data frame of covariates}
 
 \item{X_reg}{The vector of covariates that will stratify the analyses. These
-variables have to be categorical.}
+variables have to be categorical. Or a formula (can be tested by \code{plyr::is.formula}), 
+e.g., \code{~as.factor(SITE8) + as.factor(AGECAT > 1)}.}
 }
 \value{
-\code{TRUE} for discrete; \code{FALSE} otherwise.
+\code{TRUE} for all being discrete; \code{FALSE} otherwise.
 }
 \description{
 \code{is_discrete} checks if the specified covariates could be regarded as discrete

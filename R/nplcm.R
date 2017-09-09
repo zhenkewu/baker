@@ -109,14 +109,19 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   
   parsed_model <- assign_model(model_options,data_nplcm)
   
-  do_reg <- any(unlist(parsed_model$regression))
+  do_reg <- any(unlist(parsed_model$regression[grep("^do_reg_",names(parsed_model$regression))]))
+  do_discrete <- any(unlist(parsed_model$regression[grep("^is_discrete_predictor",names(parsed_model$regression))]))
   do_nested <- parsed_model$nested
   
   if(!do_reg){
       res <- nplcm_fit_NoReg(data_nplcm,model_options,mcmc_options)
   } 
   if (do_reg & !any(do_nested)){
+    if (do_discrete){
+      res <- nplcm_fit_Reg_discrete_predictor_NoNest(data_nplcm,model_options,mcmc_options)
+      } else{
       res <- nplcm_fit_Reg_NoNest(data_nplcm,model_options,mcmc_options)
+      }
   }
   if (do_reg & any(do_nested)){
     #res <- nplcm_fit_Reg_Nest(data_nplcm,model_options,mcmc_options)

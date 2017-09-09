@@ -37,5 +37,6 @@ a long character string to be written into .bug file.
 chunk for measurements (plug-and-play); \link{insert_bugfile_chunk_noreg_etiology}
 for inserting .bug file chunk for distribution of latent status (etiology).
 
-Other model generation functions: \code{\link{write_model_Reg_NoNest}}
+Other model generation functions: \code{\link{write_model_Reg_NoNest}},
+  \code{\link{write_model_Reg_discrete_predictor_NoNest}}
 }

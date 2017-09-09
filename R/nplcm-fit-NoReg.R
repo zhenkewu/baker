@@ -37,7 +37,7 @@ nplcm_fit_NoReg<-
     likelihood       <- model_options$likelihood
     use_measurements <- model_options$use_measurements
     prior            <- model_options$prior
-
+    
     #####################################################################
     # 1. prepare data (including hyper-parameters):
     #####################################################################
@@ -51,7 +51,7 @@ nplcm_fit_NoReg<-
     Jcause      <- length(cause_list)
     
     in_data <- in_init <- out_parameter <- NULL
-
+    
     if ("BrS" %in% use_measurements){
       #
       # BrS measurement data: 
@@ -201,13 +201,13 @@ nplcm_fit_NoReg<-
         #assign(paste("betaB", s, sep = "_"),  BrS_tpr_prior[[1]]$beta)    
         
         if (likelihood$k_subclass[s]==1){
-         out_parameter <- c(out_parameter,paste(c("thetaBS","psiBS"), s, sep="_"))  
+          out_parameter <- c(out_parameter,paste(c("thetaBS","psiBS"), s, sep="_"))  
         }else{  # <--- TPR stratification for BrS data not implemented for K>1.
-         assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
-         in_data       <- unique(c(in_data,paste0("K_",s))) # <---- No. of subclasses for this slice.
-         out_parameter <- unique(c(out_parameter,
-                            paste(c("ThetaBS","PsiBS","Lambda","Eta","alphadp0","alphadp0_case"),s,sep="_")
-                            ))
+          assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
+          in_data       <- unique(c(in_data,paste0("K_",s))) # <---- No. of subclasses for this slice.
+          out_parameter <- unique(c(out_parameter,
+                                    paste(c("ThetaBS","PsiBS","Lambda","Eta","alphadp0","alphadp0_case"),s,sep="_")
+          ))
         }
       }
       
@@ -221,7 +221,7 @@ nplcm_fit_NoReg<-
       out_parameter <- c(out_parameter,"pEti")
     }
     
-  
+    
     if ("SS" %in% use_measurements){
       #
       # 2. SS measurement data: 
@@ -365,7 +365,7 @@ nplcm_fit_NoReg<-
               res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
             } else{
               res_curr[[1]] <- matrix(stats::rbeta(GBrS_TPR_curr*JBrS_list[[s]],1,1),
-                                         nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
+                                      nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
               if (JBrS_list[[s]]==1){
                 res_curr[[1]] <- c(res_curr[[1]])
               }
@@ -396,7 +396,7 @@ nplcm_fit_NoReg<-
     if (!("BrS" %in% use_measurements) & "SS" %in% use_measurements){
       in_init       <-   function(){
         tmp_thetaSS <- list()
-       #tmp_psiSS <- list()
+        #tmp_psiSS <- list()
         tmp_Icat_case <- list()
         for(i in seq_along(JSS_list)){
           GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
@@ -433,7 +433,7 @@ nplcm_fit_NoReg<-
               res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
             } else{
               res_curr[[1]] <- matrix(stats::rbeta(GBrS_TPR_curr*JBrS_list[[s]],1,1),
-                                         nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
+                                      nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
               if (JBrS_list[[s]]==1){
                 res_curr[[1]] <- c(res_curr[[1]])
               }
@@ -485,7 +485,7 @@ nplcm_fit_NoReg<-
     
     # etiology (measurement independent)
     alphaEti          <- prior$Eti_prior    # <-------- input etiology prior here.
-  
+    
     #
     # fit model :
     #
@@ -509,7 +509,7 @@ nplcm_fit_NoReg<-
                                             model_options$use_measurements,
                                             mcmc_options$ppd,
                                             use_jags)
-  
+    
     
     model_bugfile_name <- "model_NoReg.bug"
     
@@ -543,7 +543,7 @@ nplcm_fit_NoReg<-
       #lapply(names(in_data.list), dump, append = TRUE, envir = here,
       #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
       dump(names(in_data.list), append = FALSE, envir = here,
-             file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+           file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
       gs <- R2jags::jags2(data   = in_data,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
@@ -556,10 +556,10 @@ nplcm_fit_NoReg<-
                           DIC            = FALSE,
                           clearWD        = FALSE,              #<--- special to JAGS.
                           jags.path      = mcmc_options$jags.dir# <- special to JAGS.
-                          );
+      );
       return(gs)
     }
-}
+  }
 
 #' Initialize individual latent status (only for JAGS)
 #' 
@@ -597,7 +597,7 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
                 or to add these combinations into 'cause_list'.==\n"))
   }
   res
-}
+  }
 
 # MSS_list <- data_nplcm$Mobs$MSS
 # cause_list <- model_options$likelihood$cause_list

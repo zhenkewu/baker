@@ -26,6 +26,9 @@
 #'            regression (for every slice of bronze-standard). It means the false
 #'            positive rates, usually estimatable from controls, can vary with 
 #'            covariates. \code{FALSE} otherwise.
+#'            \item code{is_discrete_predictor} A list of names "Eti", and 
+#'            the names for every slice of bronze-standard data. \code{TRUE}
+#'            for having all discrete predictors, \code{FALSE} otherwise.
 #'        }
 #' }
 #'
@@ -60,17 +63,28 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   
   # specify regression for FPR: (only available for bronze-standard data. Silver-standard data automatically have FPR==0.)
   do_reg_FPR <- list() #  <---- a regression for each measurement slice?
+  is_discrete_FPR_vec <- rep(NA,length(likelihood$FPR_formula))
+  names(is_discrete_FPR_vec) <- names(likelihood$FPR_formula)
   for (i in seq_along(Mobs$MBS)){
     ind_tmp <-
       which(names(likelihood$FPR_formula) == names(Mobs$MBS)[i])
+    form_tmp <- stats::as.formula(likelihood$FPR_formula[[ind_tmp]])
     if (!length(ind_tmp)) { # don't do regression if no regression formula is found:
       do_reg_FPR[[i]] <- FALSE
     } else{ # do regression if there is matched regression formula:
       do_reg_FPR[[i]] <-
-        parse_nplcm_reg(stats::as.formula(likelihood$FPR_formula[[ind_tmp]]),data_nplcm,silent=silent)
+        parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
+    }
+    
+    is_discrete_FPR_vec[i] <- FALSE
+    if (!is.null(X)){
+    is_discrete_FPR_vec[i] <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
+                                 is_discrete(X, form_tmp))
     }
   }
   names(do_reg_FPR) <- names(Mobs$MBS)
+  
+  
   
   #
   # specify regression for TPR: (every measurement slice has it.)
@@ -106,7 +120,17 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   # specify regression for etiology:
   form_tmp   <- stats::as.formula(likelihood$Eti_formula)
   do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
-  regression <- make_list(do_reg_Eti, do_reg_FPR)#, do_reg_TPR)
+  
+  is_discrete_Eti <- FALSE
+  if (!is.null(X)){
+  is_discrete_Eti <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
+                        is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], form_tmp))
+  }
+
+  is_discrete_predictor <- list(is_discrete_Eti, is_discrete_FPR_vec)
+  names(is_discrete_predictor)[[1]] <- "Eti"
+  names(is_discrete_predictor)[[2]] <- names(Mobs$MBS)
+  regression <- make_list(do_reg_Eti, do_reg_FPR,is_discrete_predictor)#, do_reg_TPR)
   
   # check BrS group:
   BrS_grp <- FALSE

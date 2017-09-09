@@ -983,25 +983,37 @@ set_strat <- function(X,X_reg) {
 #' \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an \emph{ad hoc} criterion.
 #' It is not the same as \code{\link[plyr]{is.discrete}}
 #'
-#' @inheritParams set_strat
+#' @param X   A data frame of covariates
+#' @param X_reg The vector of covariates that will stratify the analyses. These
+#' variables have to be categorical. Or a formula (can be tested by \code{plyr::is.formula}), 
+#' e.g., \code{~as.factor(SITE8) + as.factor(AGECAT > 1)}.
 #'
-#' @return \code{TRUE} for discrete; \code{FALSE} otherwise.
+#' @return \code{TRUE} for all being discrete; \code{FALSE} otherwise.
 #' @export
 
 is_discrete <- function(X,X_reg) {
   if (!is.data.frame(X)) {
     stop("==X is not a data frame. Please transform it into a data frame.==")
   }
-  if (!all(X_reg %in% names(X))) {
-    stop("==",paste(X_reg,collapse = ", ")," not in X ==")
+  
+  if (is.character(X_reg)){
+    if (!all(X_reg %in% names(X))) {
+      stop("==",paste(X_reg,collapse = ", ")," not in X ==")
+    }
+    res = nrow(X) / nrow(unique(X[,X_reg,drop = FALSE])) > 10
+  } else{
+    X_dm <- stats::model.matrix(X_reg,data.frame(X)) # <--- X for case only.
+    res = nrow(X) / nrow(unique(X_dm)) > 10
   }
-  nrow(X) / nrow(unique(X[,X_reg,drop = FALSE])) > 10
+  res
 }
 
 # is_discrete(X,"ENRLDATE")
 # is_discrete(X,c("ENRLDATE","AGECAT"))
 # is_discrete(X,c("HIV","AGECAT"))
 # is_discrete(X,c("newSITE","AGECAT"))
+
+# or is_discrete(X,~as.factor(SITE8) + as.factor(AGECAT > 1))
 
 #' Test for 'try-error' class
 #'
