@@ -54,6 +54,7 @@ kable(head(demodat))
 
 
 ```{r doit}
+rm(list=ls())
 # Note: the example will only run 100 Gibbs sampling steps to save computing time.
 # To produce useful posterior inferences, please modify "mcmc_options" as follows
 #                      "n.itermcmc" to 50000
@@ -149,7 +150,7 @@ data_nplcm <- simu_out$data_nplcm
 
 # Exploratory data analysis
 
-```{r expl}
+```{r expl, fig.height=10, fig.width=10}
 
 # specify cause list:
 cause_list <- set_parameter$cause_list
@@ -226,8 +227,8 @@ mcmc_options <- list(
   individual.pred = !TRUE,
   ppd             = TRUE,
   n.chains   = 1,
-  n.itermcmc = 20, #50000
-  n.burnin   = 1, #10000
+  n.itermcmc = 100, #50000
+  n.burnin   = 50, #10000
   n.thin     = 1, #50
   result.folder = result_folder,
   bugsmodel.dir = result_folder,
