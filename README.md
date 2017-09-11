@@ -5,10 +5,6 @@
 
 [![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
 
-muschellij2 badges:
-[![Build Status](https://travis-ci.org/muschellij2/baker.svg?branch=master)](https://travis-ci.org/muschellij2/baker)
-
-
 **Maintainer**: Zhenke Wu, zhenkewu@umich.edu
 
 **References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following paper:
