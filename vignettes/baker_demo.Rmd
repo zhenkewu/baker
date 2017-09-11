@@ -71,7 +71,7 @@ working_dir <- tempdir() # <-- create a temporary directory.
 K.true  <- 2   # no. of latent subclasses in actual simulation. 
 # If eta = c(1,0), K.true is effectively 1.
 J       <- 6   # no. of pathogens.
-N       <- 500 # no. of cases/controls.
+N       <- 250 # no. of cases/controls.
 
 # case subclass weight (five values):
 subclass_mix_seq <- c(0,0.25,0.5,0.75,1)
@@ -227,8 +227,8 @@ mcmc_options <- list(
   individual.pred = !TRUE,
   ppd             = TRUE,
   n.chains   = 1,
-  n.itermcmc = 100, #50000
-  n.burnin   = 50, #10000
+  n.itermcmc = as.integer(50), #50000
+  n.burnin   = as.integer(10), #10000
   n.thin     = 1, #50
   result.folder = result_folder,
   bugsmodel.dir = result_folder,
