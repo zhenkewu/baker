@@ -226,7 +226,7 @@ mcmc_options <- list(
   individual.pred = !TRUE,
   ppd             = TRUE,
   n.chains   = 1,
-  n.itermcmc = 100, #50000
+  n.itermcmc = 20, #50000
   n.burnin   = 1, #10000
   n.thin     = 1, #50
   result.folder = result_folder,
