@@ -4,9 +4,6 @@ language: r
 warnings_are_errors: true
 sudo: required
 
-r_build_args: --no-manual 
-r_check_args: --no-manual --as-cran
-
 r_binary_packages: 
   - rjags 
   - R2jags
@@ -18,7 +15,7 @@ before_install:
   - cat DESCRIPTION
   - jags_install  
   - export PROJ_DIR=`basename ${TRAVIS_BUILD_DIR}`
-  - export PACKAGE_NAME=`baker`
+  - export PACKAGE_NAME=`package_name`
 
 script:
   - echo "Overriding travis R script"
@@ -26,20 +23,22 @@ script:
 jobs:
   include:
     - script:
-      - travis_wait 100 R CMD build ${PROJ_DIR} ${r_build_args}
+      - travis_wait 100 R CMD build ${PROJ_DIR} ${R_BUILD_ARGS}
       - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-      - travis_wait 100 R CMD check ${r_check_args} "${PKG_FILE_NAME}";
+      - travis_wait 100 R CMD check ${R_CHECK_ARGS} "${PKG_FILE_NAME}";
       os: linux
     - script:
-      - travis_wait 100 R CMD build ${PROJ_DIR} ${r_build_args}
+      - travis_wait 100 R CMD build ${PROJ_DIR} ${R_BUILD_ARGS}
       - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-      - travis_wait 100 R CMD check ${r_check_args} "${PKG_FILE_NAME}";
+      - travis_wait 100 R CMD check ${R_CHECK_ARGS} "${PKG_FILE_NAME}";
       os: osx
   
 env:
  global:
   - NOT_CRAN=TRUE
   - RGL_USE_NULL=TRUE
+  - R_BUILD_ARGS=" --no-manual"
+  - R_CHECK_ARGS=" --timings --as-cran --no-manual"
 
 notifications:
   email:
