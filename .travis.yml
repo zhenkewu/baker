@@ -18,7 +18,7 @@ before_install:
   - cat DESCRIPTION
   - jags_install  
   - export PROJ_DIR=`basename ${TRAVIS_BUILD_DIR}`
-  - export PACKAGE_NAME=`package_name`
+  - export PACKAGE_NAME=`baker`
 
 script:
   - echo "Overriding travis R script"
