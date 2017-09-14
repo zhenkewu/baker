@@ -515,18 +515,18 @@ insert_bugfile_chunk_reg_discrete_predictor_etiology <- function(Jcause, ppd = N
     "
       ")
   chunk_etiology <- paste0(chunk_etiology,
-                           "
-                             for (i in 1:Nd){
-                               Icat[i] ~ dcat(pEti[Eti_stratum_id[i],1:Jcause])
-                             ",
-                             ppd_seg,
-                             "
-                             }
-                             for (s in 1:n_unique_Eti_level){
-                                pEti[s, 1:Jcause]~ddirch(alphaEti[])
-                             }
-                            ")
-  paste0(chunk_etiology,"\n")
+    "
+     for (i in 1:Nd){
+           Icat[i] ~ dcat(pEti[Eti_stratum_id[i],1:Jcause])
+           ",
+           ppd_seg,
+           "
+     }
+     for (s in 1:n_unique_Eti_level){
+          pEti[s, 1:Jcause]~ddirch(alphaEti[s,])
+      }
+   ")
+   paste0(chunk_etiology,"\n")
 }
 
 

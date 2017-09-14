@@ -62,7 +62,8 @@ nplcm_fit_NoReg<-
       template_BrS_list <- lapply(patho_BrS_list,make_template,cause_list)
       for (s in seq_along(template_BrS_list)){
         if (sum(template_BrS_list[[s]])==0){
-          warning(paste0("==[baker] Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+          warning(paste0("==[baker] Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[s], " has no measurements informative of the causes specified in 'cause_list', except 'NoA'! 
+                         Please check if you need this measurement slice columns correspond to causes other than 'NoA'.=="))  
         }
       }
       

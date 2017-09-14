@@ -79,10 +79,14 @@
 #' \item \code{ppd} \code{TRUE} to simulate new data (\code{XXX.new}
 #' variables in the \code{.bug} file) from the posterior predictive 
 #' distribution (ppd); \code{FALSE} otherwise;
-#' \item \code{get.pEti} \code{TRUE} for getting posterior samples of etiologic fractions; 
-#' \code{FALSE} otherwise;
+#' \item \code{get.pEti} \code{TRUE} for getting posterior samples of individual etiologic fractions; 
+#' \code{FALSE} otherwise. For non-regression, or regression models with all discrete predictors, 
+#' this is defaulted to be \code{TRUE}; no need to specify this entry. It is only relevant for regression models
+#' with non-discrete covariates. Because individuals have distinct etiology pies at their specific covariate values, 
+#' it's easier to just store the posterior samples of the regression coefficients and reconstruct the pies afterwards,
+#' rather than storing them through JAGS. 
 #' \item \code{result.folder} Path to folder storing the results;
-#' \item \code{bugsmodel.dir} Path to WinBUGS model files;
+#' \item \code{bugsmodel.dir} Path to \code{.bug} model files;
 #' \item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
 #' \item \code{use_jags} \code{TRUE} for using JAGS 4.x.x; \code{FALSE} if using
 #' WinBUGS 1.4 (then \code{winbugs.dir} must be specified).

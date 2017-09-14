@@ -7,7 +7,7 @@
 overall_uniform(alpha, cause_list)
 }
 \arguments{
-\item{alpha}{any positive number, usually 1s.}
+\item{alpha}{any positive number, usually 1.}
 
 \item{cause_list}{a list of latent status}
 }

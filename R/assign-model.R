@@ -78,13 +78,11 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
     
     is_discrete_FPR_vec[i] <- FALSE
     if (!is.null(X)){
-    is_discrete_FPR_vec[i] <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
-                                 is_discrete(X, form_tmp))
+      is_discrete_FPR_vec[i] <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
+                                   is_discrete(X, form_tmp))
     }
   }
   names(do_reg_FPR) <- names(Mobs$MBS)
-  
-  
   
   #
   # specify regression for TPR: (every measurement slice has it.)
@@ -123,47 +121,47 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   
   is_discrete_Eti <- FALSE
   if (!is.null(X)){
-  is_discrete_Eti <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
-                        is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], form_tmp))
+    is_discrete_Eti <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
+                          is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], form_tmp))
   }
-
+  
   is_discrete_predictor <- list(is_discrete_Eti, is_discrete_FPR_vec)
-  names(is_discrete_predictor)[[1]] <- "Eti"
-  names(is_discrete_predictor)[[2]] <- names(Mobs$MBS)
+  names(is_discrete_predictor)[1] <- "Eti"
+  names(is_discrete_predictor)[2] <- "FPR"
   regression <- make_list(do_reg_Eti, do_reg_FPR,is_discrete_predictor)#, do_reg_TPR)
   
   # check BrS group:
-  BrS_grp <- FALSE
+  BrS_grp   <- FALSE
   prior_BrS <- model_options$prior$TPR_prior$BrS
-  GBrS_TPR <- length(unique(prior_BrS$grp))
-  grp_spec <- (!is.null(prior_BrS$grp) && GBrS_TPR >1 )
+  GBrS_TPR  <- length(unique(prior_BrS$grp))
+  grp_spec  <- (!is.null(prior_BrS$grp) && GBrS_TPR >1 )
   if (grp_spec) {
     for (s in seq_along(prior_BrS$val)){
       if (prior_BrS$input=="match_range" && 
           (length(prior_BrS$val[[s]]$up)!=GBrS_TPR | 
-          length(prior_BrS$val[[s]]$low)!=GBrS_TPR) ){
-         stop(paste0("==[baker] ",names(prior_BrS$val)[s])," needs ", GBrS_TPR,
-              " sets of sensitivity ranges.==")
-        }
+           length(prior_BrS$val[[s]]$low)!=GBrS_TPR) ){
+        stop(paste0("==[baker] ",names(prior_BrS$val)[s])," needs ", GBrS_TPR,
+             " sets of sensitivity ranges.==")
+      }
     }
     BrS_grp <- TRUE
   }
   
   
   # check SS group:
-  SS_grp <- FALSE
+  SS_grp   <- FALSE
   prior_SS <- model_options$prior$TPR_prior$SS
   grp_spec <- (!is.null(prior_SS$grp) && length(unique(prior_SS$grp)) >1 )
   if (grp_spec) {SS_grp <- TRUE}
   
   ## <-------- the following are more strict grp specifications (may cause error when running old folders):
-#   val_spec <- (num_slice["MSS"]>0 && any(lapply(prior_SS$val,length)>1))
-#   
-#   if (grp_spec && val_spec){SS_grp <- TRUE}
-#   if (grp_spec && !val_spec){stop("==Specified TPR group in 'grp' of 'model_options$prior$TPR_prior$SS',
-#                                   but either there is no SS data or the length of 'val' does not match the no. of TPR groups. ==")}
-#   if (!grp_spec && val_spec){stop("==No 'grp' specified in 'model_options$prior$TPR_prior$SS',
-#                                   but we have >1 sets of TPRs. ==")}
+  #   val_spec <- (num_slice["MSS"]>0 && any(lapply(prior_SS$val,length)>1))
+  #   
+  #   if (grp_spec && val_spec){SS_grp <- TRUE}
+  #   if (grp_spec && !val_spec){stop("==Specified TPR group in 'grp' of 'model_options$prior$TPR_prior$SS',
+  #                                   but either there is no SS data or the length of 'val' does not match the no. of TPR groups. ==")}
+  #   if (!grp_spec && val_spec){stop("==No 'grp' specified in 'model_options$prior$TPR_prior$SS',
+  #                                   but we have >1 sets of TPRs. ==")}
   
   # return results:
   make_list(num_slice, nested, regression,BrS_grp,SS_grp)

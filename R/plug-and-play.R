@@ -1940,7 +1940,7 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
           # case BrS measurement; non-nested (with only one column):
           ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
           ",MBS_nm[s],"[i]   ~ dbern(",mu_bs_nm[s],"[i])
-          ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
+          ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
           \n"
         )
     }
@@ -1953,7 +1953,7 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
           for (j in 1:",JBrS_nm[s],"){
           ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
           ",MBS_nm[s],"[i,j]   ~ dbern(",mu_bs_nm[s],"[i,j])
-          ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i],j]+(1-",indBS_nm[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j])
+          ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i],j]+(1-",indBS_nm[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j]
           }","\n"
         )
     } else{
@@ -1963,7 +1963,7 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
           # case BrS measurement; non-nested (with only one column):
           ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
           ",MBS_nm[s],"[i]   ~ dbern(",mu_bs_nm[s],"[i])
-          ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i]]+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
+          ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i]]+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
           \n"
         )
     } 
@@ -1987,11 +1987,11 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
             for (j in 1:",JBrS_nm[s],"){
             ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
             ",MBS_nm[s],"[i,j]   ~ dbern(",mu_bs_nm[s],"[i,j])
-            ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-",indBS_nm[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j])
+            ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-",indBS_nm[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j]
             # posterior predictive distribution:
             ",indBS_nm.new[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm.new[s],"[i],j]
             ",MBS_nm.new[s],"[i,j]   ~ dbern(",mu_bs_nm.new[s],"[i,j])
-            ",mu_bs_nm.new[s],"[i,j] <- ",indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-",indBS_nm.new[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j])
+            ",mu_bs_nm.new[s],"[i,j] <- ",indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[j]+(1-",indBS_nm.new[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j]
             }","\n"
           )
       } else{
@@ -2001,11 +2001,11 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
             # case BrS measurement; non-nested (with only one column):
             ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
             ",MBS_nm[s],"[i]   ~ dbern(",mu_bs_nm[s],"[i])
-            ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
+            ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
             # posterior predictive distribution:
             ",indBS_nm.new[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm.new[s],"[i]]
             ",MBS_nm.new[s],"[i]   ~ dbern(",mu_bs_nm.new[s],"[i])
-            ",mu_bs_nm.new[s],"[i] <- ",indBS_nm.new[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm.new[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
+            ",mu_bs_nm.new[s],"[i] <- ",indBS_nm.new[s],"[i]*",thetaBS_nm[s],"+(1-",indBS_nm.new[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
             
             "
           )
@@ -2019,11 +2019,11 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
             for (j in 1:",JBrS_nm[s],"){
             ",indBS_nm[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm,"[i],j]
             ",MBS_nm[s],"[i,j]   ~ dbern(",mu_bs_nm[s],"[i,j])
-            ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i],j]+(1-",indBS_nm[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j])
+            ",mu_bs_nm[s],"[i,j] <- ",indBS_nm[s],"[i,j]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i],j]+(1-",indBS_nm[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j]
             # posterior predictive distribution:
             ",indBS_nm.new[s],"[i,j] <- ",templateBS_nm[s],"[",Icat_nm.new[s],"[i],j]
             ",MBS_nm.new[s],"[i,j]   ~ dbern(",mu_bs_nm.new[s],"[i,j])
-            ",mu_bs_nm.new[s],"[i,j] <- ",indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i],j]+(1-",indBS_nm.new[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j])
+            ",mu_bs_nm.new[s],"[i,j] <- ",indBS_nm.new[s],"[i,j]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i],j]+(1-",indBS_nm.new[s],"[i,j])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j]
             }","\n"
           )
       } else{
@@ -2033,11 +2033,11 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
             # case BrS measurement; non-nested (with only one column):
             ",indBS_nm[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm,"[i]]
             ",MBS_nm[s],"[i]   ~ dbern(",mu_bs_nm[s],"[i])
-            ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i]]+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
+            ",mu_bs_nm[s],"[i] <- ",indBS_nm[s],"[i]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i]]+(1-",indBS_nm[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
             # posterior predictive distribution:
             ",indBS_nm.new[s],"[i] <- ",templateBS_nm[s],"[",Icat_nm.new[s],"[i]]
             ",MBS_nm.new[s],"[i]   ~ dbern(",mu_bs_nm.new[s],"[i])
-            ",mu_bs_nm.new[s],"[i] <- ",indBS_nm.new[s],"[i]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i]]+(1-",indBS_nm.new[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
+            ",mu_bs_nm.new[s],"[i] <- ",indBS_nm.new[s],"[i]*",thetaBS_nm[s],"[",BrS_TPR_grp_nm[s],"[i]]+(1-",indBS_nm.new[s],"[i])*",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
             
             "
           )
@@ -2074,7 +2074,7 @@ add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,p
   JBrS_nm  <- paste("JBrS",seq_along(BrS_nm),sep = "_")#
   thetaBS_nm <- paste("thetaBS",seq_along(BrS_nm),sep = "_")#
   #psiBS.cut_nm <- paste("psiBS.cut",seq_along(BrS_nm),sep = "_")#
-  alphaB_nm     <- paste("alphaB",seq_along(BrS_nm),sep = "_")#
+  alphaB_nm   <- paste("alphaB",seq_along(BrS_nm),sep = "_")#
   betaB_nm     <- paste("betaB",seq_along(BrS_nm),sep = "_")#
   psiBS_nm     <- paste("psiBS",seq_along(BrS_nm),sep = "_")#
   n_unique_FPR_level_nm     <- paste("n_unique_FPR_level",seq_along(BrS_nm),sep = "_")#
@@ -2116,7 +2116,7 @@ add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,p
             }
 
             for (s in 1:", n_unique_FPR_level_nm[s],"){
-            ",psiBS_nm[s],"[s]  ~ dbeta(1,1)
+            ",psiBS_nm[s],"[s,1]  ~ dbeta(1,1)
             }
         ")
     }
@@ -2139,7 +2139,7 @@ add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,p
           # BrS measurement characteristics - non-nested (only one column):
           ",thetaBS_nm[s],"~ dbeta(",alphaB_nm[s],",",betaB_nm[s],")
           for (s in 1:", n_unique_FPR_level_nm[s],"){
-            ",psiBS_nm[s],"[s]  ~ dbeta(1,1)
+            ",psiBS_nm[s],"[s,1]  ~ dbeta(1,1)
           }
           ")
     }
@@ -2189,7 +2189,7 @@ add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags <- function(s, Mobs,c
     plug <- paste0(
       "
       ## control BrS measurements; no subclass (only one column):
-      ",MBS_nm[s],"[i] ~ dbern(",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i]])
+      ",MBS_nm[s],"[i] ~ dbern(",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
       "
     )
   }

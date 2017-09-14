@@ -60,7 +60,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     Eti_formula <- likelihood$Eti_formula
     FPR_formula <- likelihood$FPR_formula
     
-    is_discrete_Eti <- is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], Eti_formula)
+    is_discrete_Eti     <- is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], Eti_formula)
     is_discrete_FPR_vec <- rep(NA,length(FPR_formula)); names(is_discrete_FPR_vec) <- names(FPR_formula)
     for (s in seq_along(FPR_formula)){
       is_discrete_FPR_vec[s] <- is_discrete(X, FPR_formula[[s]])
@@ -82,12 +82,19 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     # 
     # Z_Eti  <- Z_Eti0%*%solve(sqrt_Z_Eti0)
     
-    ncol_dm_Eti <- ncol(Z_Eti)
+    ncol_dm_Eti        <- ncol(Z_Eti)
+    Eti_colname_design_mat <- attributes(Z_Eti)$dimnames[[2]]
     attributes(Z_Eti)[names(attributes(Z_Eti))!="dim"] <- NULL
     
-    unique_Eti_level <- unique(Z_Eti)
+    unique_Eti_level   <- unique(Z_Eti)
     n_unique_Eti_level <- nrow(unique_Eti_level)
-    Eti_stratum_id <- apply(Z_Eti,1,function(v) which(rowSums(abs(unique_Eti_level-t(replicate(n_unique_Eti_level,v))))==0))
+    Eti_stratum_id     <- apply(Z_Eti,1,function(v) 
+        which(rowSums(abs(unique_Eti_level-t(replicate(n_unique_Eti_level,v))))==0))
+    rownames(unique_Eti_level) <- 1:n_unique_Eti_level
+    colnames(unique_Eti_level) <- Eti_colname_design_mat
+    
+    #stratum names for etiology regression:
+    dput(unique_Eti_level,file.path(mcmc_options$result.folder,"unique_Eti_level.txt"))
     
     if ("BrS" %in% use_measurements){
       #
@@ -99,7 +106,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       template_BrS_list <- lapply(patho_BrS_list,make_template,cause_list)
       for (s in seq_along(template_BrS_list)){
         if (sum(template_BrS_list[[s]])==0){
-          warning(paste0("==[baker] Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[s], " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.=="))  
+          warning(paste0("==[baker] Bronze-standard slice ", names(data_nplcm$Mobs$MBS)[s], " has no measurements informative of the causes specified in 'cause_list', except 'NoA'! Please check if you need this measurement slice columns correspond to causes other than 'NoA'.=="))  
         }
       }
       
@@ -113,11 +120,10 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       
       single_column_MBS <- which(lapply(MBS_list,ncol)==1)
       
-      
       # input design matrix for FPR regressions:
       int_Y <- as.integer(Y)
       if (any(int_Y[1:sum(int_Y)]==0) | any(int_Y[-(1:sum(int_Y))])==1){
-        stop("==[baker] Please put cases at the top of controls in `data_nplcm`.==\n")
+        stop("==[baker] Please put cases on top of controls in `data_nplcm`.==\n")
       }
       
       Z_FPR_list <- lapply(FPR_formula,function(form){stats::model.matrix(form,data.frame(X,Y))}) # <-- make sure that the row orders are the same.
@@ -125,11 +131,10 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       #intercept_only_MBS <- which(lapply(Z_FPR_list,function(x) (ncol(x)==1 & all(x==1)))==TRUE)
       
       unique_FPR_level_list <- lapply(Z_FPR_list, function(Z){
-          unique(Z)
-        })
-        
-      n_unique_FPR_level_list <- lapply(unique_FPR_level_list,nrow)
+        unique(Z)
+      })
       
+      n_unique_FPR_level_list <- lapply(unique_FPR_level_list,nrow)
       
       FPR_stratum_id_list <- list()
       
@@ -140,7 +145,20 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       }
       names(FPR_stratum_id_list) <- names(MBS_list)
       
+      FPR_colname_design_mat_list        <- vector("list",length(Mobs$MBS))
+      names(FPR_colname_design_mat_list) <-  names(Mobs$MBS)
       for (i in seq_along(JBrS_list)){
+        assign(paste("unique_FPR_level",i,sep="_"),unique_FPR_level_list[[i]])
+        assign(paste("n_unique_FPR_level",i,sep="_"),n_unique_FPR_level_list[[i]])
+        assign(paste("FPR_stratum_id",i,sep="_"),FPR_stratum_id_list[[i]])
+        
+        assign(paste("FPR_colname_design_mat", i, sep = "_"), attributes(Z_FPR_list[[i]])$dimnames[[2]]) 
+        FPR_colname_design_mat_list[[i]] <- eval(parse(text = paste0("FPR_colname_design_mat_",i)))
+        unique_FPR_level_list[[i]]       <- eval(parse(text = paste0("unique_FPR_level_",i)))
+        
+        rownames(unique_FPR_level_list[[i]]) <- 1:eval(parse(text = paste0("n_unique_FPR_level_",i)))
+        colnames(unique_FPR_level_list[[i]]) <- FPR_colname_design_mat_list[[i]]
+        
         attributes(Z_FPR_list[[i]])[names(attributes(Z_FPR_list[[i]]))!="dim"] <- NULL
         
         assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
@@ -153,10 +171,12 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
         # 
         # Z_FPR_list_orth[[i]]  <- Z_FPR0%*%solve(sqrt_Z_FPR0)
         # assign(paste("Z_FPR",i,sep="_"),Z_FPR_list_orth[[i]])
-        assign(paste("unique_FPR_level",i,sep="_"),unique_FPR_level_list[[i]])
-        assign(paste("n_unique_FPR_level",i,sep="_"),n_unique_FPR_level_list[[i]])
-        assign(paste("FPR_stratum_id",i,sep="_"),FPR_stratum_id_list[[i]])
+
       }
+      
+      #stratum names for FPR regression:
+      dput(unique_FPR_level_list,file.path(mcmc_options$result.folder,"unique_FPR_level_list.txt"))
+      
       
       # setup groupwise TPR for BrS:
       BrS_TPR_strat <- FALSE
@@ -478,7 +498,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
         }
         
         tmp <- matrix(stats::rgamma(n_unique_Eti_level*Jcause, 1,1),nrow=n_unique_Eti_level,ncol=Jcause)
-        res[[length(res)+1]] <- diag(1/rowSums(tmp))%*%tmp
+        res[[length(res)+1]] <- diag(1/rowSums(tmp),nrow=nrow(tmp),ncol=nrow(tmp))%*%tmp
         names(res)[length(res)] <- "pEti"
         res
       }
@@ -579,7 +599,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
         names(res2) <- c(paste("thetaSS", seq_along(JSS_list), sep = "_"),"Icat")
         #print(res2)
         tmp <- matrix(stats::rgamma(n_unique_Eti_level*Jcause, 1,1),nrow=n_unique_Eti_level,ncol=Jcause)
-        res[[length(res)+1]] <- diag(1/rowSums(tmp))%*%tmp
+        res[[length(res)+1]] <- diag(1/rowSums(tmp),nrow=nrow(tmp), ncol=nrow(tmp))%*%tmp
         names(res)[length(res)] <- "pEti"
         
         c(res,res2)
@@ -588,6 +608,11 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     
     # etiology (measurement independent)
     alphaEti          <- prior$Eti_prior    # <-------- input etiology prior here.
+    if(length(c(alphaEti)) < Jcause*n_unique_Eti_level){stop("==[baker] You've specified stratified etiologies, 
+          one per stratum defined by 'Eti_formula' in 'model_options$likelihood'. Please specify a matrix of 'Eti_prior' with 
+          (#rows, #columns) = (#Etiology strata, #causes). Also be aware that etiology prior for each stratum corresponds to pseudo-observations,
+          and they altogether comprise the total pseudo-observations. For example, if you specify a matrix of 1s for 10 strata and 30 causes,
+          it says you observed in a priori in each stratum 30 individuals, each caused by one of the causes!===")}
     
     #
     # fit model :
@@ -599,7 +624,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     # get posterior predictive distribution of BrS measurments:
     if (!is.null(mcmc_options$ppd) && mcmc_options$ppd){out_parameter <- c(out_parameter,paste("MBS.new",seq_along(Mobs$MBS),sep = "_"))}
     # get pEti: (for regression models; besides the coefficients of etiology regressions are always recorded)
-    if (!is.null(mcmc_options$get.pEti) && mcmc_options$get.pEti){out_parameter <- c(out_parameter,"pEti")}
+    if (!is.null(mcmc_options$get.pEti) && mcmc_options$get.pEti){out_parameter <- unique(c(out_parameter,"pEti"))}
     
     #
     # write the .bug files into mcmc_options$bugsmodel.dir; 
@@ -607,11 +632,11 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     #
     use_jags <- (!is.null(mcmc_options$use_jags) && mcmc_options$use_jags)
     model_func         <- write_model_Reg_discrete_predictor_NoNest(data_nplcm$Mobs,
-                                                 model_options$prior,
-                                                 model_options$likelihood$cause_list,
-                                                 model_options$use_measurements,
-                                                 mcmc_options$ppd,
-                                                 use_jags)
+                                                                    model_options$prior,
+                                                                    model_options$likelihood$cause_list,
+                                                                    model_options$use_measurements,
+                                                                    mcmc_options$ppd,
+                                                                    use_jags)
     model_bugfile_name <- "model_Reg_discrete_predictor_NoNest.bug"
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
@@ -686,7 +711,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       return(gs)
     }
     
-    }
+  }
 
 
 
@@ -840,7 +865,7 @@ nplcm_fit_Reg_NoNest <-
         assign(paste("non_basis_id",i,sep="_"),non_basis_id_list[[i]])
       }
       
-            # setup groupwise TPR for BrS:
+      # setup groupwise TPR for BrS:
       BrS_TPR_strat <- FALSE
       prior_BrS     <- model_options$prior$TPR_prior$BrS
       parsed_model <- assign_model(model_options,data_nplcm)
@@ -1136,7 +1161,7 @@ nplcm_fit_Reg_NoNest <-
               res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
             } else{
               res_curr[[1]] <- matrix(stats::rbeta(GBrS_TPR_curr*JBrS_list[[s]],1,1),
-                                         nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
+                                      nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
               if (JBrS_list[[s]]==1){
                 res_curr[[1]] <- c(res_curr[[1]])
               }
@@ -1182,7 +1207,7 @@ nplcm_fit_Reg_NoNest <-
             tmp_thetaSS[[i]] <- matrix(stats::rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),
                                        nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
             if (JSS_list[[i]]==1){
-                tmp_thetaSS[[i]] <- c(tmp_thetaSS[[i]])
+              tmp_thetaSS[[i]] <- c(tmp_thetaSS[[i]])
             }
           }
           if (i==1){
@@ -1212,7 +1237,7 @@ nplcm_fit_Reg_NoNest <-
               res_curr[[1]] <- stats::rbeta(JBrS_list[[s]],1,1)
             } else{
               res_curr[[1]] <- matrix(stats::rbeta(GBrS_TPR_curr*JBrS_list[[s]],1,1),
-                                         nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
+                                      nrow=GBrS_TPR_curr,ncol=JBrS_list[[s]])
               if (JBrS_list[[s]]==1){
                 res_curr[[1]] <- c(res_curr[[1]])
               }
@@ -1248,7 +1273,7 @@ nplcm_fit_Reg_NoNest <-
           } else{
             tmp_thetaSS[[i]] <- matrix(stats::rbeta(GSS_TPR_curr*JSS_list[[i]],1,1),nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
             if (JSS_list[[i]]==1){
-                tmp_thetaSS[[i]] <- c(tmp_thetaSS[[i]])
+              tmp_thetaSS[[i]] <- c(tmp_thetaSS[[i]])
             }
           }
           if (i==1){
@@ -1279,7 +1304,7 @@ nplcm_fit_Reg_NoNest <-
     # get posterior predictive distribution of BrS measurments:
     if (!is.null(mcmc_options$ppd) && mcmc_options$ppd){out_parameter <- c(out_parameter,paste("MBS.new",seq_along(Mobs$MBS),sep = "_"))}
     # get pEti: (for regression models; besides the coefficients of etiology regressions are always recorded)
-    if (!is.null(mcmc_options$get.pEti) && mcmc_options$get.pEti){out_parameter <- c(out_parameter,"pEti")}
+    if (!is.null(mcmc_options$get.pEti) && mcmc_options$get.pEti){out_parameter <- unique(c(out_parameter,"pEti"))}
     
     #
     # write the .bug files into mcmc_options$bugsmodel.dir; 
@@ -1357,7 +1382,7 @@ nplcm_fit_Reg_NoNest <-
       #lapply(names(in_data.list), dump, append = TRUE, envir = here,
       #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
       dump(names(in_data.list), append = FALSE, envir = here,
-             file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+           file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
       gs <- R2jags::jags2(data   = in_data,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
