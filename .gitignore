@@ -5,6 +5,5 @@ baker.Rproj
 .pdf
 .DS_Store
 dev-notes/
-inst/doc
 baker_package_manuscript/
 web/
