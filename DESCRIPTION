@@ -4,7 +4,7 @@ Title: Bayesian Analysis Kit for Etiology Research
 Version: 0.7-0002
 Date: 2017-09-14
 Authors@R: as.person(c(
-    "Zhenke Wu <zhwu@jhu.edu> [aut, cre]",
+    "Zhenke Wu <zhenkewu@umich.edu> [aut, cre]",
     "Scott Zeger <sz@jhu.edu> [aut]"
     ))
 Description: Nested Partially-Latent Class Models (npLCM) for Inference
