@@ -88,11 +88,8 @@
 #' \item \code{result.folder} Path to folder storing the results;
 #' \item \code{bugsmodel.dir} Path to \code{.bug} model files;
 #' \item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
-#' \item \code{use_jags} \code{TRUE} for using JAGS 4.x.x; \code{FALSE} if using
-#' WinBUGS 1.4 (then \code{winbugs.dir} must be specified).
 #' }
-#' @return A WinBUGS or JAGS result, fitted by function \code{\link[R2WinBUGS]{bugs}} from
-#' the \code{\link{R2WinBUGS}} package, or \code{\link[R2jags]{jags2}} from \code{R2jags}. 
+#' @return A JAGS result, fitted by function \code{\link[R2jags]{jags2}} from \code{R2jags}. 
 #' Current implemented models follow the hierarchy below:
 #' \itemize{
 #' \item no regression:  \link{write_model_NoReg}

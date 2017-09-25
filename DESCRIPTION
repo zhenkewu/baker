@@ -1,22 +1,20 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.7-0002
+Version: 0.7-2
 Date: 2017-09-14
-Authors@R: as.person(c(
-    "Zhenke Wu <zhenkewu@umich.edu> [aut, cre]",
-    "Scott Zeger <sz@jhu.edu> [aut]"
-    ))
-Description: Nested Partially-Latent Class Models (npLCM) for Inference
+Authors@R: c(
+     person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut")),
+     person("Scott", "Zeger", email="sz@jhu.edu",role="aut"))
+Description: Nested Partially-Latent Class Models for Inference
     of Population Disease Etiology and Individual Diagnosis. In the motivating
-    scientific study, Penumonia Etiology Research for Child Health, the scientists
-    usually call them "population etiology pie" and "individual etiology pie" for
-    their compositional nature, hence the name of the package.
+    scientific study, Pneumonia Etiology Research for Child Health, the scientists
+    usually call them "population etiology pie" and "individual etiology pie" because
+    they sum to one hundred percent, hence the name of the package.
 Depends:
     R(>= 3.2)
 Imports:
     rjags(>= 4-6),
-    R2WinBUGS(>= 2.1),
     R2jags(>= 0.5),
     lubridate(>= 1.3),
     binom(>= 1.1),
@@ -28,12 +26,12 @@ Imports:
     reshape2(>= 1.4),
     mgcv(>= 1.8-6),
     mvbutils(>= 2.7.4.1),
+    rrcov(>= 1.4-3),
     shiny(>= 0.12),
     shinyFiles(>= 0.6),
     shinydashboard(>= 0.5.1)
 License: MIT + file LICENSE
-SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net),
-    WinBUGS (>= 1.4) (Windows-only)
+SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net)
 Suggests:
     knitr,
     testthat,

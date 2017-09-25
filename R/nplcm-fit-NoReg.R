@@ -519,22 +519,22 @@ nplcm_fit_NoReg<-
     #
     # run the model:
     #
-    if (!use_jags){
-      ##winbugs is the only current option:
-      gs <- R2WinBUGS::bugs(data     = in_data,
-                            inits    = in_init, 
-                            parameters.to.save = out_parameter,
-                            model.file = filename,
-                            working.directory=mcmc_options$result.folder,
-                            bugs.directory  = mcmc_options$winbugs.dir,  #<- special to WinBUGS.
-                            n.iter         = mcmc_options$n.itermcmc,
-                            n.burnin       = mcmc_options$n.burnin,
-                            n.thin         = mcmc_options$n.thin,
-                            n.chains       = mcmc_options$n.chains,
-                            DIC      = FALSE,
-                            debug    = mcmc_options$debugstatus);
-      return(gs)
-    }
+    # if (!use_jags){
+    #   ##winbugs is the only current option:
+    #   gs <- R2WinBUGS::bugs(data     = in_data,
+    #                         inits    = in_init, 
+    #                         parameters.to.save = out_parameter,
+    #                         model.file = filename,
+    #                         working.directory=mcmc_options$result.folder,
+    #                         bugs.directory  = mcmc_options$winbugs.dir,  #<- special to WinBUGS.
+    #                         n.iter         = mcmc_options$n.itermcmc,
+    #                         n.burnin       = mcmc_options$n.burnin,
+    #                         n.thin         = mcmc_options$n.thin,
+    #                         n.chains       = mcmc_options$n.chains,
+    #                         DIC      = FALSE,
+    #                         debug    = mcmc_options$debugstatus);
+    #   return(gs)
+    # }
     
     here <- environment()
     if (use_jags){

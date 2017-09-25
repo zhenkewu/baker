@@ -32,7 +32,7 @@ library(knitr)
 # Introduction
 
 In this vignette, a sharply truncated sampling procedure
-is used to demonstrate use of the baker package tools.
+is used to demonstrate use of the baker package tools. Because we built the vignette locally, please check the inst/doc/ for the actual vignette files. We commented many of the following code segments because their running time is high on the CRAN server.
 
 The data for the illustration are related to pathogen
 categorization in pneumonia.
@@ -198,7 +198,7 @@ assign_model(model_options,data_nplcm)
 
 # Fitting the model
 
-```{r dofit}
+```{r dofit, eval=FALSE}
 # date stamp for analysis:
 Date     <- gsub("-", "_", Sys.Date())
 # include stratification information in file name:
@@ -260,20 +260,20 @@ gs <- nplcm(data_nplcm, model_options, mcmc_options)
 
 # Visualizations
 
-```{r dovizsetup}
+```{r dovizsetup,eval=FALSE}
 result_folder <- mcmc_options$result.folder
 ```
 
 ## plot data, prior, and posteriors for all causitive pathogens:
 
 
-```{r lkpan,fig.height=10, fig.width=10}
+```{r lkpan,fig.height=10, fig.width=10, eval=FALSE}
 suppressWarnings(plot_panels(result_folder, bg_color=NULL))
 ```
 
 ## plot data, prior, and posterior for selected causes:
 
-```{r lkpan2,fig.height=10, fig.width=10}
+```{r lkpan2,fig.height=10, fig.width=10, eval=FALSE}
 plot_panels(
   result_folder, bg_color = NULL, 
   select_latent = c("A","C"), exact = TRUE)
@@ -281,7 +281,7 @@ plot_panels(
 
 ## plot the joint posterior of the etiology fraction for any three causes:
 
-```{r trysel,fig.height=10, fig.width=10}
+```{r trysel,fig.height=10, fig.width=10, eval=FALSE}
 plot_selected_etiology(
   selected = c("A","B","C"), 
   result_folder, 1, 5)
@@ -289,7 +289,7 @@ plot_selected_etiology(
 
 ## grouped etiology (e.g., bacteria (left) vs virus (right) )
 
-```{r dodod,fig.height=10, fig.width=10}
+```{r dodod,fig.height=10, fig.width=10, eval=FALSE}
 plot_group_etiology(
   result_folder,
   dir_taxo = global_patho_taxo_dir, 
@@ -302,13 +302,13 @@ plot_group_etiology(
  (predicted LOR - observed LOR)/ s.e. (posterior predictive distribution of LOR);
  The closer to zero the better.
 
-```{r doSLORD,fig.height=10, fig.width=10}
+```{r doSLORD,fig.height=10, fig.width=10, eval=FALSE}
 plot_check_pairwise_SLORD(result_folder, slice=1)
 ```
 
 ## model checking by comparing observed frequencies of binary patterns to the model-predicted ones
 
-```{r doobsf,fig.height=10, fig.width=10}
+```{r doobsf,fig.height=10, fig.width=10, eval=FALSE}
 dir_list <- as.list(c(result_folder))
 plot_check_common_pattern(dir_list,slice_vec =c(1,1))
 ```

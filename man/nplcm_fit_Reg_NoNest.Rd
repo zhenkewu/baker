@@ -91,8 +91,6 @@ rather than storing them through JAGS.
 \item \code{result.folder} Path to folder storing the results;
 \item \code{bugsmodel.dir} Path to \code{.bug} model files;
 \item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
-\item \code{use_jags} \code{TRUE} for using JAGS 4.x.x; \code{FALSE} if using
-WinBUGS 1.4 (then \code{winbugs.dir} must be specified).
 }}
 }
 \value{

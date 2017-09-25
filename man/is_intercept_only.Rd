@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{is_intercept_only}
 \alias{is_intercept_only}
-\title{outputs logical values for a formula; to identify intercept-only formula.}
+\title{check if the formula is intercept only}
 \usage{
 is_intercept_only(form)
 }

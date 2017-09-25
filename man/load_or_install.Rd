@@ -4,13 +4,12 @@
 \alias{load_or_install}
 \title{Load or install a package}
 \usage{
-load_or_install(package_names, repos = "http://lib.stat.cmu.edu/R/CRAN")
+load_or_install(package_names, repos)
 }
 \arguments{
 \item{package_names}{A vector of package names}
 
-\item{repos}{URL for downloading the packages. Default is
-\url{http://lib.stat.cmu.edu/R/CRAN}}
+\item{repos}{URL for downloading the packages.}
 }
 \value{
 No message if it successfully loads the specified packages; Error

@@ -35,6 +35,5 @@ in finding \code{a} and \code{b}.
  the true positive rates (TPR)
 }
 \references{
-\url{http://www.medicine.mcgill.ca/epidemiology/
-                 Joseph/PBelisle/BetaParmsFromQuantiles.html}
+\url{http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html}
 }

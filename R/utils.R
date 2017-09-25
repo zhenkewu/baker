@@ -495,8 +495,7 @@ NA2dot <- function(s) {
 #' Other elements of the list include some details about the computations involved
 #' in finding \code{a} and \code{b}.
 #'
-#' @references \url{http://www.medicine.mcgill.ca/epidemiology/
-#'                  Joseph/PBelisle/BetaParmsFromQuantiles.html}
+#' @references \url{http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html}
 #' @export
 #'
 beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
@@ -865,8 +864,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
 #' loads it if it is, and installs it if not.
 #'
 #' @param package_names A vector of package names
-#' @param repos URL for downloading the packages. Default is
-#' \url{http://lib.stat.cmu.edu/R/CRAN}
+#' @param repos URL for downloading the packages. 
 #'
 #' @references Credit:
 #'  \url{http://www.vikparuchuri.com/blog/loading-andor-installing-packages/}
@@ -877,7 +875,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
 #'
 #'
 load_or_install <-
-  function(package_names,repos = "http://lib.stat.cmu.edu/R/CRAN") {
+  function(package_names,repos) {
     is_installed <-
       function(mypkg)
         is.element(mypkg, utils::installed.packages()[,1])
@@ -1543,7 +1541,7 @@ parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
 }
 
 
-#‘ check if the formula is intercept only
+#' check if the formula is intercept only
 #' 
 #' outputs logical values for a formula; to identify intercept-only formula.
 #' 

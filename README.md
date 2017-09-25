@@ -107,7 +107,7 @@ Connect `R` to `JAGS`/`WinBUGS`
     Loaded modules: basemod,bugs
     ```
 
-- Run `R` command `library(baker)`. If the package `ks` cannot be loaded due to failure of loading package `rgl`, first install X11 by going [here](http://xquartz.macosforge.org/trac/wiki/X112.7.7), followed by
+- Run `R` command `library(baker)`. If the package `ks` cannot be loaded due to failure of loading package `rgl`, first install X11 by going [here](https://www.xquartz.org/releases/XQuartz-2.7.11.html), followed by
     ```r
     install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1504.tar.gz",repo=NULL,type="source")
     ```
@@ -148,7 +148,7 @@ extra information.
     R> install.packages("rjags")
     ```
     
-3. Also check out the [INSTALLATION](https://cran.r-project.org/web/packages/rjags/INSTALL) file for `rjags` package.
+3. Also check out the [INSTALLATION](https://CRAN.R-project.org/package=rjags/INSTALL) file for `rjags` package.
 
 
 #### Windows 
