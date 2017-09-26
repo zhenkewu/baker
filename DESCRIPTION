@@ -6,7 +6,8 @@ Date: 2017-09-14
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut")),
      person("Scott", "Zeger", email="sz@jhu.edu",role="aut"))
-Description: Nested Partially-Latent Class Models for Inference
+Description: Nested Partially-Latent Class Models (Wu et al., 2016, JRSS-C, doi:10.1111/rssc.12101; 
+     Wu et al., 2017 Biostatistics, doi:10.1093/biostatistics/kxw037) for Inference
     of Population Disease Etiology and Individual Diagnosis. In the motivating
     scientific study, Pneumonia Etiology Research for Child Health, the scientists
     usually call them "population etiology pie" and "individual etiology pie" because
@@ -30,7 +31,7 @@ Imports:
     shiny(>= 0.12),
     shinyFiles(>= 0.6),
     shinydashboard(>= 0.5.1)
-License: MIT + file LICENSE
+License: GPL (>= 2)
 SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net)
 Suggests:
     knitr,
