@@ -12,7 +12,7 @@ plot_group_etiology(DIR_NPLCM, dir_taxo = NULL, ksFrac = 1,
 \item{DIR_NPLCM}{The file path to the result folder}
 
 \item{dir_taxo}{File path to taxonomy information (.csv). The default is \code{NULL}.
-If specified, it will overide \code{patho_taxo_dir} in \code{clean_options} read 
+If specified, it will override \code{patho_taxo_dir} in \code{clean_options} read 
 from \code{DIR_NPLCM}.}
 
 \item{ksFrac}{A number between 0 and 1, which is the fraction of samples used to

@@ -4,3 +4,4 @@
 dev-notes
 baker_package_manuscript
 web
+^cran-comments\.md$

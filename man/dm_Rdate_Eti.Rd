@@ -33,7 +33,7 @@ it as: \cr
 \code{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)} \cr
 \cr
 to call an etiology regression with intercept, main effects for 'AGECAT' and 'HIV', and
-natual cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
+natural cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
 sample quantiles.
 }
 \seealso{

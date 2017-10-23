@@ -254,7 +254,7 @@ sort_data_frame <- function(form,dat) {
   # http://tolstoy.newcastle.edu.au/R/help/04/07/1076.html
   # Use + for ascending, - for decending.
   # Sorting is left to right in the formula
-  # Useage is either of the following:
+  # Usage is either of the following:
   # sort.data.frame(~Block-Variety,Oats)
   # sort.data.frame(Oats,~-Variety+Block)
   
@@ -1098,7 +1098,7 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 #' \itemize{
 #' \item \code{Z_FPR_ctrl} transformed design matrix for FPR regression for controls
 #' \item \code{Z_FPR_case} transformed design matrix for borrowing FPR
-#' regression from controls to cases. It is obtained using control-standardation,
+#' regression from controls to cases. It is obtained using control-standardization,
 #' and square-root the following matrix (\eqn{\Omega}]) with (\eqn{j_1},\eqn{j_2}) element being
 #' \deqn{\Omega_{j_1j_2}=\|knots_{j_1}-knots_{j_2}\|^3}.
 #' }
@@ -1186,7 +1186,7 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
 #' \code{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)} \cr
 #' \cr
 #' to call an etiology regression with intercept, main effects for 'AGECAT' and 'HIV', and
-#' natual cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
+#' natural cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
 #' sample quantiles.
 #'
 #' @seealso \code{\link{nplcm}}
@@ -1515,7 +1515,7 @@ lookup_quality <- function(quality_nm) {
 #' @param form regression formula
 #' @param data_nplcm data object for nplcm; must contain covariates X and outcome Y.
 #' @param silent Default is TRUE for no message about covariates; FALSE otherwise.
-#' @return TURE for doing regression; FALSE otherwise.
+#' @return TRUE for doing regression; FALSE otherwise.
 #' 
 #' @export
 parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
