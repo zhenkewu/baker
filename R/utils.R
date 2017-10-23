@@ -1613,7 +1613,9 @@ get_latent_seq <- function(cause_list, ord,select_latent=NULL,exact=TRUE){
 #' @return a non-negative number
 #' @export
 #' 
-H      <- function(px){-sum(px*log(px))}
+H <- function(px) {
+  -sum(px * log(px))
+}
 
 #' Shannon entropy for binary data
 #' 

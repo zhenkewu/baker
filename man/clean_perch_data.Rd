@@ -56,3 +56,4 @@ type of measurement; \link{extract_data_raw} for reading raw data table
 and organizing them into \code{data_nplcm} format. Also see \link{clean_combine_subsites}
 for combining subsites and \link[lubridate]{parse_date_time} for parsing date.
 }
+\concept{data tidying functions}
