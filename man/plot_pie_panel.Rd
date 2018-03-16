@@ -41,4 +41,3 @@ Other visualization functions: \code{\link{plot_BrS_panel}},
   \code{\link{plot_panels}},
   \code{\link{plot_selected_etiology}}
 }
-\concept{visualization functions}

@@ -36,4 +36,3 @@ Other exploratory data analysis functions: \code{\link{get_top_pattern}},
   \code{\link{show_individual}},
   \code{\link{summarize_BrS}}, \code{\link{summarize_SS}}
 }
-\concept{exploratory data analysis functions}

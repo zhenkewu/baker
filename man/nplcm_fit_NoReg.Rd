@@ -118,4 +118,3 @@ then put it in the folder \code{mcmc_options$bugsmodel.dir}.
 Other model fitting functions: \code{\link{nplcm_fit_Reg_NoNest}},
   \code{\link{nplcm_fit_Reg_discrete_predictor_NoNest}}
 }
-\concept{model fitting functions}

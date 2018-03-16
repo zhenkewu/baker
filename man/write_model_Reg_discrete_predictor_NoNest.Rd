@@ -36,4 +36,3 @@ for inserting .bug file chunk for distribution of latent status (etiology).
 Other model generation functions: \code{\link{write_model_NoReg}},
   \code{\link{write_model_Reg_NoNest}}
 }
-\concept{model generation functions}

@@ -53,4 +53,3 @@ Import Raw PERCH Data
 
 Other raw data importing functions: \code{\link{read_meas_object}}
 }
-\concept{raw data importing functions}

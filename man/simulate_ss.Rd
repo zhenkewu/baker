@@ -24,4 +24,3 @@ Other simulation functions: \code{\link{simulate_brs}},
   \code{\link{simulate_latent}},
   \code{\link{simulate_nplcm}}
 }
-\concept{simulation functions}

@@ -24,4 +24,3 @@ Set true positive rate (TPR) prior ranges for silver-standard data.
 Other prior specification functions: \code{\link{overall_uniform}},
   \code{\link{set_prior_tpr_BrS_NoNest}}
 }
-\concept{prior specification functions}

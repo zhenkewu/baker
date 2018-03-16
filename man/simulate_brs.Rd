@@ -23,4 +23,3 @@ simulate BrS measurements:
 Other simulation functions: \code{\link{simulate_latent}},
   \code{\link{simulate_nplcm}}, \code{\link{simulate_ss}}
 }
-\concept{simulation functions}

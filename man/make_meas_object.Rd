@@ -38,4 +38,3 @@ Wrap the information about a particular type of measurement, e.g., NPPCR.
 \seealso{
 \code{\link{make_template}}
 }
-\concept{data standardization functions}

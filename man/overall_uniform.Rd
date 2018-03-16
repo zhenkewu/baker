@@ -21,4 +21,3 @@ specify overall uniform (symmetric Dirichlet distribution) for etiology prior
 Other prior specification functions: \code{\link{set_prior_tpr_BrS_NoNest}},
   \code{\link{set_prior_tpr_SS}}
 }
-\concept{prior specification functions}

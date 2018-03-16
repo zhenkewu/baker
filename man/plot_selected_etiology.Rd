@@ -39,4 +39,3 @@ Other visualization functions: \code{\link{plot_BrS_panel}},
   \code{\link{plot_group_etiology}},
   \code{\link{plot_panels}}, \code{\link{plot_pie_panel}}
 }
-\concept{visualization functions}
