@@ -7,7 +7,7 @@
 #'
 #' @param DIR_NPLCM The file path to the result folder
 #' @param dir_taxo File path to taxonomy information (.csv). The default is \code{NULL}.
-#' If specified, it will overide \code{patho_taxo_dir} in \code{clean_options} read 
+#' If specified, it will override \code{patho_taxo_dir} in \code{clean_options} read 
 #' from \code{DIR_NPLCM}.
 #' @param ksFrac A number between 0 and 1, which is the fraction of samples used to
 #' calculate kernel stats::density

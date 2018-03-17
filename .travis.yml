@@ -4,6 +4,9 @@ language: r
 warnings_are_errors: true
 sudo: required
 
+allow_failures:
+  - os: osx
+
 r_binary_packages: 
   - rjags 
   - R2jags
@@ -13,7 +16,7 @@ before_install:
   - wget -O ${fname} http://bit.ly/travis_helpers
   - cat ${fname}; source ${fname}; rm ${fname}  
   - cat DESCRIPTION
-  - jags_install  
+  - jags_install || true
   - export PROJ_DIR=`basename ${TRAVIS_BUILD_DIR}`
   - export PACKAGE_NAME=`package_name`
 

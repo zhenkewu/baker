@@ -31,7 +31,7 @@ Design matrix for FPR regression:
 \itemize{
 \item \code{Z_FPR_ctrl} transformed design matrix for FPR regression for controls
 \item \code{Z_FPR_case} transformed design matrix for borrowing FPR
-regression from controls to cases. It is obtained using control-standardation,
+regression from controls to cases. It is obtained using control-standardization,
 and square-root the following matrix (\eqn{\Omega}]) with (\eqn{j_1},\eqn{j_2}) element being
 \deqn{\Omega_{j_1j_2}=\|knots_{j_1}-knots_{j_2}\|^3}.
 }
