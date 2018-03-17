@@ -14,7 +14,7 @@
 #'  e.g., \code{\link{plot_logORmat}} or model fitting, e.g., \code{\link{nplcm}}.
 #'  The pathogen taxonomy is set to default "B".
 #'  \item{\code{template}} a matrix: rows for causes, columns for measurements;
-#'  generated as a lookup table to match mixture component parmeters for every type
+#'  generated as a lookup table to match mixture component parameters for every type
 #'   (a particular cause) of indiviuals.
 #'  \item{\code{latent_cat}} integer values to indicate the latent category. The integer
 #'  code corresponds to the order specified in \code{set_parameter$etiology}.
