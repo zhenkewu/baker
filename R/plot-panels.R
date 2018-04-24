@@ -204,6 +204,12 @@ order_post_eti <- function(res_nplcm,model_options){
 #' 
 #' @return TRUE or FALSE
 #' @export
+#' @examples
+#' l = list(a = 5, b = 1:2)
+#' is_length_all_one(l) # FALSE
+#' l = list(a = 5, b = 1)
+#' is_length_all_one(l) # TRUE
+#' 
 is_length_all_one <- function(x){
    len_vec <-  unlist(lapply(x,length))
    all(len_vec==1)
