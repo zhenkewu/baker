@@ -39,3 +39,4 @@ Other exploratory data analysis functions: \code{\link{plot_logORmat}},
   \code{\link{summarize_BrS}}, \code{\link{summarize_SS}},
   \code{\link{visualize_season}}
 }
+\concept{exploratory data analysis functions}
