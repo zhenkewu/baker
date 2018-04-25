@@ -30,3 +30,4 @@ finer subclass.
 Other prior specification functions: \code{\link{overall_uniform}},
   \code{\link{set_prior_tpr_SS}}
 }
+\concept{prior specification functions}
