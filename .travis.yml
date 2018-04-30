@@ -7,9 +7,6 @@ sudo: required
 allow_failures:
   - os: osx
 
-r_binary_packages: 
-  - R2jags
-
 before_install:
   - fname=travis_helpers.sh
   - wget -O ${fname} http://bit.ly/travis_helpers
