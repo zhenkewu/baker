@@ -1,11 +1,19 @@
 # Sample .travis.yml for R projects
 
 language: r
+cache: packages
 warnings_are_errors: true
 sudo: required
+osx_image: xcode9
 
-allow_failures:
-  - os: osx
+addons:
+  apt:
+    packages:
+    - libfftw3-dev
+    - libgsl0-dev
+    - libgsl0ldbl
+    - jags
+
 
 before_install:
   - fname=travis_helpers.sh
