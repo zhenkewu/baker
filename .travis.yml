@@ -8,7 +8,6 @@ allow_failures:
   - os: osx
 
 r_binary_packages: 
-  - rjags 
   - R2jags
 
 before_install:
