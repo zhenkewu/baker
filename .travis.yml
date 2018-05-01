@@ -5,6 +5,7 @@ cache: packages
 warnings_are_errors: true
 sudo: required
 osx_image: xcode9
+cran: http://cran.rstudio.com
 
 addons:
   apt:
