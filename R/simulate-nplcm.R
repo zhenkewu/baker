@@ -104,7 +104,7 @@ simulate_nplcm <- function(set_parameter) {
   
   data_nplcm <- make_list(Mobs, Y, X)
   #template   <- out_brs$template
-  latent_cat <- latent$iLcatAllnumeric
+  latent_cat <- latent$iLcat
   make_list(data_nplcm,latent_cat)
   
 }
