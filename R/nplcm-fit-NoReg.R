@@ -543,9 +543,16 @@ nplcm_fit_NoReg<-
       names(in_data.list) <- in_data
       #lapply(names(in_data.list), dump, append = TRUE, envir = here,
       #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+      #do.call(file.remove, list(list.files(mcmc_options$result.folder, full.names = TRUE)))
+      curr_data_txt_file <- file.path(mcmc_options$result.folder,"jagsdata.txt")
+      file.remove(curr_data_txt_file)
       dump(names(in_data.list), append = FALSE, envir = here,
-           file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
-      gs <- R2jags::jags2(data   = in_data,
+           file = curr_data_txt_file)
+      # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+      bad_jagsdata_txt <- readLines(curr_data_txt_file)
+      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+      writeLines(good_jagsdata_txt, curr_data_txt_file)
+      gs <- R2jags::jags2(data   = curr_data_txt_file,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
                           model.file = filename,
@@ -557,7 +564,7 @@ nplcm_fit_NoReg<-
                           DIC            = FALSE,
                           clearWD        = FALSE,              #<--- special to JAGS.
                           jags.path      = mcmc_options$jags.dir# <- special to JAGS.
-      );
+      )
       return(gs)
     }
   }
