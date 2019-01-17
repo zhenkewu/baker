@@ -545,7 +545,7 @@ nplcm_fit_NoReg<-
       #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
       #do.call(file.remove, list(list.files(mcmc_options$result.folder, full.names = TRUE)))
       curr_data_txt_file <- file.path(mcmc_options$result.folder,"jagsdata.txt")
-      file.remove(curr_data_txt_file)
+      if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
       dump(names(in_data.list), append = FALSE, envir = here,
            file = curr_data_txt_file)
       # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
