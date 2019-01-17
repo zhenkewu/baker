@@ -1,21 +1,27 @@
 # Sample .travis.yml for R projects
 
 language: r
+cache: packages
 warnings_are_errors: true
 sudo: required
+osx_image: xcode9
+cran: http://cran.rstudio.com
 
-allow_failures:
-  - os: osx
+addons:
+  apt:
+    packages:
+    - libfftw3-dev
+    - libgsl0-dev
+    - libgsl0ldbl
+    - jags
 
-r_binary_packages: 
-  - R2jags
 
 before_install:
   - fname=travis_helpers.sh
   - wget -O ${fname} http://bit.ly/travis_helpers
   - cat ${fname}; source ${fname}; rm ${fname}  
   - cat DESCRIPTION
-  - jags_install || true
+  - jags_install
   - export PROJ_DIR=`basename ${TRAVIS_BUILD_DIR}`
   - export PACKAGE_NAME=`package_name`
 
