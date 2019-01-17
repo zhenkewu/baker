@@ -1,0 +1,15 @@
+model clear
+data clear
+model in "/var/folders/rk/89yxmwcj4333kgsy6lh5q36r0000gn/T//RtmpkRaGiJ/scn_3_mixiter_1/rep_1_kfit_1/model_NoReg.bug"
+cd "/Users/zhenkewu/Dropbox/ZW/professional/git/baker"
+data in "jagsdata.txt"
+compile, nchains(1)
+inits in "jagsinits1.txt", chain(1)
+initialize
+update 10, by(1)
+monitor thetaBS_1, thin(1)
+monitor psiBS_1, thin(1)
+monitor pEti, thin(1)
+monitor MBS.new_1, thin(1)
+update 40, by(1)
+coda *
