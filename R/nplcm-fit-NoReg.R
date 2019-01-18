@@ -9,7 +9,7 @@
 #' \item no nested
 #' }
 #' If running JAGS on windows, please go to control panel to add the directory to
-#' jags into ENVIRONMENTAL VARIABLE!
+#' jags into ENVIRONMENTAL VARIABLE! q
 #'
 #' @inheritParams nplcm
 #' @return BUGS fit results.
@@ -511,7 +511,6 @@ nplcm_fit_NoReg<-
                                             mcmc_options$ppd,
                                             use_jags)
     
-    
     model_bugfile_name <- "model_NoReg.bug"
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
@@ -552,7 +551,8 @@ nplcm_fit_NoReg<-
       bad_jagsdata_txt <- readLines(curr_data_txt_file)
       good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
       writeLines(good_jagsdata_txt, curr_data_txt_file)
-      gs <- R2jags::jags2(data   = curr_data_txt_file,
+      
+      gs <- jags2_baker(data   = curr_data_txt_file,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
                           model.file = filename,

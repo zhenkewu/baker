@@ -109,7 +109,7 @@ in syntax), and fits the model. Features:
 \item no nested
 }
 If running JAGS on windows, please go to control panel to add the directory to
-jags into ENVIRONMENTAL VARIABLE!
+jags into ENVIRONMENTAL VARIABLE! q
 }
 \seealso{
 \link{write_model_NoReg} for constructing .bug model file; This function

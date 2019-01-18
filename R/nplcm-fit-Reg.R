@@ -150,7 +150,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       for (i in seq_along(JBrS_list)){
         assign(paste("unique_FPR_level",i,sep="_"),unique_FPR_level_list[[i]])
         assign(paste("n_unique_FPR_level",i,sep="_"),n_unique_FPR_level_list[[i]])
-        assign(paste("FPR_stratum_id",i,sep="_"),FPR_stratum_id_list[[i]])
+        assign(paste("FPR_stratum_id",i,sep="_"),unname(FPR_stratum_id_list[[i]])) # <-- caused problem when this is the only variable in the data_nplcm$X. So unname solves the problem.
         
         assign(paste("FPR_colname_design_mat", i, sep = "_"), attributes(Z_FPR_list[[i]])$dimnames[[2]]) 
         FPR_colname_design_mat_list[[i]] <- eval(parse(text = paste0("FPR_colname_design_mat_",i)))
@@ -693,9 +693,16 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       names(in_data.list) <- in_data
       #lapply(names(in_data.list), dump, append = TRUE, envir = here,
       #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+      curr_data_txt_file <- file.path(mcmc_options$result.folder,"jagsdata.txt")
+      if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
       dump(names(in_data.list), append = FALSE, envir = here,
-           file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
-      gs <- R2jags::jags2(data   = in_data,
+           file = curr_data_txt_file)
+      # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+      bad_jagsdata_txt <- readLines(curr_data_txt_file)
+      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+      writeLines(good_jagsdata_txt, curr_data_txt_file)
+      
+      gs <- jags2_baker(data   = curr_data_txt_file,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
                           model.file = filename,
@@ -1381,9 +1388,16 @@ nplcm_fit_Reg_NoNest <-
       names(in_data.list) <- in_data
       #lapply(names(in_data.list), dump, append = TRUE, envir = here,
       #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+      curr_data_txt_file <- file.path(mcmc_options$result.folder,"jagsdata.txt")
+      if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
       dump(names(in_data.list), append = FALSE, envir = here,
-           file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
-      gs <- R2jags::jags2(data   = in_data,
+           file = curr_data_txt_file)
+      # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+      bad_jagsdata_txt <- readLines(curr_data_txt_file)
+      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+      writeLines(good_jagsdata_txt, curr_data_txt_file)
+      
+      gs <- R2jags::jags2(data   = curr_data_txt_file,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
                           model.file = filename,
