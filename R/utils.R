@@ -1854,6 +1854,7 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #' This modifies the jags2 function in R2jags package.
 #' 
 #' @inheritParams R2jags::jags
+#' @import R2jags
 #' @seealso \code{\link[R2jags]{jags}}
 #' @export
 jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bug", 
