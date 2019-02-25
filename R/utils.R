@@ -183,7 +183,7 @@ symb2I <-
 #' Convert 0/1 coding to pathogen/combinations
 #'
 #' Reverse to \code{\link{symb2I}}
-#' @param binary_code Binary indictors for pathogens
+#' @param binary_code Binary indicators for pathogens
 #' @param pathogen_list The complete list of pathogen names
 #'
 #' @return The name of pathogen or pathogen combination indicated by "code"
@@ -270,9 +270,9 @@ unfactor <- function(f) {
 #' http://tolstoy.newcastle.edu.au/R/help/04/09/4300.html
 #' Some ideas from Andy Liaw\cr
 #' http://tolstoy.newcastle.edu.au/R/help/04/07/1076.html\cr
-#' Use + for ascending, - for decending.\cr
+#' Use + for ascending, - for descending.\cr
 #' Sorting is left to right in the formula\cr
-#' Useage is either of the following:\cr
+#' Usage is either of the following:\cr
 #' sort.data.frame(~Block-Variety,Oats)\cr
 #' sort.data.frame(Oats,~-Variety+Block)\cr
 #'
@@ -432,7 +432,7 @@ logOR <- function(MBS.case,MBS.ctrl) {
 #' @param dim_names names of the columns, from left to right. It is also the
 #' names of the rows, from bottom to top. Default is 1 through \code{ncol(mat)};
 #' @param cell_metrics the meaning of number in every cell;
-#' @param folding_line Default is \code{TRUE} for adding dashed major diagnoal
+#' @param folding_line Default is \code{TRUE} for adding dashed major diagonal
 #' line.
 #' @param axes plot axes; default is \code{FALSE};
 #' @param xlab label for x-axis
@@ -528,7 +528,7 @@ NA2dot <- function(s) {
 #' @param plot Default is \code{FALSE} to suppress plotting of the beta density,
 #' otherwise, set to \code{TRUE}.
 #'
-#' @return A list containing the selected Beta prameters \code{a}, and \code{b}.
+#' @return A list containing the selected Beta parameters \code{a}, and \code{b}.
 #' Other elements of the list include some details about the computations involved
 #' in finding \code{a} and \code{b}.
 #'
@@ -947,7 +947,7 @@ null_as_zero <- function(x) {
   }
 }
 
-#' Stratification setup by covaraites
+#' Stratification setup by covariates
 #'
 #' \code{set_strat} makes group indicators based on \code{model_options$X_reg_*}
 #'
@@ -1083,7 +1083,7 @@ unique_month <- function(Rdate) {
 #' get symmetric difference of months from two vector of R-format dates
 #'
 #' \code{sym_diff_month} evaluates the symmetric difference between two sets
-#' of R-formated date
+#' of R-formatted date
 #'
 #' @param Rdate1,Rdate2 R-formated R dates. See \code{\link{as.Date}}
 #'
@@ -1128,7 +1128,7 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 #' means FPR regression with intercept, main effects for 'AGECAT' and 'HIV', and TPRS
 #' bases for 'ENRLDATE' using 10 knots placed at 10 equal-probability-spaced sample quantiles.
 #' @param num_knots_FPR number of knots for FPR regression; default is \code{NULL}
-#' to accomodate fixed effect specification.
+#' to accommodate fixed effect specification.
 #'
 #' @seealso \code{\link{nplcm}}
 #' @return Design matrix for FPR regression:
@@ -1291,7 +1291,7 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
 #'
 #' @param n the length of coefficients
 #' @param dm_nm name of design matrix; default \code{"dm_FPR"}
-#' @param b_nm name of the coefficients; defaul \code{"b"}
+#' @param b_nm name of the coefficients; default \code{"b"}
 #' @param ind_nm name of the coefficient iterator; default \code{"j"}
 #' @param sub_ind_nm name of the subject iterator; default \code{"k"}
 #'
@@ -1318,7 +1318,7 @@ create_bugs_regressor_FPR <- function(n,dm_nm = "dm_FPR",
 #'
 #' @param n the length of coefficients
 #' @param dm_nm name of design matrix; default \code{"dm_Eti"}
-#' @param b_nm name of the coefficients; defaul \code{"betaEti"}
+#' @param b_nm name of the coefficients; default \code{"betaEti"}
 #' @param ind_nm name of the coefficient iterator; default \code{"j"}
 #' @param sub_ind_nm name of the subject iterator; default \code{"k"}
 #'
@@ -1670,7 +1670,7 @@ marg_H <- function(m_px){-m_px*log(m_px)-(1-m_px)*log(1-m_px)}
 #' @param objName the name of the object
 #' @param file the file path
 #' @param envir environment; default is calling environment: \link{parent.frame}
-#' @param assign.on.exit defautl is TRUE
+#' @param assign.on.exit default is TRUE
 #' 
 #' @return a new environment
 #' @export

@@ -230,7 +230,7 @@ summarize_SS <- function(SS_dat, Y){
 
 #' summarize bronze-standard data
 #' 
-#' @param BrS_dat bronze-stanadrd data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' @param BrS_dat bronze-standard data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
 #' 
 #' @param Y A vector of case/control status: 1 for case; 0 for control
 #' 
@@ -276,7 +276,7 @@ summarize_BrS <- function(BrS_dat,Y){
 
 #' get top patterns from a slice of bronze-standard measurement
 #' 
-#' @param BrS_dat bronze-stanadrd data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' @param BrS_dat bronze-standard data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
 #' 
 #' @param Y A vector of case/control status: 1 for case; 0 for control
 #' @param case_status 1 for case; 0 for controls

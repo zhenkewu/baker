@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{set_strat}
 \alias{set_strat}
-\title{Stratification setup by covaraites}
+\title{Stratification setup by covariates}
 \usage{
 set_strat(X, X_reg)
 }

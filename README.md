@@ -27,7 +27,7 @@ paper:
   - [2. Vignettes](#id-section2)
   - [3. Graphical User Interface (GUI)](#id-section3)
   - [4. Analytic Goal](#id-section4)
-  - [5. Comprison to Other Existing Solutions](#id-section5)
+  - [5. Comparison to Other Existing Solutions](#id-section5)
   - [6. Details](#id-section6)
   - [7. Platform](#id-section7)
   - [8. Connect `R` to `JAGS`/`WinBUGS`](#id-section8)
@@ -129,7 +129,7 @@ shiny::runApp(system.file("shiny", package = "baker"))
 4.  Fire up `R`, run `R` command `install.pacakges("rjags")`
 
 5.  Run `R` command `library(rjags)` in R console; If the installations
-    are successfull, you’ll see some notes like this:
+    are successful, you’ll see some notes like this:
     
     ``` r
     >library(rjags)
@@ -210,7 +210,7 @@ offers extra information.
         for setting environmental variables; - alternatives are `brew
         install -v jags` for OSX, `sudo apt-get install jags` for
         Ubuntu/Debian
-    3.  Fire up `R`, run `R` command `install.pacakges("rjags")`
+    3.  Fire up `R`, run `R` command `install.packages("rjags")`
     4.  Install
         [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) (for
         building and installing R pacakges from source); Add the path to

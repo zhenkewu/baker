@@ -22,7 +22,7 @@ a list of numbers, indicating categories of individual latent causes.
 Initialize individual latent status (only for JAGS)
 }
 \details{
-In JAGS 3.4.0, if an initial value contradicts the probablistic specification, e.g.
+In JAGS 3.4.0, if an initial value contradicts the probabilistic specification, e.g.
 \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
 then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
 silver-standard data is 1. Note: this is not a problem in WinBUGS.

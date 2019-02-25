@@ -16,7 +16,7 @@ names of the rows, from bottom to top. Default is 1 through \code{ncol(mat)};}
 
 \item{cell_metrics}{the meaning of number in every cell;}
 
-\item{folding_line}{Default is \code{TRUE} for adding dashed major diagnoal
+\item{folding_line}{Default is \code{TRUE} for adding dashed major diagonal
 line.}
 
 \item{axes}{plot axes; default is \code{FALSE};}

@@ -14,7 +14,7 @@ loadOneName(objName, file, envir = parent.frame(),
 
 \item{envir}{environment; default is calling environment: \link{parent.frame}}
 
-\item{assign.on.exit}{defautl is TRUE}
+\item{assign.on.exit}{default is TRUE}
 }
 \value{
 a new environment
