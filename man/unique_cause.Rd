@@ -8,7 +8,7 @@ unique_cause(cause_vec)
 }
 \arguments{
 \item{cause_vec}{a vector of characters with potential combo repetitions
-written in scrambed orders separated by "+"}
+written in scrambled orders separated by "+"}
 }
 \value{
 a vector of characters with unique meanings for latent causes

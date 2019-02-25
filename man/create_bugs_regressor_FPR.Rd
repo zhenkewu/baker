@@ -12,7 +12,7 @@ create_bugs_regressor_FPR(n, dm_nm = "dm_FPR", b_nm = "b",
 
 \item{dm_nm}{name of design matrix; default \code{"dm_FPR"}}
 
-\item{b_nm}{name of the coefficients; defaul \code{"b"}}
+\item{b_nm}{name of the coefficients; default \code{"b"}}
 
 \item{ind_nm}{name of the coefficient iterator; default \code{"j"}}
 

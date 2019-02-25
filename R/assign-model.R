@@ -24,7 +24,7 @@
 #'            \code{FALSE} otherwise;
 #'            \item \code{do_reg_FPR} \code{TRUE} for doing false positive rate 
 #'            regression (for every slice of bronze-standard). It means the false
-#'            positive rates, usually estimatable from controls, can vary with 
+#'            positive rates, usually estimable from controls, can vary with 
 #'            covariates. \code{FALSE} otherwise.
 #'            \item code{is_discrete_predictor} A list of names "Eti", and 
 #'            the names for every slice of bronze-standard data. \code{TRUE}

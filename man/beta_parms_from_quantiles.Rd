@@ -26,7 +26,7 @@ will have quantiles specified by \code{p}. For example, \code{q=c(0.5,0.99)}}
 otherwise, set to \code{TRUE}.}
 }
 \value{
-A list containing the selected Beta prameters \code{a}, and \code{b}.
+A list containing the selected Beta parameters \code{a}, and \code{b}.
 Other elements of the list include some details about the computations involved
 in finding \code{a} and \code{b}.
 }

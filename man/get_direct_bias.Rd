@@ -11,7 +11,7 @@ get_direct_bias(DIR_list, truth = NULL, silent = FALSE)
 \item{DIR_list}{The list of  where Bayesian results are stored}
 
 \item{truth}{True etiologic fraction vector (must sum to 1)  used to generate data;
-Default is \code{NULL}. If a vector is supplied, then only the frist path in \code{DIR_LIST}
+Default is \code{NULL}. If a vector is supplied, then only the first path in \code{DIR_LIST}
 is used.}
 
 \item{silent}{Default is FALSE. To suppress printing messages, set to TRUE.}
