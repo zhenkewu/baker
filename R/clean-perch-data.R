@@ -302,6 +302,7 @@ clean_combine_subsites <-
     }
   }
 
+
 #' Make measurement slice
 #' 
 #' Wrap the information about a particular type of measurement, e.g., NPPCR.
