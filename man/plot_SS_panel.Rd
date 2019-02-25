@@ -5,8 +5,8 @@
 \title{Plot silver-standard (SS) panel}
 \usage{
 plot_SS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
-  res_nplcm, bg_color, select_latent = NULL, exact = TRUE, top_SS = 1,
-  cexval = 1, srtval = 0, prior_shape = "interval")
+  res_nplcm, bg_color, select_latent = NULL, exact = TRUE,
+  top_SS = 1, cexval = 1, srtval = 0, prior_shape = "interval")
 }
 \arguments{
 \item{slice}{the index of measurement slice for SS.}

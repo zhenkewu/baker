@@ -4,7 +4,8 @@
 \alias{nplcm_fit_Reg_discrete_predictor_NoNest}
 \title{Fit nested partially-latent class model with regression (low-level)}
 \usage{
-nplcm_fit_Reg_discrete_predictor_NoNest(data_nplcm, model_options, mcmc_options)
+nplcm_fit_Reg_discrete_predictor_NoNest(data_nplcm, model_options,
+  mcmc_options)
 }
 \arguments{
 \item{data_nplcm}{\itemize{
