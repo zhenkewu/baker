@@ -40,7 +40,7 @@ show_individual <- function(data_nplcm,ID) {
 #' @param BrS_slice Default is 1 - the set of BrS data to visualize.
 #' @param logOR_rounding Rounding number of the log odds ratio. Default is 2.
 #' 
-#' @return Figure of LOR matrix and relavent s.e. and significance information.
+#' @return Figure of LOR matrix and relevant s.e. and significance information.
 #' 
 #' @family exploratory data analysis functions
 #' @export

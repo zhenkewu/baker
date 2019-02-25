@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{Imat2cat}
 \alias{Imat2cat}
-\title{Convert a matrix of binary indicators to categorial variables}
+\title{Convert a matrix of binary indicators to categorical variables}
 \usage{
 Imat2cat(binary_mat, cause_list, pathogen_list)
 }
@@ -17,7 +17,7 @@ Imat2cat(binary_mat, cause_list, pathogen_list)
 A vector of categorical variables. Its length equals the length of \code{"allowed.list"}
 }
 \description{
-Convert a matrix of binary indicators to categorial variables
+Convert a matrix of binary indicators to categorical variables
 }
 \examples{
 
