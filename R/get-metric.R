@@ -3,7 +3,7 @@
 #' distribution of pie and a true pie. 
 #'
 #' The result is equivalent to Euclidean-type calculation after the
-#' compositional vector (e.g., etiologic fraction) is centered-log-ratio (CLRB) tranformed.
+#' compositional vector (e.g., etiologic fraction) is centered-log-ratio (CLRB) transformed.
 #' For simulation only.
 #'
 #' @param DIR_NPLCM File path where Bayesian results are stored

@@ -4,8 +4,8 @@
 \alias{create_bugs_regressor_FPR}
 \title{create regressor summation equation used in regression for FPR}
 \usage{
-create_bugs_regressor_FPR(n, dm_nm = "dm_FPR", b_nm = "b", ind_nm = "j",
-  sub_ind_nm = "k")
+create_bugs_regressor_FPR(n, dm_nm = "dm_FPR", b_nm = "b",
+  ind_nm = "j", sub_ind_nm = "k")
 }
 \arguments{
 \item{n}{the length of coefficients}

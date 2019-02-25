@@ -1,3 +1,40 @@
+# Taken from https://github.com/suyusung/R2jags/blob/master/R/util.R#L12
+repath <- function(x) {
+  n.part <- length(x[[1]])
+  temp <- rep(NA, n.part)
+  for (i in 1:n.part){
+    if (nchar(x[[1]][i])> 8){
+      temp[i] <- paste(substr(x[[1]][i], 1, 6), "~1/", sep="")
+    }
+    if (nchar(x[[1]][i])<=8){
+      temp[i] <- paste(x[[1]][i],"/", sep="")
+    }
+  }
+  return(temp)
+}
+
+
+# Taken from https://github.com/suyusung/R2jags/blob/master/R/util.R#L27
+win2unixdir <- function(windir){
+  Dir <- substr(windir, 1, 3)
+  tempdir <- substr(windir, 4, 1000)
+  tempdir <- gsub(" ", "", tempdir)
+  tempdir <- strsplit(tempdir, "/")
+  n.part <- length(tempdir[[1]])
+  if (n.part>0){
+    tempdir <- repath(tempdir)
+    path <- ""
+    for (i in 1:n.part){
+      path <- paste(path, tempdir[i], sep="")
+    }
+    newpath <- paste(Dir, path, sep="")
+  }
+  else {
+    newpath <- Dir
+  }
+  return(c(newpath))
+}
+
 #' Create new folder name
 #'
 #' @param parent_path The parent directory where to put the new folder
@@ -128,9 +165,9 @@ symb2I <-
             "\n==",l,"-th cause, \n",pathogen_name[l],",
             \n has pathogen(s) not in the overall pathogen list!=="
           )
-          )
+        )
       }
-      }
+    }
     
     nc  <- length(res)
     matres <- t(sapply(1:nc,function(i) {
@@ -139,7 +176,7 @@ symb2I <-
       tempres
     }))
     matres
-    }
+  }
 
 #symb2I("A+D",c("A","B","C")) # will return error.
 
@@ -421,9 +458,9 @@ visualize_case_control_matrix <- function(mat, dim_names = ncol(mat),
   )
   ##add grid
   graphics::segments(rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5, n + 1),
-           0.5 + 0:n, col = "gray")
+                     0.5 + 0:n, col = "gray")
   graphics::segments(0.5 + 0:n, rep(0.5, n + 1), 0.5 + 0:n, rep(n + 0.5,
-                                                      n), col = "gray")
+                                                                n), col = "gray")
   mat.txt <- round(t(mat)[,n:1],1)
   mat.txt3 <- round(t(mat)[,n:1],3)
   
@@ -774,7 +811,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
       if (is.infinite(plot.xlim[2]))
       {
         tmp <- max(c(0.999, 1 - (1 - p[2]) / 10))
-       plot.xlim[2] <- F.inv(tmp, theta)
+        plot.xlim[2] <- F.inv(tmp, theta)
       }
     }
     plot.xlim <- sort(plot.xlim)
@@ -797,7 +834,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
       graphics::plot(x, h, type = 'l', ylab = ylab,ylim=c(0,2))
     }else{
       graphics::plot(x, h, type = 'l', ylab = ylab)
-      }
+    }
     
     # fill in area on the left side of the distribution
     x <- seq(from = plot.xlim[1], to = q[1], length = 1000)
@@ -826,7 +863,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
       q2print, side = 1, col = 'orange', at = q2print, cex = 0.6, line = 2.1
     )
     graphics::points(q, rep(graphics::par('usr')[3] + 0.15 * graphics::par('cxy')[2], 2), pch = 17, col =
-             'orange')
+                       'orange')
   }
   
   #________________________________________________________________________________________________________________
@@ -841,7 +878,7 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
   p.check <- f.cum(q, parms$theta)
   
   if (plot)
-   plot.density(
+    plot.density(
       p, q, f, f.cum, F.inv, f.mode(parms$theta),
       parms$theta,plot.xlim, dens.label, parms.names, 0.8
     )
@@ -946,7 +983,7 @@ set_strat <- function(X,X_reg) {
   X_group$ID          <- 1:nrow(X_group)
   
   form_agg <- stats::as.formula(paste0("cbind(group_names,ID)~",
-                                paste(X_reg,collapse = "+")))
+                                       paste(X_reg,collapse = "+")))
   
   grouping <- stats::aggregate(form_agg,X_group,identity)
   
@@ -1128,8 +1165,8 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
     # for FPR regression in controls:
     ctrl_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 0]
     knots_FPR <- stats::quantile(unique(ctrl_ingrp_std_num_date),
-                          seq(0,1,length = (num_knots_FPR + 2))[-c(1,(num_knots_FPR +
-                                                                        2))])
+                                 seq(0,1,length = (num_knots_FPR + 2))[-c(1,(num_knots_FPR +
+                                                                               2))])
     
     
     Z_K_FPR_ctrl <-
@@ -1228,8 +1265,8 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
     # for etiology regression:
     case_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 1]
     knots_Eti <- stats::quantile(unique(case_ingrp_std_num_date),
-                          seq(0,1,length = (num_knots_Eti + 2))[-c(1,(num_knots_Eti +
-                                                                        2))])
+                                 seq(0,1,length = (num_knots_Eti + 2))[-c(1,(num_knots_Eti +
+                                                                               2))])
     
     Z_K_Eti <- (abs(outer(
       case_ingrp_std_num_date,knots_Eti,"-"
@@ -1701,10 +1738,10 @@ tsb <- function(u){
 
 show_dep <- function(fname,pckg="package:baker",...){
   suppressWarnings(mvbutils::foodweb(where = pckg, prune = fname,
-          #border = TRUE,
-          #expand.xbox = 2, 
-          boxcolor = "#FC6512",
-          textcolor = "black", cex = 1.0, lwd=2,...))
+                                     #border = TRUE,
+                                     #expand.xbox = 2, 
+                                     boxcolor = "#FC6512",
+                                     textcolor = "black", cex = 1.0, lwd=2,...))
   graphics::mtext(paste0("The ",fname," function foodweb"))
 }
 
@@ -1855,6 +1892,7 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #' 
 #' @inheritParams R2jags::jags
 #' @import R2jags
+#' @importFrom R2WinBUGS write.model
 #' @seealso \code{\link[R2jags]{jags}}
 #' @export
 jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bug", 
@@ -1906,7 +1944,7 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
     else {
       gsub("\\.tmp$", ".txt", temp)
     }
-    write.model(model.file, con = temp)
+    R2WinBUGS::write.model(model.file, con = temp)
     model.file <- gsub("\\\\", "/", temp)
     if (!is.R()) 
       on.exit(file.remove(model.file), add = TRUE)
@@ -1975,9 +2013,12 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
                         ", thin(", n.thin, ")\n", sep = ""), "update ", redo, 
   ", by(", refresh, ")\n", "coda *\n", sep = "", file = "jagsscript.txt")
   system(paste(jags.call, "jagsscript.txt"))
-  fit <- R2jags:::jags.sims(parameters.to.save = parameters.to.save, 
+  # fit <- R2jags:::jags.sims(parameters.to.save = parameters.to.save, 
+  #                  n.chains = n.chains, n.iter = n.iter, n.burnin = n.burnin, 
+  #                  n.thin = n.thin, DIC = DIC)
+  fit <- jags.sims(parameters.to.save = parameters.to.save, 
                    n.chains = n.chains, n.iter = n.iter, n.burnin = n.burnin, 
-                   n.thin = n.thin, DIC = DIC)
+                   n.thin = n.thin, DIC = DIC)  
   if (clearWD) {
     file.remove(c("jagsdata.txt", "CODAindex.txt", inits.files, 
                   "jagsscript.txt", paste("CODAchain", 1:n.chains, 
@@ -1986,5 +2027,6 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
   class(fit) <- "bugs"
   return(fit)
 }
+
 
 

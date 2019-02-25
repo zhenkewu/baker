@@ -4,7 +4,8 @@
 \alias{loadOneName}
 \title{load an object from .RDATA file}
 \usage{
-loadOneName(objName, file, envir = parent.frame(), assign.on.exit = TRUE)
+loadOneName(objName, file, envir = parent.frame(),
+  assign.on.exit = TRUE)
 }
 \arguments{
 \item{objName}{the name of the object}

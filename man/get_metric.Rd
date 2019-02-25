@@ -19,6 +19,6 @@ a vector of (Integrated Squared Aitchison Distance (ISAD), bias-squared, varianc
 }
 \description{
 The result is equivalent to Euclidean-type calculation after the
-compositional vector (e.g., etiologic fraction) is centered-log-ratio (CLRB) tranformed.
+compositional vector (e.g., etiologic fraction) is centered-log-ratio (CLRB) transformed.
 For simulation only.
 }
