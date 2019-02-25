@@ -202,7 +202,7 @@ I2symb <- function(binary_code,pathogen_list) {
 
 
 
-#' Convert a matrix of binary indicators to categorial variables
+#' Convert a matrix of binary indicators to categorical variables
 #'
 #' @param binary_mat The matrix of binary indicators. Rows for subjects, columns for pathogens in the \code{"pathogen.list"}
 #' @param cause_list The list of causes
@@ -951,7 +951,7 @@ null_as_zero <- function(x) {
 #'
 #' \code{set_strat} makes group indicators based on \code{model_options$X_reg_*}
 #'
-#' @details the resuls from this function will help stratify etiology or FPR for
+#' @details the results from this function will help stratify etiology or FPR for
 #' different strata; the ways of stratification for etiology and FPR can be based
 #' on different covariates.
 #'
@@ -1085,7 +1085,7 @@ unique_month <- function(Rdate) {
 #' \code{sym_diff_month} evaluates the symmetric difference between two sets
 #' of R-formatted date
 #'
-#' @param Rdate1,Rdate2 R-formated R dates. See \code{\link{as.Date}}
+#' @param Rdate1,Rdate2 R-formatted R dates. See \code{\link{as.Date}}
 #'
 #' @return \code{NULL} if no difference; the set of different months otherwise.
 #'
@@ -1617,7 +1617,7 @@ as.matrix_or_vec <- function(x){
 #' 
 #' @param cause_list see mode_options in \link{nplcm}
 #' @param ord order of cause_list according to posterior mean
-#' @param select_latent Defaut is NULL
+#' @param select_latent Default is NULL
 #' @param exact Default is TRUE
 #' 
 #' @return a vector of indices

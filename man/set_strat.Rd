@@ -23,7 +23,7 @@ A list with following elements:
 \code{set_strat} makes group indicators based on \code{model_options$X_reg_*}
 }
 \details{
-the resuls from this function will help stratify etiology or FPR for
+the results from this function will help stratify etiology or FPR for
 different strata; the ways of stratification for etiology and FPR can be based
 on different covariates.
 }

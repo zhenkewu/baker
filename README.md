@@ -74,7 +74,7 @@ shiny::runApp(system.file("shiny", package = "baker"))
 
 <div id='id-section5'/>
 
-## Comprison to Other Existing Solutions
+## Comparison to Other Existing Solutions
 
   - Acknowledges various levels of measurement errors and combines
     multiple sources of data for optimal disease diagnosis.

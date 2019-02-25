@@ -11,7 +11,7 @@ get_latent_seq(cause_list, ord, select_latent = NULL, exact = TRUE)
 
 \item{ord}{order of cause_list according to posterior mean}
 
-\item{select_latent}{Defaut is NULL}
+\item{select_latent}{Default is NULL}
 
 \item{exact}{Default is TRUE}
 }
