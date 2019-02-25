@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.7.3
-Date: 2017-10-23
+Version: 0.7.4
+Date: 2019-01-18
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut","cph")),
      person("Scott", "Zeger", email="sz@jhu.edu",role="aut"))
@@ -29,7 +29,6 @@ Imports:
     reshape2(>= 1.4),
     mgcv(>= 1.8-6),
     mvbutils(>= 2.7.4.1),
-    rrcov(>= 1.4-3),
     shiny(>= 0.12),
     shinyFiles(>= 0.6),
     shinydashboard(>= 0.5.1)

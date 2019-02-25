@@ -1,22 +1,27 @@
 # Sample .travis.yml for R projects
 
 language: r
+cache: packages
 warnings_are_errors: true
 sudo: required
+osx_image: xcode9
+cran: http://cran.rstudio.com
 
-allow_failures:
-  - os: osx
+addons:
+  apt:
+    packages:
+    - libfftw3-dev
+    - libgsl0-dev
+    - libgsl0ldbl
+    - jags
 
-r_binary_packages: 
-  - rjags 
-  - R2jags
 
 before_install:
   - fname=travis_helpers.sh
   - wget -O ${fname} http://bit.ly/travis_helpers
   - cat ${fname}; source ${fname}; rm ${fname}  
   - cat DESCRIPTION
-  - jags_install || true
+  - jags_install
   - export PROJ_DIR=`basename ${TRAVIS_BUILD_DIR}`
   - export PACKAGE_NAME=`package_name`
 
@@ -27,15 +32,15 @@ jobs:
   include:
     - script:
       - cd ..
-      - travis_wait 100 R CMD build ${PROJ_DIR} ${R_BUILD_ARGS}
+      - travis_wait 1000 R CMD build ${PROJ_DIR} ${R_BUILD_ARGS}
       - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-      - travis_wait 100 R CMD check ${R_CHECK_ARGS} "${PKG_FILE_NAME}";
+      - travis_wait 1000 R CMD check ${R_CHECK_ARGS} "${PKG_FILE_NAME}";
       os: linux
     - script:
       - cd ..
-      - travis_wait 100 R CMD build ${PROJ_DIR} ${R_BUILD_ARGS}
+      - travis_wait 1000 R CMD build ${PROJ_DIR} ${R_BUILD_ARGS}
       - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-      - travis_wait 100 R CMD check ${R_CHECK_ARGS} "${PKG_FILE_NAME}";
+      - travis_wait 1000 R CMD check ${R_CHECK_ARGS} "${PKG_FILE_NAME}";
       os: osx
   
 env:

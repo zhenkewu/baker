@@ -32,3 +32,4 @@ Other exploratory data analysis functions: \code{\link{get_top_pattern}},
   \code{\link{summarize_BrS}},
   \code{\link{visualize_season}}
 }
+\concept{exploratory data analysis functions}

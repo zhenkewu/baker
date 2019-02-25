@@ -9,7 +9,7 @@
 #' \item no nested
 #' }
 #' If running JAGS on windows, please go to control panel to add the directory to
-#' jags into ENVIRONMENTAL VARIABLE!
+#' jags into ENVIRONMENTAL VARIABLE! 
 #'
 #' @inheritParams nplcm
 #' @return BUGS fit results.
@@ -511,7 +511,6 @@ nplcm_fit_NoReg<-
                                             mcmc_options$ppd,
                                             use_jags)
     
-    
     model_bugfile_name <- "model_NoReg.bug"
     
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
@@ -543,9 +542,17 @@ nplcm_fit_NoReg<-
       names(in_data.list) <- in_data
       #lapply(names(in_data.list), dump, append = TRUE, envir = here,
       #       file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
+      #do.call(file.remove, list(list.files(mcmc_options$result.folder, full.names = TRUE)))
+      curr_data_txt_file <- file.path(mcmc_options$result.folder,"jagsdata.txt")
+      if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
       dump(names(in_data.list), append = FALSE, envir = here,
-           file = file.path(mcmc_options$result.folder,"jagsdata.txt"))
-      gs <- R2jags::jags2(data   = in_data,
+           file = curr_data_txt_file)
+      # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+      bad_jagsdata_txt <- readLines(curr_data_txt_file)
+      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+      writeLines(good_jagsdata_txt, curr_data_txt_file)
+      
+      gs <- jags2_baker(data   = curr_data_txt_file,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
                           model.file = filename,
@@ -557,7 +564,7 @@ nplcm_fit_NoReg<-
                           DIC            = FALSE,
                           clearWD        = FALSE,              #<--- special to JAGS.
                           jags.path      = mcmc_options$jags.dir# <- special to JAGS.
-      );
+      )
       return(gs)
     }
   }

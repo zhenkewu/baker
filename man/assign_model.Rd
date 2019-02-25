@@ -45,3 +45,4 @@ A list of model specifications:
 \code{assign_model} will be modified to check if data are conformable
 to specified model.
 }
+\concept{specification checking functions}

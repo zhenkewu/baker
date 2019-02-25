@@ -122,11 +122,19 @@ extra information.
 2. Suppose you've downloaded it in `~/local/jags/4.2.0`. Follow the bash commands below:
 
     ``` bash
+    # change to the directory with the newly downloaded source files:
+    cd ~/local/jags/4.2.0
+
+    # create a new folder named "usr"
+    mkdir usr
+
     # decompress files:
     tar zxvf JAGS-4.2.0.tar.gz
     
     # change to the directory with newly decompressed files:
     cd ~/local/jags/4.2.0/JAGS-4.2.0
+
+
     
     # specify new JAGS home:
     export JAGS_HOME=$HOME/local/jags/4.2.0/usr
