@@ -1,11 +1,14 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.7.4
-Date: 2019-01-18
+Version: 0.7.5
+Date: 2019-02-25
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut","cph")),
-     person("Scott", "Zeger", email="sz@jhu.edu",role="aut"))
+     person("Scott", "Zeger", email="sz@jhu.edu",role="aut"),
+     person("John", "Muschelli", email="muschellij2@gmail.com", role="ctb", 
+     comment = c(ORCID = "0000-0001-6469-1750"))
+     )
 Description: Provides functions to specify, fit and visualize
     nested partially-latent class models (Wu, 2016, 
     'JRSS-C' <doi:10.1111/rssc.12101>; 
