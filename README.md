@@ -41,8 +41,11 @@ paper:
 devtools::install_github("zhenkewu/baker")
 ```
 
-Note: run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this
+Note: 
+
+1. run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this
 package is reported as missing.
+2. Windows User: use `devtools::install_github("zhenkewu/baker",INSTALL_opts=c("--no-multiarch"))` instead if you see an error message `ERROR: loading failed for 'i386'` (Thanks Chrissy!).
 
 <div id='id-section2'/>
 
