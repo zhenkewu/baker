@@ -264,7 +264,7 @@ gs <- nplcm(data_nplcm, model_options, mcmc_options)
 result_folder <- mcmc_options$result.folder
 ```
 
-## plot data, prior, and posteriors for all causitive pathogens:
+## plot data, prior, and posteriors for all causative pathogens:
 
 
 ```{r lkpan,fig.height=10, fig.width=10, eval=FALSE}

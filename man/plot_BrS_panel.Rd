@@ -5,8 +5,9 @@
 \title{Plot bronze-standard (BrS) panel}
 \usage{
 plot_BrS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
-  res_nplcm, bg_color, select_latent = NULL, exact = TRUE, top_BrS = 1.3,
-  cexval = 1, srtval = 0, prior_shape = "interval", silent = TRUE)
+  res_nplcm, bg_color, select_latent = NULL, exact = TRUE,
+  top_BrS = 1.3, cexval = 1, srtval = 0, prior_shape = "interval",
+  silent = TRUE)
 }
 \arguments{
 \item{slice}{the index of measurement slice for BrS.}

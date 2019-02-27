@@ -9,7 +9,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #' differences in syntax), and fits the model. Features:
 #' \itemize{
 #' \item regression;
-#' \item no nested subclasses, i.e. conditional indepdnence of 
+#' \item no nested subclasses, i.e. conditional independence of 
 #' multivariate measurements given disease class and covariates;
 #' \item multiple BrS + multiple SS.
 #' }
@@ -732,7 +732,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
 #' differences in syntax), and fits the model. Features:
 #' \itemize{
 #' \item regression;
-#' \item no nested subclasses, i.e. conditional indepdnence of 
+#' \item no nested subclasses, i.e. conditional independence of 
 #' multivariate measurements given disease class and covariates;
 #' \item multiple BrS + multiple SS.
 #' }

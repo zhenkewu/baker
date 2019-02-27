@@ -18,7 +18,7 @@ A list of measurements, true latent statues:
  The pathogen taxonomy is set to default "B".
  \item{\code{template}} a matrix: rows for causes, columns for measurements;
  generated as a lookup table to match mixture component parameters for every type
-  (a particular cause) of indiviuals.
+  (a particular cause) of individuals.
  \item{\code{latent_cat}} integer values to indicate the latent category. The integer
  code corresponds to the order specified in \code{set_parameter$etiology}.
  Controls are coded as \code{length(set_parameter$etiology)+1}.)
