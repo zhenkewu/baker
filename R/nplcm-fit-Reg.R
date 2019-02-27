@@ -608,6 +608,8 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     
     # etiology (measurement independent)
     alphaEti          <- prior$Eti_prior    # <-------- input etiology prior here.
+    attributes(alphaEti)[names(attributes(alphaEti))!="dim"]<- NULL # the dimnames caused issues.
+    
     if(length(c(alphaEti)) < Jcause*n_unique_Eti_level){stop("==[baker] You've specified stratified etiologies, 
           one per stratum defined by 'Eti_formula' in 'model_options$likelihood'. Please specify a matrix of 'Eti_prior' with 
           (#rows, #columns) = (#Etiology strata, #causes). Also be aware that etiology prior for each stratum corresponds to pseudo-observations,

@@ -1208,7 +1208,7 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
 
 #' Make etiology design matrix for dates with R format.
 #'
-#' \code{dm_Rdate_Eti} creates desigm matrices for etiology regressions.
+#' \code{dm_Rdate_Eti} creates design matrices for etiology regressions.
 #'
 #' @param Rdate a vector of dates of R format
 #' @param Y binary case/control status; 1 for case; 0 for controls

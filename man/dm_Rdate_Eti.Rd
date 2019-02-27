@@ -24,7 +24,7 @@ Design matrix for etiology regression:
 }
 }
 \description{
-\code{dm_Rdate_Eti} creates desigm matrices for etiology regressions.
+\code{dm_Rdate_Eti} creates design matrices for etiology regressions.
 }
 \details{
 It is used in \code{model_options$X_reg_Eti}. For example, one can specify
