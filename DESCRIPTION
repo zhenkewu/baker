@@ -4,7 +4,8 @@ Title: Bayesian Analysis Kit for Etiology Research
 Version: 0.7.5
 Date: 2019-02-25
 Authors@R: c(
-     person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut","cph")),
+     person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut","cph"),
+     comment = c(ORCID = "0000-0001-7582-669X")),
      person("Scott", "Zeger", email="sz@jhu.edu",role="aut"),
      person("John", "Muschelli", email="muschellij2@gmail.com", role="ctb", 
      comment = c(ORCID = "0000-0001-6469-1750"))
@@ -39,6 +40,7 @@ Imports:
     stats,
     utils
 License: MIT + file LICENSE
+Language: 'en-US'
 SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net)
 Suggests:
     knitr,
