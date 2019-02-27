@@ -4,9 +4,9 @@
 \alias{visualize_case_control_matrix}
 \title{Visualize matrix for a quantity measured on cases and controls (a single number)}
 \usage{
-visualize_case_control_matrix(mat, dim_names = ncol(mat), cell_metrics = "",
-  folding_line = TRUE, axes = FALSE, xlab = "", ylab = "", asp = 1,
-  title = "")
+visualize_case_control_matrix(mat, dim_names = ncol(mat),
+  cell_metrics = "", folding_line = TRUE, axes = FALSE, xlab = "",
+  ylab = "", asp = 1, title = "")
 }
 \arguments{
 \item{mat}{matrix of values: upper for cases, lower for controls;}
@@ -16,7 +16,7 @@ names of the rows, from bottom to top. Default is 1 through \code{ncol(mat)};}
 
 \item{cell_metrics}{the meaning of number in every cell;}
 
-\item{folding_line}{Default is \code{TRUE} for adding dashed major diagnoal
+\item{folding_line}{Default is \code{TRUE} for adding dashed major diagonal
 line.}
 
 \item{axes}{plot axes; default is \code{FALSE};}

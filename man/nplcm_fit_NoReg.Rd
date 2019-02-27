@@ -49,11 +49,11 @@ regression is intended.
 of the design matrix for R format enrollment date; it will produce penalized-spline
 basis (based on B-splines). Specify \code{~0} if no
 regression is intended. NB: If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
-will just specify a design matrix with appropirately standardized dates. 
+will just specify a design matrix with appropriately standardized dates. 
     }
 }
 \item \code{use_measurements}{
-     a vector of characters strings; can be any singleton or combinaitons of "BrS", "SS", "GS".
+     a vector of characters strings; can be any singleton or combinations of "BrS", "SS", "GS".
 }
 
 \item \code{prior}{

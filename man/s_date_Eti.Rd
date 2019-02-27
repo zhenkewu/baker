@@ -4,8 +4,8 @@
 \alias{s_date_Eti}
 \title{Make Etiology design matrix for dates with R format.}
 \usage{
-s_date_Eti(Rdate, Y, basis = "ncs", dof = ifelse(basis == "ncs", 5, 10),
-  ...)
+s_date_Eti(Rdate, Y, basis = "ncs", dof = ifelse(basis == "ncs", 5,
+  10), ...)
 }
 \arguments{
 \item{Rdate}{a vector of dates of R format}
