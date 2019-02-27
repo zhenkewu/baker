@@ -1,5 +1,4 @@
-^Meta$
-^doc$
+^README\.Rmd$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$

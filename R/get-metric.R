@@ -3,7 +3,7 @@
 #' distribution of pie and a true pie. 
 #'
 #' The result is equivalent to Euclidean-type calculation after the
-#' compositional vector (e.g., etiologic fraction) is centered-log-ratio (CLRB) tranformed.
+#' compositional vector (e.g., etiologic fraction) is centered-log-ratio (CLRB) transformed.
 #' For simulation only.
 #'
 #' @param DIR_NPLCM File path where Bayesian results are stored
@@ -85,7 +85,7 @@ get_metric <- function(DIR_NPLCM,truth){
 #'
 #' @param DIR_list The list of  where Bayesian results are stored
 #' @param truth True etiologic fraction vector (must sum to 1)  used to generate data;
-#' Default is \code{NULL}. If a vector is supplied, then only the frist path in \code{DIR_LIST}
+#' Default is \code{NULL}. If a vector is supplied, then only the first path in \code{DIR_LIST}
 #' is used.
 #' @param silent Default is FALSE. To suppress printing messages, set to TRUE.
 #' 

@@ -40,7 +40,7 @@ show_individual <- function(data_nplcm,ID) {
 #' @param BrS_slice Default is 1 - the set of BrS data to visualize.
 #' @param logOR_rounding Rounding number of the log odds ratio. Default is 2.
 #' 
-#' @return Figure of LOR matrix and relavent s.e. and significance information.
+#' @return Figure of LOR matrix and relevant s.e. and significance information.
 #' 
 #' @family exploratory data analysis functions
 #' @export
@@ -230,7 +230,7 @@ summarize_SS <- function(SS_dat, Y){
 
 #' summarize bronze-standard data
 #' 
-#' @param BrS_dat bronze-stanadrd data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' @param BrS_dat bronze-standard data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
 #' 
 #' @param Y A vector of case/control status: 1 for case; 0 for control
 #' 
@@ -276,7 +276,7 @@ summarize_BrS <- function(BrS_dat,Y){
 
 #' get top patterns from a slice of bronze-standard measurement
 #' 
-#' @param BrS_dat bronze-stanadrd data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' @param BrS_dat bronze-standard data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
 #' 
 #' @param Y A vector of case/control status: 1 for case; 0 for control
 #' @param case_status 1 for case; 0 for controls

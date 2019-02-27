@@ -19,9 +19,9 @@ Author: Kevin Wright\cr
 http://tolstoy.newcastle.edu.au/R/help/04/09/4300.html
 Some ideas from Andy Liaw\cr
 http://tolstoy.newcastle.edu.au/R/help/04/07/1076.html\cr
-Use + for ascending, - for decending.\cr
+Use + for ascending, - for descending.\cr
 Sorting is left to right in the formula\cr
-Useage is either of the following:\cr
+Usage is either of the following:\cr
 sort.data.frame(~Block-Variety,Oats)\cr
 sort.data.frame(Oats,~-Variety+Block)\cr
 }

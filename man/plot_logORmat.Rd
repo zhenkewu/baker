@@ -19,7 +19,7 @@ It can be of larger length than that of \code{pathogen_BrS}.}
 \item{logOR_rounding}{Rounding number of the log odds ratio. Default is 2.}
 }
 \value{
-Figure of LOR matrix and relavent s.e. and significance information.
+Figure of LOR matrix and relevant s.e. and significance information.
 }
 \description{
 Visualize pairwise log odds ratios (LOR) for data that are available in

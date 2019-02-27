@@ -240,7 +240,7 @@ get_pEti_samp <- function(res_nplcm,model_options){
 }
 
 #' Match latent causes that might have the same combo but
-#' different specificaitions
+#' different specifications
 #' 
 #'  @details In our cause_list, "A+B" represents the same cause
 #'   as "B+A". It is used for plotting side-by-side posterior sample comparisons
@@ -303,7 +303,7 @@ get_cause_by_num <- function(cause_list,num){
 #' get unique causes, regardless of the actual order in combo
 #' 
 #' @param cause_vec a vector of characters with potential combo repetitions
-#' written in scrambed orders separated by "+"
+#' written in scrambled orders separated by "+"
 #' 
 #' @examples 
 #' x <- c("A","B","A","CC+DD","DD+CC","E+F+G","B")

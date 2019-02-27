@@ -3,7 +3,7 @@
 \name{match_cause}
 \alias{match_cause}
 \title{Match latent causes that might have the same combo but
-different specificaitions}
+different specifications}
 \usage{
 match_cause(pattern, vec)
 }

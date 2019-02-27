@@ -7,12 +7,12 @@
 sym_diff_month(Rdate1, Rdate2)
 }
 \arguments{
-\item{Rdate1, Rdate2}{R-formated R dates. See \code{\link{as.Date}}}
+\item{Rdate1, Rdate2}{R-formatted R dates. See \code{\link{as.Date}}}
 }
 \value{
 \code{NULL} if no difference; the set of different months otherwise.
 }
 \description{
 \code{sym_diff_month} evaluates the symmetric difference between two sets
-of R-formated date
+of R-formatted date
 }
