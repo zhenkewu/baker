@@ -12,7 +12,7 @@ create_bugs_regressor_Eti(n, dm_nm = "dm_Eti", b_nm = "betaEti",
 
 \item{dm_nm}{name of design matrix; default \code{"dm_Eti"}}
 
-\item{b_nm}{name of the coefficients; defaul \code{"betaEti"}}
+\item{b_nm}{name of the coefficients; default \code{"betaEti"}}
 
 \item{ind_nm}{name of the coefficient iterator; default \code{"j"}}
 

@@ -4,7 +4,8 @@
 \alias{loadOneName}
 \title{load an object from .RDATA file}
 \usage{
-loadOneName(objName, file, envir = parent.frame(), assign.on.exit = TRUE)
+loadOneName(objName, file, envir = parent.frame(),
+  assign.on.exit = TRUE)
 }
 \arguments{
 \item{objName}{the name of the object}
@@ -13,7 +14,7 @@ loadOneName(objName, file, envir = parent.frame(), assign.on.exit = TRUE)
 
 \item{envir}{environment; default is calling environment: \link{parent.frame}}
 
-\item{assign.on.exit}{defautl is TRUE}
+\item{assign.on.exit}{default is TRUE}
 }
 \value{
 a new environment

@@ -24,7 +24,7 @@ means FPR regression with intercept, main effects for 'AGECAT' and 'HIV', and TP
 bases for 'ENRLDATE' using 10 knots placed at 10 equal-probability-spaced sample quantiles.}
 
 \item{num_knots_FPR}{number of knots for FPR regression; default is \code{NULL}
-to accomodate fixed effect specification.}
+to accommodate fixed effect specification.}
 }
 \value{
 Design matrix for FPR regression:

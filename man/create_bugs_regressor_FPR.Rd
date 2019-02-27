@@ -4,15 +4,15 @@
 \alias{create_bugs_regressor_FPR}
 \title{create regressor summation equation used in regression for FPR}
 \usage{
-create_bugs_regressor_FPR(n, dm_nm = "dm_FPR", b_nm = "b", ind_nm = "j",
-  sub_ind_nm = "k")
+create_bugs_regressor_FPR(n, dm_nm = "dm_FPR", b_nm = "b",
+  ind_nm = "j", sub_ind_nm = "k")
 }
 \arguments{
 \item{n}{the length of coefficients}
 
 \item{dm_nm}{name of design matrix; default \code{"dm_FPR"}}
 
-\item{b_nm}{name of the coefficients; defaul \code{"b"}}
+\item{b_nm}{name of the coefficients; default \code{"b"}}
 
 \item{ind_nm}{name of the coefficient iterator; default \code{"j"}}
 

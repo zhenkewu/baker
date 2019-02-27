@@ -7,7 +7,7 @@
 I2symb(binary_code, pathogen_list)
 }
 \arguments{
-\item{binary_code}{Binary indictors for pathogens}
+\item{binary_code}{Binary indicators for pathogens}
 
 \item{pathogen_list}{The complete list of pathogen names}
 }

@@ -7,7 +7,7 @@
 summarize_BrS(BrS_dat, Y)
 }
 \arguments{
-\item{BrS_dat}{bronze-stanadrd data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}}
+\item{BrS_dat}{bronze-standard data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}}
 
 \item{Y}{A vector of case/control status: 1 for case; 0 for control}
 }
