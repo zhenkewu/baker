@@ -1028,17 +1028,18 @@ set_strat <- function(X,X_reg) {
 
 is_discrete <- function(X,X_reg) {
   if (!is.data.frame(X)) {
-    stop("==X is not a data frame. Please transform it into a data frame.==")
+    stop("==[baker]X is not a data frame. Please transform it into a data frame.==")
   }
   
   if (is.character(X_reg)){
     if (!all(X_reg %in% names(X))) {
-      stop("==",paste(X_reg,collapse = ", ")," not in X ==")
+      stop("==[baker]",paste(X_reg,collapse = ", ")," not in the X data provided ==")
     }
-    res = nrow(X) / nrow(unique(X[,X_reg,drop = FALSE])) > 10
+    res <- nrow(X) / nrow(unique(X[,X_reg,drop = FALSE])) > 10
+    
   } else{
     X_dm <- stats::model.matrix(X_reg,data.frame(X)) # <--- X for case only.
-    res = nrow(X) / nrow(unique(X_dm)) > 10
+    res  <- nrow(X) / nrow(unique(X_dm)) > 10
   }
   res
 }

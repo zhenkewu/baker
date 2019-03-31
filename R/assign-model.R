@@ -78,8 +78,9 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
     
     is_discrete_FPR_vec[i] <- FALSE
     if (!is.null(X)){
-      is_discrete_FPR_vec[i] <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
-                                   is_discrete(X, form_tmp))
+      is_discrete_FPR_vec[i] <- (!is_intercept_only(form_tmp) & 
+                                 !stats::is.empty.model(form_tmp) & 
+                                  is_discrete(X, form_tmp))
     }
   }
   names(do_reg_FPR) <- names(Mobs$MBS)
@@ -120,8 +121,9 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   do_reg_Eti <- parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
   
   is_discrete_Eti <- FALSE
-  if (!is.null(X)){
-    is_discrete_Eti <- (!is_intercept_only(form_tmp) & !stats::is.empty.model(form_tmp) & 
+  if (!is.null(X)){ # <--- potential problem if a user input more data than needed. need fixing.
+    is_discrete_Eti <- (!stats::is.empty.model(form_tmp) & 
+                        !is_intercept_only(form_tmp) & 
                           is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], form_tmp))
   }
   

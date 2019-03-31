@@ -19,8 +19,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #' @inheritParams nplcm
 #' @return BUGS fit results.
 #' 
-#' @seealso \link{write_model_NoReg} for constructing .bug model file; This function
-#' then put it in the folder \code{mcmc_options$bugsmodel.dir}.
+#' @seealso \link{write_model_NoReg} for automatically generate \code{.bug} model
+#'file; This present function store it in location: \code{mcmc_options$bugsmodel.dir}.
 #' 
 #' @family model fitting functions 
 #' 
@@ -61,12 +61,13 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     FPR_formula <- likelihood$FPR_formula
     
     is_discrete_Eti     <- is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], Eti_formula)
-    is_discrete_FPR_vec <- rep(NA,length(FPR_formula)); names(is_discrete_FPR_vec) <- names(FPR_formula)
+    is_discrete_FPR_vec <- rep(NA,length(FPR_formula))
+    names(is_discrete_FPR_vec) <- names(FPR_formula)
     for (s in seq_along(FPR_formula)){
       is_discrete_FPR_vec[s] <- is_discrete(X, FPR_formula[[s]])
     }
     
-    # test discrete predictors:
+    # test discrete predictors (why do this when we already assigned the model?):
     if (!is_discrete_Eti){
       stop("==[baker]Etiology regression has non-discrete covariates! ==")
     }

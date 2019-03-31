@@ -115,8 +115,8 @@ If running JAGS on windows, please go to control panel to add the directory to
 jags into ENVIRONMENTAL VARIABLE!
 }
 \seealso{
-\link{write_model_NoReg} for constructing .bug model file; This function
-then put it in the folder \code{mcmc_options$bugsmodel.dir}.
+\link{write_model_NoReg} for automatically generate \code{.bug} model
+file; This present function store it in location: \code{mcmc_options$bugsmodel.dir}.
 
 Other model fitting functions: \code{\link{nplcm_fit_NoReg}},
   \code{\link{nplcm_fit_Reg_NoNest}}
