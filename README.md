@@ -91,6 +91,19 @@ devtools::install_github("zhenkewu/baker")
 shiny::runApp(system.file("shiny", package = "baker"))
 ```
 
+For developers interested in low-level details, here is a pretty awesome visualization of the function dependencies within the package:
+
+``` r
+library(DependenciesGraphs) # if not installed, try this-- devtools::install_github("datastorm-open/DependenciesGraphs")
+library(QualtricsTools) # devtools::install_github("emmamorgan-tufts/QualtricsTools")
+dep <- funDependencies('package:baker','nplcm')
+plot(dep)
+```
+
+The figure you get:
+
+![](inst/figs/nplcm_functional_dependence.png)
+
 <div id='id-section4'/>
 
 Analytic Goal

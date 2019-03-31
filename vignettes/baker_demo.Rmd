@@ -1,5 +1,5 @@
 ---
-title: "baker_demo -- demonstration of nested partially latent class model inference"
+title: "Vignettes for baker: An R package for fitting nested partially latent class model to estimate disease etiologies"
 author: "Zhenke Wu"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
@@ -20,22 +20,22 @@ output:
 -->
 
 ```{r setup,echo=FALSE,results="hide"}
-# suppressPackageStartupMessages({
+suppressPackageStartupMessages({
 library(rjags)
 library(R2jags)
 library(baker)
 library(binom)
 library(knitr)
-# })
+})
 ```
 
 # Introduction
 
 In this vignette, a sharply truncated sampling procedure
-is used to demonstrate use of the baker package tools. Because we built the vignette locally, please check the inst/doc/ for the actual vignette files. We commented many of the following code segments because their running time is high on the CRAN server.
+is used to demonstrate use of the 'baker' package tools. Because we built the vignette locally, please check the `inst/doc/` for the actual vignette files. We commented many of the following code segments because their running time is high on the CRAN server.
 
 The data for the illustration are related to pathogen
-categorization in pneumonia.
+categorization in pneumonia. We will simulate the presence or absence of pathogens of these pathogens measured with error.
 ```{r lkd}
 fname = file.path(
   "example_data", 
@@ -49,9 +49,9 @@ kable(head(demodat))
 
 
 
-# Setup
+# Setup and Simulate Measurements
 
-
+We first simulate data using NPLCM. We simulate data for controls and cases separately. Among controls, the disease class is termed "no infection". To model the dependence among pathogen measurements, Wu et al 2016, Biostatistics introduced subclasses to characterize such dependence. In this simulation, we assume there are two subclasses ($K=2$). Among cases, there are a few disease classes that represent the true lung infections by pathogens $1, 2, ..., L$ and another class called "None-of-the-above". We don't get to observe these disease classes and wish to use measurements peripheral to the lung to infer for each individual the probabilities of each pathogen infecting the lung as well as the fraction of pneumonia cases caused by each pathogen. We again assume two subclasses are nested within each of $L+1$ disease classes. Controls and cases in a given disease class fall into subclasses with likely different probabilities, which we term as subclass weights; We assume the subclass weights for controls is $\boldsymbol{\nu}=(0.5,0.5)$ and for cases $\boldsymbol{\nu}$ for which the R code below chose a particular pair of values `c(curr_mix,1-curr_mix)`.
 
 ```{r doit}
 rm(list=ls())
@@ -104,24 +104,24 @@ seed_start <- 20161215
 set.seed(seed_start+seed_seq[SEG])
 
 if (scn == 3){
-  ThetaBS_withNA <- cbind(c(0.95,0.95,0.55,0.95,0.95,0.95),
-                          c(0.95,0.55,0.95,0.55,0.55,0.55))
-  PsiBS_withNA   <- cbind(c(0.4,0.4,0.05,0.2,0.2,0.2),
-                          c(0.05,0.05,0.4,0.05,0.05,0.05))
+  ThetaBS_withNA <- cbind(c(0.95,0.95,0.55,0.95,0.95,0.95),#subclass 1.
+                          c(0.95,0.55,0.95,0.55,0.55,0.55))#subclass 2.
+  PsiBS_withNA   <- cbind(c(0.4,0.4,0.05,0.2,0.2,0.2),     #subclass 1.
+                          c(0.05,0.05,0.4,0.05,0.05,0.05)) #subclass 2.
 }
 
 if (scn == 2){
-  ThetaBS_withNA <- cbind(c(0.95,0.9,0.85,0.9,0.9,0.9),
-                          c(0.95,0.9,0.95,0.9,0.9,0.9))
-  PsiBS_withNA   <- cbind(c(0.3,0.3,0.15,0.2,0.2,0.2),
-                          c(0.15,0.15,0.3,0.05,0.05,0.05))
+  ThetaBS_withNA <- cbind(c(0.95,0.9,0.85,0.9,0.9,0.9),   #subclass 1.
+                          c(0.95,0.9,0.95,0.9,0.9,0.9))   #subclass 2.
+  PsiBS_withNA   <- cbind(c(0.3,0.3,0.15,0.2,0.2,0.2),    #subclass 1.
+                          c(0.15,0.15,0.3,0.05,0.05,0.05))#subclass 2.
 }
 
 if (scn == 1){
-  ThetaBS_withNA <- cbind(c(0.95,0.9,0.9,0.9,0.9,0.9),
-                          c(0.95,0.9,0.9,0.9,0.9,0.9))
-  PsiBS_withNA   <- cbind(c(0.25,0.25,0.2,0.15,0.15,0.15),
-                          c(0.2,0.2,0.25,0.1,0.1,0.1))
+  ThetaBS_withNA <- cbind(c(0.95,0.9,0.9,0.9,0.9,0.9),#subclass 1.
+                          c(0.95,0.9,0.9,0.9,0.9,0.9))#subclass 2.
+  PsiBS_withNA   <- cbind(c(0.25,0.25,0.2,0.15,0.15,0.15),#subclass 1.
+                          c(0.2,0.2,0.25,0.1,0.1,0.1))    #subclass 2.
 }
 
 
@@ -150,6 +150,8 @@ data_nplcm <- simu_out$data_nplcm
 
 # Exploratory data analysis
 
+Below, we visualize a matrix of pairwise log odds ratios (LOR) for cases (upper) and controls (lower). LOR is at the top of the cell. Below it, its standard error is in smaller type, using the same color as the LOR. Then the estimate is divided by its standard error. We put the actual value when the Z-statistics has an absolute value greater than 2; a plus (red) or minus (blue) if between 1 and 2; blank otherwise.
+
 ```{r expl, fig.height=10, fig.width=10}
 
 # specify cause list:
@@ -160,6 +162,7 @@ cause_list <- set_parameter$cause_list
 patho_BrS_MBS1      <- set_parameter$pathogen_BrS
 BrS_object_1        <- make_meas_object(patho_BrS_MBS1,"MBS","1","BrS",cause_list)
    # please use ?make_meas_object to see the measurement standards.
+
 
 
 # pairwise log odds ratio plot:

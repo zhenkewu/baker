@@ -1743,6 +1743,12 @@ show_dep <- function(fname,pckg="package:baker",...){
                                      boxcolor = "#FC6512",
                                      textcolor = "black", cex = 1.0, lwd=2,...))
   graphics::mtext(paste0("The ",fname," function foodweb"))
+  
+  # do not uncomment - just to say there is another cool way to visualize:
+  # library(DependenciesGraphs) # if not installed, try this-- devtools::install_github("datastorm-open/DependenciesGraphs")
+  # library(QualtricsTools) # devtools::install_github("emmamorgan-tufts/QualtricsTools")
+  # dep <- funDependencies('package:baker','nplcm')
+  # plot(dep)
 }
 
 
