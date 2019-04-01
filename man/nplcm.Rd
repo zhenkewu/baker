@@ -7,7 +7,9 @@
 nplcm(data_nplcm, model_options, mcmc_options)
 }
 \arguments{
-\item{data_nplcm}{\itemize{
+\item{data_nplcm}{Must put cases at the top in `Mobs$MBS` and control data at the bottom
+(this is related to the coding scheme in JAGS).
+\itemize{
 \item  \code{Mobs} A list of measurements. The elements of the list
 should include \code{MBS}, \code{MSS}, and \code{MGS}. If any of the component
 is not available, please specify it as, e.g., \code{MGS=NULL}
@@ -42,12 +44,12 @@ data, not design matrix for regression models.
 of BrS measurements;
          \item{Eti_formula} formula for etiology regressions. You can use 
 \code{\link{s_date_Eti}} to specify the design matrix for R format enrollment date;
-it will produce natural cubic spline basis. Specify \code{~0} if no
+it will produce natural cubic spline basis. Specify \code{~ 1} if no
 regression is intended.
          \item{FPR_formula}formula for false positive rates (FPR) regressions; see
 \code{\link{formula}}. You can use \code{\link{s_date_FPR}} to specify part
 of the design matrix for R format enrollment date; it will produce penalized-spline
-basis (based on B-splines). Specify \code{~0} if no
+basis (based on B-splines). Specify \code{~ 1} if no
 regression is intended. NB: If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
 will just specify a design matrix with appropriately standardized dates. 
     }
@@ -101,7 +103,7 @@ Current implemented models follow the hierarchy below:
        
 \item regression: 
       \itemize{
-         \item independence model: \link{write_model_Reg_NoNest} 
+         \item independence model: \link{write_model_Reg_NoNest}
          \item dependence model [NOT DONE.]
        }
 }

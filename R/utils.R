@@ -1548,12 +1548,14 @@ lookup_quality <- function(quality_nm) {
 }
 
 #' parse regression components (either false positive rate or etiology regression)
-#' for fitting nplcm
+#' for fitting nplcm; Only use this when formula is non-null.
 #' 
 #' @param form regression formula
-#' @param data_nplcm data object for nplcm; must contain covariates X and outcome Y.
-#' @param silent Default is TRUE for no message about covariates; FALSE otherwise.
-#' @return TRUE for doing regression; FALSE otherwise.
+#' @param data_nplcm data object for nplcm; may contain covariates X; 
+#' must have case-control status Y.
+#' @param silent Default is \code{TRUE} for no message about covariates; 
+#' \code{FALSE} otherwise.
+#' @return \code{TRUE} for doing regression; \code{FALSE} otherwise.
 #' 
 #' @export
 parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
@@ -2033,6 +2035,203 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
   }
   class(fit) <- "bugs"
   return(fit)
+}
+
+#' log sum exp trick
+#' 
+#' @param x a vector of numbers
+#' @export
+logsumexp <- function (x) {
+  y = max(x)
+  y + log(sum(exp(x - y)))
+}
+
+
+#' softmax
+#' 
+#' uses logsumexp trick to prevent numerical overflow
+#' 
+#' @param x a vector of numbers
+#' @examples
+#' 
+#' softmax2 <- function(x) exp(x) / sum(exp(x))
+#' softmax(c(1, 2, 3) * 1000)  # NaN NaN NaN
+#' softmax2(c(1, 2, 3) * 1000)  # 0 0 1
+#' 
+#' @export
+softmax <- function (x) {
+  exp(x - logsumexp(x))
+}
+
+
+#' subset data from the output of \code{\link{clean_perch_data}}
+#'
+#' It is particularly useful in simulating data from a regression model where one
+#' generates a case and control at a particular covariate value, and just choose
+#' a case or control to retain in the simulated data.
+#'
+#' @param data_nplcm data for fitting nplcm; See \link{nplcm}
+#' @param index a vector of indices indicating the observations you hope to subset;
+#' it will subset in all the sublists of data_nplcm
+#'
+#' @return a list with the requested data, in the order determined by 'index'
+#'
+#' @examples 
+#' 
+#'J = 3                          # number of causes
+#'cause_list = c(LETTERS[1:J])   # cause list
+#'K = 2                          # number of subclasses
+#'lambda = c(1,0)                # subclass weights for control group
+#'eta = c(1,0)                   # subclass weights for case group
+#'
+#'# setup parameters for the present individual:
+#'set_parameter <- list(
+#'  cause_list      = cause_list,
+#'  etiology        = c(0.5,0.2,0.3), # only meaningful for cases 
+#'  pathogen_BrS    = LETTERS[1:J],
+#'  pathogen_SS     = LETTERS[1:2],
+#'  meas_nm         = list(MBS = c("MBS1"),MSS=c("MSS1")),
+#'  Lambda          = lambda,         # for BrS   
+#'  Eta             = t(replicate(J,eta)),  # case subclass weight for BrS
+#'  PsiBS           = cbind(c(0.15,0.3,0.35),   
+#'                          c(0.25,0.2,0.15)), # FPR
+#'  PsiSS           = cbind(rep(0,J),rep(0,J)),
+#'  ThetaBS         = cbind(c(0.95,0.9,0.85),    # TPR
+#'                          c(0.95,0.9,0.85)),
+#'  ThetaSS         = cbind(c(0.25,0.10),
+#'                          c(0.25,0.10)),
+#'  Nd      =     5,
+#'  Nu      =     3 
+#')
+#'simu_out   <- simulate_nplcm(set_parameter)
+#'out <- simu_out$data_nplcm
+#'out
+#'subset_data_nplcm_by_index(out,c(1,4,5))
+#'subset_data_nplcm_by_index(out,2)
+#'
+#' @family data operation functions
+#' @export
+subset_data_nplcm_by_index <- function(data_nplcm,index) {
+  n_data_quality <- length(data_nplcm$Mobs)
+  Mobs  <- list()
+  for (i in seq_along(data_nplcm$Mobs)) {
+    if (is.null(data_nplcm$Mobs[[i]])){
+      Mobs[[i]] <- NULL
+    } else{
+      Mobs[[i]] <- lapply(data_nplcm$Mobs[[i]],function(df)
+        df[index,])
+    }
+  }
+  names(Mobs) <- c("MBS","MSS","MGS")[1:length(Mobs)]
+  list(Mobs = Mobs,
+       Y    = data_nplcm$Y[index],
+       X    = data_nplcm$X[index,])
+}
+
+
+#' For a list of many sublists each of which has matrices as its member, 
+#' we combine across the many sublists to produce a final list
+#' 
+#' @param list_of_lists a list of sublists
+#' 
+#' @examples 
+#' DT1 = list(A=1:3,B=letters[1:3])
+#' DT2 = list(A=4:5,B=letters[4:5])
+#' DT3 = list(A=1:4,B=letters[1:4])
+#' DT4 = list(A=4:7,B=letters[4:7])
+#' l = list(DT1,DT2);names(l) <- c("haha","hihi")
+#' l2 = list(DT3,DT4);names(l2) <- c("haha","hihi")
+#' listoflists <- list(l,l2);names(listoflists) <- c("dude1","dude2")
+#' listoflists
+#' merge_lists(listoflists)
+#' @family data operation functions
+#' @return a list after merge
+#' @export
+merge_lists <- function(list_of_lists){
+  if (length(unique(lapply(list_of_lists,length)))>1){
+    stop("==[baker] the list of lists have distinct lengths.==")
+  }
+  len_one_list <- length(list_of_lists[[1]])
+  res <- lapply(1:len_one_list,function(l) {
+    do.call(rbind,lapply(1:length(list_of_lists),
+                  function(s) list_of_lists[[s]][[l]]))})
+  names(res) <- names(list_of_lists[[1]])
+  res
+}
+
+#' combine multiple data_nplcm (useful when simulating data from regression models)
+#' 
+#' @param data_nplcm_list a list of data_nplcm in \link{nplcm}
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' rm(list=ls())
+#' N=10000
+#' Y = rep(c(1,0),times=5000) # simulate two cases and two controls.
+#' out_list <- vector("list",length=N)
+#' J = 3                          # number of causes
+#' cause_list = c(LETTERS[1:J])   # cause list
+#' K = 2                          # number of subclasses
+#' lambda = c(.8,.2)                # subclass weights for control group
+#' eta = c(.9,.1)                   # subclass weights for case group
+#' 
+#' for (i in 1:N){
+#'   #setup parameters for the present individual:
+#'   set_parameter <- list(
+#'     cause_list      = cause_list,
+#'     etiology        = c(0.5,0.2,0.3), # only meaningful for cases 
+#'     pathogen_BrS    = LETTERS[1:J],
+#'     pathogen_SS     = LETTERS[1:2],
+#'     meas_nm         = list(MBS = c("MBS1"),MSS=c("MSS1")),
+#'     Lambda          = lambda,         # for BrS   
+#'     Eta             = t(replicate(J,eta)),  # case subclass weight for BrS
+#'     PsiBS           = cbind(c(0.15,0.3,0.35),   
+#'                             c(0.25,0.2,0.15)), # FPR
+#'     PsiSS           = cbind(rep(0,J),rep(0,J)),
+#'     ThetaBS         = cbind(c(0.95,0.9,0.85),    # TPR
+#'                             c(0.95,0.9,0.85)),
+#'     ThetaSS         = cbind(c(0.25,0.10),
+#'                             c(0.25,0.10)),
+#'     Nd      =     1,
+#'     Nu      =     1 
+#'   )
+#'   simu_out   <- simulate_nplcm(set_parameter)
+#'   out <- simu_out$data_nplcm
+#'   out_list[[i]] <- out
+#' }
+#' 
+#' # extract cases and controls and combine all the data into one:
+#' data_nplcm_list <- lapply(1:N, function(s) subset_data_nplcm_by_index(out_list[[s]],2-Y[s]))
+#' data_nplcm_unordered      <- combine_data_nplcm(data_nplcm_list) 
+#' data_nplcm_unordered
+#' 
+#' colMeans(data_nplcm_unordered$Mobs$MBS$MBS1[Y==1,])
+#' colMeans(data_nplcm_unordered$Mobs$MBS$MBS1[Y==0,])
+#' 
+#' set_parameter$PsiBS%*%matrix(lambda,ncol=1)
+#' set_parameter$PsiBS%*%matrix(eta,ncol=1)*(1-set_parameter$etiology)+
+#'   set_parameter$ThetaBS%*%matrix(eta,ncol=1)*set_parameter$etiology
+#' 
+#' # data_nplcm <- subset_data_nplcm_by_index(data_nplcm_unordered,
+#' #                    order(-data_nplcm_unordered$Y)) #put cases on top.
+#' 
+#' }
+#' 
+#' @family data operation functions
+#' @export
+combine_data_nplcm <- function(data_nplcm_list){
+  if (length(data_nplcm_list)==1) {stop("==[baker]==list is of length 1, no need to combine.")}
+  n_data_quality <- length(data_nplcm_list[[1]]$Mobs)
+  Mobs <- list()
+  for (i in 1:n_data_quality) {
+    Mobs[[i]] <- merge_lists(lapply(lapply(data_nplcm_list,
+                                           function(l) l$Mobs),function(s) s[[i]]))
+  }
+  names(Mobs) <- c("MBS","MSS","MGS")[1:n_data_quality]
+  list(Mobs = Mobs,
+       Y    = c(unlist(lapply(data_nplcm_list,function(l) l$Y))),
+       X    = do.call(rbind,lapply(data_nplcm_list,function(l) l$X)))
 }
 
 

@@ -100,7 +100,7 @@ dep <- funDependencies('package:baker','nplcm')
 plot(dep)
 ```
 
-The dynamic figure you get is [here](inst/figs/baker_function_dependence.html); A snapshot is below:
+You will get a dynamic figure. A snapshot is below:
 
 ![](inst/figs/nplcm_functional_dependence.png)
 

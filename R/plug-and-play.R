@@ -1861,16 +1861,9 @@ add_meas_BrS_ctrl_NoNest_reg_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL)
 }
 
 
-
-
-
-
-
-
 ##############################################################################
-###############  PLUG-AND-PLAY for REGRESSION MODELS: DISCRETE#################
+###############  PLUG-AND-PLAY for REGRESSION MODELS: DISCRETE################
 ##############################################################################
-
 
 #' add likelihood component for a BrS measurement slice among cases 
 #' 

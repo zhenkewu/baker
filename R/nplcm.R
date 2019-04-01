@@ -5,7 +5,8 @@
 #' For stratification/regression functionalities, true positive rates are constant
 #' across strata or covariate values.\cr
 #' 
-#' @param data_nplcm
+#' @param data_nplcm Must put cases at the top in `Mobs$MBS` and control data at the bottom
+#' (this is related to the coding scheme in JAGS).
 #' \itemize{
 #' \item  \code{Mobs} A list of measurements. The elements of the list
 #' should include \code{MBS}, \code{MSS}, and \code{MGS}. If any of the component
@@ -40,12 +41,12 @@
 #' of BrS measurements;
 #'          \item{Eti_formula} formula for etiology regressions. You can use 
 #' \code{\link{s_date_Eti}} to specify the design matrix for R format enrollment date;
-#' it will produce natural cubic spline basis. Specify \code{~0} if no
+#' it will produce natural cubic spline basis. Specify \code{~ 1} if no
 #' regression is intended.
 #'          \item{FPR_formula}formula for false positive rates (FPR) regressions; see
 #' \code{\link{formula}}. You can use \code{\link{s_date_FPR}} to specify part
 #' of the design matrix for R format enrollment date; it will produce penalized-spline
-#' basis (based on B-splines). Specify \code{~0} if no
+#' basis (based on B-splines). Specify \code{~ 1} if no
 #' regression is intended. NB: If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
 #' will just specify a design matrix with appropriately standardized dates. 
 #'     }
@@ -96,7 +97,7 @@
 #'        
 #' \item regression: 
 #'       \itemize{
-#'          \item independence model: \link{write_model_Reg_NoNest} 
+#'          \item independence model: \link{write_model_Reg_NoNest}
 #'          \item dependence model [NOT DONE.]
 #'        }
 #' }
@@ -110,8 +111,14 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   
   parsed_model <- assign_model(model_options,data_nplcm)
   
-  do_reg <- any(unlist(parsed_model$regression[grep("^do_reg_",names(parsed_model$regression))]))
-  do_discrete <- any(unlist(parsed_model$regression[grep("^is_discrete_predictor",names(parsed_model$regression))]))
+  do_reg_vec <- unlist(parsed_model$regression[grep("^do_reg_",names(parsed_model$regression))])
+  do_discrete_vec <- unlist(parsed_model$regression[grep("^is_discrete_predictor",names(parsed_model$regression))])
+  do_discrete_and_reg <- do_reg_vec&do_discrete_vec
+  do_reg <- any(do_reg_vec)
+  do_discrete <- sum(do_discrete_and_reg)==sum(do_reg_vec) 
+  # only call nplcm_fit_Reg_discrete_predictor_NoNest
+  # when all regressions are using discrete predictors!
+
   do_nested <- parsed_model$nested
   
   if(!do_reg){
@@ -119,8 +126,14 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   } 
   if (do_reg & !any(do_nested)){
     if (do_discrete){
+      # when every regression is a regression upon discrete variables;
+      # when it is not a regression, the fitting function treats it as a single stratum
+      # when specifying the model in the .bug file (in the assign_model function, ~1 
+      # is considered not a regression, i.e., covariate indendependent - this is the
+      # custom in this package.)
       res <- nplcm_fit_Reg_discrete_predictor_NoNest(data_nplcm,model_options,mcmc_options)
       } else{
+      # a mix of discrete and continuous regressions:
       res <- nplcm_fit_Reg_NoNest(data_nplcm,model_options,mcmc_options)
       }
   }

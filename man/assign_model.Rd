@@ -9,7 +9,7 @@ assign_model(model_options, data_nplcm, silent = TRUE)
 \arguments{
 \item{model_options}{See \code{\link{nplcm}} function.}
 
-\item{data_nplcm}{Data.}
+\item{data_nplcm}{Data. See \code{\link{nplcm}} function for data structure.}
 
 \item{silent}{Default is \code{TRUE} for no messages; \code{FALSE} otherwise.}
 }
@@ -17,23 +17,27 @@ assign_model(model_options, data_nplcm, silent = TRUE)
 A list of model specifications:
 \itemize{
    \item \code{num_slice} A vector counting the No. of measurement slices for each
-   level of measurement quality;
+   level of measurement quality (e.g., MBS, MSS, MGS representing
+   Bronze-Standard Measurements - case-control, 
+   Silver-Standard Measurements and Gold-Standard
+   Measurements - case-only);
    \item \code{nested} Local dependence specification for modeling bronze-standard
-   data. \code{TRUE} for nested models (conditional dependence); 
-   \code{FALSE} for non-nested models (conditional independence). 
+   data. \code{TRUE} for nested models (conditional dependence given disease class); 
+   \code{FALSE} for non-nested models (conditional independence given disease class). 
    One for each BrS slice.
    \item \code{regression}
        \itemize{
            \item \code{do_reg_Eti} \code{TRUE} for doing etiology regression.
-           It means let the etiology fractions to change with covariates. 
+           It means let the etiology fractions vary with explanatory variables. 
            \code{FALSE} otherwise;
-           \item \code{do_reg_FPR} \code{TRUE} for doing false positive rate 
-           regression (for every slice of bronze-standard). It means the false
-           positive rates, usually estimable from controls, can vary with 
-           covariates. \code{FALSE} otherwise.
+           \item \code{do_reg_FPR} A vector whose names represent the slices
+           of bronze-standard data. For each slice of BrS measurements, 
+           \code{TRUE} does false positive rate regression. It means the false
+           positive rates, estimatable from controls, can vary with 
+           covariates; \code{FALSE} otherwise.
            \item code{is_discrete_predictor} A list of names "Eti", and 
            the names for every slice of bronze-standard data. \code{TRUE}
-           for having all discrete predictors, \code{FALSE} otherwise.
+           if all predictors are discrete; \code{FALSE} otherwise.
        }
 }
 }

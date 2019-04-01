@@ -75,7 +75,8 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       stop("==[baker]FPR regression has non-discrete covariates! ==")
     }
     
-    # design matrix for etiology regression:
+    # design matrix for etiology regression (because this function is 
+    # for all discrete predictors, the usual model.matrix is sufficient):
     Z_Eti       <- stats::model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
     # Z_Eti0       <- stats::model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
     # a.eig        <- eigen(t(Z_Eti0)%*%Z_Eti0)
@@ -85,7 +86,8 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     
     ncol_dm_Eti        <- ncol(Z_Eti)
     Eti_colname_design_mat <- attributes(Z_Eti)$dimnames[[2]]
-    attributes(Z_Eti)[names(attributes(Z_Eti))!="dim"] <- NULL
+    attributes(Z_Eti)[names(attributes(Z_Eti))!="dim"] <- NULL 
+    # this to prevent issues when JAGS reads in data.
     
     unique_Eti_level   <- unique(Z_Eti)
     n_unique_Eti_level <- nrow(unique_Eti_level)
@@ -194,7 +196,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       # add GBrS_TPR_1, or 2 if we want to index by slices:
       for (i in seq_along(JBrS_list)){
         if (!is.null(prior_BrS$grp)){ # <--- need to change to list if we have multiple slices.
-          assign(paste("GBrS_TPR", i, sep = "_"), length(unique(prior_BrS$grp))) # <--- need to change to depending on i if grp change wrt specimen.
+          assign(paste("GBrS_TPR", i, sep = "_"), length(unique(prior_BrS$grp))) # <--- need to change to depending on i if grp changes wrt specimen.
         }
         if (is.null(prior_BrS$grp)){ # <--- need to change to list if we have multiple slices.
           assign(paste("GBrS_TPR", i, sep = "_"), 1)
@@ -734,7 +736,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
 #' sampling chain, writes the model file (for JAGS or WinBUGS with slight
 #' differences in syntax), and fits the model. Features:
 #' \itemize{
-#' \item regression;
+#' \item regression (not all discrete covariates);
 #' \item no nested subclasses, i.e. conditional independence of 
 #' multivariate measurements given disease class and covariates;
 #' \item multiple BrS + multiple SS.
@@ -1035,9 +1037,7 @@ nplcm_fit_Reg_NoNest <-
       #
       # 2. SS measurement data: 
       #
-      
       JSS_list   <- lapply(Mobs$MSS,ncol)
-      
       # mapping template (by `make_template` function):
       patho_SS_list <- lapply(Mobs$MSS,colnames)
       template_SS_list <- lapply(patho_SS_list,make_template,cause_list)
@@ -1089,7 +1089,6 @@ nplcm_fit_Reg_NoNest <-
       beta_mat  <- list()
       
       for(i in seq_along(JSS_list)){
-        
         GSS_TPR_curr <- eval(parse(text = paste0("GSS_TPR_",i)))
         alpha_mat[[i]] <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
         beta_mat[[i]]  <- matrix(NA, nrow=GSS_TPR_curr,ncol=JSS_list[[i]])
@@ -1150,7 +1149,6 @@ nplcm_fit_Reg_NoNest <-
                                     paste("alphaS",1:length(JSS_list),sep="_"),
                                     paste("betaS",1:length(JSS_list),sep="_")))
         }
-        
       }
       out_parameter <- unique(c(out_parameter, paste("thetaSS", seq_along(JSS_list), sep = "_"),
                                 "betaEti"))
@@ -1316,10 +1314,8 @@ nplcm_fit_Reg_NoNest <-
     # get pEti: (for regression models; besides the coefficients of etiology regressions are always recorded)
     if (!is.null(mcmc_options$get.pEti) && mcmc_options$get.pEti){out_parameter <- unique(c(out_parameter,"pEti"))}
     
-    #
     # write the .bug files into mcmc_options$bugsmodel.dir; 
     # could later set it equal to result.folder.
-    #
     use_jags <- (!is.null(mcmc_options$use_jags) && mcmc_options$use_jags)
     model_func         <- write_model_Reg_NoNest(data_nplcm$Mobs,
                                                  model_options$prior,
