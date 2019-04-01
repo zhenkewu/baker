@@ -493,8 +493,6 @@ insert_bugfile_chunk_reg_discrete_predictor_nonest_meas <-
     paste0(chunk,"\n")
   }
 
-
-
 #' insert etiology regression for latent status code chunk into .bug file; discrete predictors
 #' 
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking 
@@ -528,23 +526,3 @@ insert_bugfile_chunk_reg_discrete_predictor_etiology <- function(Jcause, ppd = N
    ")
    paste0(chunk_etiology,"\n")
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

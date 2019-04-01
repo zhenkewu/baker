@@ -6,32 +6,37 @@
 #' @details \code{assign_model} will be modified to check if data are conformable
 #' to specified model.
 #' 
-#' @param data_nplcm Data.
+#' @param data_nplcm Data. See \code{\link{nplcm}} function for data structure.
 #' @param model_options See \code{\link{nplcm}} function.
 #' @param silent Default is \code{TRUE} for no messages; \code{FALSE} otherwise.
 #' @return A list of model specifications:
 #' \itemize{
 #'    \item \code{num_slice} A vector counting the No. of measurement slices for each
-#'    level of measurement quality;
+#'    level of measurement quality (e.g., MBS, MSS, MGS representing
+#'    Bronze-Standard Measurements - case-control, 
+#'    Silver-Standard Measurements and Gold-Standard
+#'    Measurements - case-only);
 #'    \item \code{nested} Local dependence specification for modeling bronze-standard
-#'    data. \code{TRUE} for nested models (conditional dependence); 
-#'    \code{FALSE} for non-nested models (conditional independence). 
+#'    data. \code{TRUE} for nested models (conditional dependence given disease class); 
+#'    \code{FALSE} for non-nested models (conditional independence given disease class). 
 #'    One for each BrS slice.
 #'    \item \code{regression}
 #'        \itemize{
 #'            \item \code{do_reg_Eti} \code{TRUE} for doing etiology regression.
-#'            It means let the etiology fractions to change with covariates. 
+#'            It means let the etiology fractions vary with explanatory variables. 
 #'            \code{FALSE} otherwise;
-#'            \item \code{do_reg_FPR} \code{TRUE} for doing false positive rate 
-#'            regression (for every slice of bronze-standard). It means the false
-#'            positive rates, usually estimable from controls, can vary with 
-#'            covariates. \code{FALSE} otherwise.
+#'            \item \code{do_reg_FPR} A vector whose names represent the slices
+#'            of bronze-standard data. For each slice of BrS measurements, 
+#'            \code{TRUE} does false positive rate regression. It means the false
+#'            positive rates, estimatable from controls, can vary with 
+#'            covariates; \code{FALSE} otherwise.
 #'            \item code{is_discrete_predictor} A list of names "Eti", and 
 #'            the names for every slice of bronze-standard data. \code{TRUE}
-#'            for having all discrete predictors, \code{FALSE} otherwise.
+#'            if all predictors are discrete; \code{FALSE} otherwise.
 #'        }
 #' }
-#'
+#' 
+#' 
 #' @family specification checking functions
 #' @export
 assign_model <- function(model_options,data_nplcm, silent=TRUE){
@@ -62,29 +67,26 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   }
   
   # specify regression for FPR: (only available for bronze-standard data. Silver-standard data automatically have FPR==0.)
-  do_reg_FPR <- list() #  <---- a regression for each measurement slice?
-  is_discrete_FPR_vec <- rep(NA,length(likelihood$FPR_formula))
-  names(is_discrete_FPR_vec) <- names(likelihood$FPR_formula)
+  do_reg_FPR <- is_discrete_FPR <- rep(NA,length(likelihood$FPR_formula)) #  <---- a regression for each measurement slice?
+  names(do_reg_FPR) <- names(is_discrete_FPR) <- names(likelihood$FPR_formula)
   for (i in seq_along(Mobs$MBS)){
     ind_tmp <-
       which(names(likelihood$FPR_formula) == names(Mobs$MBS)[i])
     form_tmp <- stats::as.formula(likelihood$FPR_formula[[ind_tmp]])
     if (!length(ind_tmp)) { # don't do regression if no regression formula is found:
-      do_reg_FPR[[i]] <- FALSE
+      do_reg_FPR[i] <- FALSE
     } else{ # do regression if there is matched regression formula:
-      do_reg_FPR[[i]] <-
+      do_reg_FPR[i] <-
         parse_nplcm_reg(form_tmp,data_nplcm,silent=silent)
     }
     
-    is_discrete_FPR_vec[i] <- FALSE
+    is_discrete_FPR[i] <- FALSE
     if (!is.null(X)){
-      is_discrete_FPR_vec[i] <- (!is_intercept_only(form_tmp) & 
+      is_discrete_FPR[i] <- (!is_intercept_only(form_tmp) & 
                                  !stats::is.empty.model(form_tmp) & 
                                   is_discrete(X, form_tmp))
     }
   }
-  names(do_reg_FPR) <- names(Mobs$MBS)
-  
   #
   # specify regression for TPR: (every measurement slice has it.)
   #
@@ -127,7 +129,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
                           is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], form_tmp))
   }
   
-  is_discrete_predictor <- list(is_discrete_Eti, is_discrete_FPR_vec)
+  is_discrete_predictor <- list(is_discrete_Eti, is_discrete_FPR)
   names(is_discrete_predictor)[1] <- "Eti"
   names(is_discrete_predictor)[2] <- "FPR"
   regression <- make_list(do_reg_Eti, do_reg_FPR,is_discrete_predictor)#, do_reg_TPR)
@@ -168,6 +170,4 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   # return results:
   make_list(num_slice, nested, regression,BrS_grp,SS_grp)
 }
-
-
 

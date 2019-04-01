@@ -1,12 +1,39 @@
-#' Simulation data from nested partially-latent class model (npLCM) family
+#' Simulate data from nested partially-latent class model (npLCM) family
 #'
 #' @details Use different case and control subclass mixing weights. Eta is of
 #' dimension J times K. NB: document the elements in \code{set_parameter}. Also, current
 #' function is written in a way to facilitate adding more measurement components.
 #'
-#' @param set_parameter True model parameters in the npLCM specification
-#'
-#'
+#' @param set_parameter True model parameters in a npLCM specification. It is a list comprised
+#' of the following elements:
+#'  \itemize{
+#'     \item{\code{cause_list}} a vector of disease classes names among cases (since
+#'     the causes could be multi-pathogen, so its length could be longer than the total number of unique
+#'     pathogens)
+#'     \item{\code{etiology}} a vector of proportions that sum to one
+#'     \item{\code{pathogen_BrS}} a vector of pathogen names measured in bronze-standard data.
+#'     This current function only simulates one slice defined by {specimen}{test}{pathogen}
+#'     \item{\code{pathogen_SS}} a vector of pathogen names measured in silver-standard data.
+#'     \item{\code{meas_nm}} a list of {specimen}{test} names e.g., \code{list(MBS = c("NPPCR"),MSS="BCX")}
+#'     for nasalpharyngeal specimen tested by polymerase chain reaction and blood tested by culture (Cx)
+#'     \item{\code{Lambda}} subclass weights \eqn{\nu_1, \nu_2, \ldots, \nu_K} among controls; 
+#'     a vector of \code{K} probabilities that sum to 1.
+#'     \item{\code{Eta}}    a matrix of dimension \code{length(cause_list)} by K;
+#'     each row are subclass weights \eqn{\eta_1, \eta_2, \ldots, \eta_K} for each disease class,
+#'     so needs to sum to one. In Wu et al 2016, the subclass weights are the same across disease
+#'     classes across rows. But when simulating data, one can specify rows with distinct
+#'     probabilities - it is a matter whether we can recover these parameters (possible when
+#'     we randomly observe some cases' true disease classes)
+#'     \item{\code{PsiBS/PsiSS}} False positive rates \eqn{\Psi} for Bronze-Standard data and 
+#'     for Silver-Standard data. Dimension is J by K. 
+#'     \code{PsiSS} is supposed to be 0 vector (by perfect specificity in silver-standard measures).
+#'     \item{\code{ThetaBS/ThetaSS}}  true positive rates \eqn{\Theta} for Bronze-Standard data and 
+#'     for Silver-Standard data. Dimension is J by K (can contain NA if the total number of pathogens is
+#'     more than the measured pathogens in SS).
+#'     \item{\code{Nu}} the number of controls
+#'     \item{\code{Nd}} the number of cases
+#'  }
+#' 
 #' @return A list of measurements, true latent statues:
 #' \itemize{
 #'  \item{\code{data_nplcm}} a list of structured data (see \code{\link{nplcm}} for
@@ -29,7 +56,6 @@
 #'                # If eta = c(1,0), effectively, it is K.true=1.
 #' J       <- 21   # no. of pathogens.
 #' N       <- 600 # no. of cases/controls.
-#' 
 #' 
 #' eta <- c(1,0) 
 #' # if it is c(1,0),then it is conditional independence model, and
@@ -65,8 +91,7 @@
 #'   PsiSS           = PsiSS_withNA[!is.na(PsiSS_withNA)],
 #'   ThetaSS         = ThetaSS_withNA[!is.na(ThetaSS_withNA)],
 #'   Nu      =     N, # control size.
-#'   Nd      =     N,  # case size.
-#'   SS      = TRUE
+#'   Nd      =     N  # case size.
 #' )
 #'  simu_out <- simulate_nplcm(set_parameter)
 #'  data_nplcm <- simu_out$data_nplcm
@@ -88,7 +113,7 @@ simulate_nplcm <- function(set_parameter) {
   names(MBS_list) <- set_parameter$meas_nm$MBS
   Mobs <- list(MBS = MBS_list, MSS=NULL, MGS = NULL)
   
-  if (!is.null(set_parameter$SS) && set_parameter$SS){
+  if (!is.null(set_parameter$meas_nm$MSS)){
       # simulate SS measurements:
       out_ss    <- simulate_ss(set_parameter,latent)
       # silver-standard data:
@@ -110,7 +135,8 @@ simulate_nplcm <- function(set_parameter) {
 }
 
 #' Simulate Latent Status:
-#' @param set_parameter parameters for measurements
+#' 
+#' @inheritParams simulate_nplcm
 #'
 #' @return a list of latent status samples for use in sampling measurements. It
 #' also includes a template to look up measurement parameters for each type of causes.
@@ -158,7 +184,7 @@ simulate_latent <- function(set_parameter) {
 #'
 #'
 #' simulate BrS measurements:
-#' @param set_parameter parameters for BrS measurements
+#' @inheritParams simulate_nplcm
 #' @param latent_samples sampled latent status for all the subjects, for use in simulate
 #' BrS measurements.
 #'
@@ -229,7 +255,7 @@ simulate_brs <- function(set_parameter,latent_samples) {
 #'
 #'
 #' simulate SS measurements:
-#' @param set_parameter parameters for SS measurements
+#' @inheritParams simulate_nplcm
 #' @param latent_samples sampled latent status for all the subjects, for use in simulate
 #' BrS measurements.
 #'
@@ -289,3 +315,4 @@ simulate_ss <- function(set_parameter,latent_samples) {
   colnames(datres) <- datacolnames
   make_list(datres,template)
 }
+

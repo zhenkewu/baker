@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.7.6
-Date: 2019-02-28
+Version: 0.8.0
+Date: 2019-04-01
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),
@@ -11,7 +11,7 @@ Authors@R: c(
      comment = c(ORCID = "0000-0001-6469-1750"))
      )
 Description: Provides functions to specify, fit and visualize
-    nested partially-latent class models (Wu, 2016, f
+    nested partially-latent class models (Wu, 2016,
     'JRSS-C' <doi:10.1111/rssc.12101>; 
     Wu, 2017, Biostatistics <doi:10.1093/biostatistics/kxw037>) for 
     inference of population disease etiology and individual diagnosis. In the motivating
@@ -40,9 +40,10 @@ Imports:
     stats,
     utils
 License: MIT + file LICENSE
-Language: 'en-US'
+Language: en-US
 SystemRequirements: JAGS (>= 4.1.0) (http://mcmc-jags.sourceforge.net)
 Suggests:
+    spelling,
     knitr,
     testthat,
     bibtex,
