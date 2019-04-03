@@ -61,7 +61,6 @@ Vignettes
 devtools::install_github("zhenkewu/baker", build_vignettes=TRUE) # will take extra time to run a few examples.
 browseVignettes("baker")
 ```
-
 <div id='id-section3'/>
 
 Graphical User Interface (GUI)
@@ -109,14 +108,12 @@ Details
 2. `baker` has implemented models for dependent measurements given disease status, regression analyses of etiology, multiple imperfect measurements, different priors for true positive rates among cases with differential measurement characteristics, and multiple-pathogen etiology.
 3. Scientists in [Pneumonia Etiology Research for Child Health](http://www.jhsph.edu/research/centers-and-institutes/ivac/projects/perch/) (PERCH) study usually refer to the etiology distribution as "*population etiology pie*" and "*individual etiology pie*" for their compositional nature, hence the name of the package.
 
-
 <div id='id-section7'/>
 
 Platform
 ---------
 - The `baker` package is compatible with OSX, Linux and Windows systems, each requiring a slightly different setup as described below. If you need to speed up the installation and analysis, please contact the 
 maintainer or chat by clicking the `gitter` button at the top of this README file. 
-
 
 <div id='id-section8'/>
 
