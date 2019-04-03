@@ -92,7 +92,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     unique_Eti_level   <- unique(Z_Eti)
     n_unique_Eti_level <- nrow(unique_Eti_level)
     Eti_stratum_id     <- apply(Z_Eti,1,function(v) 
-        which(rowSums(abs(unique_Eti_level-t(replicate(n_unique_Eti_level,v))))==0))
+      which(rowSums(abs(unique_Eti_level-t(replicate(n_unique_Eti_level,v))))==0))
     rownames(unique_Eti_level) <- 1:n_unique_Eti_level
     colnames(unique_Eti_level) <- Eti_colname_design_mat
     
@@ -174,7 +174,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
         # 
         # Z_FPR_list_orth[[i]]  <- Z_FPR0%*%solve(sqrt_Z_FPR0)
         # assign(paste("Z_FPR",i,sep="_"),Z_FPR_list_orth[[i]])
-
+        
       }
       
       #stratum names for FPR regression:
@@ -708,17 +708,17 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       writeLines(good_jagsdata_txt, curr_data_txt_file)
       
       gs <- jags2_baker(data   = curr_data_txt_file,
-                          inits  = in_init,
-                          parameters.to.save = out_parameter,
-                          model.file = filename,
-                          working.directory = mcmc_options$result.folder,
-                          n.iter         = as.integer(mcmc_options$n.itermcmc),
-                          n.burnin       = as.integer(mcmc_options$n.burnin),
-                          n.thin         = as.integer(mcmc_options$n.thin),
-                          n.chains       = as.integer(mcmc_options$n.chains),
-                          DIC            = FALSE,
-                          clearWD        = FALSE,              #<--- special to JAGS.
-                          jags.path      = mcmc_options$jags.dir# <- special to JAGS.
+                        inits  = in_init,
+                        parameters.to.save = out_parameter,
+                        model.file = filename,
+                        working.directory = mcmc_options$result.folder,
+                        n.iter         = as.integer(mcmc_options$n.itermcmc),
+                        n.burnin       = as.integer(mcmc_options$n.burnin),
+                        n.thin         = as.integer(mcmc_options$n.thin),
+                        n.chains       = as.integer(mcmc_options$n.chains),
+                        DIC            = FALSE,
+                        clearWD        = FALSE,              #<--- special to JAGS.
+                        jags.path      = mcmc_options$jags.dir# <- special to JAGS.
       );
       return(gs)
     }
@@ -797,6 +797,25 @@ nplcm_fit_Reg_NoNest <-
     # Z_Eti  <- Z_Eti0%*%solve(sqrt_Z_Eti0)
     
     ncol_dm_Eti <- ncol(Z_Eti)
+    # if need to do PS, need to insert many basis operations here: #<-----!
+    ER_has_basis <- ifelse(length(grep("^s_",dimnames(Z_Eti)[[2]]))==0,FALSE,TRUE)
+    ER_has_non_basis <- has_non_basis(Eti_formula)
+    ER_basis_id <- c(sapply(1, function(s) {
+      if (length(grep("^s_",dimnames(Z_Eti)[[2]]))==0){
+        NULL
+      } else{
+        0+grep("^s_",dimnames(Z_Eti)[[2]])
+      }
+    }))
+    ER_n_basis  <- length(ER_basis_id)
+    ER_non_basis_id <- c(sapply(1, function(s) {
+      if (length(grep("^s_",dimnames(Z_Eti)[[2]]))==0){
+        0+(1:ncol(Z_Eti))
+      } else{
+        (1:ncol(Z_Eti))[-grep("^s_",dimnames(Z_Eti)[[2]])]
+      }
+    }))
+    #END <-----!
     attributes(Z_Eti)[names(attributes(Z_Eti))!="dim"] <- NULL
     
     if ("BrS" %in% use_measurements){
@@ -820,10 +839,7 @@ nplcm_fit_Reg_NoNest <-
         MBS_list[[i]]      <- rbind(MBS.case_list[[i]],MBS.ctrl_list[[i]])
       }
       names(MBS_list)   <- names(MBS.case_list)
-      
       single_column_MBS <- which(lapply(MBS_list,ncol)==1)
-      
-      
       # input design matrix for FPR regressions:
       int_Y <- as.integer(Y)
       if (any(int_Y[1:sum(int_Y)]==0) | any(int_Y[-(1:sum(int_Y))])==1){
@@ -833,9 +849,15 @@ nplcm_fit_Reg_NoNest <-
       Z_FPR_list <- lapply(FPR_formula,function(form){stats::model.matrix(form,data.frame(X,Y))}) # <-- make sure that the row orders are the same.
       
       #intercept_only_MBS <- which(lapply(Z_FPR_list,function(x) (ncol(x)==1 & all(x==1)))==TRUE)
-      
       has_basis_list <- lapply(Z_FPR_list, function(Z) {
         if (length(grep("^s_",dimnames(Z)[[2]]))==0){
+          FALSE
+        } else{
+          TRUE
+        }
+      })
+      has_non_basis_list <- lapply(Z_FPR_list, function(Z) {
+        if (length(grep("^s_",dimnames(Z)[[2]]))==ncol(Z)){
           FALSE
         } else{
           TRUE
@@ -937,27 +959,27 @@ nplcm_fit_Reg_NoNest <-
         # summarize into one name (for all measurements):
         if (length(single_column_MBS)==0){
           # if all slices have >2 columns:
-          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti","ncol_dm_Eti",
+          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti",
                              paste("JBrS",1:length(JBrS_list),sep="_"),
                              paste("MBS",1:length(JBrS_list),sep="_"),
                              paste("templateBS",1:length(JBrS_list),sep="_"),
                              paste("Z_FPR",1:length(JBrS_list),sep="_"),
                              paste("basis_id",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
                              paste("n_basis",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
-                             paste("non_basis_id",1:length(JBrS_list),sep="_")
+                             paste("non_basis_id",1:length(JBrS_list),sep="_")[unlist(has_non_basis_list)]
                              # paste("alphaB",1:length(JBrS_list),sep="_"),
                              # paste("betaB",1:length(JBrS_list),sep="_")
           )
         } else {
           # if there exist slices with 1 column:
-          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti","ncol_dm_Eti",
+          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti",
                              paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS], # <---- no need to iterate in .bug file for a slice with one column.
                              paste("MBS",1:length(JBrS_list),sep="_"),
                              paste("templateBS",1:length(JBrS_list),sep="_"),
                              paste("Z_FPR",1:length(JBrS_list),sep="_"),
                              paste("basis_id",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
                              paste("n_basis",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
-                             paste("non_basis_id",1:length(JBrS_list),sep="_")
+                             paste("non_basis_id",1:length(JBrS_list),sep="_")[unlist(has_non_basis_list)]
                              # paste("alphaB",1:length(JBrS_list),sep="_"),
                              # paste("betaB",1:length(JBrS_list),sep="_")
           )
@@ -966,7 +988,7 @@ nplcm_fit_Reg_NoNest <-
         # summarize into one name (for all measurements):
         if (length(single_column_MBS)==0){
           # if all slices have >2 columns:
-          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti","ncol_dm_Eti",
+          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti",
                              paste("JBrS",1:length(JBrS_list),sep="_"),
                              paste("GBrS_TPR",1:length(JBrS_list),sep="_"),   # <-- added for TPR strata.
                              paste("BrS_TPR_grp",1:length(JBrS_list),sep="_"),# <-- added for TPR strata.
@@ -975,13 +997,13 @@ nplcm_fit_Reg_NoNest <-
                              paste("Z_FPR",1:length(JBrS_list),sep="_"),
                              paste("basis_id",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
                              paste("n_basis",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
-                             paste("non_basis_id",1:length(JBrS_list),sep="_")
+                             paste("non_basis_id",1:length(JBrS_list),sep="_")[unlist(has_non_basis_list)]
                              # paste("alphaB",1:length(JBrS_list),sep="_"),
                              # paste("betaB",1:length(JBrS_list),sep="_")
           )
         } else {
           # if there exist slices with 1 column:
-          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti","ncol_dm_Eti",
+          in_data       <- c(in_data,"Nd","Nu","Jcause","Z_Eti",
                              paste("JBrS",1:length(JBrS_list),sep="_")[-single_column_MBS], # <---- no need to iterate in .bug file for a slice with one column.
                              paste("GBrS_TPR",1:length(JBrS_list),sep="_"),   # <-- added for TPR strata.
                              paste("BrS_TPR_grp",1:length(JBrS_list),sep="_"),# <-- added for TPR strata.
@@ -990,7 +1012,7 @@ nplcm_fit_Reg_NoNest <-
                              paste("Z_FPR",1:length(JBrS_list),sep="_"),
                              paste("basis_id",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
                              paste("n_basis",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
-                             paste("non_basis_id",1:length(JBrS_list),sep="_")
+                             paste("non_basis_id",1:length(JBrS_list),sep="_")[unlist(has_non_basis_list)]
                              # paste("alphaB",1:length(JBrS_list),sep="_"),
                              # paste("betaB",1:length(JBrS_list),sep="_")
           )
@@ -1114,14 +1136,14 @@ nplcm_fit_Reg_NoNest <-
       if (!SS_TPR_strat){
         if (length(single_column_MSS)==0){
           # summarize into one name (for all measurements):
-          in_data       <- unique(c(in_data,"Nd","Jcause","ncol_dm_Eti",
+          in_data       <- unique(c(in_data,"Nd","Jcause",
                                     paste("JSS",1:length(JSS_list),sep="_"),
                                     paste("MSS",1:length(JSS_list),sep="_"),
                                     paste("templateSS",1:length(JSS_list),sep="_"),
                                     paste("alphaS",1:length(JSS_list),sep="_"),   
                                     paste("betaS",1:length(JSS_list),sep="_")))
         } else{
-          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","ncol_dm_Eti",
+          in_data       <- unique(c(in_data,"Nd","Nu","Jcause",
                                     paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
                                     paste("MSS",1:length(JSS_list),sep="_"),
                                     paste("templateSS",1:length(JSS_list),sep="_"),
@@ -1131,7 +1153,7 @@ nplcm_fit_Reg_NoNest <-
       }else {
         if (length(single_column_MSS)==0){
           # summarize into one name (for all measurements):
-          in_data       <- unique(c(in_data,"Nd","Jcause","ncol_dm_Eti",
+          in_data       <- unique(c(in_data,"Nd","Jcause",
                                     paste("JSS",1:length(JSS_list),sep="_"),
                                     paste("GSS_TPR",1:length(JSS_list),sep="_"),
                                     paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
@@ -1140,7 +1162,7 @@ nplcm_fit_Reg_NoNest <-
                                     paste("alphaS",1:length(JSS_list),sep="_"),   
                                     paste("betaS",1:length(JSS_list),sep="_")))
         } else{
-          in_data       <- unique(c(in_data,"Nd","Nu","Jcause","ncol_dm_Eti",
+          in_data       <- unique(c(in_data,"Nd","Nu","Jcause",
                                     paste("JSS",1:length(JSS_list),sep="_")[-single_column_MSS],
                                     paste("GSS_TPR",1:length(JSS_list),sep="_"),
                                     paste("SS_TPR_grp",1:length(JSS_list),sep="_"),
@@ -1330,13 +1352,25 @@ nplcm_fit_Reg_NoNest <-
     filename <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
     writeLines(model_func, filename)
     
-    if (length(prior$Eti_prior)>1){
-      stop("== [baker] Regression model used. Please change `model_options$prior$Eti_prior` 
-           into a single, positive real number representing
-           the stanadrd deviation of beta coefficients in etiology regression! ==")
-    }
-    sd_betaEti      <- prior$Eti_prior
-    in_data <- unique(c(in_data,"sd_betaEti"))
+    # if (length(prior$Eti_prior)>1){
+    #   stop("== [baker] Regression model used. Please change `model_options$prior$Eti_prior` 
+    #        into a single, positive real number representing
+    #        the stanadrd deviation of beta coefficients in etiology regression! ==")
+    # }
+    sd_betaEti_basis    <- prior$Eti_prior[1]
+    sd_betaEti_nonbasis <- prior$Eti_prior[2]   #<--place to adjust (currently identical for basis vs non-basis. check "insert_bugfile_chunk_reg_etiology")
+    sd_betaFPR_basis   <- prior$FPR_coef_prior[1]
+    sd_betaFPR_nonbasis <- prior$FPR_coef_prior[2]
+
+    in_data <- unique(c(in_data,
+                        "ER_basis_id"[ER_has_basis],
+                        "ER_n_basis"[ER_has_basis],
+                        "ER_non_basis_id"[ER_has_non_basis],
+                        "sd_betaEti_basis"[ER_has_basis],
+                        "sd_betaEti_nonbasis"[ER_has_non_basis],
+                        "sd_betaFPR_basis"[any(unlist(has_basis_list))],
+                        "sd_betaFPR_nonbasis"[any(unlist(has_non_basis_list))]
+    ))
     
     # #
     # # # uncomment below if using dmnorm for betaEti and betaFPR (also need to edit plug-and-play.R):
@@ -1391,9 +1425,9 @@ nplcm_fit_Reg_NoNest <-
       if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
       dump(names(in_data.list), append = FALSE, envir = here,
            file = curr_data_txt_file)
-      # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+      ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
       bad_jagsdata_txt <- readLines(curr_data_txt_file)
-      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+      good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
       writeLines(good_jagsdata_txt, curr_data_txt_file)
       
       gs <- R2jags::jags2(data   = curr_data_txt_file,

@@ -1782,6 +1782,24 @@ total_loc <- function(DIR="R"){
   N
 }
 
+#' test if a formula has other terms not created by s_date_Eti or s_date_FPR
+#' 
+#' @param form a formula
+#' @examples 
+#' form1 <- as.formula(~ -1+s_date_FPR(DATE,Y,basis = "ps",10) + as.factor(SITE))
+#' form2 <- as.formula(~ -1+s_date_FPR(DATE,Y,basis = "ps",10))
+#' form3 <- as.formula(~ s_date_FPR(DATE,Y,basis = "ps",10))
+#' 
+#' has_non_basis(form1)
+#' has_non_basis(form2)
+#' has_non_basis(form3)
+#' @export
+has_non_basis <- function(form){
+  out <- stats::terms(form)
+  outlab <- attr(out,"term.labels")
+  (attr(out,"intercept")>0) ||
+    (length(outlab[-grep("^s_",outlab)])>=1 && attr(out,"intercept")==0)
+}
 
 #' Make Etiology design matrix for dates with R format.
 #'
@@ -1790,7 +1808,8 @@ total_loc <- function(DIR="R"){
 #' @param Rdate a vector of dates of R format
 #' @param Y Binary case/control status; 1 for case; 0 for controls
 #' @param basis "ncs" for natural cubic splines; "ps" for penalized-splines based
-#' on B-spline basis functions
+#' on B-spline basis functions (NB: baker does not recommend setting ncs using 
+#' this function; use splines::ns)
 #' @param dof Degree-of-freedom for the bases. For "ncs" basis, \code{dof} is
 #' the number of columns; For "ps" basis,  the number of columns is \code{dof}
 #' if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.
@@ -1800,8 +1819,9 @@ total_loc <- function(DIR="R"){
 #' \itemize{
 #' \item \code{Z_Eti} design matrix for etiology regression on dates.
 #' }
+#' @importFrom stats quantile
 #' @export
-s_date_Eti <- function(Rdate,Y,basis = "ncs",dof=ifelse(basis=="ncs",5,10),...) {
+s_date_Eti <- function(Rdate,Y,basis = "ps",dof=ifelse(basis=="ncs",5,10),...) {
   #       #
   #       # test:
   #       #
@@ -1826,7 +1846,8 @@ s_date_Eti <- function(Rdate,Y,basis = "ncs",dof=ifelse(basis=="ncs",5,10),...) 
   case_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 1]
   if (basis == "ncs") {
     # for etiology regression:
-    Z_Eti <- splines::ns(case_ingrp_std_num_date,df = dof,...)
+    Z_Eti <- splines::ns(case_ingrp_std_num_date,df = dof,Boundary.knots=
+                           quantile(case_ingrp_std_num_date,c(0.05,0.95),...))
   }
   
   if (basis == "ps"){ # for penalized-splines based on B-spline basis:
@@ -1856,6 +1877,7 @@ s_date_Eti <- function(Rdate,Y,basis = "ncs",dof=ifelse(basis=="ncs",5,10),...) 
 #' if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.
 #' @param ... Other arguments as in \code{\link[splines]{bs}}
 #'
+#' @importFrom stats quantile
 #' @seealso \code{\link{nplcm}}
 #' @return Design matrix for FPR regression, with cases' rows on top of
 #' controls'.
@@ -1888,8 +1910,56 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
     res[ind,]  <- Z_FPR_case
     res[-ind,] <- Z_FPR_ctrl
     return(res)
+  } else if (basis=="ncs"){
+    x       <- ctrl_ingrp_std_num_date
+    ncs_for_control <- splines::ns(x,df = dof,
+                Boundary.knots = quantile(x,c(0.05,0.95)),...)
+    Z_FPR_ctrl      <- matrix(ncs_for_control,nrow=length(x))
+    
+    # borrowing FPR regression from controls to cases:
+    x       <- case_outgrp_std_num_date
+    Z_FPR_case      <- matrix(splines::ns(x,knots=attr(ncs_for_control,"knots"),
+            Boundary.knots = quantile(x,c(0.05,0.95)),...),nrow=length(x))
+    
+    ind <- which(Y == 1)
+    res <- matrix(NA,nrow = length(Y),ncol = ncol(Z_FPR_case))
+    res[ind,]  <- Z_FPR_case
+    res[-ind,] <- Z_FPR_ctrl
+    return(res)
   }
 }
+
+# dudue_s_date_FPR <- function(Rdate,Y,basis="ncs",dof=10,...) {
+#   # standardization:
+#   df       <- data.frame(Y = Y,num_date = as.numeric(Rdate))
+#   grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
+#   grp_sd   <- c(stats::sd(df$num_date[Y == 0]),stats::sd(df$num_date[Y == 1]))
+#   df$ingrp_std_num_date <-
+#     (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
+#   #outgrp_std_num_date standardizes the cases' dates using controls' mean and stats::sd:
+#   df$outgrp_std_num_date <- (df$num_date - grp_mean[1]) / grp_sd[1]
+#   df$outgrp_std_num_date[df$Y == 0] <- NA
+#   
+#   ctrl_ingrp_std_num_date <- df$ingrp_std_num_date[df$Y == 0]
+#   # borrowing FPR regression from controls to cases:
+#   case_outgrp_std_num_date <- df$outgrp_std_num_date[df$Y == 1]
+#   if (basis=="ncs"){
+#     x       <- ctrl_ingrp_std_num_date
+#     Z_FPR_ctrl <- splines::ns(x,df = dof,Boundary.knots=
+#                            quantile(x,c(0.05,0.95),...))
+#     
+#     # borrowing FPR regression from controls to cases:
+#     x       <- case_outgrp_std_num_date
+#     Z_FPR_case <- splines::ns(x,df = dof,Boundary.knots=
+#                                 quantile(x,c(0.05,0.95),...))
+#     
+#     ind <- which(Y == 1)
+#     res <- matrix(NA,nrow = length(Y),ncol = ncol(Z_FPR_case))
+#     res[ind,]  <- Z_FPR_case
+#     res[-ind,] <- Z_FPR_ctrl
+#     return(res)
+#   }
+# }
 
 #' Run ‘JAGS’ from R
 #' 
@@ -1982,9 +2052,10 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
       with(initial.values, dump(names(initial.values), 
                                 file = curr_init_txt_file))
       
-      # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+      # fix dimension problem.... convert say .Dim=7:6 to c(7,6) (an issue for templateBS_1):
       bad_jagsinits_txt <- readLines(curr_init_txt_file)
-      good_jagsinits_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
+      good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
+      #good_jagsinits_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
       if(file.exists(curr_init_txt_file)){file.remove(curr_init_txt_file)}
       writeLines(good_jagsinits_txt, curr_init_txt_file)
       
@@ -2154,7 +2225,7 @@ merge_lists <- function(list_of_lists){
   len_one_list <- length(list_of_lists[[1]])
   res <- lapply(1:len_one_list,function(l) {
     do.call(rbind,lapply(1:length(list_of_lists),
-                  function(s) list_of_lists[[s]][[l]]))})
+                         function(s) list_of_lists[[s]][[l]]))})
   names(res) <- names(list_of_lists[[1]])
   res
 }
