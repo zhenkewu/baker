@@ -1509,7 +1509,7 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
     lapply(patho_BrS_list,make_template,cause_list) # key.
   
   has_basis <- ifelse(length(grep("s_date",FPR_formula[[s]]))==0,FALSE,TRUE)
-  
+  exists_non_basis <- has_non_basis(FPR_formula[[s]])
   # create variable names:
   BrS_nm   <- names(Mobs$MBS)
   # index measurement slices by numbers:
@@ -1523,6 +1523,7 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
   non_basis_id_nm     <- paste("non_basis_id",seq_along(BrS_nm),sep = "_")#
   n_basis_nm     <- paste("n_basis",seq_along(BrS_nm),sep = "_")#
   prec_first_nm     <- paste("prec_first",seq_along(BrS_nm),sep = "_")#
+  prec_non_basis_nm     <- paste("prec_non_basis_nm",seq_along(BrS_nm),sep = "_")#
   taubeta_nm     <- paste("taubeta",seq_along(BrS_nm),sep = "_")#
   taubeta0_nm     <- paste("taubeta0",seq_along(BrS_nm),sep = "_")#
   taubeta_inv_nm     <- paste("taubeta_inv",seq_along(BrS_nm),sep = "_")#
@@ -1592,25 +1593,29 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
 
           # hyperprior of smoothness:
           ",p_flexible_nm[s]," ~ dbeta(1,1) 
-          ")
+          ",#prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
+            prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
+            ")
       } else{
         plug <- paste0(plug,
                        "
           }
           ")
       }
+      if (exists_non_basis){
       plug <- paste0(plug,
                      "
           for (l in ",non_basis_id_nm[s],"){
              ",#betaFPR_nm[s],"[l,1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
                      "for (j in 1:",JBrS_nm[s],"){
-                ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_first_nm[s],")
+                ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_non_basis_nm[s],")
              }
           }
           ",#prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
-                     prec_first_nm[s]," <- 1/25
+                     prec_non_basis_nm[s]," <- pow(sd_betaFPR_nonbasis,-2) #1/4 #precision for spline coefficients
           "
       )
+      }
     } else{ # <-- if the dimension equals 1:
       if (!constant_FPR){
         plug <-
@@ -1651,18 +1656,23 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
           ",taubeta_nm[s],"        <- ",taubeta0_nm[s],"[",ind_flex_select_nm[s],"]
           # hyperprior of smoothness:
           ",p_flexible_nm[s]," ~ dbeta(1,1)  
-          ")
+          "
+          ,prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
+          "
+          )
       }
-      plug <-
+      if (exists_non_basis){
+      plug <- # issue: can we test if we have non_basis coefficients, so then we include the following segment?
         paste0(plug,
                "
-          # non-basis coefficients:
+          # non-basis coefficients (e.g., intercept):
           for (l in ",non_basis_id_nm[s],"){
-              ",betaFPR_nm[s],"[l,1] ~ dnorm(0,",prec_first_nm[s],")
+              ",betaFPR_nm[s],"[l,1] ~ dnorm(0,",prec_non_basis_nm[s],")
           }
-          ",prec_first_nm[s]," <- 1/25
+          ",prec_non_basis_nm[s]," <- pow(sd_betaFPR_nonbasis,-2) #1/4 #precision for spline coefficients
           "
         )
+      }
     }
   } else{ # no stratification.
     if (length(patho_BrS_list[[s]]) > 1) { # <--- if the dimension is higher than 2:
@@ -1706,6 +1716,8 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
 
           # hyperprior of smoothness:
           ",p_flexible_nm[s]," ~ dbeta(1,1) 
+          ",#prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
+          prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
           ")
       } else{
         plug <- paste0(plug,
@@ -1713,18 +1725,20 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
           }
           ")
       }
+      if (exists_non_basis){
       plug <- paste0(plug,
                      "
           for (l in ",non_basis_id_nm[s],"){
              ",#betaFPR_nm[s],"[l,1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
                      "for (j in 1:",JBrS_nm[s],"){
-                   ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_first_nm[s],")
+                   ",betaFPR_nm[s],"[l,j] ~ dnorm(0,",prec_non_basis_nm[s],")
                 }
           }
           ",#prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
-                     prec_first_nm[s]," <- 1/25
+                     prec_non_basis_nm[s]," <- pow(sd_betaFPR_nonbasis,-2) #1/4 #precision for spline coefficients
           "
       )
+      }
     } else{ # <-- if the dimension equals 1:
       if (!constant_FPR){
         plug <-
@@ -1761,18 +1775,21 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
           ",taubeta_nm[s],"        <- ",taubeta0_nm[s],"[",ind_flex_select_nm[s],"]
           # hyperprior of smoothness:
           ",p_flexible_nm[s]," ~ dbeta(1,1)  
+          ",prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
           ")
       }
+      if (exists_non_basis){
       plug <-
         paste0(plug,
                "
           # non-basis coefficients:
           for (l in ",non_basis_id_nm[s],"){
-              ",betaFPR_nm[s],"[l,1] ~ dnorm(0,",prec_first_nm[s],")
+              ",betaFPR_nm[s],"[l,1] ~ dnorm(0,",prec_non_basis_nm[s],")
           }
-          ",prec_first_nm[s]," <- 1/25
+          ",prec_non_basis_nm[s]," <- pow(sd_betaFPR_nonbasis,-2) #1/4 #precision for spline coefficients
           "
         )
+      }
     }
   }
   parameters <- c(thetaBS_nm[s],betaFPR_nm[s],alphaB_nm[s],betaB_nm[s],taubeta_nm[s],p_flexible_nm[s])
@@ -1829,7 +1846,7 @@ add_meas_BrS_ctrl_NoNest_reg_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL)
   if (!is.null(ppd) && ppd){
     
     MBS_nm.new   <- paste("MBS.new",seq_along(BrS_nm),sep = "_")#
-    mu_bs_nm.new   <- paste("mu_bs.new",seq_along(BrS_nm),sep = "_")#
+    mu_bs_nm.new <- paste("mu_bs.new",seq_along(BrS_nm),sep = "_")#
     
     if (length(patho_BrS_list[[s]]) > 1) {
       plug <- paste0(

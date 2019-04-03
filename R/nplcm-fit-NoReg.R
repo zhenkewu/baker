@@ -547,12 +547,12 @@ nplcm_fit_NoReg<-
       if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
       dump(names(in_data.list), append = FALSE, envir = here,
            file = curr_data_txt_file)
-      # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+      ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
       bad_jagsdata_txt <- readLines(curr_data_txt_file)
-      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+      good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
       writeLines(good_jagsdata_txt, curr_data_txt_file)
       
-      gs <- jags2_baker(data   = curr_data_txt_file,
+      gs <- R2jags::jags2(data   = curr_data_txt_file,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
                           model.file = filename,

@@ -4,8 +4,8 @@
 \alias{s_date_Eti}
 \title{Make Etiology design matrix for dates with R format.}
 \usage{
-s_date_Eti(Rdate, Y, basis = "ncs", dof = ifelse(basis == "ncs", 5,
-  10), ...)
+s_date_Eti(Rdate, Y, basis = "ps", dof = ifelse(basis == "ncs", 5, 10),
+  ...)
 }
 \arguments{
 \item{Rdate}{a vector of dates of R format}
@@ -13,7 +13,8 @@ s_date_Eti(Rdate, Y, basis = "ncs", dof = ifelse(basis == "ncs", 5,
 \item{Y}{Binary case/control status; 1 for case; 0 for controls}
 
 \item{basis}{"ncs" for natural cubic splines; "ps" for penalized-splines based
-on B-spline basis functions}
+on B-spline basis functions (NB: baker does not recommend setting ncs using 
+this function; use splines::ns)}
 
 \item{dof}{Degree-of-freedom for the bases. For "ncs" basis, \code{dof} is
 the number of columns; For "ps" basis,  the number of columns is \code{dof}
