@@ -145,7 +145,7 @@ Connect `R` to `JAGS`/`WinBUGS`
 1.  Use [Just Another Gibbs Sampler (JAGS)](http://mcmc-jags.sourceforge.net/)
 2.  Install JAGS 4.2.0; Download [here](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/)
 3.  Install `R`; Download from [here](https://cran.r-project.org/)
-4.  Fire up `R`, run `R` command `install.pacakges("rjags")`
+4.  Fire up `R`, run `R` command `install.packages("rjags")`
 5.  Run `R` command `library(rjags)` in R console; If the installations are successful, you'll see some notes like this:
 
     ``` r
@@ -202,6 +202,8 @@ Here we use [JHPCE](https://jhpce.jhu.edu/) as an example. [The complete install
 
     module load R
     R> install.packages("rjags")
+    # or if the above fails, try:
+    R>install.packages("rjags", configure.args="--enable-rpath")
     ```
 
 3.  Also check out the [INSTALLATION](https://CRAN.R-project.org/package=rjags/INSTALL) file for `rjags` package.
