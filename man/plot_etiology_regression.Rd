@@ -14,7 +14,7 @@ plot_etiology_regression(DIR_NPLCM, stratum_bool, plot_basis = FALSE,
 
 \item{plot_basis}{TRUE for plotting basis functions; Default to FALSE}
 
-\item{truth}{a list of truths computed from true parameters in simulations; elements: Eti, FPR, 
+\item{truth}{a list of truths computed from true parameters in simulations; elements: Eti, FPR, PR
 which are matrices of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
 and \code{ncol(data_nplcm$Mobs$MBS$MBS1)}; Default to \code{NULL} for real data analyses.}
 }
