@@ -1,4 +1,4 @@
-# baker 0.9.2
+# baker 0.9.3
 
 * Included regression functionalities for discrete and continuous predictors.
 
