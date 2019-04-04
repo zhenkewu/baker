@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-etiology-regression.R
 \name{plot_etiology_regression}
 \alias{plot_etiology_regression}
-\title{visualize the etiology regression with a continous covariate}
+\title{visualize the etiology regression with a continuous covariate}
 \usage{
 plot_etiology_regression(DIR_NPLCM, stratum_bool, plot_basis = FALSE,
   truth = NULL)
@@ -10,7 +10,7 @@ plot_etiology_regression(DIR_NPLCM, stratum_bool, plot_basis = FALSE,
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
 
-\item{stratum_bool}{a vector of TRUE/FALSE with TRUEs indicating the rows of subjects to include}
+\item{stratum_bool}{a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include}
 
 \item{plot_basis}{TRUE for plotting basis functions; Default to FALSE}
 
@@ -19,11 +19,11 @@ which are matrices of # of rows = # of subjects, # columns: \code{length(cause_l
 and \code{ncol(data_nplcm$Mobs$MBS$MBS1)}; Default to \code{NULL} for real data analyses.}
 }
 \value{
-A figure of etiology regression curves and some marginal positive rate assement of
+A figure of etiology regression curves and some marginal positive rate assessment of
 model fit; See example for the legends.
 }
 \description{
-This function visualizes the etiology regression against one continous outcome, e.g., 
+This function visualizes the etiology regression against one continuous covariates, e.g., 
 enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?)
 }
 \examples{
@@ -61,6 +61,7 @@ Other visualization functions: \code{\link{plot_BrS_panel}},
   \code{\link{plot_check_common_pattern}},
   \code{\link{plot_check_pairwise_SLORD}},
   \code{\link{plot_etiology_side_by_side}},
+  \code{\link{plot_etiology_strat}},
   \code{\link{plot_group_etiology}},
   \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
   \code{\link{plot_selected_etiology}}

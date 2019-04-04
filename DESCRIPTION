@@ -1,7 +1,7 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.9.1
+Version: 0.9.2
 Date: 2019-04-03
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@umich.edu",role=c("cre","aut","cph"),

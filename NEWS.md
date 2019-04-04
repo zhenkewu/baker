@@ -1,7 +1,6 @@
-# baker 0.7.3
+# baker 0.9.2
 
-* Included regression functionalities for discrete predictors.
+* Included regression functionalities for discrete and continous predictors.
 
-* Added a `NEWS.md` file to track changes to the package.
 
 

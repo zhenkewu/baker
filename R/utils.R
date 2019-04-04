@@ -2053,7 +2053,7 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
                                 file = curr_init_txt_file))
       
       # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
-      inits_fnames <- list.files(mcmc_options$result.folder,pattern = "^jagsinits[0-9]+.txt",
+      inits_fnames <- list.files(pattern = "^jagsinits[0-9]+.txt",
                                  full.names = TRUE)
       for (fiter in seq_along(inits_fnames)){
         curr_inits_txt_file <- inits_fnames[fiter]
