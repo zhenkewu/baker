@@ -6,7 +6,7 @@
 #' @param DIR_NPLCM File path to the folder containing posterior samples
 #' @param stratum_bool a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include
 #' @param plot_basis TRUE for plotting basis functions; Default to FALSE
-#' @param truth a list of truths computed from true parameters in simulations; elements: Eti, FPR, 
+#' @param truth a list of truths computed from true parameters in simulations; elements: Eti, FPR, PR
 #'  which are matrices of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
 #'  and \code{ncol(data_nplcm$Mobs$MBS$MBS1)}; Default to \code{NULL} for real data analyses.
 #'
@@ -169,6 +169,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,tru
       polygon(c(curr_date_FPR_case, rev(curr_date_FPR_case)),
               c(PR_case_q[1,,j], rev(PR_case_q[2,,j])),
               col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
+      if(!is.null(truth$PR)){lines(curr_date_FPR_case,truth$PR[plotid_FPR_case,j],col="black",lwd=3)}
       # rug plot:
       rug(curr_date_FPR_case[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_case,j]==1],side=3,col="dodgerblue2",line=-1)
       rug(curr_date_FPR_case[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_case,j]==0],side=1,col="dodgerblue2",line=-1)
