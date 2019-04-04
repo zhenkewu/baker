@@ -32,6 +32,7 @@ et
 Eti
 expit
 Feikin
+formatC
 FPR
 FPRs
 Fu
@@ -101,3 +102,4 @@ TPRS
 vec
 Wenyi
 WinBUGS
+writeLines

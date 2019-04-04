@@ -1965,13 +1965,13 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #' 
 #' The jags function takes data and starting values as input. 
 #' It automatically writes a jags script, calls the model, and saves the 
-#' simulations for easy access in R.
+#' simulations for easy access in R. Check the R2jags::jags2 for details about
+#' the argument. 
 #' 
-#' This modifies the jags2 function in R2jags package.
+#' This modifies the jags2 function in R2jags package. 
 #' 
 #' @inheritParams R2jags::jags
 #' @import R2jags
-#' @importFrom R2WinBUGS write.model
 #' @seealso \code{\link[R2jags]{jags}}
 #' @export
 jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bug", 
@@ -2023,7 +2023,7 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
     else {
       gsub("\\.tmp$", ".txt", temp)
     }
-    R2WinBUGS::write.model(model.file, con = temp)
+    write.model(model.file, con = temp)
     model.file <- gsub("\\\\", "/", temp)
     if (!is.R()) 
       on.exit(file.remove(model.file), add = TRUE)
