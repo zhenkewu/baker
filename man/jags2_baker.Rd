@@ -64,7 +64,8 @@ jags2_baker(data, inits, parameters.to.save, model.file = "model.bug",
 \description{
 The jags function takes data and starting values as input. 
 It automatically writes a jags script, calls the model, and saves the 
-simulations for easy access in R.
+simulations for easy access in R. Check the R2jags::jags2 for details about
+the argument.
 }
 \details{
 This modifies the jags2 function in R2jags package.
