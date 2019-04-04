@@ -2052,12 +2052,15 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
       with(initial.values, dump(names(initial.values), 
                                 file = curr_init_txt_file))
       
-      # fix dimension problem.... convert say .Dim=7:6 to c(7,6) (an issue for templateBS_1):
-      bad_jagsinits_txt <- readLines(curr_init_txt_file)
-      good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
-      #good_jagsinits_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
-      if(file.exists(curr_init_txt_file)){file.remove(curr_init_txt_file)}
-      writeLines(good_jagsinits_txt, curr_init_txt_file)
+      # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
+      inits_fnames <- list.files(mcmc_options$result.folder,pattern = "^jagsinits[0-9]+.txt",
+                                 full.names = TRUE)
+      for (fiter in seq_along(inits_fnames)){
+        curr_inits_txt_file <- inits_fnames[fiter]
+        bad_jagsinits_txt <- readLines(curr_inits_txt_file)
+        good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
+        writeLines(good_jagsinits_txt, curr_inits_txt_file)
+      }
       
       
     }
@@ -2194,9 +2197,11 @@ subset_data_nplcm_by_index <- function(data_nplcm,index) {
     }
   }
   names(Mobs) <- c("MBS","MSS","MGS")[1:length(Mobs)]
+  X_df <- data_nplcm$X[index,,drop=FALSE]
+  names(X_df) <- names(data_nplcm$X)
   list(Mobs = Mobs,
        Y    = data_nplcm$Y[index],
-       X    = data_nplcm$X[index,])
+       X    = X_df)
 }
 
 
@@ -2300,9 +2305,11 @@ combine_data_nplcm <- function(data_nplcm_list){
                                            function(l) l$Mobs),function(s) s[[i]]))
   }
   names(Mobs) <- c("MBS","MSS","MGS")[1:n_data_quality]
+  X_df <- do.call(rbind,lapply(data_nplcm_list,function(l) l$X))
+  names(X_df) <- names(data_nplcm_list[[1]]$X)
   list(Mobs = Mobs,
        Y    = c(unlist(lapply(data_nplcm_list,function(l) l$Y))),
-       X    = do.call(rbind,lapply(data_nplcm_list,function(l) l$X)))
+       X    = X_df)
 }
 
 
