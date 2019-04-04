@@ -707,6 +707,8 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
       writeLines(good_jagsdata_txt, curr_data_txt_file)
       
+    
+      
       gs <- jags2_baker(data   = curr_data_txt_file,
                         inits  = in_init,
                         parameters.to.save = out_parameter,
@@ -1430,7 +1432,17 @@ nplcm_fit_Reg_NoNest <-
       good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
       writeLines(good_jagsdata_txt, curr_data_txt_file)
       
-      gs <- R2jags::jags2(data   = curr_data_txt_file,
+      # # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
+      # inits_fnames <- list.files(mcmc_options$result.folder,pattern = "^jagsinits[0-9]+.txt",
+      #                            full.names = TRUE)
+      # for (fiter in seq_along(inits_fnames)){
+      #   curr_inits_txt_file <- inits_fnames[fiter]
+      #   bad_jagsinits_txt <- readLines(curr_inits_txt_file)
+      #   good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
+      #   writeLines(good_jagsinits_txt, curr_inits_txt_file)
+      # }
+      
+      gs <- jags2_baker(data   = curr_data_txt_file,
                           inits  = in_init,
                           parameters.to.save = out_parameter,
                           model.file = filename,
