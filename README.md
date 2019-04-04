@@ -5,9 +5,11 @@
 
 > An R Package for Fitting Bayesian [Nested Partially Latent Class Models](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent)
 
-[![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
+[![Build Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker)
 
 **Maintainer**: Zhenke Wu, <zhenkewu@umich.edu>
+
+**Issues** Please click [here](https://github.com/zhenkewu/baker/issues) to report reproducible issues.
 
 **References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following paper:
 
