@@ -30,11 +30,13 @@
 #'            \code{TRUE} does false positive rate regression. It means the false
 #'            positive rates, estimatable from controls, can vary with 
 #'            covariates; \code{FALSE} otherwise.
-#'            \item code{is_discrete_predictor} A list of names "Eti", and 
+#'            \item \code{is_discrete_predictor} A list of names "Eti", and 
 #'            the names for every slice of bronze-standard data. \code{TRUE}
 #'            if all predictors are discrete; \code{FALSE} otherwise.
 #'        }
 #' }
+#' 
+#' 
 #' 
 #' 
 #' @family specification checking functions
