@@ -14,9 +14,15 @@ plot_etiology_regression(DIR_NPLCM, stratum_bool, plot_basis = FALSE,
 
 \item{plot_basis}{TRUE for plotting basis functions; Default to FALSE}
 
-\item{truth}{a list of truths computed from true parameters in simulations; elements: Eti, FPR, PR
-which are matrices of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
-and \code{ncol(data_nplcm$Mobs$MBS$MBS1)}; Default to \code{NULL} for real data analyses.}
+\item{truth}{a list of truths computed from true parameters in simulations; elements: 
+Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
+Currently only works for one slice of bronze-standard measurements (in a non-nested model).
+\itemize{
+    \item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
+    \item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+    \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+    \item TPR a vector of length identical to \code{PR_case}
+}}
 }
 \value{
 A figure of etiology regression curves and some marginal positive rate assessment of
@@ -48,12 +54,14 @@ legend("topleft",legend=legend.text,
        col=legend.col,ncol=2,
        y.intersp=1.5,cex=1.6,box.col=NA)
        }
+       
 }
 \references{
-See example figures:
-\url{https://github.com/zhenkewu/baker/blob/master/inst/figs/visualize_etiology_regression_SITE=1.pdf}
-and its legends: 
-\url{https://github.com/zhenkewu/baker/blob/master/inst/figs/legends_visualize_etiology_regression.png}
+See example figures 
+\itemize{
+\item A Figure using simulated data for six pathogens: \url{https://bit.ly/2FWoYeM}
+\item The legends for the figure above: \url{https://bit.ly/2OU8F60}
+}
 }
 \seealso{
 Other visualization functions: \code{\link{plot_BrS_panel}},

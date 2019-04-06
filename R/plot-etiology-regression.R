@@ -6,9 +6,15 @@
 #' @param DIR_NPLCM File path to the folder containing posterior samples
 #' @param stratum_bool a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include
 #' @param plot_basis TRUE for plotting basis functions; Default to FALSE
-#' @param truth a list of truths computed from true parameters in simulations; elements: Eti, FPR, PR
-#'  which are matrices of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
-#'  and \code{ncol(data_nplcm$Mobs$MBS$MBS1)}; Default to \code{NULL} for real data analyses.
+#' @param truth a list of truths computed from true parameters in simulations; elements: 
+#'  Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
+#'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
+#'  \itemize{
+#'      \item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
+#'      \item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+#'      \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+#'      \item TPR a vector of length identical to \code{PR_case}
+#'  }
 #'
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
 #' model fit; See example for the legends.
@@ -36,10 +42,12 @@
 #'        col=legend.col,ncol=2,
 #'        y.intersp=1.5,cex=1.6,box.col=NA)
 #'        }
-#' @references See example figures:
-#' \url{https://github.com/zhenkewu/baker/blob/master/inst/figs/visualize_etiology_regression_SITE=1.pdf}
-#' and its legends: 
-#' \url{https://github.com/zhenkewu/baker/blob/master/inst/figs/legends_visualize_etiology_regression.png}
+#'        
+#' @references See example figures 
+#' \itemize{
+#' \item A Figure using simulated data for six pathogens: \url{https://bit.ly/2FWoYeM}
+#' \item The legends for the figure above: \url{https://bit.ly/2OU8F60}
+#' }
 #' @family visualization functions
 #' @export
 plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,truth=NULL){
@@ -160,7 +168,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,tru
       rug(curr_date_FPR[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_ctrl,j]==0],side=1)
       
       if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
-      
+      if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
       if(plot_basis){matplot(curr_date_FPR,bugs.dat$Z_FPR_1[plotid_FPR_ctrl,],col="blue",type="l",add=TRUE)}
       
       mtext(names(data_nplcm$Mobs$MBS[[1]])[j],side = 3,cex=1.5,line=1)
@@ -169,7 +177,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,tru
       polygon(c(curr_date_FPR_case, rev(curr_date_FPR_case)),
               c(PR_case_q[1,,j], rev(PR_case_q[2,,j])),
               col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
-      if(!is.null(truth$PR)){lines(curr_date_FPR_case,truth$PR[plotid_FPR_case,j],col="black",lwd=3)}
+      if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
       # rug plot:
       rug(curr_date_FPR_case[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_case,j]==1],side=3,col="dodgerblue2",line=-1)
       rug(curr_date_FPR_case[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_case,j]==0],side=1,col="dodgerblue2",line=-1)
@@ -349,4 +357,4 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights=NULL,truth=NULL){
     }
     mtext(text = paste0("Overall: ",model_options$likelihood$cause_list[j]),3,adj=0.9,cex=2,col="blue")
   }
-  }
+}
