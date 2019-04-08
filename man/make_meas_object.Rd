@@ -4,7 +4,8 @@
 \alias{make_meas_object}
 \title{Make measurement slice}
 \usage{
-make_meas_object(patho, specimen, test, quality, cause_list)
+make_meas_object(patho, specimen, test, quality, cause_list,
+  sep_char = "_")
 }
 \arguments{
 \item{patho}{A vector of pathogen names}
@@ -16,6 +17,9 @@ make_meas_object(patho, specimen, test, quality, cause_list)
 \item{quality}{Quality category: any of "BrS", "SS" or "GS".}
 
 \item{cause_list}{The vector of potential latent status}
+
+\item{sep_char}{a character string that separate the pathogen names and the 
+specimen-test pair; Default to \code{"_"}}
 }
 \value{
 A list with measurement information

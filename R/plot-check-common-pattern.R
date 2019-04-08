@@ -248,7 +248,7 @@ plot_check_common_pattern <- function(DIR_list,
 #     }
     
     # plot for cases:
-    hline.data <- as.data.frame(list(frequency = obs_case_pat_list[[1]],
+    hline.data <- as.data.frame(list(frequency = c(obs_case_pat_list[[1]]),
                                        pattern   = 1:(length(obs_case_pat_list[[1]])),
                                        DIR       = rep(1,length(obs_case_pat_list[[1]]))))
     gg1<-ggplot(data = res, 
@@ -256,7 +256,7 @@ plot_check_common_pattern <- function(DIR_list,
       #facet_wrap(~ CASE, ncol = 2)+ 
       #facet_grid(~CASE,labeller=case_status_labeller)+
       labs(list(x = "pattern", y = "frequency"))+theme_bw()+
-      stat_summary(fun.data = f, geom="boxplot",aes_now(width=dodge_val),
+      stat_summary(fun.data = f, geom="boxplot",
                    position = position_dodge(dodge_val))+
       stat_summary(fun.data = mean_with_nm,geom="point",aes(size=1.5),
                    position = position_dodge(dodge_val))+scale_size(guide = 'none')+
@@ -275,7 +275,7 @@ plot_check_common_pattern <- function(DIR_list,
                x = length(case_pat_list[[1]])/2, 
                y = ymax*0.67, size = 8, colour = "red")+
       stat_summary(fun.y = identity,geom='errorbar', 
-                    width=0.8,aes(yintercept = frequency,ymax=..y..,ymin=..y..),
+                    width=0.8,aes(ymax=..y..,ymin=..y..),
                     color="blue",size=0.9,data=hline.data)
       # geom_errorbar(stat = "hline", 
       #               width=0.8,aes(yintercept = frequency,ymax=..y..,ymin=..y..),

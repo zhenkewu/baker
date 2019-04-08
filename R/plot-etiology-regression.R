@@ -213,7 +213,10 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,tru
     plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1),xlab="standardized date",
          ylab="etiologic fraction",bty="n",xaxt="n",yaxt="n",las=2)
     ## ONLY FOR SIMULATIONS <---------------------- FIX!
-    if(!is.null(truth$Eti)){points(curr_date_Eti,truth$Eti[plotid_Eti,j],type="l",lwd=3,col="black")}
+    if(!is.null(truth$Eti)){
+      points(curr_date_Eti,truth$Eti[plotid_Eti,j],type="l",lwd=3,col="black")
+      abline(h=colMeans(truth$Eti[data_nplcm$Y==1,])[j],col="blue",lwd=3)
+      }
     if(plot_basis){matplot(curr_date_Eti,bugs.dat$Z_Eti[plotid_Eti,],col="blue",type="l",add=TRUE)}
     
     # overall pie:

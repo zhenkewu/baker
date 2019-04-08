@@ -707,7 +707,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
       good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
       writeLines(good_jagsdata_txt, curr_data_txt_file)
       
-    
+      
       
       gs <- jags2_baker(data   = curr_data_txt_file,
                         inits  = in_init,
@@ -1054,7 +1054,11 @@ nplcm_fit_Reg_NoNest <-
                          paste("alphaB",1:length(JBrS_list),sep="_"),
                          paste("betaB",1:length(JBrS_list),sep="_")
       )
-      out_parameter <- c(out_parameter,"betaEti")
+      if (ER_has_basis){
+        out_parameter <- c(out_parameter,"betaEti","ER_taubeta") #<-- may not have this parameter in ncs.
+      } else{
+        out_parameter <- c(out_parameter,"betaEti")
+      }
     }
     
     if ("SS" %in% use_measurements){
@@ -1363,12 +1367,16 @@ nplcm_fit_Reg_NoNest <-
     sd_betaEti_nonbasis <- prior$Eti_prior[2]   #<--place to adjust (currently identical for basis vs non-basis. check "insert_bugfile_chunk_reg_etiology")
     sd_betaFPR_basis   <- prior$FPR_coef_prior[1]
     sd_betaFPR_nonbasis <- prior$FPR_coef_prior[2]
-
+    ER_alpha    <- prior$Eti_hyper_pflex[1]
+    ER_beta     <- prior$Eti_hyper_pflex[2]
+    
     in_data <- unique(c(in_data,
                         "ER_basis_id"[ER_has_basis],
                         "ER_n_basis"[ER_has_basis],
                         "ER_non_basis_id"[ER_has_non_basis],
                         "sd_betaEti_basis"[ER_has_basis],
+                        "ER_alpha"[ER_has_basis],
+                        "ER_beta"[ER_has_basis],
                         "sd_betaEti_nonbasis"[ER_has_non_basis],
                         "sd_betaFPR_basis"[any(unlist(has_basis_list))],
                         "sd_betaFPR_nonbasis"[any(unlist(has_non_basis_list))]
@@ -1443,17 +1451,17 @@ nplcm_fit_Reg_NoNest <-
       # }
       
       gs <- jags2_baker(data   = curr_data_txt_file,
-                          inits  = in_init,
-                          parameters.to.save = out_parameter,
-                          model.file = filename,
-                          working.directory = mcmc_options$result.folder,
-                          n.iter         = as.integer(mcmc_options$n.itermcmc),
-                          n.burnin       = as.integer(mcmc_options$n.burnin),
-                          n.thin         = as.integer(mcmc_options$n.thin),
-                          n.chains       = as.integer(mcmc_options$n.chains),
-                          DIC            = FALSE,
-                          clearWD        = FALSE,              #<--- special to JAGS.
-                          jags.path      = mcmc_options$jags.dir# <- special to JAGS.
+                        inits  = in_init,
+                        parameters.to.save = out_parameter,
+                        model.file = filename,
+                        working.directory = mcmc_options$result.folder,
+                        n.iter         = as.integer(mcmc_options$n.itermcmc),
+                        n.burnin       = as.integer(mcmc_options$n.burnin),
+                        n.thin         = as.integer(mcmc_options$n.thin),
+                        n.chains       = as.integer(mcmc_options$n.chains),
+                        DIC            = FALSE,
+                        clearWD        = FALSE,              #<--- special to JAGS.
+                        jags.path      = mcmc_options$jags.dir# <- special to JAGS.
       );
       return(gs)
     }
