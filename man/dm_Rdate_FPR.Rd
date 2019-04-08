@@ -16,7 +16,7 @@ is "fixed". When specified as "fixed", it produces standardized R-format dates
 using control's mean and standard deviation; When specified as "random", it produces
 \code{num_knots_FPR} columns of design matrix for thin-plate regression splines (TPRS) fitting.
 One needs both "fixed" and "random" in a FPR regression formula in \code{model_options}
-to enable TPRS fitting. For example, \code{model_options$X_reg_FPR} can be \cr
+to enable TPRS fitting. For example, \code{model_options$likelihood$FPR_formula} can be \cr
 \cr
 \code{~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)}\cr
 \cr
