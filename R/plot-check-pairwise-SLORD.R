@@ -91,6 +91,6 @@ plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
   
   visualize_case_control_matrix(misfit.vis.mat,pathogen_name,cell_metrics="(obs-mean)/stats::sd")
   
-  cat("==A figure is generated for model checking: pairwise standardized log odds ratio difference (SLORD). 
-          Stored in ",DIR_NPLCM," ==")
+  cat("==[baker]A figure is generated for model checking: pairwise standardized log odds ratio difference (SLORD). 
+          Stored in ",DIR_NPLCM," ==\n")
 }
