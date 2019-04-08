@@ -58,7 +58,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   use_data_sources   <- c("MBS","MSS","MGS")[lookup_quality(use_measurements)]
   input_data_sources <-  names(Mobs)
   if (!all(use_data_sources%in%input_data_sources)){
-    stop("==[baker] Please supply actual datasets as specified by 'use_measurements' in 'model_options'.\n==")
+    stop("==[baker] Please supply actual datasets as specified by 'use_measurements' in 'model_options'.==\n")
   }
   
   # get the length of each measurement quality:
@@ -146,7 +146,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
           (length(prior_BrS$val[[s]]$up)!=GBrS_TPR | 
            length(prior_BrS$val[[s]]$low)!=GBrS_TPR) ){
         stop(paste0("==[baker] ",names(prior_BrS$val)[s])," needs ", GBrS_TPR,
-             " sets of sensitivity ranges.==")
+             " sets of sensitivity ranges.==\n")
       }
     }
     BrS_grp <- TRUE
