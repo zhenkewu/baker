@@ -72,8 +72,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
   do_reg_FPR <- is_discrete_FPR <- rep(NA,length(likelihood$FPR_formula)) #  <---- a regression for each measurement slice?
   names(do_reg_FPR) <- names(is_discrete_FPR) <- names(likelihood$FPR_formula)
   for (i in seq_along(Mobs$MBS)){
-    ind_tmp <-
-      which(names(likelihood$FPR_formula) == names(Mobs$MBS)[i])
+    ind_tmp <-which(names(likelihood$FPR_formula) == names(Mobs$MBS)[i])
     form_tmp <- stats::as.formula(likelihood$FPR_formula[[ind_tmp]])
     if (!length(ind_tmp)) { # don't do regression if no regression formula is found:
       do_reg_FPR[i] <- FALSE
@@ -85,8 +84,8 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
     is_discrete_FPR[i] <- FALSE
     if (!is.null(X)){
       is_discrete_FPR[i] <- (!is_intercept_only(form_tmp) & 
-                                 !stats::is.empty.model(form_tmp) & 
-                                  is_discrete(X, form_tmp))
+                               !is_intercept_only(form_tmp)& 
+                                  is_discrete(data.frame(X,Y), form_tmp))
     }
   }
   #

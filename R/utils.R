@@ -1885,8 +1885,8 @@ s_date_Eti <- function(Rdate,Y,basis = "ps",dof=ifelse(basis=="ncs",5,10),...) {
 s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
   # standardization:
   df       <- data.frame(Y = Y,num_date = as.numeric(Rdate))
-  grp_mean <- c(mean(df$num_date[Y == 0]),mean(df$num_date[Y == 1]))
-  grp_sd   <- c(stats::sd(df$num_date[Y == 0]),stats::sd(df$num_date[Y == 1]))
+  grp_mean <- c(mean(df$num_date[df$Y == 0]),mean(df$num_date[df$Y == 1]))
+  grp_sd   <- c(stats::sd(df$num_date[df$Y == 0]),stats::sd(df$num_date[df$Y == 1]))
   df$ingrp_std_num_date <-
     (df$num_date - grp_mean[df$Y + 1]) / grp_sd[df$Y + 1]
   #outgrp_std_num_date standardizes the cases' dates using controls' mean and stats::sd:
@@ -1899,34 +1899,34 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
   if (basis=="ps"){
     x       <- ctrl_ingrp_std_num_date
     myknots <- stats::quantile(unique(x),seq(0,1,length = (dof - 2))[-c(1,(dof - 2))])
-    Z_FPR_ctrl      <- matrix(splines::bs(x,knots= myknots,...),nrow=length(x))
+    Z_FPR_ctrl      <- matrix(splines::bs(x,knots= myknots),nrow=length(x))
     
     # borrowing FPR regression from controls to cases:
     x       <- case_outgrp_std_num_date
-    Z_FPR_case      <- matrix(splines::bs(x,knots= myknots,...),nrow=length(x))
+    Z_FPR_case      <- matrix(splines::bs(x,knots= myknots),nrow=length(x))
     
-    ind <- which(Y == 1)
-    res <- matrix(NA,nrow = length(Y),ncol = ncol(Z_FPR_case))
+    ind <- which(df$Y == 1)
+    res <- matrix(NA,nrow = length(df$Y),ncol = ncol(Z_FPR_case))
     res[ind,]  <- Z_FPR_case
     res[-ind,] <- Z_FPR_ctrl
-    return(res)
-  } else if (basis=="ncs"){
-    x       <- ctrl_ingrp_std_num_date
-    ncs_for_control <- splines::ns(x,df = dof,
-                Boundary.knots = quantile(x,c(0.05,0.95)),...)
-    Z_FPR_ctrl      <- matrix(ncs_for_control,nrow=length(x))
-    
-    # borrowing FPR regression from controls to cases:
-    x       <- case_outgrp_std_num_date
-    Z_FPR_case      <- matrix(splines::ns(x,knots=attr(ncs_for_control,"knots"),
-            Boundary.knots = quantile(x,c(0.05,0.95)),...),nrow=length(x))
-    
-    ind <- which(Y == 1)
-    res <- matrix(NA,nrow = length(Y),ncol = ncol(Z_FPR_case))
-    res[ind,]  <- Z_FPR_case
-    res[-ind,] <- Z_FPR_ctrl
-    return(res)
   }
+  # } else if (basis=="ncs"){
+  #   x       <- ctrl_ingrp_std_num_date
+  #   ncs_for_control <- splines::ns(x,df = dof,
+  #               Boundary.knots = quantile(x,c(0.05,0.95)),...)
+  #   Z_FPR_ctrl      <- matrix(ncs_for_control,nrow=length(x))
+  #   
+  #   # borrowing FPR regression from controls to cases:
+  #   x       <- case_outgrp_std_num_date
+  #   Z_FPR_case      <- matrix(splines::ns(x,knots=attr(ncs_for_control,"knots"),
+  #           Boundary.knots = quantile(x,c(0.05,0.95)),...),nrow=length(x))
+  #   
+  #   ind <- which(df$Y == 1)
+  #   res <- matrix(NA,nrow = length(df$Y),ncol = ncol(Z_FPR_case))
+  #   res[ind,]  <- Z_FPR_case
+  #   res[-ind,] <- Z_FPR_ctrl
+  # }
+  return(res)
 }
 
 # dudue_s_date_FPR <- function(Rdate,Y,basis="ncs",dof=10,...) {

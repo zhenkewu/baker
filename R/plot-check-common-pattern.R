@@ -56,6 +56,13 @@ plot_check_common_pattern <- function(DIR_list,
          Please use `slice_vec` to match the names.==\n")
     }
   
+  
+  curr_out <- out[[d]]
+  select =1
+  slice=slice_vec[d]
+  n_pat=10
+  curr_is_jags = TRUE
+  
   get_top_pattern <- function(curr_out,case_status,slice,n_pat,curr_is_jags){
     # getting data:
     curr_bugs.dat <- curr_out$bugs.dat
@@ -167,7 +174,7 @@ plot_check_common_pattern <- function(DIR_list,
           res
         }
         ))
-        ppd_pat_ct[iter,1:n_pat_used] <- curr_ct/ncol(predicted_pat)
+        ppd_pat_ct[iter,(1:n_pat_used)[-ind_missing]] <- curr_ct/ncol(predicted_pat)
         ppd_pat_ct[iter,n_pat_used+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
       }
       
@@ -175,13 +182,13 @@ plot_check_common_pattern <- function(DIR_list,
     
     
     
-    colnames(ppd_pat_ct) <- c(1:length(pat_high_name_no_missing))
-    pattern_names        <- c(pat_high_name_no_missing)
-    obs_pat              <- pat_high_frac_no_missing
+    colnames(ppd_pat_ct) <- c(1:length(pat_high_frac))
+    pattern_names        <- c(names(pat_high_frac))
+    obs_pat              <- pat_high_frac
     if (exist_other){
-       colnames(ppd_pat_ct) <- 1:(length(pat_high_name_no_missing)+1)
-       pattern_names  <- c(pat_high_name_no_missing,"other")
-       obs_pat        <- c(pat_high_frac_no_missing,1-sum(pat_high_frac_no_missing))
+       colnames(ppd_pat_ct) <- 1:(length(pat_high_frac)+1)
+       pattern_names  <- c(pattern_names,"other")
+       obs_pat        <- c(pat_high_frac,1-sum(pat_high_frac))
     }
     names(obs_pat) <- pattern_names
     

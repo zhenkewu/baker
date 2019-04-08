@@ -144,6 +144,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,tru
   ##################
   # plot results:
   #################
+  model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))  
   par(mfcol=c(2,Jcause),oma=c(3,0,3,0))
   for (j in 1:Jcause){ # <--- the marginal dimension of measurements.
     # need to fix this for NoA! <------------------------ FIX!
@@ -151,21 +152,23 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,tru
     # Figure 1 for case and control positive rates:
     #
     par(mar=c(2,5,0,1))
-    {                                          #<------------------------ FIX!
-      # if (j == Jcause){
-      #   plot(0,0.5,type="l",ylim=c(0,1),pch="n",
-      #        xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
-      #   
-      #   mtext("other",side = 3,cex=1.5,line=1)
-      # } else{                                  #<------------------------ FIX!
+                                              #<------------------------ FIX!
+    if (model_options$likelihood$cause_list[j] == "other"){
+        plot(0,0.5,type="l",ylim=c(0,1),pch="n",
+             xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
+
+        mtext("other",side = 3,cex=1.5,line=1)
+      } else{                                  #<------------------------ FIX!
       plot(curr_date_FPR,FPR_mean[,j],type="l",ylim=c(0,1),
            xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
       polygon(c(curr_date_FPR, rev(curr_date_FPR)),
               c(FPR_q[1,,j], rev(FPR_q[2,,j])),
               col = grDevices::rgb(0, 1, 1,0.5),border = NA)
+      
+
       # rug plot:
-      rug(curr_date_FPR[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_ctrl,j]==1],side=3)
-      rug(curr_date_FPR[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_ctrl,j]==0],side=1)
+      rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2")
+      rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2")
       
       if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
       if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
@@ -179,8 +182,9 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,plot_basis=FALSE,tru
               col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
       if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
       # rug plot:
-      rug(curr_date_FPR_case[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_case,j]==1],side=3,col="dodgerblue2",line=-1)
-      rug(curr_date_FPR_case[data_nplcm$Mobs$MBS$MBS1[plotid_FPR_case,j]==0],side=1,col="dodgerblue2",line=-1)
+      rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line=-1)
+      rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line=-1)
+      
       
       abline(h=colMeans(thetaBS_1_samp)[j],col="red")
       abline(h=quantile(thetaBS_1_samp[,j],0.025),col="red",lty=2)
