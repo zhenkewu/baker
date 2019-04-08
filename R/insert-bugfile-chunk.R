@@ -289,7 +289,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
   ppd_seg <- ""
   if (!is.null(ppd) && ppd){ppd_seg <- 
     "
-      Icat.new[i] ~ dcat(pEti[1:Jcause])
+      Icat.new[i] ~ dcat(pEti[i,1:Jcause])
   "}
   if (!constant_Eti){
     chunk_etiology <- paste0(
@@ -359,7 +359,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
       }",
       c("",
         "#hyperprior of smoothness:
-        ER_p_flexible_select ~ dbeta(1,1)
+        ER_p_flexible_select ~ dbeta(ER_alpha,ER_beta)
         ER_prec_first <- pow(sd_betaEti_basis,-2) #1/4 #precision for ps coefficients - redundant if no ps bases.
         ")[ER_has_basis+1],
       c("",

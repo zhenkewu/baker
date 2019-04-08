@@ -312,6 +312,8 @@ clean_combine_subsites <-
 #'@param test Test name
 #'@param quality Quality category: any of "BrS", "SS" or "GS".
 #'@param cause_list The vector of potential latent status
+#'@param sep_char a character string that separate the pathogen names and the 
+#'specimen-test pair; Default to \code{"_"}
 #'
 #'@return A list with measurement information
 #'\itemize{
@@ -331,10 +333,11 @@ clean_combine_subsites <-
 #'
 #'@seealso \code{\link{make_template}}
 #'@export
+
 make_meas_object <-
-  function(patho,specimen,test,quality,cause_list) {
+  function(patho,specimen,test,quality,cause_list,sep_char="_") {
     nm_spec_test <- paste0(specimen,test)
-    name_in_data <- paste(patho,nm_spec_test,sep = "_")
+    name_in_data <- paste(patho,nm_spec_test,sep = sep_char)
     template <- make_template(patho,cause_list)
     make_list(quality,patho,name_in_data,template,specimen,test,nm_spec_test)
   }

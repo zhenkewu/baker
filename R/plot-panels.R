@@ -54,8 +54,8 @@ plot_panels <- function(DIR_NPLCM,
   bugs.dat      <- out$bugs.dat
   rm(out)
   
-  data_nplcm <- list(Mobs  = Mobs, Y = Y)
-  
+  #data_nplcm <- list(Mobs  = Mobs, Y = Y)
+  data_nplcm <- dget(file.path(DIR_NPLCM,"data_nplcm.txt")) 
   # Determine which three-panel plot to draw:
   parsed_model <- assign_model(model_options, data_nplcm)
   # X not needed in the three-panel plot, but because 'assign_model' was designed
