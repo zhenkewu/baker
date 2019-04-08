@@ -535,10 +535,10 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   graphics::text(ctrl.overall.loc,mean(response.ctrl)+0.3,
        paste0(round(mean(response.ctrl)*100,1),"%"),col="dodgerblue2",pch=20,srt=90,cex=2)
   
-  ncase = length(response.case)
-  nctrl = length(response.ctrl)
-  tmp.case = binom::binom.confint(sum(response.case), ncase, conf.level = 0.95, methods = "ac")
-  tmp.ctrl = binom::binom.confint(sum(response.ctrl), nctrl, conf.level = 0.95, methods = "ac")
+  ncase = sum(!is.na(response.case))
+  nctrl = sum(!is.na(response.ctrl))
+  tmp.case = binom::binom.confint(sum(response.case,na.rm=TRUE), ncase, conf.level = 0.95, methods = "ac")
+  tmp.ctrl = binom::binom.confint(sum(response.ctrl,na.rm=TRUE), nctrl, conf.level = 0.95, methods = "ac")
   Bcomp = rbind(round(tmp.case$mean,5),round(tmp.ctrl$mean,5))
   Bcompq1 = rbind(tmp.case[,c("lower")],tmp.ctrl[,c("lower")])
   Bcompq2 = rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")])
