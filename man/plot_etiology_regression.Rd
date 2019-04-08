@@ -30,7 +30,8 @@ model fit; See example for the legends.
 }
 \description{
 This function visualizes the etiology regression against one continuous covariates, e.g., 
-enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?)
+enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?
+also there this function only plots the first slice - so generalization may be useful.)
 }
 \examples{
 \dontrun{

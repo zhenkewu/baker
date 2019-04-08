@@ -1,7 +1,8 @@
 #' visualize the etiology regression with a continuous covariate
 #' 
 #' This function visualizes the etiology regression against one continuous covariates, e.g., 
-#' enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?)
+#' enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?
+#' also there this function only plots the first slice - so generalization may be useful.)
 #' 
 #' @param DIR_NPLCM File path to the folder containing posterior samples
 #' @param stratum_bool a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include
