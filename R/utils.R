@@ -1122,7 +1122,7 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 #' using control's mean and standard deviation; When specified as "random", it produces
 #' \code{num_knots_FPR} columns of design matrix for thin-plate regression splines (TPRS) fitting.
 #' One needs both "fixed" and "random" in a FPR regression formula in \code{model_options}
-#' to enable TPRS fitting. For example, \code{model_options$X_reg_FPR} can be \cr
+#' to enable TPRS fitting. For example, \code{model_options$likelihood$FPR_formula} can be \cr
 #' \cr
 #' \code{~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)}\cr
 #' \cr
@@ -1218,7 +1218,7 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
 #' cubic splines) or "tprs" (thin-plate regression splines). Default is "ncs". "tprs"
 #' will be implemented later.
 #'
-#' @details It is used in \code{model_options$X_reg_Eti}. For example, one can specify
+#' @details It is used in \code{model_options$likeihood$Eti_formula}. For example, one can specify
 #' it as: \cr
 #' \cr
 #' \code{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)} \cr

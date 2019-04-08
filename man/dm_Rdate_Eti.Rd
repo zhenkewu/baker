@@ -27,7 +27,7 @@ Design matrix for etiology regression:
 \code{dm_Rdate_Eti} creates design matrices for etiology regressions.
 }
 \details{
-It is used in \code{model_options$X_reg_Eti}. For example, one can specify
+It is used in \code{model_options$likeihood$Eti_formula}. For example, one can specify
 it as: \cr
 \cr
 \code{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)} \cr
