@@ -379,9 +379,7 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
     }
     "
   )
-  
-  
-  
+
   if (!is.null(ppd) && ppd){
     MBS_nm.new   <- paste("MBS.new",seq_along(BrS_nm),sep = "_")#
     mu_bs.bound_nm.new   <- paste("mu_bs.bound.new",seq_along(BrS_nm),sep = "_")#
@@ -419,8 +417,6 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' @family plug-and-play functions 
 #' @export
 #' 
-
-
 add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separated case and controls subclass weights.
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -509,7 +505,6 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separa
 
 
 #' add subclass indicators for a BrS measurement slice among cases and controls (conditional independence)
-#' 
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
