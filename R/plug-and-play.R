@@ -2110,8 +2110,8 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
   }
   
   # NB: need to add parameters:
-  parameters <- c(Lambda_nm[s],taubeta_nm[s],p_flexible_nm[s],flexible_select_nm[s],mu0_ctrl_nm[s],mu_ctrl_nm[s],
-                  Eta_nm[s],case_taubeta_nm[s],case_p_flexible_nm[s],case_flexible_select_nm[s],mu0_case_nm[s],mu_case_nm[s])
+  parameters <- c(Lambda_nm[s],taubeta_nm[s],p_flexible_nm[s],flexible_select_nm[s],mu0_ctrl_nm[s],mu_ctrl_nm[s],betaFPR_nm[s],
+                  Eta_nm[s],case_taubeta_nm[s],case_p_flexible_nm[s],case_flexible_select_nm[s],mu0_case_nm[s],mu_case_nm[s],case_betaFPR_nm[s])
   make_list(plug,parameters)
 }
 

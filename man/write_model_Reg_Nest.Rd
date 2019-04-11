@@ -32,7 +32,6 @@ a long character string to be written into .bug file.
 \description{
 \code{write_model_Reg_Nest} automatically generates model file according to
 \code{model_options}; This is called within \link{nplcm_fit_Reg_Nest}.
-NB: under development Apr 2019
 }
 \seealso{
 \link{insert_bugfile_chunk_noreg_meas} for inserting .bug file

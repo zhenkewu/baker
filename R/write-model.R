@@ -100,7 +100,6 @@ write_model_Reg_discrete_predictor_NoNest <- function(Mobs,prior,cause_list,
 #' 
 #' \code{write_model_Reg_Nest} automatically generates model file according to
 #' \code{model_options}; This is called within \link{nplcm_fit_Reg_Nest}.
-#' NB: under development Apr 2019
 #' 
 #' @inheritParams insert_bugfile_chunk_reg_nonest_meas
 #' @param Eti_formula Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.

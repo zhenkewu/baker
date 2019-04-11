@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-BrS-panel.R
 \name{get_fitted_mean_nested}
 \alias{get_fitted_mean_nested}
-\title{get fitted mean for nested model with the same subclass mixing weights}
+\title{get fitted mean for nested model with subclass mixing weights that are the same among cases}
 \usage{
 get_fitted_mean_nested(slice, res_nplcm, model_options, data_nplcm,
   clean_options)
@@ -23,7 +23,7 @@ a matrix of no. of rows equal to retained MCMC samples, no. of columns
 equal to the no. of measurement dimensions within a slice.
 }
 \description{
-get fitted mean for nested model with the same subclass mixing weights
+get fitted mean for nested model with subclass mixing weights that are the same among cases
 }
 \examples{
 \dontrun{

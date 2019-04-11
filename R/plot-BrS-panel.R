@@ -142,26 +142,26 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     plotat <- get_plot_num(lat_pos,height) + gap
     
     graphics::plot(c(fittedmean_case[pos],MBS_mean[,pos]),
-         plotat,
-         xlim=c(0,top_BrS),
-         ylim=c(0.5, height+0.5),
-         xaxt="n",xlab="positive rate",
-         ylab="",yaxt="n",
-         pch = c(2,20,20),
-         col = c("purple","dodgerblue2", "dodgerblue2"),
-         cex = c(1,2,2))
+                   plotat,
+                   xlim=c(0,top_BrS),
+                   ylim=c(0.5, height+0.5),
+                   xaxt="n",xlab="positive rate",
+                   ylab="",yaxt="n",
+                   pch = c(2,20,20),
+                   col = c("purple","dodgerblue2", "dodgerblue2"),
+                   cex = c(1,2,2))
     
     
     graphics::points(c(theta_mean[pos],MBS_q2[,pos]),
-           plotat,
-           pch = c("+","|","|"),
-           col = c("purple",1,1),
-           cex = c(2,1,1))
+                     plotat,
+                     pch = c("+","|","|"),
+                     col = c("purple",1,1),
+                     cex = c(2,1,1))
     graphics::points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
-           plotat,
-           pch = c("*","|","|"),
-           col = c("purple",1,1),
-           cex = c(2,1,1))
+                     plotat,
+                     pch = c("*","|","|"),
+                     col = c("purple",1,1),
+                     cex = c(2,1,1))
     # connect case and control rates:
     graphics::segments(
       x0 = MBS_mean[1,pos],x1 = MBS_mean[2,pos],
@@ -178,7 +178,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     )
     tmp.hpos <- ifelse(MBS_q2[1,pos]+0.15>0.95,MBS_q1[1,pos]-0.2,MBS_q2[1,pos]+0.15 )
     graphics::text(tmp.hpos, plotat[2], paste0(round(100*MBS_mean[1,pos],1),"%"),
-         srt=srtval,cex=cexval)
+                   srt=srtval,cex=cexval)
     # control:rates
     graphics::segments(
       x0 = MBS_q1[2,pos],x1 = MBS_q2[2,pos],
@@ -187,7 +187,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     )
     tmp.hpos <- ifelse(MBS_q2[2,pos]+0.15>0.95,MBS_q1[2,pos]-0.2,MBS_q2[2,pos]+0.15 )
     graphics::text(tmp.hpos, plotat[3], paste0(round(100*MBS_mean[2,pos],1),"%"),
-         srt=srtval,cex=cexval)
+                   srt=srtval,cex=cexval)
     # poster means of TPR, FPR and fitted marginal rate:
     graphics::segments(
       x0 = theta_mean[pos],x1 = psi_mean[pos],
@@ -203,9 +203,9 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
         tmp = stats::qbeta(c(0.025,0.975,0.25,0.75),alphaB[pos],betaB[pos])
         graphics::points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
         graphics::segments(tmp[1],prior_plot_at,
-                 tmp[2],prior_plot_at,lty = 1,col="gray")
+                           tmp[2],prior_plot_at,lty = 1,col="gray")
         graphics::segments(tmp[3],prior_plot_at,
-                 tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
+                           tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
         
         # posterior of TPR:
         post_plot_at <- lat_pos - .35 + gap
@@ -213,9 +213,9 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
         tmp  = stats::quantile(tmp.post, c(0.025,0.975,0.25,0.75))
         graphics::points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
         graphics::segments(tmp[1],post_plot_at,
-                 tmp[2],post_plot_at,lty = 1)
+                           tmp[2],post_plot_at,lty = 1)
         graphics::segments(tmp[3],post_plot_at,
-                 tmp[4],post_plot_at,lty = 1,lwd=2)
+                           tmp[4],post_plot_at,lty = 1,lwd=2)
       } else if (prior_shape == "boxplot") {
         tmp = stats::rbeta(10000,alphaB[pos],betaB[pos])
         graphics::boxplot(
@@ -241,15 +241,15 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       graphics::text(top_BrS - 0.12,lat_pos + .3, colnames(MBS_case_curr)[pos],cex=1 )
       graphics::text(top_BrS - 0.12,lat_pos + 1 / (2 * Jcause),C,cex = 1.5)
       graphics::text(top_BrS - 0.12,lat_pos - .2,paste(c(L,"   ",R),collapse = " "),
-           cex = 1.2)
+                     cex = 1.2)
       graphics::legend("topright",tmp0$label,bty = "n")
     }
     
     # x-axis for each cell:
     if (lat_pos>1){
       graphics::axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
-           pos = seq(.6, height +.6,by = 1)[lat_pos], cex.axis = 0.8,
-           lty = 2,col = "blue"
+                     pos = seq(.6, height +.6,by = 1)[lat_pos], cex.axis = 0.8,
+                     lty = 2,col = "blue"
       )
     }
   }
@@ -258,26 +258,26 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     plotat <- get_plot_num(lat_pos,height) + gap
     
     graphics::points(c(fittedmean_case[pos],MBS_mean[,pos]),
-           plotat,
-           xlim=c(0,top_BrS),
-           ylim=c(0.5, height+0.5),
-           xaxt="n",xlab="positive rate",
-           ylab="",yaxt="n",
-           pch = c(2,20,20),
-           col = c("purple","dodgerblue2", "dodgerblue2"),
-           cex = c(1,2,2))
+                     plotat,
+                     xlim=c(0,top_BrS),
+                     ylim=c(0.5, height+0.5),
+                     xaxt="n",xlab="positive rate",
+                     ylab="",yaxt="n",
+                     pch = c(2,20,20),
+                     col = c("purple","dodgerblue2", "dodgerblue2"),
+                     cex = c(1,2,2))
     
     
     graphics::points(c(theta_mean[pos],MBS_q2[,pos]),
-           plotat,
-           pch = c("+","|","|"),
-           col = c("purple",1,1),
-           cex = c(2,1,1))
+                     plotat,
+                     pch = c("+","|","|"),
+                     col = c("purple",1,1),
+                     cex = c(2,1,1))
     graphics::points(c(fittedmean_ctrl[pos],MBS_q1[,pos]),
-           plotat,
-           pch = c("*","|","|"),
-           col = c("purple",1,1),
-           cex = c(2,1,1))
+                     plotat,
+                     pch = c("*","|","|"),
+                     col = c("purple",1,1),
+                     cex = c(2,1,1))
     # connect case and control rates:
     graphics::segments(
       x0 = MBS_mean[1,pos],x1 = MBS_mean[2,pos],
@@ -294,7 +294,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     )
     tmp.hpos <- ifelse(MBS_q2[1,pos]+0.15>0.95,MBS_q1[1,pos]-0.2,MBS_q2[1,pos]+0.15 )
     graphics::text(tmp.hpos, plotat[2], paste0(round(100*MBS_mean[1,pos],1),"%"),
-         srt=srtval,cex=cexval)
+                   srt=srtval,cex=cexval)
     # control:rates
     graphics::segments(
       x0 = MBS_q1[2,pos],x1 = MBS_q2[2,pos],
@@ -303,7 +303,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
     )
     tmp.hpos <- ifelse(MBS_q2[2,pos]+0.15>0.95,MBS_q1[2,pos]-0.2,MBS_q2[2,pos]+0.15 )
     graphics::text(tmp.hpos, plotat[3], paste0(round(100*MBS_mean[2,pos],1),"%"),
-         srt=srtval,cex=cexval)
+                   srt=srtval,cex=cexval)
     # poster means of TPR, FPR and fitted marginal rate:
     graphics::segments(
       x0 = theta_mean[pos],x1 = psi_mean[pos],
@@ -319,9 +319,9 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
         tmp = stats::qbeta(c(0.025,0.975,0.25,0.75),alphaB[pos],betaB[pos])
         graphics::points(tmp,rep(prior_plot_at,4),pch = c("|","|","[","]"),col="gray")
         graphics::segments(tmp[1],prior_plot_at,
-                 tmp[2],prior_plot_at,lty = 1,col="gray")
+                           tmp[2],prior_plot_at,lty = 1,col="gray")
         graphics::segments(tmp[3],prior_plot_at,
-                 tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
+                           tmp[4],prior_plot_at,lty = 1,col="gray",lwd=2)
         
         # posterior of TPR:
         post_plot_at <- lat_pos - .35 + gap
@@ -329,9 +329,9 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
         tmp  = stats::quantile(tmp.post, c(0.025,0.975,0.25,0.75))
         graphics::points(tmp,rep(post_plot_at,4),pch = c("|","|","[","]"),col = "purple")
         graphics::segments(tmp[1],post_plot_at,
-                 tmp[2],post_plot_at,lty = 1)
+                           tmp[2],post_plot_at,lty = 1)
         graphics::segments(tmp[3],post_plot_at,
-                 tmp[4],post_plot_at,lty = 1,lwd=2)
+                           tmp[4],post_plot_at,lty = 1,lwd=2)
       } else if (prior_shape == "boxplot") {
         tmp = stats::rbeta(10000,alphaB[pos],betaB[pos])
         graphics::boxplot(
@@ -357,15 +357,15 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
       graphics::text(top_BrS - 0.12,lat_pos + .3+gap, colnames(MBS_case_curr)[pos],cex=1 )
       graphics::text(top_BrS - 0.12,lat_pos + 1 / (2 * Jcause)+gap,C,cex = 1.5)
       graphics::text(top_BrS - 0.12,lat_pos - .2+gap,paste(c(L,"   ",R),collapse = " "),
-           cex = 1.2)
+                     cex = 1.2)
       graphics::legend("topright",tmp0$label,bty = "n")
     }
     
     # x-axis for each cell:
     if (lat_pos>1){
       graphics::axis(1, seq(0,1,by = .1), lwd = 0, lwd.ticks = 0,#labels=rep("",length(seq(0,1,by=.2))),
-           pos = seq(.6,height +.6,by = 1)[lat_pos], cex.axis = 0.8,
-           lty = 2,col = "blue"
+                     pos = seq(.6,height +.6,by = 1)[lat_pos], cex.axis = 0.8,
+                     lty = 2,col = "blue"
       )
     }
   }
@@ -401,7 +401,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   if (!is.null(bg_color) && !is.null(bg_color$BrS)){
     graphics::rect(graphics::par("usr")[1], graphics::par("usr")[3], graphics::par("usr")[2], graphics::par("usr")[4], col = 
-           bg_color$BrS)
+                     bg_color$BrS)
     
     for (e in 1:nrow(template_ord)){
       gap_seq <- 0
@@ -432,12 +432,12 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
                    " has no measurements informative of the causes! Please check if measurements' columns correspond to causes.==\n"))  
     plotat <- c(sapply(seq_along(latent_seq),get_plot_num,length(latent_seq)))
     graphics::plot(rep(0,length(plotat)),
-         plotat,
-         xlim=c(0,top_BrS),
-         ylim=c(0.5, length(latent_seq)+0.5),
-         xaxt="n",xlab="positive rate",
-         ylab="",yaxt="n",
-         pch = c("","",""))
+                   plotat,
+                   xlim=c(0,top_BrS),
+                   ylim=c(0.5, length(latent_seq)+0.5),
+                   xaxt="n",xlab="positive rate",
+                   ylab="",yaxt="n",
+                   pch = c("","",""))
   }
   #add ticks from 0 to 1 for x-bar:
   graphics::axis(1,at = c(0,0.2,0.4,0.6,0.8,1),labels= as.character(c(0,0.2,0.4,0.6,0.8,1)),las=1)
@@ -450,7 +450,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   
   #add some texts:
   graphics::mtext(eval(paste0("BrS: ", names(data_nplcm$Mobs$MBS)[slice])),
-        line=1,cex=1.8)
+                  line=1,cex=1.8)
 }
 
 
@@ -471,10 +471,8 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
 #' }
 #' @return a list with model fitted means
 #' @export
-
 get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
                                       clean_options){
-  
   # order cause_list by posterior means:
   ord <- order_post_eti(res_nplcm,model_options)$ord
   pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
@@ -514,9 +512,7 @@ get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
   make_list(res_case,res_ctrl)
 }
 
-
-#' get fitted mean for nested model with the same subclass mixing weights
-#' 
+#' get fitted mean for nested model with subclass mixing weights that are the same among cases
 #' 
 #' @param slice the slice of BrS data that are modeled
 #' @param res_nplcm matrix of MCMC samples
@@ -540,11 +536,8 @@ get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
 #' }
 #' 
 #' @export
-#' 
-
 get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
                                    data_nplcm,clean_options){
-  
   # order cause_list by posterior means:
   ord <- order_post_eti(res_nplcm,model_options)$ord
   pEti_mat_ord <- order_post_eti(res_nplcm,model_options)$pEti_mat_ord
@@ -582,7 +575,7 @@ get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
       ind_pEti_tmp <- grep(paste0("^pEti\\[",ord[e],"\\]$"),colnames(res_nplcm))
       if (length(ind_pEti_tmp)!=1){stop("== Error in extracting etiology! ==")}
       pEti_tmp <- res_nplcm[,ind_pEti_tmp]
-
+      
       # calculate by formula:
       for (k in 1:K_curr){
         if (indBS == 1){term_e[,e] <- term_e[,e] + Eta_tmp[,k]*ThetaBS_tmp[,k]}
@@ -605,7 +598,6 @@ get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
   res_ctrl <- colMeans(as.matrix(res_ctrl))
   make_list(res_case,res_ctrl)
 } 
-
 
 #' get marginal TPR and FPR for no nested model
 #' 
@@ -675,8 +667,69 @@ get_marginal_rates_nested <- function(slice, res_nplcm, model_options,data_nplcm
     # calculate by formula:
     for (k in 1:K_curr){
       res_tpr[,j] <- res_tpr[,j] + Eta_tmp[,k]*ThetaBS_tmp[,k]
-      res_fpr[,j] <- res_fpr[,j] + Lambda_tmp[,k]*PsiBS_tmp[,k]
+      res_fpr[,j] <- res_fpr[,j] + Lambda_tmp[,k]*PsiBS_tmp[,k] # <-- may need to change Lambda into Eta if we mean FPR among cases.
     }
   }
   make_list(res_tpr,res_fpr)
 }
+
+
+
+###' get marginal TPR and FPR for nested regression model (no template)
+###' 
+###' @param slice the slice of BrS data that are modeled
+###' @param res_nplcm matrix of MCMC samples
+###' @param model_options see \code{\link{nplcm}}
+###' @param data_nplcm see \code{\link{nplcm}}
+###' 
+###' @return a list; of dimension (number of subjects, dimension of the bronze-standard
+###' measurement slice, the number of MCMC iterations retained).
+###' 
+###' @export
+###' 
+##get_marginal_rates_nested_reg <- function(slice, res_nplcm, model_options,data_nplcm){
+##  JBrS_curr <- ncol(data_nplcm$Mobs$MBS[[slice]])
+##  Jcause    <- length(model_options$likelihood$cause_list)
+##  K_curr    <- model_options$likelihood$k_subclass[slice]  
+##  N_all     <- length(data_nplcm$Y)
+##  res_tpr_all <- array(NA,c(N_all,JBrS_curr,nrow(res_nplcm)))
+##  res_fpr_all <- array(NA,c(N_all,JBrS_curr,nrow(res_nplcm)))
+##  for (i in 1:N_all){ # begin iteration over subjects:
+##    res_tpr <- matrix(0,nrow = nrow(res_nplcm),ncol=JBrS_curr)
+##    res_fpr <- matrix(0,nrow = nrow(res_nplcm),ncol=JBrS_curr)
+##    is_case <- data_nplcm$Y[i]==1
+##    # formula: fittedmean_case[j] = \sum_e pEti[e]*\sum_k {Eta[e,k]*Theta[j,k]*templateBS[e,j]+Eta[e,k]*Psi[j,k]*(1-templateBS[e,j])}
+##    for (j in 1:JBrS_curr){
+##      # get ThetaBS[j,k]:
+##      ind_ThetaBS_tmp <- grep(paste0("^ThetaBS_",slice,"\\[",j,","),colnames(res_nplcm))
+##      if (length(ind_ThetaBS_tmp)!=K_curr){stop("==[baker] Check `ThetaBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+##      ThetaBS_tmp <- res_nplcm[,ind_ThetaBS_tmp]
+##      # get PsiBS[j,k]:
+##      ind_PsiBS_tmp <- grep(paste0("^PsiBS_",slice,"\\[",j,","),colnames(res_nplcm))
+##      if (length(ind_PsiBS_tmp)!=K_curr){stop("==[baker] Check `PsiBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+##      PsiBS_tmp <- res_nplcm[,ind_PsiBS_tmp]
+##      if (is_case){
+##        # get Eta[e,k]:
+##        ind_Eta_tmp <- grep(paste0("^Eta_",slice,"\\[",i,","),colnames(res_nplcm))
+##        if (length(ind_Eta_tmp)!=K_curr){stop("==[baker] Check `Eta` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+##        Eta_tmp <- res_nplcm[,ind_Eta_tmp]
+##      } else{
+##        # get Lambda[k]:
+##        ind_Lambda_tmp <- grep(paste0("^Lambda_",slice,"\\[",i,","),colnames(res_nplcm))
+##        if (length(ind_Lambda_tmp)!=K_curr){stop("==[baker] Check `Lambda` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+##        Lambda_tmp <- res_nplcm[,ind_Lambda_tmp]
+##      }
+##      # calculate by formula:
+##      for (k in 1:K_curr){
+##        if(is_case){multiplier <-  Eta_tmp[,k]}else{multiplier <- Lambda_tmp[,k]}
+##        res_tpr[,j] <- res_tpr[,j] + multiplier*ThetaBS_tmp[,k]
+##        res_fpr[,j] <- res_fpr[,j] + multiplier*PsiBS_tmp[,k]
+##      }
+##    }
+##    res_tpr_all[i,,] <- res_tpr
+##    res_fpr_all[i,,] <- res_fpr
+##  }# end iteration over subjects.
+##  make_list(res_tpr_all,res_fpr_all)
+##}
+##
+
