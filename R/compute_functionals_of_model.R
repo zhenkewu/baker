@@ -149,3 +149,81 @@ compute_logOR_single_and_other_cause <- function(set_parameter){
   }
   MAT
 }
+
+
+
+#' compute positive rates for nested model with subclass mixing weights that are the same across
+#' \code{Jcause} classes for each person (people may have different weights.)
+#' 
+#' 
+#' @param ThetaBS True positive rates for JBrS measures (rows) among K subclasses (columns)
+#' @param PsiBS False positive rates; dimension same as above
+#' @param pEti_mat a matrix of etiology pies for N subjects (rows) and Jcause causes (columns)
+#' rows sum to ones.
+#' @param subwt_mat a matrix of subclass weights for cases and controls. N by K. Rows sum
+#' to ones.
+#' @param case a N-vector of 1s (cases) and 0s (controls)
+#' @param template a binary matrix with Jcause+1 rows (Jcause classes of cases and 1 class of controls)
+#' and JBrS columns for the Bronze-standard measurement (say, pick one type/slice).
+#' The ones in each row indicate the measurements that will show up more frequently in cases given the cause.
+#' @return a matrix of values between 0 and 1 (need not to have row sums of ones); of dimension (number of subjects, dimension of the bronze-standard
+#' measurement slice).
+#' 
+#' @export
+compute_marg_PR_nested_reg <-  function(ThetaBS,PsiBS,pEti_mat,subwt_mat,case,template){
+  # ThetaBS = ThetaBS_samp[,,1];PsiBS = PsiBS_samp[,,1];
+  # pEti_mat = pEti_samp[,,1];subwt_mat = subwt_samp[,,1];
+  # case = data_nplcm$Y;template = templateBS
+  Jcause <- ncol(pEti_mat)
+  N_all  <- nrow(pEti_mat)
+  JBrS   <- ncol(template)
+  pEti_mat <- sweep(pEti_mat,1,case,"*") # set etiology for controls to all zeros.
+  if (ncol(ThetaBS)!=ncol(PsiBS) | nrow(ThetaBS)!=nrow(PsiBS) ){
+    stop("==[baker] 'ThetaBS' and 'PsiBS' must have identical # of rows and # of columns. ==")}
+  K      <- ncol(ThetaBS)
+  
+  FPR_mat <- subwt_mat%*%t(PsiBS)
+  TPR_mat <- sweep(subwt_mat,1,case,"*")%*%t(ThetaBS) # set control TPRs to be zero.
+  res <- matrix(0,nrow=N_all,ncol=JBrS)
+  # operate on controls:
+  res[case==0,] <- FPR_mat[case==0,]
+  # operate on cases:
+  for (j in 1:Jcause){
+    PR_mat_given_cause <- sweep(TPR_mat,2,template[j,],"*")+sweep(FPR_mat,2,1-template[j,],"*")
+    # cases are either TPR by their subwt or FPR by their subwts. Controls are FPR by their subwts (TPR for them are zero).
+    res <- res + sweep(PR_mat_given_cause,1,pEti_mat[,j],"*")
+  }
+  res
+}
+
+
+#' compute positive rates for nested model with subclass mixing weights that are the same across
+#' \code{Jcause} classes for each person (people may have different weights.)
+#' 
+#' This is an array-version of \link{compute_marg_PR_nested_reg}
+#' 
+#' @param ThetaBS_array An array of: True positive rates for JBrS measures (rows) among K subclasses (columns)
+#' @param PsiBS_array An array of: False positive rates; dimension same as above
+#' @param pEti_mat_array An array of: a matrix of etiology pies for N subjects (rows) and Jcause causes (columns)
+#' rows sum to ones.
+#' @param subwt_mat_array An array of: a matrix of subclass weights for cases and controls. N by K. Rows sum
+#' to ones.
+#' @param case a N-vector of 1s (cases) and 0s (controls)
+#' @param template a binary matrix with Jcause+1 rows (Jcause classes of cases and 1 class of controls)
+#' and JBrS columns for the Bronze-standard measurement (say, pick one type/slice).
+#' The ones in each row indicate the measurements that will show up more frequently in cases given the cause.
+#' @return An array of: a matrix of values between 0 and 1 (need not to have row sums of ones); of dimension (number of subjects, dimension of the bronze-standard
+#' measurement slice).
+#' 
+#' @export
+compute_marg_PR_nested_reg_array <- function(ThetaBS_array,PsiBS_array,
+                                             pEti_mat_array,subwt_mat_array,case,template){
+  res <- array(NA,dim(pEti_mat_array))  
+  for (s in 1:(dim(ThetaBS_array)[3])){ 
+    res[,,s] <- compute_marg_PR_nested_reg(
+      ThetaBS_array[,,s],PsiBS_array[,,s],
+      pEti_mat_array[,,s],subwt_mat_array[,,s],case,template)
+  }
+  res
+}
+

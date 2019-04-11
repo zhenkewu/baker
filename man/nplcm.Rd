@@ -105,7 +105,7 @@ Current implemented models follow the hierarchy below:
  Given disease class (control or a subtype of cases infected with the same sets of pathogens)
       \itemize{
          \item local independence model for BrS measures: \link{write_model_Reg_NoNest}
-         \item local dependence model for BrS measures [Under development on Apr 10, 2019.]
+         \item local dependence model for BrS measures: \link{write_model_Reg_Nest}
        }
 }
 }

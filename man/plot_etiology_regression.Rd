@@ -4,13 +4,15 @@
 \alias{plot_etiology_regression}
 \title{visualize the etiology regression with a continuous covariate}
 \usage{
-plot_etiology_regression(DIR_NPLCM, stratum_bool, plot_basis = FALSE,
-  truth = NULL)
+plot_etiology_regression(DIR_NPLCM, stratum_bool, slice = 1,
+  plot_basis = FALSE, truth = NULL)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
 
 \item{stratum_bool}{a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include}
+
+\item{slice}{integer; specifies which slice of bronze-standard data to visualize; Default to 1.}
 
 \item{plot_basis}{TRUE for plotting basis functions; Default to FALSE}
 
@@ -31,7 +33,8 @@ model fit; See example for the legends.
 \description{
 This function visualizes the etiology regression against one continuous covariates, e.g., 
 enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?
-also there this function only plots the first slice - so generalization may be useful.)
+also there this function only plots the first slice - so generalization may be useful - give
+users an option to choose slice s; currently default to the first slice.)
 }
 \examples{
 \dontrun{

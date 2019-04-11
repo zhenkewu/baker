@@ -99,7 +99,7 @@
 #'  Given disease class (control or a subtype of cases infected with the same sets of pathogens)
 #'       \itemize{
 #'          \item local independence model for BrS measures: \link{write_model_Reg_NoNest}
-#'          \item local dependence model for BrS measures [Under development on Apr 10, 2019.]
+#'          \item local dependence model for BrS measures: \link{write_model_Reg_Nest}
 #'        }
 #' }
 #' @export
@@ -138,7 +138,7 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   }
   if (do_reg & any(do_nested)){
     res <- nplcm_fit_Reg_Nest(data_nplcm,model_options,mcmc_options)
-    cat("==[baker] Regression model with nested subclasses under development as of Apr 2019. Please contact maintainer for technical issues. ==\n")
+    cat("==[baker] Regression model with nested subclasses finally done.==\n")
   }
   res
 }
