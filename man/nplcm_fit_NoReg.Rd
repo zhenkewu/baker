@@ -117,7 +117,8 @@ jags into ENVIRONMENTAL VARIABLE!
 \link{write_model_NoReg} for constructing .bug model file; This function
 then put it in the folder \code{mcmc_options$bugsmodel.dir}.
 
-Other model fitting functions: \code{\link{nplcm_fit_Reg_NoNest}},
+Other model fitting functions: \code{\link{nplcm_fit_Reg_Nest}},
+  \code{\link{nplcm_fit_Reg_NoNest}},
   \code{\link{nplcm_fit_Reg_discrete_predictor_NoNest}}
 }
 \concept{model fitting functions}

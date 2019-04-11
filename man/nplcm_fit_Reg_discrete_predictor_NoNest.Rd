@@ -121,6 +121,7 @@ jags into ENVIRONMENTAL VARIABLE!
 file; This present function store it in location: \code{mcmc_options$bugsmodel.dir}.
 
 Other model fitting functions: \code{\link{nplcm_fit_NoReg}},
+  \code{\link{nplcm_fit_Reg_Nest}},
   \code{\link{nplcm_fit_Reg_NoNest}}
 }
 \concept{model fitting functions}

@@ -96,14 +96,13 @@
 #' \item no regression:  \link{write_model_NoReg}
 #'        
 #' \item regression: 
+#'  Given disease class (control or a subtype of cases infected with the same sets of pathogens)
 #'       \itemize{
-#'          \item independence model: \link{write_model_Reg_NoNest}
-#'          \item dependence model [NOT DONE.]
+#'          \item local independence model for BrS measures: \link{write_model_Reg_NoNest}
+#'          \item local dependence model for BrS measures [Under development on Apr 10, 2019.]
 #'        }
 #' }
-#'
 #' @export
-
 nplcm <- function(data_nplcm,model_options,mcmc_options){
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
@@ -138,8 +137,8 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
       }
   }
   if (do_reg & any(do_nested)){
-    #res <- nplcm_fit_Reg_Nest(data_nplcm,model_options,mcmc_options)
-    stop("==[baker] Regression model with nested subclasses coming soon. Please contact maintainer for technical issues. ==\n")
+    res <- nplcm_fit_Reg_Nest(data_nplcm,model_options,mcmc_options)
+    cat("==[baker] Regression model with nested subclasses under development as of Apr 2019. Please contact maintainer for technical issues. ==\n")
   }
   res
 }
