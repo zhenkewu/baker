@@ -29,18 +29,23 @@
 <tbody>
 <tr class="odd">
 <td>partially Latent Class Models (pLCM)</td>
-<td>Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. J. R. Stat. Soc. C, 65: 97–114. <a href="doi:10.1111/rssc.12101" class="uri">doi:10.1111/rssc.12101</a></td>
+<td>Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. <em>J. R. Stat. Soc. C</em>, 65: 97–114. <a href="doi:10.1111/rssc.12101" class="uri">doi:10.1111/rssc.12101</a></td>
 <td><a href="http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/full">Link</a></td>
 </tr>
 <tr class="even">
 <td>nested pLCM</td>
-<td>Wu, Z., Deloria-Knoll, M., Zeger, S.L.; Nested partially latent class models for dependent binary data; estimating disease etiology. Biostatistics 2017; 18 (2): 200-213. doi: 10.1093/biostatistics/kxw037</td>
+<td>Wu, Z., Deloria-Knoll, M., Zeger, S.L.; Nested partially latent class models for dependent binary data; estimating disease etiology. <em>Biostatistics</em> 2017; 18 (2): 200-213. doi: 10.1093/biostatistics/kxw037</td>
 <td><a href="https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Application</td>
-<td>Maria Deloria Knoll, Wei Fu, Qiyuan Shi, Christine Prosperi, Zhenke Wu, Laura L. Hammitt, Daniel R. Feikin, Henry C. Baggett, Stephen R.C. Howie, J. Anthony G. Scott, David R. Murdoch, Shabir A. Madhi, Donald M. Thea, W. Abdullah Brooks, Karen L. Kotloff, Mengying Li, Daniel E. Park, Wenyi Lin, Orin S. Levine, Katherine L. O’Brien, Scott L. Zeger; Bayesian Estimation of Pneumonia Etiology: Epidemiologic Considerations and Applications to the Pneumonia Etiology Research for Child Health Study, Clinical Infectious Diseases, Volume 64, Issue suppl_3, 15 June 2017, Pages S213–S227</td>
+<td>Maria Deloria Knoll, Wei Fu, Qiyuan Shi, Christine Prosperi, Zhenke Wu, Laura L. Hammitt, Daniel R. Feikin, Henry C. Baggett, Stephen R.C. Howie, J. Anthony G. Scott, David R. Murdoch, Shabir A. Madhi, Donald M. Thea, W. Abdullah Brooks, Karen L. Kotloff, Mengying Li, Daniel E. Park, Wenyi Lin, Orin S. Levine, Katherine L. O’Brien, Scott L. Zeger; Bayesian Estimation of Pneumonia Etiology: Epidemiologic Considerations and Applications to the Pneumonia Etiology Research for Child Health Study,* Clinical Infectious Diseases*, Volume 64, Issue suppl_3, 15 June 2017, Pages S213–S227</td>
 <td><a href="https://academic.oup.com/cid/article/64/suppl_3/S213/3858226/Bayesian-Estimation-of-Pneumonia-Etiology">Link</a></td>
+</tr>
+<tr class="even">
+<td>Primary PERCH Analysis</td>
+<td>The PERCH Study Group (2019). Aetiology of severe hospitalised pneumonia in HIV-uninfected children from Africa and Asia: the Pneumonia Aetiology Research for Child Health (PERCH) Case-Control Study. <em>The Lancet</em>, In press.</td>
+<td><a href="">Link</a></td>
 </tr>
 </tbody>
 </table>
