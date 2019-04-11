@@ -266,6 +266,109 @@ insert_bugfile_chunk_reg_nonest_meas <-
     paste0(chunk,"\n")
   }
 
+#' Insert measurement likelihood (nested model+regression) code chunks into .bug model file
+#' 
+#' 
+#' @param Mobs Measurement data in the form of \code{data_nplcm}
+#' @param prior Prior specification from \code{model_options}
+#' @param cause_list A list of latent status names (crucial for building templates; 
+#' see \code{\link{make_template}})
+#' @param FPR_formula A list of FPR regression formula; check \code{model_options$likelihood$FPR_formula}
+#' @param use_measurements "BrS", or "SS"
+#' @param ppd Default is NULL; set to TRUE for posterior predictive checking
+#' @param use_jags Default is FALSE; set to TRUE if want to use JAGS for model fitting.
+#' 
+#' @return A long character string to be inserted into .bug model file as measurement
+#' likelihood
+#' 
+#' @seealso Called by \link{write_model_Reg_NoNest} for constructing a \code{.bug} file.
+#' This is usually called along with specification of latent status regression 
+#' (\link{insert_bugfile_chunk_reg_etiology}).
+#' 
+#' @export
+insert_bugfile_chunk_reg_nest_meas <-
+  function(Mobs,prior,cause_list,FPR_formula,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
+    if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
+      stop("==[baker] No BrS or SS measurements specified in the model! ==")
+    }
+
+    
+    # generate file:
+    if ("BrS" %in% use_measurements){
+      chunk_BrS_case <- ""
+      chunk_BrS_ctrl <- ""
+      chunk_BrS_subclass <- ""
+      chunk_BrS_param <- ""
+      for (s in seq_along(Mobs$MBS)){# begin iterate over slices:
+        # k_curr <- k_subclass[s]
+        # if (k_curr == 1 ){
+        if (!use_jags){ # use winbugs:
+          stop("==[baker] WinBUGS code not developed. Set 'use_jags=TRUE'. ==\n")
+          #chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_NoNest_reg_Slice_jags(s,Mobs,cause_list,ppd)$plug)
+          #chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_NoNest_reg_Slice_jags(s,Mobs,cause_list)$plug)
+        } else{# use jags:
+          # chunk_BrS_case is using case_Nest_Slice - no separate case_Nest_Slice_Reg needed.
+          chunk_BrS_case  <- paste0(chunk_BrS_case,  add_meas_BrS_case_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
+          chunk_BrS_param <- paste0(chunk_BrS_param, add_meas_BrS_param_Nest_reg_Slice_jags(s,Mobs,prior,cause_list,FPR_formula)$plug)
+        }
+        # the following are using Nest_Slice - no separate Nest_Slice_Reg needed:
+        chunk_BrS_subclass  <- paste0(chunk_BrS_subclass, add_meas_BrS_subclass_Nest_Slice(s,Mobs,cause_list,ppd,reg=TRUE)$plug)
+        chunk_BrS_ctrl  <- paste0(chunk_BrS_ctrl, add_meas_BrS_ctrl_Nest_Slice(s,Mobs,cause_list,ppd)$plug)
+      }# end iterate over slices.
+    }
+    
+    if ("BrS" %in% use_measurements & !("SS" %in% use_measurements)){
+      chunk <- paste0(
+        "
+        # BrS measurements:
+        for (i in 1:Nd){
+        ",chunk_BrS_case,"
+        }
+        for (i in (Nd+1):(Nd+Nu)){
+        ",chunk_BrS_ctrl,"
+        }
+        ",chunk_BrS_subclass,"
+        # BrS measurement characteristics:
+        ",chunk_BrS_param
+      )
+    }
+    
+    if ("BrS" %in% use_measurements & ("SS" %in% use_measurements)){
+      nslice_SS <- length(Mobs$MSS)
+      chunk <- paste0(
+        "
+        # BrS and SS measurements:
+        for (i in 1:Nd){
+        ",chunk_BrS_case,"
+        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
+        }
+        for (i in (Nd+1):(Nd+Nu)){
+        ",chunk_BrS_ctrl,"
+        }
+        ",chunk_BrS_subclass,"
+        
+        # BrS and SS measurement characteristics:
+        ",chunk_BrS_param,
+        add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
+      )
+    }
+    
+    if (!("BrS" %in% use_measurements) & ("SS" %in% use_measurements)) {
+      nslice_SS <- length(Mobs$MSS)
+      chunk <- paste0(
+        "
+        # SS measurements:
+        for (i in 1:Nd){
+        ",add_meas_SS_case(nslice_SS,Mobs,prior,cause_list)$plug,"
+        }
+        
+        # SS measurement characteristics:
+        ",add_meas_SS_param(nslice_SS,Mobs,prior,cause_list)$plug
+      )
+    }
+    
+    paste0(chunk,"\n")
+  }
 
 
 #' insert etiology regression for latent status code chunk into .bug file
@@ -285,7 +388,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
   # ER: etiology regression: #<---- add basis related operation here for PS.
   ER_has_basis <- ifelse(length(grep("s_date",Eti_formula))==0,FALSE,TRUE)
   ER_has_non_basis <- has_non_basis(Eti_formula)
-    
+  
   ppd_seg <- ""
   if (!is.null(ppd) && ppd){ppd_seg <- 
     "
@@ -310,7 +413,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
   ER_basis_seg <- ""
   if (ER_has_basis){
     ER_basis_seg <- paste0(ER_basis_seg,
-    "
+                           "
     # B-spline basis coefficients for etiology regression:
     betaEti[ER_basis_id[1],j] ~ dnorm(0,ER_prec_first)
     for (l in 2:ER_n_basis){# iterate over the vector of B-spline basis:
@@ -328,8 +431,8 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
   
   ER_non_basis_seg <- ""
   if (ER_has_non_basis){
-      ER_non_basis_seg <- paste0(ER_non_basis_seg,
-      "
+    ER_non_basis_seg <- paste0(ER_non_basis_seg,
+                               "
       #non_basis_coefficients (e.g., intercept):
         for (l in ER_non_basis_id){
             betaEti[l,j] ~ dnorm(0,ER_prec_nonbasis) # <- shared with the ps ones.
@@ -340,52 +443,52 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
   
   if (Jcause > 2) {
     chunk_etiology <- paste0(chunk_etiology,
-    "
+                             "
       for (i in 1:Nd){
         Icat[i] ~ dcat(pEti[i,1:Jcause])
         ",
-          ppd_seg,
-          "for (j in 1:Jcause){ 
+                             ppd_seg,
+                             "for (j in 1:Jcause){ 
               pEti[i,j] <- phi[i,j]/sum(phi[i,])
               log(phi[i,j]) <- mu_Eti_mat[i,j]
         }
       }
       
        ",
-      "for (j in 1:Jcause){",
-        ER_basis_seg,
-        ER_non_basis_seg,
-      " 
+                             "for (j in 1:Jcause){",
+                             ER_basis_seg,
+                             ER_non_basis_seg,
+                             " 
       }",
-      c("",
-        "#hyperprior of smoothness:
+                             c("",
+                               "#hyperprior of smoothness:
         ER_p_flexible_select ~ dbeta(ER_alpha,ER_beta)
         ER_prec_first <- pow(sd_betaEti_basis,-2) #1/4 #precision for ps coefficients - redundant if no ps bases.
         ")[ER_has_basis+1],
-      c("",
-        "ER_prec_nonbasis <- pow(sd_betaEti_nonbasis,-2) #1/4 #precision nonbasis coefficients        
+                             c("",
+                               "ER_prec_nonbasis <- pow(sd_betaEti_nonbasis,-2) #1/4 #precision nonbasis coefficients        
         ")[ER_has_non_basis+1]
-          
-      #"for (p in 1:(ncol_dm_Eti)){",
-      #    # betaEti[p,1:(Jcause-1)] ~ dmnorm(zero_Jcause_1,0.1*I_Jcause_1)
-      #    "
-      #    for (j in 1:Jcause){
-      #         betaEti[p,j] ~ dnorm(0,1/sd_betaEti^2)
-      #    }
-      #for (j in 1:(Jcause-1)){
-      #  betaEti[p,j] ~ dnorm(0,1/sd_betaEti^2)
-      # }
-      #  betaEti[p,Jcause] <- 0
-      #}"
-      )
+                             
+                             #"for (p in 1:(ncol_dm_Eti)){",
+                             #    # betaEti[p,1:(Jcause-1)] ~ dmnorm(zero_Jcause_1,0.1*I_Jcause_1)
+                             #    "
+                             #    for (j in 1:Jcause){
+                             #         betaEti[p,j] ~ dnorm(0,1/sd_betaEti^2)
+                             #    }
+                             #for (j in 1:(Jcause-1)){
+                             #  betaEti[p,j] ~ dnorm(0,1/sd_betaEti^2)
+                             # }
+                             #  betaEti[p,Jcause] <- 0
+                             #}"
+    )
   } else{
     chunk_etiology <- paste0(chunk_etiology,
-      "
+                             "
       for (i in 1:Nd){
           Icat[i] ~ dcat(pEti[i,1:Jcause])
       ",
-          ppd_seg,
-        "for (j in 1:Jcause){ 
+                             ppd_seg,
+                             "for (j in 1:Jcause){ 
             pEti[i,j] <- phi[i,j]/sum(phi[i,])
             log(phi[i,j]) <- mu_Eti_mat[i,j]
         }

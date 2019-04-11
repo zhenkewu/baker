@@ -4,7 +4,8 @@
 \alias{add_meas_BrS_subclass_Nest_Slice}
 \title{add subclass indicators for a BrS measurement slice among cases and controls (conditional independence)}
 \usage{
-add_meas_BrS_subclass_Nest_Slice(s, Mobs, cause_list, ppd = NULL)
+add_meas_BrS_subclass_Nest_Slice(s, Mobs, cause_list, ppd = NULL,
+  reg = NULL)
 }
 \arguments{
 \item{s}{the slice}
@@ -14,6 +15,8 @@ add_meas_BrS_subclass_Nest_Slice(s, Mobs, cause_list, ppd = NULL)
 \item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}}
 
 \item{ppd}{Default is NULL; Set to TRUE for enabling posterior predictive checking.}
+
+\item{reg}{Default is NULL; set to TRUE if doing regression (double index of subclass weights: subject and subclass)}
 }
 \value{
 a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
@@ -35,6 +38,7 @@ Other likelihood specification functions: \code{\link{add_meas_BrS_case_Nest_Sli
   \code{\link{add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags}},
   \code{\link{add_meas_BrS_param_Nest_Slice_jags}},
   \code{\link{add_meas_BrS_param_Nest_Slice}},
+  \code{\link{add_meas_BrS_param_Nest_reg_Slice_jags}},
   \code{\link{add_meas_BrS_param_NoNest_Slice_jags}},
   \code{\link{add_meas_BrS_param_NoNest_Slice}},
   \code{\link{add_meas_BrS_param_NoNest_reg_Slice_jags}},
@@ -54,6 +58,7 @@ Other plug-and-play functions: \code{\link{add_meas_BrS_case_Nest_Slice_jags}},
   \code{\link{add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags}},
   \code{\link{add_meas_BrS_param_Nest_Slice_jags}},
   \code{\link{add_meas_BrS_param_Nest_Slice}},
+  \code{\link{add_meas_BrS_param_Nest_reg_Slice_jags}},
   \code{\link{add_meas_BrS_param_NoNest_Slice_jags}},
   \code{\link{add_meas_BrS_param_NoNest_Slice}},
   \code{\link{add_meas_BrS_param_NoNest_reg_Slice_jags}},

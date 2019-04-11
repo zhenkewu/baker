@@ -657,19 +657,19 @@ get_marginal_rates_nested <- function(slice, res_nplcm, model_options,data_nplcm
   for (j in 1:JBrS_curr){
     # get ThetaBS[j,k]:
     ind_ThetaBS_tmp <- grep(paste0("^ThetaBS_",slice,"\\[",j,","),colnames(res_nplcm))
-    if (length(ind_ThetaBS_tmp)!=K_curr){stop("== Check `ThetaBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    if (length(ind_ThetaBS_tmp)!=K_curr){stop("==[baker] Check `ThetaBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
     ThetaBS_tmp <- res_nplcm[,ind_ThetaBS_tmp]
     # get PsiBS[j,k]:
     ind_PsiBS_tmp <- grep(paste0("^PsiBS_",slice,"\\[",j,","),colnames(res_nplcm))
-    if (length(ind_PsiBS_tmp)!=K_curr){stop("== Check `PsiBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    if (length(ind_PsiBS_tmp)!=K_curr){stop("==[baker] Check `PsiBS` extraction from posterior samples! No. of subclasses not matched with specification.==")}
     PsiBS_tmp <- res_nplcm[,ind_PsiBS_tmp]
     # get Eta[e,k]:
     ind_Eta_tmp <- grep(paste0("^Eta_",slice),colnames(res_nplcm))
-    if (length(ind_Eta_tmp)!=K_curr){stop("== Check `Eta` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    if (length(ind_Eta_tmp)!=K_curr){stop("==[baker] Check `Eta` extraction from posterior samples! No. of subclasses not matched with specification.==")}
     Eta_tmp <- res_nplcm[,ind_Eta_tmp]
     # get Lambda[k]:
     ind_Lambda_tmp <- grep(paste0("^Lambda_",slice),colnames(res_nplcm))
-    if (length(ind_Lambda_tmp)!=K_curr){stop("== Check `Lambda` extraction from posterior samples! No. of subclasses not matched with specification.==")}
+    if (length(ind_Lambda_tmp)!=K_curr){stop("==[baker] Check `Lambda` extraction from posterior samples! No. of subclasses not matched with specification.==")}
     Lambda_tmp <- res_nplcm[,ind_Lambda_tmp]
     
     # calculate by formula:

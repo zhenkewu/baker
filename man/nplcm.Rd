@@ -102,9 +102,10 @@ Current implemented models follow the hierarchy below:
 \item no regression:  \link{write_model_NoReg}
        
 \item regression: 
+ Given disease class (control or a subtype of cases infected with the same sets of pathogens)
       \itemize{
-         \item independence model: \link{write_model_Reg_NoNest}
-         \item dependence model [NOT DONE.]
+         \item local independence model for BrS measures: \link{write_model_Reg_NoNest}
+         \item local dependence model for BrS measures [Under development on Apr 10, 2019.]
        }
 }
 }
