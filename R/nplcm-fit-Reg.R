@@ -202,7 +202,6 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
           assign(paste("GBrS_TPR", i, sep = "_"), 1)
         }
       }
-      
       # set BrS measurement priors: 
       # hyper-parameters for sensitivity:
       
@@ -1782,7 +1781,7 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
         out_parameter <- c(out_parameter,paste(c("thetaBS","betaFPR"), s, sep="_"))
         out_parameter <- c(out_parameter,paste(c("taubeta"), s, sep="_")[unlist(has_basis_list)[s]])
       }else{
-        cat("==[baker] Yay! Regression with nested subclasses is ready to run.==\n")
+        cat("==[baker] Running etiology regression with nested subclasses...==\n")
         assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
         in_data       <- unique(c(in_data,paste0("K_",s))) # <---- No. of subclasses for this slice.
         out_parameter <- unique(c(out_parameter,
