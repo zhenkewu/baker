@@ -72,7 +72,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   parsed_model <- assign_model(model_options,data_nplcm)
   is_nested    <- parsed_model$nested
-  cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure.==\n")
+  cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
   
   new_env <- new.env()
   source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
