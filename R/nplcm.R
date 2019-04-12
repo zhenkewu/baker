@@ -106,7 +106,7 @@
 nplcm <- function(data_nplcm,model_options,mcmc_options){
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
-  if (rle(Y)>2 | Y[1]!=1) {stop("==[baker] 'data_nplcm$Y' must have cases on top of controls. Use 'baker::subset_data_nplcm_by_index()' to shuffle the rows. Then retry.==\n")}
+  if (length(rle(Y)[["values"]])>2 | Y[1]!=1) {stop("==[baker] 'data_nplcm$Y' must have cases on top of controls. Use 'baker::subset_data_nplcm_by_index()' to shuffle the rows. Then retry.==\n")}
   X    <- data_nplcm$X
   
   parsed_model <- assign_model(model_options,data_nplcm)
