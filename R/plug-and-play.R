@@ -1955,7 +1955,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
   non_basis_id_nm     <- paste("non_basis_id",seq_along(BrS_nm),sep = "_")#which ones are not.
   n_basis_nm     <- paste("n_basis",seq_along(BrS_nm),sep = "_")# the number of basis expansions in p-spline for one variable.
   prec_first_nm  <- paste("prec_first",seq_along(BrS_nm),sep = "_")# inv variance for the first coef in p-spline.
-  prec_non_basis_nm     <- paste("prec_non_basis_nm",seq_along(BrS_nm),sep = "_")# inv var for coefs not in p-spline.
+  prec_non_basis_nm     <- paste("prec_non_basis",seq_along(BrS_nm),sep = "_")# inv var for coefs not in p-spline.
   taubeta0_nm     <- paste("taubeta0",seq_along(BrS_nm),sep = "_")#inv vars for constant and flexible curves (to be selected below).
   taubeta_nm     <- paste("taubeta",seq_along(BrS_nm),sep = "_")# the inv var for adjacent p-spline basis coefs.
   taubeta_inv_nm     <- paste("taubeta_inv",seq_along(BrS_nm),sep = "_")# inv of pareto.
@@ -1967,6 +1967,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
   mu_ctrl_nm     <- paste("mu_ctrl",seq_along(BrS_nm),sep = "_")#
   mu0_ctrl_nm     <- paste("mu0_ctrl",seq_along(BrS_nm),sep = "_")#
   inv_scale_mu0_ctrl_nm     <- paste("inv_scale_mu0_ctrl",seq_along(BrS_nm),sep = "_")#
+  half_s2_ctrl_nm     <- paste("half_s2_ctrl",seq_along(BrS_nm),sep = "_")#
   
   # case - subclass weight regression: 
   Eta_nm <- paste("Eta",seq_along(BrS_nm),sep="_")# this is Eta0 truncated to 0.000001 ~ 0.999999.
@@ -1985,6 +1986,8 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
   mu_case_nm     <- paste("mu_case",seq_along(BrS_nm),sep = "_")#
   mu0_case_nm     <- paste("mu0_case",seq_along(BrS_nm),sep = "_")#
   inv_scale_mu0_case_nm     <- paste("inv_scale_mu0_case",seq_along(BrS_nm),sep = "_")#
+  half_s2_case_nm     <- paste("half_s2_case",seq_along(BrS_nm),sep = "_")#
+  
   #Z_FPR_nm     <- paste("Z_FPR",seq_along(BrS_nm),sep = "_")# we let case and control have the same design matrices.
   d_FPR_nm     <- paste("d_FPR",seq_along(BrS_nm),sep = "_")#
   
@@ -2046,9 +2049,9 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                    # BrS measurement characteristics - nested:
                    for (j in 1:(",K_nm[s],"-1)){
                        ",mu0_ctrl_nm[s],"[j] ~ dnorm(0,",inv_scale_mu0_ctrl_nm[s],"[j])T(0,)
-                      ",inv_scale_mu0_ctrl_nm[s],"[j] ~ dgamma(5E-1,10000)
+                      ",inv_scale_mu0_ctrl_nm[s],"[j] ~ dgamma(5E-1,",half_s2_ctrl_nm[s],")
                       ",mu0_case_nm,"[j] ~ dnorm(0,",inv_scale_mu0_case_nm[s],"[j])T(0,)
-                      ",inv_scale_mu0_case_nm[s],"[j] ~ dgamma(5E-1,10000)
+                      ",inv_scale_mu0_case_nm[s],"[j] ~ dgamma(5E-1,",half_s2_case_nm[s],")
                        ## control: B-spline basis coefficients:
                        ",#betaFPR_nm[s],"[",basis_id_nm[s],"[1],1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
                    betaFPR_nm[s],"[",basis_id_nm[s],"[1]",",j] ~ dnorm(0,",prec_first_nm[s],")
@@ -2085,11 +2088,11 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                           ",case_betaFPR_nm[s],"[l,",K_nm[s],"] <- 0
                        }
                        # control: hyperprior of smoothness:
-                       ",p_flexible_nm[s],"     ~ dbeta(3,3)#flexible prob 
+                       ",p_flexible_nm[s],"     ~ dbeta(ctrl_flex_alpha,ctrl_flex_beta)#flexible prob 
                        ",#prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
                        prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
                        # case: hyperprior of smoothness:
-                       ",case_p_flexible_nm[s]," ~ dbeta(3,3)#flexible prob 
+                       ",case_p_flexible_nm[s]," ~ dbeta(case_flex_alpha,case_flex_beta)#flexible prob 
                        "
     )
   } 

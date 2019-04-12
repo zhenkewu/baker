@@ -38,6 +38,7 @@ Other visualization functions: \code{\link{plot_BrS_panel}},
   \code{\link{plot_etiology_side_by_side}},
   \code{\link{plot_etiology_strat}},
   \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}}
+  \code{\link{plot_selected_etiology}},
+  \code{\link{plot_subwt_regression}}
 }
 \concept{visualization functions}
