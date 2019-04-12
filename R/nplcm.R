@@ -1,4 +1,4 @@
-#' Fit nested partially latent class models (high-level)
+#' Fit nested partially latent class models (high-level wrapper function)
 #'
 #' Uses WinBUGS/JAGS in Windows system or JAGS in OSX system for Bayesian inference
 #' (see README file for an instruction to install WinBUGS or JAGS).
