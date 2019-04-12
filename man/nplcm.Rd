@@ -2,7 +2,7 @@
 % Please edit documentation in R/nplcm.R
 \name{nplcm}
 \alias{nplcm}
-\title{Fit nested partially latent class models (high-level)}
+\title{Fit nested partially latent class models (high-level wrapper function)}
 \usage{
 nplcm(data_nplcm, model_options, mcmc_options)
 }
