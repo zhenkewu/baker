@@ -2031,15 +2031,13 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                   ",Eta_nm[s],"[i,1] <- ",r1_nm[s],"[i,1]
                   ",r1_nm[s],"[i,",K_nm[s],"] <- 1
                   for (k in 2:",K_nm[s],"){",Eta_nm[s],"[i,k] <- ",r1_nm[s],"[i,k]*(1-",r1_nm[s],"[i,k-1])*",Eta_nm[s],"[i,k-1]/",r1_nm[s],"[i,k-1]}
-                  for (j in 1:(",K_nm[s],"-1)){",r1_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(",mu0_case_nm,"[j]+",mu_case_nm,"[i,j])))}
-                  #for (k in 1:(",K_nm[s],"-1)){",r1_nm[s],"[i,k] <- ilogit(",mu0_case_nm,"[k]+",mu_case_nm,"[i,k])}
+                  for (j in 1:(",K_nm[s],"-1)){",r1_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(",mu0_case_nm,"[j]+",mu_case_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
          }
          for (i in (Nd+1):(Nd+Nu)){
                   ",Lambda_nm[s],"[i,1] <- ",r0_nm[s],"[i,1]
                   ",r0_nm[s],"[i,",K_nm[s],"] <- 1
                   for (k in 2:",K_nm[s],"){",Lambda_nm[s],"[i,k] <- ",r0_nm[s],"[i,k]*(1-",r0_nm[s],"[i,k-1])*",Lambda_nm[s],"[i,k-1]/",r0_nm[s],"[i,k-1]}
-                  for (j in 1:(",K_nm[s],"-1)){",r0_nm[s],"[i,j] <- ilogit(",mu0_ctrl_nm,"[j]+",mu_ctrl_nm,"[i,j])}
-                  #for (k in 1:(",K_nm[s],"-1)){",r0_nm[s],"[i,k] <- max(0.000001,min(0.999999,ilogit(",mu0_ctrl_nm,"[k]+",mu_ctrl_nm,"[i,k])))}
+                  for (j in 1:(",K_nm[s],"-1)){",r0_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(",mu0_ctrl_nm,"[j]+",mu_ctrl_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
          }
           ")
   
