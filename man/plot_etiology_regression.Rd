@@ -5,7 +5,7 @@
 \title{visualize the etiology regression with a continuous covariate}
 \usage{
 plot_etiology_regression(DIR_NPLCM, stratum_bool, slice = 1,
-  plot_basis = FALSE, truth = NULL)
+  plot_basis = FALSE, truth = NULL, RES_NPLCM = NULL)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -25,6 +25,8 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
     \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
     \item TPR a vector of length identical to \code{PR_case}
 }}
+
+\item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}
 }
 \value{
 A figure of etiology regression curves and some marginal positive rate assessment of
