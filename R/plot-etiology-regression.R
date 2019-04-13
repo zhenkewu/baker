@@ -18,6 +18,7 @@
 #'      \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
 #'      \item TPR a vector of length identical to \code{PR_case}
 #'  }
+#' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' 
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
 #' model fit; See example for the legends.
@@ -53,7 +54,7 @@
 #' }
 #' @family visualization functions
 #' @export
-plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,truth=NULL){
+plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,truth=NULL,RES_NPLCM=NULL){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
@@ -79,9 +80,10 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
   bugs.dat <- as.list(new_env)
   rm(new_env)
-  res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
-                               file.path(DIR_NPLCM,"CODAindex.txt"),
-                               quiet=TRUE)
+  if (!is.null(RES_NPLCM)){res_nplcm <- RES_NPLCM
+  } else {res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
+                                       file.path(DIR_NPLCM,"CODAindex.txt"),
+                                       quiet=TRUE)}
   print_res <- function(x) plot(res_nplcm[,grep(x,colnames(res_nplcm))])
   get_res   <- function(x) res_nplcm[,grep(x,colnames(res_nplcm))]
   
@@ -466,10 +468,11 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights=NULL,truth=NULL){
 #'  \itemize{
 #'      \item truth_subwt matrix of # of rows = # of subjects, # columns: number of true subclasses
 #' }
+#' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @return A figure of subclass regression curves 
 #' @family visualization functions
 #' @export
-plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NULL){
+plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NULL,RES_NPLCM=NULL){
   old_par <- graphics::par(graphics::par("mfrow", "mar"))
   on.exit(graphics::par(old_par))
   if (!is_jags_folder(DIR_NPLCM)){
@@ -490,9 +493,10 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
   source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
   bugs.dat <- as.list(new_env)
   rm(new_env)
-  res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
+  if (!is.null(RES_NPLCM)){res_nplcm <- RES_NPLCM
+  } else {res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
                                file.path(DIR_NPLCM,"CODAindex.txt"),
-                               quiet=TRUE)
+                               quiet=TRUE)}
   print_res <- function(x) plot(res_nplcm[,grep(x,colnames(res_nplcm))])
   get_res   <- function(x) res_nplcm[,grep(x,colnames(res_nplcm))]
   

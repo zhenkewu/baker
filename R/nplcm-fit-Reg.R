@@ -2119,7 +2119,7 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   
   for (s in seq_along(Mobs$MBS)){
     assign(paste("half_s2_ctrl", i, sep = "_"), prior$half_s2[1])
-    assign(paste("half_s2_case", i, sep = "_"), prior$half_s2[2])
+    #assign(paste("half_s2_case", i, sep = "_"), prior$half_s2[2])
   }
   in_data <- unique(c(in_data,
                       "ER_basis_id"[ER_has_basis],
@@ -2135,8 +2135,8 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
                       "ctrl_flex_beta"[any(unlist(has_basis_list))],
                       "case_flex_alpha"[any(unlist(has_basis_list))],
                       "case_flex_beta"[any(unlist(has_basis_list))],
-                      paste("half_s2_ctrl",1:length(JBrS_list),sep="_")[unlist(has_basis_list)],
-                      paste("half_s2_case",1:length(JBrS_list),sep="_")[unlist(has_basis_list)]
+                      paste("half_s2_ctrl",1:length(JBrS_list),sep="_")[unlist(has_basis_list)]#,
+                      #paste("half_s2_case",1:length(JBrS_list),sep="_")[unlist(has_basis_list)]
                       
                       
   ))

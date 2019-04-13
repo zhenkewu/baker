@@ -5,7 +5,7 @@
 \title{visualize the subclass weight regression with a continuous covariate}
 \usage{
 plot_subwt_regression(DIR_NPLCM, stratum_bool, case = 0, slice = 1,
-  truth = NULL)
+  truth = NULL, RES_NPLCM = NULL)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -22,6 +22,8 @@ plot_subwt_regression(DIR_NPLCM, stratum_bool, case = 0, slice = 1,
  \itemize{
      \item truth_subwt matrix of # of rows = # of subjects, # columns: number of true subclasses
 }}
+
+\item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}
 }
 \value{
 A figure of subclass regression curves
