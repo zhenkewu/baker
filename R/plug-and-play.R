@@ -1968,6 +1968,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
   mu0_ctrl_nm     <- paste("mu0_ctrl",seq_along(BrS_nm),sep = "_")#
   inv_scale_mu0_ctrl_nm     <- paste("inv_scale_mu0_ctrl",seq_along(BrS_nm),sep = "_")#
   half_s2_ctrl_nm     <- paste("half_s2_ctrl",seq_along(BrS_nm),sep = "_")#
+  half_nu_ctrl_nm     <- paste("half_nu_ctrl",seq_along(BrS_nm),sep = "_")#
   
   # case - subclass weight regression: 
   Eta_nm <- paste("Eta",seq_along(BrS_nm),sep="_")# this is Eta0 truncated to 0.000001 ~ 0.999999.
@@ -1984,9 +1985,9 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
   case_p_flexible_nm     <- paste("case_p_flexible",seq_along(BrS_nm),sep = "_")#
   #case_linpred_wt_nm     <- paste("case_linpred_wt",seq_along(BrS_nm),sep = "_")#
   mu_case_nm     <- paste("mu_case",seq_along(BrS_nm),sep = "_")#
-  mu0_case_nm     <- paste("mu0_case",seq_along(BrS_nm),sep = "_")#
-  inv_scale_mu0_case_nm     <- paste("inv_scale_mu0_case",seq_along(BrS_nm),sep = "_")#
-  half_s2_case_nm     <- paste("half_s2_case",seq_along(BrS_nm),sep = "_")#
+  #mu0_case_nm     <- paste("mu0_case",seq_along(BrS_nm),sep = "_")#
+  #inv_scale_mu0_case_nm     <- paste("inv_scale_mu0_case",seq_along(BrS_nm),sep = "_")#
+  #half_s2_case_nm     <- paste("half_s2_case",seq_along(BrS_nm),sep = "_")#
   
   #Z_FPR_nm     <- paste("Z_FPR",seq_along(BrS_nm),sep = "_")# we let case and control have the same design matrices.
   d_FPR_nm     <- paste("d_FPR",seq_along(BrS_nm),sep = "_")#
@@ -2010,7 +2011,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                                              a slice of bronze-standard data (only 1 dimensional measure). ==\n")} 
   plug <- paste0(
     "     
-          # BrS measurement characteristics - non-nested:
+          # BrS measurement characteristics - nested:
           ",mu_ctrl_nm[s]," <- ",Z_FPR_nm[s],"%*%",betaFPR_nm[s]," # <--- Z_FPR_1: rows for cases and controls, columns for covariates; betaFPR_1: rows for covariates, columns for 1:JBrS_1, i.e., pathogens. 
           ",mu_case_nm[s]," <- ",Z_FPR_nm[s],"%*%",case_betaFPR_nm[s]," 
         
@@ -2032,7 +2033,6 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                   ",r1_nm[s],"[i,",K_nm[s],"] <- 1
                   for (k in 2:",K_nm[s],"){",Eta_nm[s],"[i,k] <- ",r1_nm[s],"[i,k]*(1-",r1_nm[s],"[i,k-1])*",Eta_nm[s],"[i,k-1]/",r1_nm[s],"[i,k-1]}
                   for (j in 1:(",K_nm[s],"-1)){",r1_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(",mu0_ctrl_nm,"[j]+",mu_case_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
-                  #for (j in 1:(",K_nm[s],"-1)){",r1_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(",mu0_case_nm,"[j]+",mu_case_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
          }
          for (i in (Nd+1):(Nd+Nu)){
                   ",Lambda_nm[s],"[i,1] <- ",r0_nm[s],"[i,1]
@@ -2048,9 +2048,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                    # BrS measurement characteristics - nested:
                    for (j in 1:(",K_nm[s],"-1)){
                        ",mu0_ctrl_nm[s],"[j] ~ dnorm(0,",inv_scale_mu0_ctrl_nm[s],"[j])T(0,)
-                      ",inv_scale_mu0_ctrl_nm[s],"[j] ~ dgamma(5E-1,",half_s2_ctrl_nm[s],")
-                      #",mu0_case_nm,"[j] ~ dnorm(0,",inv_scale_mu0_case_nm[s],"[j])T(0,)
-                      #",inv_scale_mu0_case_nm[s],"[j] ~ dgamma(5E-1,",half_s2_case_nm[s],")
+                      ",inv_scale_mu0_ctrl_nm[s],"[j] ~ dgamma(",half_nu_ctrl_nm[s],",",half_s2_ctrl_nm[s],")
                        ## control: B-spline basis coefficients:
                        ",#betaFPR_nm[s],"[",basis_id_nm[s],"[1],1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
                    betaFPR_nm[s],"[",basis_id_nm[s],"[1]",",j] ~ dnorm(0,",prec_first_nm[s],")

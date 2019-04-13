@@ -520,10 +520,11 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
   # LCM plotting subclass weight curves:
   #
   k_seq <- 1:K_curr #c(1,2,3)                                      # <----------------- adjust order of k.
+  if(!is.null(truth$ord_subclass)){k_seq <- truth$ord_subclass} #c(1,2,3)                                      # <----------------- adjust order of k.
   #k_seq <- c(1,5,2,3,4)#1:K # <----------------- adjust order of k.
   if (!is.null(truth$truth_subwt)){
     K_truth <- ncol(truth$truth_subwt);
-    if (K_curr > K_truth){truth_subwt <- cbind(truth_subwt,matrix(0,nrow=Nd+Nu, ncol=K_curr > K_truth))}
+    if (K_curr > K_truth){truth_subwt <- cbind(truth_subwt,matrix(0,nrow=Nd+Nu, ncol=K_curr - K_truth))}
   }
   par(mfrow=c(2,K_curr))
   for (k in seq_along(k_seq)){
