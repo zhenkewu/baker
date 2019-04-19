@@ -2032,13 +2032,13 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                   ",Eta_nm[s],"[i,1] <- ",r1_nm[s],"[i,1]
                   ",r1_nm[s],"[i,",K_nm[s],"] <- 1
                   for (k in 2:",K_nm[s],"){",Eta_nm[s],"[i,k] <- ",r1_nm[s],"[i,k]*(1-",r1_nm[s],"[i,k-1])*",Eta_nm[s],"[i,k-1]/",r1_nm[s],"[i,k-1]}
-                  for (j in 1:(",K_nm[s],"-1)){",r1_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(",mu0_ctrl_nm,"[j]+",mu_case_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
+                  for (j in 1:(",K_nm[s],"-1)){",r1_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(sum(",mu0_ctrl_nm,"[1:j])+",mu_case_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
          }
          for (i in (Nd+1):(Nd+Nu)){
                   ",Lambda_nm[s],"[i,1] <- ",r0_nm[s],"[i,1]
                   ",r0_nm[s],"[i,",K_nm[s],"] <- 1
                   for (k in 2:",K_nm[s],"){",Lambda_nm[s],"[i,k] <- ",r0_nm[s],"[i,k]*(1-",r0_nm[s],"[i,k-1])*",Lambda_nm[s],"[i,k-1]/",r0_nm[s],"[i,k-1]}
-                  for (j in 1:(",K_nm[s],"-1)){",r0_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(",mu0_ctrl_nm,"[j]+",mu_ctrl_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
+                  for (j in 1:(",K_nm[s],"-1)){",r0_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(sum(",mu0_ctrl_nm,"[1:j])+",mu_ctrl_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
          }
           ")
   
@@ -2089,7 +2089,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                        ",#prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
                        prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
                        # case: hyperprior of smoothness:
-                       ",case_p_flexible_nm[s]," ~ dbeta(case_flex_alpha,case_flex_beta)#flexible prob 
+                       ",case_p_flexible_nm[s]," ~ dbeta(case_flex_alpha,case_flex_beta)#flexible prob
                        "
     )
   } 
