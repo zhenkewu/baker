@@ -2060,7 +2060,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                       
                        ## control: B-spline basis coefficients:
                        ",#betaFPR_nm[s],"[",basis_id_nm[s],"[1],1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
-                   betaFPR_nm[s],"[",basis_id_nm[s],"[1]",",j] ~ dnorm(0,",prec_first_nm[s],")
+                      betaFPR_nm[s],"[",basis_id_nm[s],"[1]",",j] ~ dnorm(0,",prec_first_nm[s],")
                        
                        for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
                           ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],j] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],j],",taubeta_nm[s],"[j])
