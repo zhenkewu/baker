@@ -5,7 +5,8 @@
 \title{visualize the etiology regression with a continuous covariate}
 \usage{
 plot_etiology_regression(DIR_NPLCM, stratum_bool, slice = 1,
-  plot_basis = FALSE, truth = NULL, RES_NPLCM = NULL)
+  plot_basis = FALSE, truth = NULL, RES_NPLCM = NULL,
+  do_plot = TRUE, return_metric = TRUE)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -27,6 +28,11 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 }}
 
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}
+
+\item{do_plot}{TRUE for plotting}
+
+\item{return_metric}{TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+coverage, bias, truth and integrated mean squared errors (IMSE).}
 }
 \value{
 A figure of etiology regression curves and some marginal positive rate assessment of

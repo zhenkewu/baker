@@ -19,6 +19,9 @@
 #'      \item TPR a vector of length identical to \code{PR_case}
 #'  }
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
+#' @param do_plot TRUE for plotting
+#' @param return_metric TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+#'  coverage, bias, truth and integrated mean squared errors (IMSE).
 #' 
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
 #' model fit; See example for the legends.
@@ -54,7 +57,7 @@
 #' }
 #' @family visualization functions
 #' @export
-plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,truth=NULL,RES_NPLCM=NULL){
+plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,return_metric=TRUE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
@@ -74,8 +77,9 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
   parsed_model <- assign_model(model_options,data_nplcm)
   is_nested    <- parsed_model$nested
-  cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
-  
+  if (do_plot){
+    cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
+  }
   new_env <- new.env()
   source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
   bugs.dat <- as.list(new_env)
@@ -146,9 +150,6 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   FPR_mean <- apply(FPR_prob_scale,c(1,2),mean)
   FPR_q    <- apply(FPR_prob_scale,c(1,2),quantile,c(0.025,0.975))
   
-  
-  
-  
   # #
   # # LCM plotting subclass weight curves:
   # #
@@ -213,6 +214,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   Eti_q    <- apply(Eti_prob_scale,c(1,2),quantile,c(0.025,0.975))
   Eti_overall <- apply(Eti_prob_scale,c(1,3),mean)
   Eti_overall_mean <- rowMeans(Eti_overall)
+  Eti_overall_sd   <- apply(Eti_overall,1,sd)
   Eti_overall_q    <- apply(Eti_overall,1,quantile,c(0.025,0.975))
   
   if (!is_nested){
@@ -235,113 +237,131 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   # plot results:
   #################
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))  
-  par(mfcol=c(2,Jcause),oma=c(3,0,3,0))
-  for (j in 1:Jcause){ # <--- the marginal dimension of measurements.
-    # need to fix this for NoA! <------------------------ FIX!
-    #
-    # Figure 1 for case and control positive rates:
-    #
-    par(mar=c(2,5,0,1))
-    #<------------------------ FIX!
-    if (model_options$likelihood$cause_list[j] == "other"){
-      plot(0,0.5,type="l",ylim=c(0,1),pch="n",
-           xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
-      
-      mtext("other",side = 3,cex=1.5,line=1)
-    } else{                                  #<------------------------ FIX!
-      plot(curr_date_FPR,FPR_mean[,j],type="l",ylim=c(0,1),
-           xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
-      polygon(c(curr_date_FPR, rev(curr_date_FPR)),
-              c(FPR_q[1,,j], rev(FPR_q[2,,j])),
-              col = grDevices::rgb(0, 1, 1,0.5),border = NA)
-      # rug plot:
-      rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2")
-      rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2")
-      
-      if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
-      if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
-      if(plot_basis){matplot(curr_date_FPR,(bugs.dat[[paste0("Z_FPR_",slice)]])[plotid_FPR_ctrl,],col="blue",type="l",add=TRUE)}
-      
-      mtext(names(data_nplcm$Mobs$MBS[[1]])[j],side = 3,cex=1.5,line=1)
-      
-      points(curr_date_FPR_case,PR_case_mean[,j],type="l",ylim=c(0,1))
-      polygon(c(curr_date_FPR_case, rev(curr_date_FPR_case)),
-              c(PR_case_q[1,,j], rev(PR_case_q[2,,j])),
-              col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
-      if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
-      # rug plot:
-      rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line=-1)
-      rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line=-1)
-      
-      if (!is_nested){
-        abline(h=colMeans(thetaBS_samp)[j],col="red")
-        abline(h=quantile(thetaBS_samp[,j],0.025),col="red",lty=2)
-        abline(h=quantile(thetaBS_samp[,j],0.975),col="red",lty=2)
-      }
-      
-      # add raw moving average dots:
-      ma <- function(x,n=60){stats::filter(x,rep(1/n,n), sides=2)}
-      
-      ma_cont <- function(y,x,hw=0.35){
-        res <- rep(NA,length(y))
-        for (i in seq_along(y)){
-          res[i] <- mean(y[which(x>=x[i]-hw & x<=x[i]+hw)])
+  if (do_plot){  
+    par(mfcol=c(2,Jcause),oma=c(3,0,3,0))
+    for (j in 1:Jcause){ # <--- the marginal dimension of measurements.
+      # need to fix this for NoA! <------------------------ FIX!
+      #
+      # Figure 1 for case and control positive rates:
+      #
+      par(mar=c(2,5,0,1))
+      #<------------------------ FIX!
+      if (model_options$likelihood$cause_list[j] == "other"){
+        plot(0,0.5,type="l",ylim=c(0,1),pch="n",
+             xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
+        
+        mtext("other",side = 3,cex=1.5,line=1)
+      } else{                                  #<------------------------ FIX!
+        plot(curr_date_FPR,FPR_mean[,j],type="l",ylim=c(0,1),
+             xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
+        polygon(c(curr_date_FPR, rev(curr_date_FPR)),
+                c(FPR_q[1,,j], rev(FPR_q[2,,j])),
+                col = grDevices::rgb(0, 1, 1,0.5),border = NA)
+        # rug plot:
+        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2")
+        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2")
+        
+        if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
+        if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
+        if(plot_basis){matplot(curr_date_FPR,(bugs.dat[[paste0("Z_FPR_",slice)]])[plotid_FPR_ctrl,],col="blue",type="l",add=TRUE)}
+        
+        mtext(names(data_nplcm$Mobs$MBS[[1]])[j],side = 3,cex=1.5,line=1)
+        
+        points(curr_date_FPR_case,PR_case_mean[,j],type="l",ylim=c(0,1))
+        polygon(c(curr_date_FPR_case, rev(curr_date_FPR_case)),
+                c(PR_case_q[1,,j], rev(PR_case_q[2,,j])),
+                col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
+        if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
+        # rug plot:
+        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line=-1)
+        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line=-1)
+        
+        if (!is_nested){
+          abline(h=colMeans(thetaBS_samp)[j],col="red")
+          abline(h=quantile(thetaBS_samp[,j],0.025),col="red",lty=2)
+          abline(h=quantile(thetaBS_samp[,j],0.975),col="red",lty=2)
         }
-        res
+        
+        # add raw moving average dots:
+        ma <- function(x,n=60){stats::filter(x,rep(1/n,n), sides=2)}
+        
+        ma_cont <- function(y,x,hw=0.35){
+          res <- rep(NA,length(y))
+          for (i in seq_along(y)){
+            res[i] <- mean(y[which(x>=x[i]-hw & x<=x[i]+hw)])
+          }
+          res
+        }
+        response.ctrl <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_ctrl,j]
+        dat_ctrl <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_ctrl])[!is.na(response.ctrl),,drop=FALSE]
+        dat_ctrl$runmean <- ma_cont(response.ctrl[!is.na(response.ctrl)],dat_ctrl$std_date[!is.na(response.ctrl)])
+        points(runmean ~ std_date,data=dat_ctrl[!is.na(response.ctrl),],lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")
+        
+        response.case <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_case,j]
+        dat_case <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_case])[!is.na(response.case),,drop=FALSE]
+        dat_case$runmean <- ma_cont(response.case[!is.na(response.case)],dat_case$std_date[!is.na(response.case)])
+        points(runmean ~ std_date,data=dat_case,lty=2,pch=1,cex=0.5,type="o")
       }
-      response.ctrl <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_ctrl,j]
-      dat_ctrl <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_ctrl])[!is.na(response.ctrl),,drop=FALSE]
-      dat_ctrl$runmean <- ma_cont(response.ctrl[!is.na(response.ctrl)],dat_ctrl$std_date[!is.na(response.ctrl)])
-      points(runmean ~ std_date,data=dat_ctrl[!is.na(response.ctrl),],lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")
+      #
+      # Figure 2 for Etiology Regression:
+      #
+      par(mar=c(2,5,0,1))
+      plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1),xlab="standardized date",
+           ylab="etiologic fraction",bty="n",xaxt="n",yaxt="n",las=2)
+      ## ONLY FOR SIMULATIONS <---------------------- FIX!
+      if(!is.null(truth$Eti)){
+        points(curr_date_Eti,truth$Eti[plotid_Eti,j],type="l",lwd=3,col="black")
+        abline(h=colMeans(truth$Eti[data_nplcm$Y==1,])[j],col="blue",lwd=3)
+      }
+      if(plot_basis){matplot(curr_date_Eti,bugs.dat$Z_Eti[plotid_Eti,],col="blue",type="l",add=TRUE)}
       
-      response.case <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_case,j]
-      dat_case <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_case])[!is.na(response.case),,drop=FALSE]
-      dat_case$runmean <- ma_cont(response.case[!is.na(response.case)],dat_case$std_date[!is.na(response.case)])
-      points(runmean ~ std_date,data=dat_case,lty=2,pch=1,cex=0.5,type="o")
+      # overall pie:
+      abline(h=Eti_overall_mean[j],col="black",lwd=2)
+      abline(h=Eti_overall_q[,j],col="black",lty=2,lwd=1.5)
+      mtext("Overall Pie",side=3,line=-0.5,cex=1.2)
+      mtext(paste0(round(Eti_overall_mean[j],3)*100,"%"),side=3,line=-2,cex=1.2)
+      mtext(paste0(round(Eti_overall_q[1,j],3)*100,"%"),side=3,line=-2.5,cex=1,adj=0.15)
+      mtext(paste0(round(Eti_overall_q[2,j],3)*100,"%"),side=3,line=-2.5,cex=1,adj=0.85)
+      
+      # add x-axis for dates:
+      X <- data_nplcm$X
+      Y <- data_nplcm$Y
+      # some date transformations:
+      X$date_plot  <- as.Date(X$ENRLDATE)
+      X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
+      X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
+      
+      color2 <- grDevices::rgb(190, 190, 190, alpha=200, maxColorValue=255)
+      color1 <- grDevices::rgb(216,191,216, alpha=200, maxColorValue=255)
+      #cases:
+      last_interval <- max(X$date_month)
+      lubridate::month(last_interval) <- lubridate::month(last_interval) +2
+      axis(1, X$std_date[c(plotid_FPR_case)], 
+           format(c(X$date_month[c(plotid_FPR_case)]), "%Y %b"), 
+           cex.axis = .7,las=1)
+      axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2),las=2)
+      
+      polygon(c(curr_date_Eti, rev(curr_date_Eti)),
+              c(Eti_q[1,j,], rev(Eti_q[2,j,])),
+              col = grDevices::rgb(0.5,0.5,0.5,0.5),border = NA)
     }
-    #
-    # Figure 2 for Etiology Regression:
-    #
-    par(mar=c(2,5,0,1))
-    plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1),xlab="standardized date",
-         ylab="etiologic fraction",bty="n",xaxt="n",yaxt="n",las=2)
-    ## ONLY FOR SIMULATIONS <---------------------- FIX!
-    if(!is.null(truth$Eti)){
-      points(curr_date_Eti,truth$Eti[plotid_Eti,j],type="l",lwd=3,col="black")
-      abline(h=colMeans(truth$Eti[data_nplcm$Y==1,])[j],col="blue",lwd=3)
-    }
-    if(plot_basis){matplot(curr_date_Eti,bugs.dat$Z_Eti[plotid_Eti,],col="blue",type="l",add=TRUE)}
-    
-    # overall pie:
-    abline(h=Eti_overall_mean[j],col="black",lwd=2)
-    abline(h=Eti_overall_q[,j],col="black",lty=2,lwd=1.5)
-    mtext("Overall Pie",side=3,line=-0.5,cex=1.2)
-    mtext(paste0(round(Eti_overall_mean[j],3)*100,"%"),side=3,line=-2,cex=1.2)
-    mtext(paste0(round(Eti_overall_q[1,j],3)*100,"%"),side=3,line=-2.5,cex=1,adj=0.15)
-    mtext(paste0(round(Eti_overall_q[2,j],3)*100,"%"),side=3,line=-2.5,cex=1,adj=0.85)
-    
-    # add x-axis for dates:
-    X <- data_nplcm$X
-    Y <- data_nplcm$Y
-    # some date transformations:
-    X$date_plot  <- as.Date(X$ENRLDATE)
-    X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
-    X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
-    
-    color2 <- grDevices::rgb(190, 190, 190, alpha=200, maxColorValue=255)
-    color1 <- grDevices::rgb(216,191,216, alpha=200, maxColorValue=255)
-    #cases:
-    last_interval <- max(X$date_month)
-    lubridate::month(last_interval) <- lubridate::month(last_interval) +2
-    axis(1, X$std_date[c(plotid_FPR_case)], 
-         format(c(X$date_month[c(plotid_FPR_case)]), "%Y %b"), 
-         cex.axis = .7,las=1)
-    axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2),las=2)
-    
-    polygon(c(curr_date_Eti, rev(curr_date_Eti)),
-            c(Eti_q[1,j,], rev(Eti_q[2,j,])),
-            col = grDevices::rgb(0.5,0.5,0.5,0.5),border = NA)
   }
+  
+  if (return_metric){
+    if (!is.null(truth$Eti)){
+      Eti_overall_truth  <- colMeans(truth$Eti[plotid_Eti,])
+      Eti_IMSE <- mean( apply(Eti_mean-t( truth$Eti[plotid_Eti,]),2,function(v) sum(v^2)))
+      Eti_overall_cover  <- sapply(seq_along(Eti_overall_mean),
+                                   function(s) (Eti_overall_truth[s]<= Eti_overall_q[2,s]) && 
+                                     (Eti_overall_truth[s]>= Eti_overall_q[1,s]))
+      Eti_overall_bias  <- Eti_overall_mean -  Eti_overall_truth
+      return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,
+                       Eti_overall_cover, Eti_overall_bias,Eti_overall_truth,Eti_IMSE))
+    } else{
+      return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd))
+    }
+  }
+  
 } 
 
 
@@ -495,8 +515,8 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
   rm(new_env)
   if (!is.null(RES_NPLCM)){res_nplcm <- RES_NPLCM
   } else {res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
-                               file.path(DIR_NPLCM,"CODAindex.txt"),
-                               quiet=TRUE)}
+                                       file.path(DIR_NPLCM,"CODAindex.txt"),
+                                       quiet=TRUE)}
   print_res <- function(x) plot(res_nplcm[,grep(x,colnames(res_nplcm))])
   get_res   <- function(x) res_nplcm[,grep(x,colnames(res_nplcm))]
   
