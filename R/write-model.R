@@ -114,6 +114,7 @@ write_model_Reg_discrete_predictor_NoNest <- function(Mobs,prior,cause_list,
 #' 
 #' @family model generation functions
 #' @export
+
 write_model_Reg_Nest <- function(Mobs,prior,cause_list,Eti_formula,FPR_formula,
                                    use_measurements,ppd=NULL,use_jags=FALSE){
   chunk1 <- insert_bugfile_chunk_reg_nest_meas(Mobs,
