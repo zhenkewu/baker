@@ -187,3 +187,27 @@ get_coverage <- function(DIR_NPLCM,truth){
     res <- (UL>=0 & LL <=0)
     return(res)
 }
+
+
+
+#' Obtain posterior standard deviation from a result folder
+#'
+#' @param DIR_NPLCM Path to where Bayesian results are stored
+#' 
+#' @examples 
+#' \dontrun{
+#' DIR_NPLCM <- "~/downloads/rep_1_kfit_2/"  
+#' get_postsd(DIR_NPLCM)
+#' }
+#' @return a vector of positive numbers
+#' @export
+#'
+get_postsd <- function(DIR_NPLCM){
+  # read from folders:
+  out       <- nplcm_read_folder(DIR_NPLCM)
+  pEti_samp <- get_pEti_samp(out$res_nplcm,out$model_options)
+  apply(pEti_samp$pEti_mat, 2, sd)
+}
+
+
+
