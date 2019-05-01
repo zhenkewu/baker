@@ -455,11 +455,10 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
       }
       
        ",
-                             "for (j in 1:Jcause){",
+                             c("","for (j in 1:Jcause){")[any(c(ER_has_basis,ER_has_non_basis))+1],
                              ER_basis_seg,
                              ER_non_basis_seg,
-                             " 
-      }",
+      c("","}")[any(c(ER_has_basis,ER_has_non_basis))+1],
                              c("",
                                "#hyperprior of smoothness:
         ER_p_flexible_select ~ dbeta(ER_alpha,ER_beta)
