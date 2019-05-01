@@ -1798,7 +1798,8 @@ has_non_basis <- function(form){
   out <- stats::terms(form)
   outlab <- attr(out,"term.labels")
   (attr(out,"intercept")>0) ||
-    (length(outlab[-grep("^s_",outlab)])>=1 && attr(out,"intercept")==0)
+    (length(grep("^s_",outlab))>=1 && length(outlab[-grep("^s_",outlab)])>=1 && attr(out,"intercept")==0) ||
+     (length(outlab)>=1 && length(grep("^s_",outlab))==0 && attr(out,"intercept")==0) 
 }
 
 #' Make Etiology design matrix for dates with R format.

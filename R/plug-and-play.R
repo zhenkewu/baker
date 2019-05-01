@@ -595,7 +595,7 @@ add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL,reg=NULL
       parameters <- c(parameters,Z_nm.new[s])
     }
     return(make_list(plug,parameters))
-    }
+  }
   
 }
 
@@ -2040,21 +2040,30 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                   for (k in 2:",K_nm[s],"){",Lambda_nm[s],"[i,k] <- ",r0_nm[s],"[i,k]*(1-",r0_nm[s],"[i,k-1])*",Lambda_nm[s],"[i,k-1]/",r0_nm[s],"[i,k-1]}
                   for (j in 1:(",K_nm[s],"-1)){",r0_nm[s],"[i,j] <- max(0.000001,min(0.999999,ilogit(sum(",mu0_ctrl_nm,"[1:j])+",mu_ctrl_nm,"[i,j])))} # <--- prevent extreme values that makes the division above undefined.
          }
-          ")
+
+        for (j in 1:(",K_nm[s],"-1)){
+              ",mu0_ctrl_nm[s],"[j] ~ dnorm(0,",inv_scale_mu0_ctrl_nm[s],"[j])T(0,) # can have penalty in the intercepts whether or not we have basis
+              ",inv_scale_mu0_ctrl_nm[s],"[j] ~ dgamma(",half_nu_ctrl_nm[s],",",half_s2_ctrl_nm[s],")
+        }
+        #",half_s2_ctrl_nm[s]," ~ dgamma(2,0.04)
+        for (l in 1:",d_FPR_nm[s],"){
+              ",betaFPR_nm[s],"[l,",K_nm[s],"] <- 0
+              ",case_betaFPR_nm[s],"[l,",K_nm[s],"] <- 0
+        }
+    ")
   
-  if(has_basis){
+  if(has_basis){ 
     plug <- paste0(plug,
                    "
                    # BrS measurement characteristics - nested:
                    for (j in 1:(",K_nm[s],"-1)){
-                       ",mu0_ctrl_nm[s],"[j] ~ dnorm(0,",inv_scale_mu0_ctrl_nm[s],"[j])T(0,)
-                      ",inv_scale_mu0_ctrl_nm[s],"[j] ~ dgamma(",half_nu_ctrl_nm[s],",",half_s2_ctrl_nm[s],")
+                      
                        ## control: B-spline basis coefficients:
                        ",#betaFPR_nm[s],"[",basis_id_nm[s],"[1],1:",JBrS_nm[s],"] ~ dmnorm(",zero_JBrS_nm[s],",",prec_first_nm[s],")
                    betaFPR_nm[s],"[",basis_id_nm[s],"[1]",",j] ~ dnorm(0,",prec_first_nm[s],")
                        
                        for (l in 2:",n_basis_nm[s],"){# iterate over the vector of B-spline basis.
-                       ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],j] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],j],",taubeta_nm[s],"[j])
+                          ",betaFPR_nm[s],"[",basis_id_nm[s],"[l],j] ~ dnorm(",betaFPR_nm[s],"[",basis_id_nm[s],"[l-1],j],",taubeta_nm[s],"[j])
                        }
                        # select flexible semiparametric regression:
                        ",taubeta0_nm[s],"[j,1]      ~ dgamma(3,2)               # <-------- flexible fit.
@@ -2080,18 +2089,13 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
                        ",case_taubeta_nm[s],"[j]         <- ",case_taubeta0_nm[s],"[j,",case_ind_flex_select_nm[s],"[j]]
 
                    }    
-                   for (l in 1:",d_FPR_nm[s],"){
-                          ",betaFPR_nm[s],"[l,",K_nm[s],"] <- 0
-                          ",case_betaFPR_nm[s],"[l,",K_nm[s],"] <- 0
-                       }
+
                        # control: hyperprior of smoothness:
                        ",p_flexible_nm[s],"     ~ dbeta(ctrl_flex_alpha,ctrl_flex_beta)#flexible prob 
                        ",#prec_first_nm[s]," <- 1/4*",I_JBrS_nm[s],"
-                       prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
+                   prec_first_nm[s]," <- pow(sd_betaFPR_basis,-2) #1/4 #precision for spline coefficients
                        # case: hyperprior of smoothness:
                        ",case_p_flexible_nm[s]," ~ dbeta(case_flex_alpha,case_flex_beta)#flexible prob
-                           
-                       ",half_s2_ctrl_nm[s]," ~ dgamma(2,0.04)
                        "
     )
   } 
@@ -2112,8 +2116,13 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
   }
   
   # NB: need to add parameters:
-  parameters <- c(Lambda_nm[s],taubeta_nm[s],p_flexible_nm[s],flexible_select_nm[s],mu_ctrl_nm[s],betaFPR_nm[s],mu0_ctrl_nm[s],half_s2_ctrl_nm[s],#mu0_case_nm[s],
-                  Eta_nm[s],case_taubeta_nm[s],case_p_flexible_nm[s],case_flexible_select_nm[s],mu_case_nm[s],case_betaFPR_nm[s])
+  if (has_basis){
+    parameters <- c(Lambda_nm[s],taubeta_nm[s],p_flexible_nm[s],flexible_select_nm[s],mu_ctrl_nm[s],betaFPR_nm[s],mu0_ctrl_nm[s],half_s2_ctrl_nm[s],#mu0_case_nm[s],
+                    Eta_nm[s],case_taubeta_nm[s],case_p_flexible_nm[s],case_flexible_select_nm[s],mu_case_nm[s],case_betaFPR_nm[s])
+  }else{
+    parameters <- c(Lambda_nm[s],mu_ctrl_nm[s],betaFPR_nm[s],mu0_ctrl_nm[s],half_s2_ctrl_nm[s],#mu0_case_nm[s],
+                    Eta_nm[s],mu_case_nm[s],case_betaFPR_nm[s])
+  }
   make_list(plug,parameters)
 }
 
