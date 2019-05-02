@@ -350,13 +350,19 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   if (return_metric){
     if (!is.null(truth$Eti)){
       Eti_overall_truth  <- colMeans(truth$Eti[plotid_Eti,])
-      Eti_IMSE <- mean( apply(Eti_mean-t( truth$Eti[plotid_Eti,]),2,function(v) sum(v^2)))
+      # Eti_IMSE <- rep(0,length(cause_list))
+      # for (t in 1:n_samp_kept){
+      #   Eti_IMSE <- Eti_IMSE*(t-1) + apply(Eti_prob_scale[,,t]-t(truth$Eti[plotid_Eti,]),1,function(v) sum(v^2)/length(v))
+      #   Eti_IMSE <- Eti_IMSE/t
+      # }
+      # compute integrated squared error:
+      Eti_ISE <- apply(Eti_mean-t(truth$Eti[plotid_Eti,]),1,function(v) sum(v^2)/length(v))
       Eti_overall_cover  <- sapply(seq_along(Eti_overall_mean),
                                    function(s) (Eti_overall_truth[s]<= Eti_overall_q[2,s]) && 
                                      (Eti_overall_truth[s]>= Eti_overall_q[1,s]))
       Eti_overall_bias  <- Eti_overall_mean -  Eti_overall_truth
       return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,
-                       Eti_overall_cover, Eti_overall_bias,Eti_overall_truth,Eti_IMSE))
+                       Eti_overall_cover, Eti_overall_bias,Eti_overall_truth,Eti_ISE))
     } else{
       return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd))
     }

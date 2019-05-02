@@ -2059,7 +2059,7 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
       for (fiter in seq_along(inits_fnames)){
         curr_inits_txt_file <- inits_fnames[fiter]
         bad_jagsinits_txt <- readLines(curr_inits_txt_file)
-        good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
+        good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1L,\\2L)", bad_jagsinits_txt,fixed = FALSE)
         writeLines(good_jagsinits_txt, curr_inits_txt_file)
       }
       
