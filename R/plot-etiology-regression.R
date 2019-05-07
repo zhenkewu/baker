@@ -251,6 +251,10 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
              xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
         
         mtext("other",side = 3,cex=1.5,line=1)
+      } else if (is.na(match_cause(colnames(data_nplcm$Mobs$MBS[[slice]]),model_options$likelihood$cause_list[j]))) {
+        plot(0,0.5,type="l",ylim=c(0,1),pch="n",
+             xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
+        mtext(model_options$likelihood$cause_list[j],side=3,cex=1.5,line=1)
       } else{                                  #<------------------------ FIX!
         plot(curr_date_FPR,FPR_mean[,j],type="l",ylim=c(0,1),
              xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
@@ -728,7 +732,7 @@ plot_etiology_strat_nested <- function(DIR_NPLCM,strata_weights = NULL,
         Lines <- list(bquote(paste("level ",.(levels(as.factor(data_nplcm$X$SITE))[site]))),
                       bquote(paste("",.(round(user_weight[site],4)))))
         mtext(do.call(expression, Lines),side=2,line=c(5.5,3.75),cex=1.5,col="blue")
-  
+        
         #mtext(paste0(round(user_weight[site],4)),2,5,cex=2,col="blue",las=1)
         #if (site==ceiling(n_unique_Eti_level/2)) {mtext("User-specified weight towards overall pie:", 2,12, cex=3)}
       }

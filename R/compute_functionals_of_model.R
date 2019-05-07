@@ -218,7 +218,7 @@ compute_marg_PR_nested_reg <-  function(ThetaBS,PsiBS,pEti_mat,subwt_mat,case,te
 #' @export
 compute_marg_PR_nested_reg_array <- function(ThetaBS_array,PsiBS_array,
                                              pEti_mat_array,subwt_mat_array,case,template){
-  res <- array(NA,dim(pEti_mat_array))  
+  res <- array(NA,c(dim(pEti_mat_array)[1],dim(ThetaBS_array)[1],dim(pEti_mat_array)[3]))  
   for (s in 1:(dim(ThetaBS_array)[3])){ 
     res[,,s] <- compute_marg_PR_nested_reg(
       ThetaBS_array[,,s],PsiBS_array[,,s],

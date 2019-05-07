@@ -811,9 +811,9 @@ nplcm_fit_Reg_NoNest <-
     ER_n_basis  <- length(ER_basis_id)
     ER_non_basis_id <- c(sapply(1, function(s) {
       if (length(grep("^s_",dimnames(Z_Eti)[[2]]))==0){
-        0+(1:ncol(Z_Eti))
+        as.numeric(0+(1:ncol(Z_Eti)))
       } else{
-        (1:ncol(Z_Eti))[-grep("^s_",dimnames(Z_Eti)[[2]])]
+        as.numeric((1:ncol(Z_Eti))[-grep("^s_",dimnames(Z_Eti)[[2]])])
       }
     }))
     #END <-----!
@@ -874,9 +874,9 @@ nplcm_fit_Reg_NoNest <-
       n_basis_list  <- lapply(basis_id_list,length) 
       non_basis_id_list <- lapply(Z_FPR_list,function(Z){
         if (length(grep("^s_",dimnames(Z)[[2]]))==0){
-          0+(1:ncol(Z))
+          as.numeric(0+(1:ncol(Z)))
         } else{
-          (1:ncol(Z))[-grep("^s_",dimnames(Z)[[2]])]
+          as.numeric((1:ncol(Z))[-grep("^s_",dimnames(Z)[[2]])])
         }
       })
       
@@ -1436,7 +1436,7 @@ nplcm_fit_Reg_NoNest <-
            file = curr_data_txt_file)
       ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
       bad_jagsdata_txt <- readLines(curr_data_txt_file)
-      good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
       writeLines(good_jagsdata_txt, curr_data_txt_file)
       
       # # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
@@ -1555,9 +1555,9 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   ER_n_basis  <- length(ER_basis_id)
   ER_non_basis_id <- c(sapply(1, function(s) {
     if (length(grep("^s_",dimnames(Z_Eti)[[2]]))==0){
-      0+(1:ncol(Z_Eti))
+      as.numeric(0+(1:ncol(Z_Eti)))
     } else{
-      (1:ncol(Z_Eti))[-grep("^s_",dimnames(Z_Eti)[[2]])]
+      as.numeric((1:ncol(Z_Eti))[-grep("^s_",dimnames(Z_Eti)[[2]])])
     }
   }))
   #END <-----!
@@ -1618,9 +1618,9 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
     n_basis_list  <- lapply(basis_id_list,length) 
     non_basis_id_list <- lapply(Z_FPR_list,function(Z){
       if (length(grep("^s_",dimnames(Z)[[2]]))==0){
-        0+(1:ncol(Z))
+       as.numeric( 0+(1:ncol(Z)))
       } else{
-        (1:ncol(Z))[-grep("^s_",dimnames(Z)[[2]])]
+       as.numeric( (1:ncol(Z))[-grep("^s_",dimnames(Z)[[2]])])
       }
     })
     
@@ -2185,7 +2185,7 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
          file = curr_data_txt_file)
     ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
     bad_jagsdata_txt <- readLines(curr_data_txt_file)
-    good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+    good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
     writeLines(good_jagsdata_txt, curr_data_txt_file)
     
     gs <- jags2_baker(data   = curr_data_txt_file,
