@@ -57,7 +57,8 @@
 #' }
 #' @family visualization functions
 #' @export
-plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,return_metric=TRUE){
+plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,
+                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,return_metric=TRUE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
@@ -277,8 +278,16 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
                 col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
         if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
         # rug plot:
-        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line=-1)
+        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
         rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line=-1)
+        
+        if (j==1){
+          mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
+          mtext(text = "case   -->",side=2,at=line2user(-1,1),cex=0.8,las=1)
+          mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
+          mtext(text = "control-->",side=2,at=line2user(0,1), cex=0.8,las=1,col="dodgerblue2")
+        }
+        
         
         if (!is_nested){
           abline(h=colMeans(thetaBS_samp)[j],col="red")
@@ -322,10 +331,15 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       # overall pie:
       abline(h=Eti_overall_mean[j],col="black",lwd=2)
       abline(h=Eti_overall_q[,j],col="black",lty=2,lwd=1.5)
-      mtext("Overall Pie",side=3,line=-0.5,cex=1.2)
+      
       mtext(paste0(round(Eti_overall_mean[j],3)*100,"%"),side=3,line=-2,cex=1.2)
-      mtext(paste0(round(Eti_overall_q[1,j],3)*100,"%"),side=3,line=-2.5,cex=1,adj=0.15)
-      mtext(paste0(round(Eti_overall_q[2,j],3)*100,"%"),side=3,line=-2.5,cex=1,adj=0.85)
+      mtext(paste0(round(Eti_overall_q[1,j],3)*100,"%"),side=3,line=-3,cex=1,adj=0.15)
+      mtext(paste0(round(Eti_overall_q[2,j],3)*100,"%"),side=3,line=-3,cex=1,adj=0.85)
+      
+      if (j==2){
+        mtext("<- Overall Pie ->",side=2,at=(line2user(-2,3)+line2user(-1,3))/2,las=1,cex=0.8,col="blue")
+        mtext("<- 95% CrI ->",side=2,at=(line2user(-3,3)+line2user(-2,3))/2,las=1,cex=0.8,col="blue")
+      }
       
       # add x-axis for dates:
       X <- data_nplcm$X
@@ -342,15 +356,18 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       lubridate::month(last_interval) <- lubridate::month(last_interval) +2
       axis(1, X$std_date[c(plotid_FPR_case)], 
            format(c(X$date_month[c(plotid_FPR_case)]), "%Y %b"), 
-           cex.axis = .7,las=1)
+           cex.axis = .7,las=2)
       axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2),las=2)
+      
+      if (j==1){
+        mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
+      }
       
       polygon(c(curr_date_Eti, rev(curr_date_Eti)),
               c(Eti_q[1,j,], rev(Eti_q[2,j,])),
               col = grDevices::rgb(0.5,0.5,0.5,0.5),border = NA)
     }
   }
-  
   if (return_metric){
     if (!is.null(truth$Eti)){
       Eti_overall_truth  <- colMeans(truth$Eti[plotid_Eti,])
