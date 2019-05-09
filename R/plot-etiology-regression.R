@@ -22,11 +22,14 @@
 #' @param do_plot TRUE for plotting
 #' @param return_metric TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
+#' @param plot_ma_dots plot moving averages among case and controls if TRUE; Defautl to FALSE.
+#' 
 #' 
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
 #' model fit; See example for the legends.
 #' 
 #' @import graphics
+#' @importFrom lubridate day days_in_month month year
 #' @examples 
 #' \dontrun{
 #' # legend.text = c("[UPPER FIGURES]",
@@ -58,11 +61,13 @@
 #' @family visualization functions
 #' @export
 plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,
-                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,return_metric=TRUE){
+                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,return_metric=TRUE,
+                                     plot_ma_dots=FALSE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
   # plot_basis   <- TRUE
+  # discrete_X_names <- c("AGE","ALL_VS") # must be the discrete variables used in Eti_formula.
   # <------------------------------- end of testing.
   old_par <- graphics::par(graphics::par("mfrow", "mar"))
   on.exit(graphics::par(old_par))
@@ -103,6 +108,52 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   K_curr        <- model_options$likelihood$k_subclass[slice]
   templateBS    <- bugs.dat[[paste0("templateBS_",slice)]]
   
+  #####################################################################
+  # add x-axis for dates:
+  X <- data_nplcm$X
+  Y <- data_nplcm$Y
+  # some date transformations:
+  X$date_plot  <- as.Date(X$ENRLDATE)
+  X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
+  X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
+  
+  dd <-  as.Date(X$ENRLDATE)
+  min_d <- min(dd)
+  min_d_std <- unique(X$std_date[which(X$ENRLDATE==min_d)])
+  min_plot_d <- min_d+days_in_month(month(min_d))-day(min_d)+1
+  
+  max_d <- max(dd)
+  max_d_std <- unique(X$std_date[which(X$ENRLDATE==max_d)])
+  max_plot_d <- max_d-day(max_d)+1
+  plot_d <- seq.Date(min_plot_d,max_plot_d,by = "quarter")
+  
+  unit_x <- (max_d_std-min_d_std)/as.numeric(max_d-min_d)
+  plot_d_std <- as.numeric(plot_d - min_d)*unit_x+min_d_std
+  
+  pred_d <- seq.Date(min_plot_d,max_plot_d,by = "day")
+  pred_d_std <- as.numeric(pred_d - min_d)*unit_x+min_d_std
+  #####################################################################
+  
+  # pred_dataframe <- data.frame(ENRLDATE=as.POSIXct.Date(pred_d,tz="UTC"),
+  #                              t(replicate(length(pred_d),unlist(unique(X[discrete_names])[1,]))))
+  # if (nrow(unique(X[discrete_names]))>1){
+  #   for (l in 2:nrow(unique(X[discrete_names]))){
+  #     pred_dataframe <- rbind(pred_dataframe,
+  #                             data.frame(ENRLDATE=as.POSIXct.Date(pred_d,tz="UTC"),
+  #                                        t(replicate(length(pred_d),unlist(unique(X[discrete_names])[l,])))))
+  #   }
+  # }
+  # 
+  # 
+  # pred_dataframe$std_date <- dm_Rdate_FPR(c(pred_dataframe$ENRLDATE,data_nplcm$X$ENRLDATE),
+  #                                         c(rep(1,nrow(pred_dataframe)),data_nplcm$Y),
+  #                                         effect = "fixed")[-(1:nrow(data_nplcm$X))]
+  # pred_dataframe_ok <- cbind(pred_dataframe,Y=rep(1,nrow(pred_dataframe)))
+  # 
+  # Z_Eti_pred       <- stats::model.matrix(model_options$likelihood$Eti_formula,
+  #                                         pred_dataframe_ok)
+  # 
+  
   if (!is_nested){
     betaFPR_samp <- array(t(get_res(paste0("^betaFPR_",slice,"\\["))),c(ncol_dm_FPR,JBrS,n_samp_kept))
     betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept))
@@ -116,7 +167,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   } else{
     betaFPR_samp <- array(t(get_res(paste0("^betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
     case_betaFPR_samp <- array(t(get_res(paste0("^case_betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
-    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept))
+    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept)) #useful in effect estimation.
     ThetaBS_samp <- array(t(get_res(paste0("^ThetaBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
     PsiBS_samp <- array(t(get_res(paste0("^PsiBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
     Eta_samp <- array(t(get_res(paste0("^Eta_",slice,"\\["))),c(Nd,K_curr,n_samp_kept))
@@ -127,7 +178,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
     # out_caseFPR_linpred     <- array(apply(case_betaFPR_samp,3,linpred,design_matrix=bugs.dat[[paste0("Z_FPR_",slice)]]),
     #                              c(Nd+Nu,K_curr,n_samp_kept))
     out_Eti_linpred     <- array(apply(betaEti_samp,3,linpred,design_matrix=bugs.dat$Z_Eti),
-                                 c(Nd,Jcause,n_samp_kept)) # can potentially just add pEti to the monitoring.
+                                c(Nd,Jcause,n_samp_kept)) # can potentially just add pEti to the monitoring.
     #pEti_samp           <- apply(out_Eti_linpred,c(1,3),softmax) # Jcause by Nd by niter.
     pEti_samp           <- abind::abind(aperm(apply(out_Eti_linpred,c(1,3),softmax),c(2,1,3)),
                                         array(0,c(Nu,Jcause,n_samp_kept)),along=1)
@@ -210,7 +261,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   
   if (!is_nested){
     Eti_prob_scale <- apply(out_Eti_linpred[plotid_Eti,,],c(1,3),softmax)
-  }else{  Eti_prob_scale <- aperm(pEti_samp,c(2,1,3))[,plotid_Eti,]}
+  }else{Eti_prob_scale <- aperm(pEti_samp,c(2,1,3))[,plotid_Eti,]}
   Eti_mean <- apply(Eti_prob_scale,c(1,2),mean)
   Eti_q    <- apply(Eti_prob_scale,c(1,2),quantile,c(0.025,0.975))
   Eti_overall <- apply(Eti_prob_scale,c(1,3),mean)
@@ -310,12 +361,12 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
         response.ctrl <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_ctrl,j]
         dat_ctrl <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_ctrl])[!is.na(response.ctrl),,drop=FALSE]
         dat_ctrl$runmean <- ma_cont(response.ctrl[!is.na(response.ctrl)],dat_ctrl$std_date[!is.na(response.ctrl)])
-        points(runmean ~ std_date,data=dat_ctrl[!is.na(response.ctrl),],lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")
+        if (plot_ma_dots) {points(runmean ~ std_date,data=dat_ctrl[!is.na(response.ctrl),],lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")}
         
         response.case <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_case,j]
         dat_case <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_case])[!is.na(response.case),,drop=FALSE]
         dat_case$runmean <- ma_cont(response.case[!is.na(response.case)],dat_case$std_date[!is.na(response.case)])
-        points(runmean ~ std_date,data=dat_case,lty=2,pch=1,cex=0.5,type="o")
+        if (plot_ma_dots){points(runmean ~ std_date,data=dat_case,lty=2,pch=1,cex=0.5,type="o")}
       }
       #
       # Figure 2 for Etiology Regression:
@@ -345,27 +396,6 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       
       if (j==1){mtext("2)",side=2,at=0.85,line=3, cex=2,las=1)}
       
-      # add x-axis for dates:
-      X <- data_nplcm$X
-      Y <- data_nplcm$Y
-      # some date transformations:
-      X$date_plot  <- as.Date(X$ENRLDATE)
-      X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
-      X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
-      
-      dd <-  as.Date(X$ENRLDATE)
-      min_d <- min(dd)
-      min_d_std <- X$std_date[which(X$ENRLDATE==min_d)]
-      min_plot_d <- min_d+days_in_month(month(min_d))-day(min_d)+1
-      
-      max_d <- max(dd)
-      max_d_std <- X$std_date[which(X$ENRLDATE==max_d)]
-      max_plot_d <- max_d-day(max_d)+1
-      plot_d <- seq.Date(min_plot_d,max_plot_d,by = "quarter")
-      
-      unit_x <- (max_d_std-min_d_std)/as.numeric(max_d-min_d)
-      plot_d_std <- as.numeric(plot_d - min_d)*unit_x+min_d_std
-      
       
       color2 <- grDevices::rgb(190, 190, 190, alpha=200, maxColorValue=255)
       color1 <- grDevices::rgb(216,191,216, alpha=200, maxColorValue=255)
@@ -375,6 +405,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       # axis(1, X$std_date[c(plotid_FPR_case)], 
       #      format(c(X$date_month[c(plotid_FPR_case)]), "%Y %b"), 
       #      cex.axis = .7,las=2,srt=45)
+      rle_res <- rle(year(plot_d))
       format_seq <- rep("%b-%d",length(plot_d))
       format_seq[cumsum(c(1,rle_res$lengths[-length(rle_res$lengths)]))] <- "%Y:%b-%d"
       
