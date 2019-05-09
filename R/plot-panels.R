@@ -25,6 +25,7 @@
 #' @param eti_upperlimit The upper limit of horizontal bar for the etiology
 #' posterior subpanel (the rightmost panel). The default value is .4
 #' @param silent Default is TRUE to not print any warning messages; FALSE otherwise.
+#' @param ref_eti0 reference quantiles and means; a list: pEti_ref_q, pEti_ref_mean_ord
 #' @return A figure with two or three columns
 #'
 #' @family visualization functions
@@ -39,7 +40,8 @@ plot_panels <- function(DIR_NPLCM,
                         exact = TRUE,
                         SS_upperlimit=1,
                         eti_upperlimit=1,
-                        silent=TRUE){#BEGIN function
+                        silent=TRUE,
+                        ref_eti0 = NULL){#BEGIN function
   old_par <- graphics::par(no.readonly=TRUE)
   on.exit(graphics::par(old_par))
   
@@ -119,7 +121,7 @@ plot_panels <- function(DIR_NPLCM,
                     select_latent,exact)
     }
   }
-  plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color = bg_color,select_latent,exact)
+  plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color = bg_color,select_latent,exact,ref_eti=ref_eti0)
   
   cat("\n == Done. == \n")
   

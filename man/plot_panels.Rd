@@ -7,7 +7,7 @@
 plot_panels(DIR_NPLCM, slices = "all", bg_color = list(BrS =
   "lavenderblush", SS = "mistyrose", pie = "antiquewhite"),
   select_latent = NULL, exact = TRUE, SS_upperlimit = 1,
-  eti_upperlimit = 1, silent = TRUE)
+  eti_upperlimit = 1, silent = TRUE, ref_eti0 = NULL)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -35,6 +35,8 @@ subpanel (the middle panel). The default value is .25.}
 posterior subpanel (the rightmost panel). The default value is .4}
 
 \item{silent}{Default is TRUE to not print any warning messages; FALSE otherwise.}
+
+\item{ref_eti0}{reference quantiles and means; a list: pEti_ref_q, pEti_ref_mean_ord}
 }
 \value{
 A figure with two or three columns

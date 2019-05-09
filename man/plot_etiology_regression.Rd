@@ -6,7 +6,7 @@
 \usage{
 plot_etiology_regression(DIR_NPLCM, stratum_bool, slice = 1,
   plot_basis = FALSE, truth = NULL, RES_NPLCM = NULL,
-  do_plot = TRUE, return_metric = TRUE)
+  do_plot = TRUE, return_metric = TRUE, plot_ma_dots = FALSE)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -33,6 +33,8 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 
 \item{return_metric}{TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 coverage, bias, truth and integrated mean squared errors (IMSE).}
+
+\item{plot_ma_dots}{plot moving averages among case and controls if TRUE; Defautl to FALSE.}
 }
 \value{
 A figure of etiology regression curves and some marginal positive rate assessment of

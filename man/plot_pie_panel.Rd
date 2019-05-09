@@ -5,7 +5,8 @@
 \title{Plot etiology (pie) panel}
 \usage{
 plot_pie_panel(model_options, res_nplcm, bugs.dat, bg_color,
-  select_latent = NULL, exact = TRUE, top_pie = 1, label_size = 1)
+  select_latent = NULL, exact = TRUE, top_pie = 1, label_size = 1,
+  ref_eti = NULL)
 }
 \arguments{
 \item{model_options}{See \code{\link{nplcm}}}
@@ -27,6 +28,8 @@ to plot all latent status information relevant to \code{"HINF"}.}
 on the horizontal axis for the pie panel.}
 
 \item{label_size}{the size of latent status labels on the right margin}
+
+\item{ref_eti}{reference quantiles and means; a list: pEti_ref_q, pEti_ref_mean_ord}
 }
 \description{
 Plot etiology (pie) panel
