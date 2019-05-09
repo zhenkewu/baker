@@ -249,16 +249,16 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       #<------------------------ FIX!
       if (model_options$likelihood$cause_list[j] == "other"){
         plot(0,0.5,type="l",ylim=c(0,1),pch="n",
-             xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
+             xaxt="n",xlab="",ylab=c("","positive rate")[(j==1)+1],las=2,bty="n")
         
         mtext("other",side = 3,cex=1.5,line=1)
       } else if (is.na(match_cause(colnames(data_nplcm$Mobs$MBS[[slice]]),model_options$likelihood$cause_list[j]))) {
         plot(0,0.5,type="l",ylim=c(0,1),pch="n",
-             xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
+             xaxt="n",xlab="",ylab=c("","positive rate")[(j==1)+1],las=2,bty="n")
         mtext(model_options$likelihood$cause_list[j],side=3,cex=1.5,line=1)
       } else{                                  #<------------------------ FIX!
         plot(curr_date_FPR,FPR_mean[,j],type="l",ylim=c(0,1),
-             xaxt="n",xlab="",ylab="positive rate",las=2,bty="n")
+             xaxt="n",xlab="",ylab=c("","positive rate")[(j==1)+1],las=2,bty="n")
         polygon(c(curr_date_FPR, rev(curr_date_FPR)),
                 c(FPR_q[1,,j], rev(FPR_q[2,,j])),
                 col = grDevices::rgb(0, 1, 1,0.5),border = NA)
@@ -286,6 +286,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
           mtext(text = "case   -->",side=2,at=line2user(-1,1),cex=0.8,las=1)
           mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
           mtext(text = "control-->",side=2,at=line2user(0,1), cex=0.8,las=1,col="dodgerblue2")
+          
+          mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
         }
         
         
@@ -320,7 +322,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       #
       par(mar=c(2,5,0,1))
       plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1),xlab="standardized date",
-           ylab="etiologic fraction",bty="n",xaxt="n",yaxt="n",las=2)
+           ylab=c("","etiologic fraction")[(j==1)+1],bty="n",xaxt="n",yaxt="n",las=2)
       ## ONLY FOR SIMULATIONS <---------------------- FIX!
       if(!is.null(truth$Eti)){
         points(curr_date_Eti,truth$Eti[plotid_Eti,j],type="l",lwd=3,col="black")
@@ -340,6 +342,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
         mtext("<- Overall Pie ->",side=2,at=(line2user(-2,3)+line2user(-1,3))/2,las=1,cex=0.8,col="blue")
         mtext("<- 95% CrI ->",side=2,at=(line2user(-3,3)+line2user(-2,3))/2,las=1,cex=0.8,col="blue")
       }
+      
+      if (j==1){mtext("2)",side=2,at=0.85,line=3, cex=2,las=1)}
       
       # add x-axis for dates:
       X <- data_nplcm$X
