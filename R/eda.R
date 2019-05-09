@@ -127,7 +127,7 @@ plot_logORmat = function(data_nplcm,
     cex_main= min(2,20/n)
     cex_se  = min(1.5,15/n)
     
-    graphics::par(mar = c(0, 0, 5, 0), bg = "white",xpd=TRUE)
+    graphics::par(mar = c(0, 1, 5, 0), bg = "white",xpd=TRUE)
     graphics::plot(c(0, n + 0.8), c(0, n + 0.8), axes = axes, xlab = "",
          ylab = "", asp = 1, type = "n")
     ##add grid
@@ -175,7 +175,7 @@ plot_logORmat = function(data_nplcm,
     #   graphics::text(-2,graphics::par("usr")[1]+0.03*(length(pathogen_name)-s)*diff(graphics::par("usr")[1:2])+5,
     #        paste0(s,":",pathogen_name[s]),las=2,
     #        cex=1)
-    graphics::text(-0,J-s+1,paste0(pathogen_name[s],":(",s,")"),cex=min(1.5,20/J),adj=1)
+    graphics::text(0.25,J-s+1,paste0(pathogen_name[s],":(",s,")"),cex=min(1.5,20/J),srt=45,adj=1)
     graphics::text(s,J+0.7,paste0("(",s,"):",pathogen_name[s]),cex=min(1.5,20/J),srt=45,adj=0)
   }
   # labels for cases and controls:
