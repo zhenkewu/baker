@@ -375,9 +375,14 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       # axis(1, X$std_date[c(plotid_FPR_case)], 
       #      format(c(X$date_month[c(plotid_FPR_case)]), "%Y %b"), 
       #      cex.axis = .7,las=2,srt=45)
+      format_seq <- rep("%b-%d",length(plot_d))
+      format_seq[cumsum(c(1,rle_res$lengths[-length(rle_res$lengths)]))] <- "%Y:%b-%d"
+      
       axis(1, plot_d_std,
-           format(c(plot_d), "%m-%d-%Y"),
-           cex.axis = .7,las=2,srt=45)
+           format(c(plot_d), 
+                  format_seq),
+           cex.axis = 0.8,las=2)
+      
       axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2),las=2)
       
       rug(X$std_date[c(plotid_FPR_case)],side=1,line=-0.2,cex=1)
