@@ -263,8 +263,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
                 c(FPR_q[1,,j], rev(FPR_q[2,,j])),
                 col = grDevices::rgb(0, 1, 1,0.5),border = NA)
         # rug plot:
-        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2")
-        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2")
+        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2",line=0)
+        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2",line=1)
         
         if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
         if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
@@ -279,13 +279,13 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
         if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
         # rug plot:
         rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
-        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line=-1)
+        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
         
         if (j==1){
           mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
-          mtext(text = "case   -->",side=2,at=line2user(-1,1),cex=0.8,las=1)
+          mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
           mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
-          mtext(text = "control-->",side=2,at=line2user(0,1), cex=0.8,las=1,col="dodgerblue2")
+          mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
           
           mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
         }
@@ -353,18 +353,37 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
       X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
       
+      dd <-  as.Date(X$ENRLDATE)
+      min_d <- min(dd)
+      min_d_std <- X$std_date[which(X$ENRLDATE==min_d)]
+      min_plot_d <- min_d+days_in_month(month(min_d))-day(min_d)+1
+      
+      max_d <- max(dd)
+      max_d_std <- X$std_date[which(X$ENRLDATE==max_d)]
+      max_plot_d <- max_d-day(max_d)+1
+      plot_d <- seq.Date(min_plot_d,max_plot_d,by = "quarter")
+      
+      unit_x <- (max_d_std-min_d_std)/as.numeric(max_d-min_d)
+      plot_d_std <- as.numeric(plot_d - min_d)*unit_x+min_d_std
+      
+      
       color2 <- grDevices::rgb(190, 190, 190, alpha=200, maxColorValue=255)
       color1 <- grDevices::rgb(216,191,216, alpha=200, maxColorValue=255)
       #cases:
       last_interval <- max(X$date_month)
       lubridate::month(last_interval) <- lubridate::month(last_interval) +2
-      axis(1, X$std_date[c(plotid_FPR_case)], 
-           format(c(X$date_month[c(plotid_FPR_case)]), "%Y %b"), 
-           cex.axis = .7,las=2)
+      # axis(1, X$std_date[c(plotid_FPR_case)], 
+      #      format(c(X$date_month[c(plotid_FPR_case)]), "%Y %b"), 
+      #      cex.axis = .7,las=2,srt=45)
+      axis(1, plot_d_std,
+           format(c(plot_d), "%m-%d-%Y"),
+           cex.axis = .7,las=2,srt=45)
       axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2),las=2)
       
+      rug(X$std_date[c(plotid_FPR_case)],side=1,line=-0.2,cex=1)
+      
       if (j==1){
-        mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
+        mtext(text = "case   -->",side=2,at=line2user(-0.2,1),cex=0.8,las=1)
       }
       
       polygon(c(curr_date_Eti, rev(curr_date_Eti)),
