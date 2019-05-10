@@ -561,9 +561,9 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
     ind_BrS_not_missing <- which(!is.na(curr_MSS[,patho_SS]))
     graphics::points(dat_case$date_plot[ind_BrS_not_missing],
            c(-0.5,1.3)[curr_MSS[ind_BrS_not_missing,patho_SS]+1],pch="|",col="red",lwd=2)
-    graphics::text(case.overall.loc,1.3,
+    graphics::mtext(
          paste0(names(data_nplcm$Mobs$MSS)[slice_SS],"(+)%:",round(100*mean(curr_MSS[ind_BrS_not_missing,patho_SS]),2),"%"),
-         cex=2,col=2)
+         cex=0.6,col=2,at=1.3,side=2,las=1)
   }
   
   
