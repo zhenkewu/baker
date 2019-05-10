@@ -288,7 +288,6 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   ##################
   # plot results:
   #################
-  model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))  
   if (do_plot){  
     par(mfcol=c(2,Jcause),oma=c(3,0,3,0))
     for (j in 1:Jcause){ # <--- the marginal dimension of measurements.

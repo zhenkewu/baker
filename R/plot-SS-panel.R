@@ -24,7 +24,6 @@
 #' @family visualization functions
 #' @export
 
-
 plot_SS_panel <- function(slice,data_nplcm,model_options,
                            clean_options,bugs.dat,res_nplcm,
                            bg_color,

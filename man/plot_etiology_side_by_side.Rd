@@ -5,7 +5,7 @@
 \title{compare the posterior distribution of population etiologies side-by-side}
 \usage{
 plot_etiology_side_by_side(DIR_list, DIR_pathogen_displayorder_lookup,
-  dodge_val = 0.5, right_panel = TRUE)
+  dodge_val = 0.5, right_panel = TRUE, reg_ind = NULL)
 }
 \arguments{
 \item{DIR_list}{The list of directory paths, each storing a model output.}
@@ -17,6 +17,9 @@ that stores the display order of pathogens in the combined music sheet plot.}
 
 \item{right_panel}{default is \code{TRUE}, for bacterial, viral, combo, other groupings. 
 Set to \code{FALSE} if not wanted.}
+
+\item{reg_ind}{A vector of \code{TRUE} or \code{FALSE}, indicating each directory in the DIR_list
+contains a regression result or not}
 }
 \value{
 A figure that compares posterior etiology distribution stored in
