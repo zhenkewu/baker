@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-etiology-side-by-side.R
 \name{get_pEti_samp}
 \alias{get_pEti_samp}
-\title{get latent causes by names}
+\title{get etiology samples by names (no regression)}
 \usage{
 get_pEti_samp(res_nplcm, model_options)
 }
@@ -12,8 +12,12 @@ get_pEti_samp(res_nplcm, model_options)
 \item{model_options}{model specification}
 }
 \value{
-\code{pEti_mat}: a matrix of posterior samples
+A list:
+\itemize{
+   \code{pEti_mat}: a matrix of posterior samples (iteration by cause); overall etiology
+   \code{latent_nm}: a vector of character strings representing the names of the causes
+}
 }
 \description{
-get latent causes by names
+get etiology samples by names (no regression)
 }
