@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 **Issues** Please click [here](https://github.com/zhenkewu/baker/issues) to report reproducible issues.
 
-**References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following paper:
+**References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following papers:
 
 |       | Citation     | Paper Link
 | -------------  | -------------  | -------------  |
