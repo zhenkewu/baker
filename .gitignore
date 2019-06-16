@@ -4,6 +4,7 @@ baker.Rproj
 .Rproj.user
 .Rhistory
 .RData
+.RDATA
 .pdf
 .DS_Store
 dev-notes/
