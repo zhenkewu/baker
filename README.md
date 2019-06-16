@@ -39,6 +39,7 @@
 </tr>
 <tr class="odd">
 <<<<<<< HEAD
+<<<<<<< HEAD
 <td>nested pLCM regression</td>
 <td>Wu, Z., Chen, I; Regression Analysis of Dependent Binary Data for Estimating Disease Etiology from Case-Control Studies. <em>Submitted</em> (2019+)</td>
 <td><a href="https://zhenkewu.com/papers/nplcm_reg">Link</a></td>
@@ -46,12 +47,18 @@
 <tr class="even">
 =======
 >>>>>>> 11aa9d27b4a3b777096f0b51dba84e20007dc8a1
+=======
+>>>>>>> 11aa9d27b4a3b777096f0b51dba84e20007dc8a1
 <td>Application</td>
 <td>Maria Deloria Knoll, Wei Fu, Qiyuan Shi, Christine Prosperi, Zhenke Wu, Laura L. Hammitt, Daniel R. Feikin, Henry C. Baggett, Stephen R.C. Howie, J. Anthony G. Scott, David R. Murdoch, Shabir A. Madhi, Donald M. Thea, W. Abdullah Brooks, Karen L. Kotloff, Mengying Li, Daniel E. Park, Wenyi Lin, Orin S. Levine, Katherine L. O’Brien, Scott L. Zeger; Bayesian Estimation of Pneumonia Etiology: Epidemiologic Considerations and Applications to the Pneumonia Etiology Research for Child Health Study, <em>Clinical Infectious Diseases</em>, Volume 64, Issue suppl_3, 15 June 2017, Pages S213–S227</td>
 <td><a href="https://academic.oup.com/cid/article/64/suppl_3/S213/3858226/Bayesian-Estimation-of-Pneumonia-Etiology">Link</a></td>
 </tr>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <tr class="odd">
+=======
+<tr class="even">
+>>>>>>> 11aa9d27b4a3b777096f0b51dba84e20007dc8a1
 =======
 <tr class="even">
 >>>>>>> 11aa9d27b4a3b777096f0b51dba84e20007dc8a1
