@@ -530,9 +530,9 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   case.overall.loc <- max(X$date_plot)+10
   ctrl.overall.loc <- case.overall.loc+delta
   
-  graphics::text(case.overall.loc,mean(response.case)+0.3,
+  graphics::text(case.overall.loc,mean(response.case,na.rm=TRUE)+0.3,
        paste0(round(mean(response.case)*100,1),"%"),col="black",pch=20,srt=90,cex=2)
-  graphics::text(ctrl.overall.loc,mean(response.ctrl)+0.3,
+  graphics::text(ctrl.overall.loc,mean(response.ctrl,na.rm=TRUE)+0.3,
        paste0(round(mean(response.ctrl)*100,1),"%"),col="dodgerblue2",pch=20,srt=90,cex=2)
   
   ncase = sum(!is.na(response.case))
