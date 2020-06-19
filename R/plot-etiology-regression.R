@@ -631,6 +631,28 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
     K_truth <- ncol(truth$truth_subwt);
     if (K_curr > K_truth){truth_subwt <- cbind(truth_subwt,matrix(0,nrow=Nd+Nu, ncol=K_curr - K_truth))}
   }
+  
+  ## match the truth subclass weights to the real data 
+  if(!is.null(truth$truth_subwt)){
+    true_classes = seq_along(k_seq)
+    class_to_true_class = rep(0, length(true_classes))
+
+    for (class in seq_along(class_to_true_class)) {
+      dist_class_true_class = matrix(data=NA, ncol=K_curr, nrow=K_curr)
+      for (true_class in true_classes) {
+        # find the data that has the highest correlation with the subweights
+        dist_class_true_class[class, true_class] <- mean(
+          cor(subwt_samp[plotid_FPR_ctrl, k_seq[class], ], truth_subwt[plotid_FPR_ctrl, k_seq[true_class]])
+        )
+      }
+      class_to_true_class[class] <- which.max(dist_class_true_class[class,])
+      
+    }
+    class_to_true_class
+    
+  }
+  
+  
   par(mfrow=c(2,K_curr))
   for (k in seq_along(k_seq)){
     # posterior of subclass weight:
@@ -638,7 +660,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
             col=2,type="l",ylim=c(0,1),main=k,xlab="scaled date",ylab="subclass weight")
     # # posterior of subclass latent Gaussian mean:
     # #true subclass weights:
-    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],truth_subwt[plotid_FPR_ctrl,k],
+    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl,true_k],
                                              type="l",add=TRUE,lwd=4,col=1,lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")} 
   }
   
@@ -652,7 +674,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
     # # posterior of subclass latent Gaussian mean:
     # matplot(x,t(res_mu_alpha),col=col3,type="l",main="posterior of latent Gaussian mean")
     # # true subclass weights:
-    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],truth_subwt[plotid_FPR_ctrl,k],type="l",add=TRUE,lwd=4,
+    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl,true_k],type="l",add=TRUE,lwd=4,
                                              col=c("black","black","black"),lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")}
   }
 }
