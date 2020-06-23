@@ -44,7 +44,15 @@ gg_plot_etiology_strat <- function(DIR_NPLCM,strata_weights=NULL,truth=NULL){
   Jcause        <- bugs.dat$Jcause      # number of causes
   Nd            <- bugs.dat$Nd          # case size
   Nu            <- bugs.dat$Nu          # control size
-  n_unique_Eti_level <- bugs.dat$n_unique_Eti_level  # number of stratums
+  
+  Z_Eti <- stats::model.matrix(Eti_formula, data.frame(X, Y)[Y == 
+                                                               1, , drop = FALSE])
+  ncol_dm_Eti <- ncol(Z_Eti)
+  Eti_colname_design_mat <- attributes(Z_Eti)$dimnames[[2]]
+  attributes(Z_Eti)[names(attributes(Z_Eti)) != "dim"] <- NULL
+  unique_Eti_level <- unique(Z_Eti)
+  n_unique_Eti_level <- nrow(unique_Eti_level)
+
   
   ## Check if model has been fit with a discrete covariate
   if (is.null(n_unique_Eti_level)){
