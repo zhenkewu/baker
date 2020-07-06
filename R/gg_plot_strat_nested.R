@@ -108,7 +108,7 @@ gg_plot_strat_nested  = function (DIR_NPLCM, strata_weights = NULL, truth = NULL
       geom_vline(data=summaryData, 
                  mapping = aes(xintercept=eti_mean), colour="#336E8C", linetype="dashed", size=1.25) +
       facet_wrap(~cause) +
-      labs(title=paste0("Plot of posterior etiology probabilities for stratum: ", site, "\n User weights: ", (round(user_weight[site]))),
+      labs(title=paste0("Plot of posterior etiology probabilities for stratum: ", site, "\n User weights: ", round(user_weight[site], 2)),
            subtitle = "Mean posterior probability displayed as dashed line",
            x = "Etiology", y ="Samples")
     if (!is.null(truth$allEti)) {
