@@ -285,6 +285,6 @@ We provide two datasets for exploratory use with the `baker` package.
 
 -   1.  the posterior samples, which can be found in `CODAchain1.txt` and `CODAindex.txt`.
 
--   1.  the covariates used in fitting the model (`ENRLDATE` and `AGE`), which can be found in `data_nplcm.txt`.
+-   1.  the covariates used in fitting the model (`ENRLDATE` and `AGE`), which can be found in `data_nplcm.txt`. Note that this folder can be found here: (<https://github.com/raubsaurier/baker_data/tree/master/data>).
 
-Using the posterior samples in this folder, Figure 10 of the software paper can be replicated.
+Using the posterior samples in this folder, Figure 10 of the software paper can be replicated. If you would like to use `baker` visualization functions on this data, please download the compressed folder directly to your local drive, so that the path to the folder containing these `.txt` files can be provided as an argument for the plotting functions.
