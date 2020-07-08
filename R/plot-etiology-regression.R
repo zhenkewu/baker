@@ -648,7 +648,6 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
       class_to_true_class[class] <- which.max(dist_class_true_class[class,])
       
     }
-    class_to_true_class
     
   }
   
