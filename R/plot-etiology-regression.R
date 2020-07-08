@@ -624,7 +624,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
   #
   # LCM plotting subclass weight curves:
   #
-  k_seq <- 1:K_curr #c(1,2,3)                                      # <----------------- adjust order of k.
+  k_seq <- 1:K_curr #c(1,2,3)  # <----------------- adjust order of k.
   if(!is.null(truth$ord_subclass)){k_seq <- truth$ord_subclass} #c(1,2,3)                                      # <----------------- adjust order of k.
   #k_seq <- c(1,5,2,3,4)#1:K # <----------------- adjust order of k.
   if (!is.null(truth$truth_subwt)){
@@ -642,7 +642,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
       for (true_class in true_classes) {
         # find the data that has the highest correlation with the subweights
         dist_class_true_class[class, true_class] <- mean(
-          cor(subwt_samp[plotid_FPR_ctrl, k_seq[class], ], truth_subwt[plotid_FPR_ctrl, k_seq[true_class]])
+          stats::cor(subwt_samp[plotid_FPR_ctrl, k_seq[class], ], truth_subwt[plotid_FPR_ctrl, k_seq[true_class]])
         )
       }
       class_to_true_class[class] <- which.max(dist_class_true_class[class,])
@@ -660,7 +660,8 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
             col=2,type="l",ylim=c(0,1),main=k,xlab="scaled date",ylab="subclass weight")
     # # posterior of subclass latent Gaussian mean:
     # #true subclass weights:
-    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl,true_k],
+    true_k = class_to_true_class[k_seq[k]]
+    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl, true_k],
                                              type="l",add=TRUE,lwd=4,col=1,lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")} 
   }
   
@@ -674,6 +675,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
     # # posterior of subclass latent Gaussian mean:
     # matplot(x,t(res_mu_alpha),col=col3,type="l",main="posterior of latent Gaussian mean")
     # # true subclass weights:
+    true_k = class_to_true_class[k_seq[k]]
     if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl,true_k],type="l",add=TRUE,lwd=4,
                                              col=c("black","black","black"),lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")}
   }
