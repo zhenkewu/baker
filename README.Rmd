@@ -36,6 +36,7 @@ knitr::opts_chunk$set(
 | Primary PERCH Analysis | The PERCH Study Group (2019). Aetiology of severe hospitalized pneumonia in HIV-uninfected children from Africa and Asia: the Pneumonia Aetiology Research for Child Health (PERCH) Case-Control Study. *The Lancet*, In press. | [Link]()|
 
 ## Table of content
+<div id='id-section1'/>
 - [1. Installation](#id-section1)
 - [2. Vignettes](#id-section2)
 - [3. Graphical User Interface (GUI)](#id-section3)

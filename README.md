@@ -58,6 +58,7 @@
 Table of content
 ----------------
 
+<div id='id-section1'/>
 -   [1. Installation](#id-section1)
 -   [2. Vignettes](#id-section2)
 -   [3. Graphical User Interface (GUI)](#id-section3)
