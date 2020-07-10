@@ -81,7 +81,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   data_nplcm <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
-  parsed_model <- assign_model(model_options,data_nplcm)
+  parsed_model <- assign_model(model_options,data_nplcm) #save this as a file with the posterior samples
   is_nested    <- parsed_model$nested
   if (do_plot){
     cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
@@ -201,6 +201,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   }else{  FPR_prob_scale      <- PR_case_ctrl[plotid_FPR_ctrl,,]}
   FPR_mean <- apply(FPR_prob_scale,c(1,2),mean)
   FPR_q    <- apply(FPR_prob_scale,c(1,2),quantile,c(0.025,0.975))
+  
+  # ^ this could be changed theoretically to not use the observed data -> we could still make TPR/FPR plots with the posterior samples
   
   # #
   # # LCM plotting subclass weight curves:
