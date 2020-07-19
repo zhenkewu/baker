@@ -61,7 +61,7 @@
 #' @family visualization functions
 #' @export
 plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,
-                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,return_metric=TRUE,
+                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,
                                      plot_ma_dots=FALSE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
@@ -81,8 +81,12 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   data_nplcm <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
-  parsed_model <- assign_model(model_options,data_nplcm) #save this as a file with the posterior samples
-  is_nested    <- parsed_model$nested
+  if(model_options$likelihood$k_subclass>1){
+    is_nested <- TRUE
+  } else{
+    is_nested <- FALSE
+  }
+  
   if (do_plot){
     cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
   }
@@ -111,7 +115,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   #####################################################################
   # add x-axis for dates:
   X <- data_nplcm$X
-  Y <- data_nplcm$Y
+ 
   # some date transformations:
   X$date_plot  <- as.Date(X$ENRLDATE)
   X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
@@ -249,6 +253,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
     colSums(tpr*mixture + fpr*mixture)
   }
   
+  
+  Y <- data_nplcm$Y
   subset_FPR_case          <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
   plotid_FPR_case          <- which(subset_FPR_case)[order(data_nplcm$X$std_date[subset_FPR_case])]
   curr_date_FPR_case       <- data_nplcm$X$std_date[plotid_FPR_case]
@@ -314,9 +320,12 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
         polygon(c(curr_date_FPR, rev(curr_date_FPR)),
                 c(FPR_q[1,,j], rev(FPR_q[2,,j])),
                 col = grDevices::rgb(0, 1, 1,0.5),border = NA)
+        
         # rug plot:
-        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2",line=0)
-        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2",line=1)
+        if(do_rug){
+          rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2",line=0)
+          rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2",line=1)
+        }
         
         if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
         if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
@@ -329,20 +338,25 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
                 c(PR_case_q[1,,j], rev(PR_case_q[2,,j])),
                 col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
         if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
-        # rug plot:
-        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
-        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
-        
-        if (j==1){
-          mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
-          mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
-          mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
-          mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
+       
+        # make this optional for plotting
+         # rug plot:
+        if(do_rug){
+          rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
+          rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
           
-          mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
+          #labels for the rug plot
+          if (j==1){
+            mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
+            mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
+            mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
+            mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
+            
+            mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
+          }
         }
-        
-        
+       
+
         if (!is_nested){
           abline(h=colMeans(thetaBS_samp)[j],col="red")
           abline(h=quantile(thetaBS_samp[,j],0.025),col="red",lty=2)
