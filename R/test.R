@@ -6,7 +6,6 @@
 #' users an option to choose slice s; currently default to the first slice.)
 #' 
 #' @param DIR_NPLCM File path to the folder containing posterior samples
-#' @param stratum_bool a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 #' @param plot_basis TRUE for plotting basis functions; Default to FALSE
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
@@ -31,7 +30,7 @@
 #' 
 #' 
 #' 
-plot_PERCH_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,plot_ma_dots=FALSE){
+plot_PERCH_regression <- function(DIR_NPLCM,slice=1,plot_basis=FALSE, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,plot_ma_dots=FALSE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
@@ -58,7 +57,6 @@ plot_PERCH_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALS
   
   K_curr        <- model_options$likelihood$k_subclass[slice]
   Jcause        <- length(model_options$likelihood$cause_list)
-  n_samp_kept   <- nrow(res_nplcm)
   Nd            <- sum(data_nplcm$Y==1)
   Nu            <- sum(data_nplcm$Y==0)
   
@@ -91,6 +89,7 @@ plot_PERCH_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALS
                                  quiet=TRUE)
     
   }
+  n_samp_kept   <- nrow(res_nplcm)
   print_res <- function(x) plot(res_nplcm[,grep(x,colnames(res_nplcm))])
   get_res   <- function(x) res_nplcm[,grep(x,colnames(res_nplcm))]
   
@@ -181,7 +180,7 @@ plot_PERCH_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALS
   # 2. use this code if date is included in etiology and false positive regressions:
   #
   # false positive rates:
-  subset_FPR_ctrl <- data_nplcm$Y==0 & stratum_bool # <--- specifies who to look at.
+  subset_FPR_ctrl <- data_nplcm$Y==0
   plotid_FPR_ctrl <- which(subset_FPR_ctrl)[order(data_nplcm$X$std_date[subset_FPR_ctrl])]
   curr_date_FPR <- data_nplcm$X$std_date[plotid_FPR_ctrl]
   if(!is_nested){
@@ -242,7 +241,7 @@ plot_PERCH_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALS
   
   
   Y <- data_nplcm$Y
-  subset_FPR_case          <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
+  subset_FPR_case          <- data_nplcm$Y==1
   plotid_FPR_case          <- which(subset_FPR_case)[order(data_nplcm$X$std_date[subset_FPR_case])]
   curr_date_FPR_case       <- data_nplcm$X$std_date[plotid_FPR_case]
   if (!is_nested){
@@ -250,7 +249,7 @@ plot_PERCH_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALS
   }else{FPR_prob_scale_case      <- PR_case_ctrl[plotid_FPR_case,,]}
   
   # etiology:
-  subset_Eti <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
+  subset_Eti <- data_nplcm$Y==1
   plotid_Eti <- which(subset_Eti)[order(data_nplcm$X$std_date[subset_Eti])]
   curr_date_Eti  <- data_nplcm$X$std_date[plotid_Eti]
   
@@ -432,15 +431,10 @@ plot_PERCH_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALS
   if (return_metric){
     if (!is.null(truth$Eti)){
       Eti_overall_truth  <- colMeans(truth$Eti[plotid_Eti,])
-      # Eti_IMSE <- rep(0,length(cause_list))
-      # for (t in 1:n_samp_kept){
-      #   Eti_IMSE <- Eti_IMSE*(t-1) + apply(Eti_prob_scale[,,t]-t(truth$Eti[plotid_Eti,]),1,function(v) sum(v^2)/length(v))
-      #   Eti_IMSE <- Eti_IMSE/t
-      # }
       # compute integrated squared error:
       Eti_ISE <- apply(Eti_mean-t(truth$Eti[plotid_Eti,]),1,function(v) sum(v^2)/length(v))
       Eti_overall_cover  <- sapply(seq_along(Eti_overall_mean),
-                                   function(s) (Eti_overall_truth[s]<= Eti_overall_q[2,s]) && 
+                                   function(s) (Eti_overall_truth[s]<= Eti_overall_q[2,s]) &&
                                      (Eti_overall_truth[s]>= Eti_overall_q[1,s]))
       Eti_overall_bias  <- Eti_overall_mean -  Eti_overall_truth
       return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,
