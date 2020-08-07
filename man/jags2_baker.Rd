@@ -4,11 +4,21 @@
 \alias{jags2_baker}
 \title{Run ‘JAGS’ from R}
 \usage{
-jags2_baker(data, inits, parameters.to.save, model.file = "model.bug",
-  n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
-  n.thin = max(1, floor((n.iter - n.burnin)/1000)), DIC = TRUE,
-  jags.path = "", working.directory = NULL, clearWD = TRUE,
-  refresh = n.iter/50)
+jags2_baker(
+  data,
+  inits,
+  parameters.to.save,
+  model.file = "model.bug",
+  n.chains = 3,
+  n.iter = 2000,
+  n.burnin = floor(n.iter/2),
+  n.thin = max(1, floor((n.iter - n.burnin)/1000)),
+  DIC = TRUE,
+  jags.path = "",
+  working.directory = NULL,
+  clearWD = TRUE,
+  refresh = n.iter/50
+)
 }
 \arguments{
 \item{data}{(1) a vector or list of the names of the data objects used by

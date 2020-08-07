@@ -55,7 +55,8 @@ subset_data_nplcm_by_index(out,2)
 
 }
 \seealso{
-Other data operation functions: \code{\link{combine_data_nplcm}},
-  \code{\link{merge_lists}}
+Other data operation functions: 
+\code{\link{combine_data_nplcm}()},
+\code{\link{merge_lists}()}
 }
 \concept{data operation functions}

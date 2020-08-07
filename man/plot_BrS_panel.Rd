@@ -4,10 +4,22 @@
 \alias{plot_BrS_panel}
 \title{Plot bronze-standard (BrS) panel}
 \usage{
-plot_BrS_panel(slice, data_nplcm, model_options, clean_options, bugs.dat,
-  res_nplcm, bg_color, select_latent = NULL, exact = TRUE,
-  top_BrS = 1.3, cexval = 1, srtval = 0, prior_shape = "interval",
-  silent = TRUE)
+plot_BrS_panel(
+  slice,
+  data_nplcm,
+  model_options,
+  clean_options,
+  bugs.dat,
+  res_nplcm,
+  bg_color,
+  select_latent = NULL,
+  exact = TRUE,
+  top_BrS = 1.3,
+  cexval = 1,
+  srtval = 0,
+  prior_shape = "interval",
+  silent = TRUE
+)
 }
 \arguments{
 \item{slice}{the index of measurement slice for BrS.}
@@ -47,16 +59,18 @@ prior/posteriors of the TPR/FPRs of measurements.}
 Plot bronze-standard (BrS) panel
 }
 \seealso{
-Other visualization functions: \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_regression}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

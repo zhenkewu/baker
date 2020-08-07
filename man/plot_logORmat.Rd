@@ -5,8 +5,7 @@
 \title{Visualize pairwise log odds ratios (LOR) for data that are available in
 both cases and controls}
 \usage{
-plot_logORmat(data_nplcm, pathogen_display, BrS_slice = 1,
-  logOR_rounding = 2)
+plot_logORmat(data_nplcm, pathogen_display, BrS_slice = 1, logOR_rounding = 2)
 }
 \arguments{
 \item{data_nplcm}{See \code{\link{assign_model}}.}
@@ -34,9 +33,11 @@ both cases and controls
  if between $1$ and $2$; blank otherwise.
 }
 \seealso{
-Other exploratory data analysis functions: \code{\link{get_top_pattern}},
-  \code{\link{show_individual}},
-  \code{\link{summarize_BrS}}, \code{\link{summarize_SS}},
-  \code{\link{visualize_season}}
+Other exploratory data analysis functions: 
+\code{\link{get_top_pattern}()},
+\code{\link{show_individual}()},
+\code{\link{summarize_BrS}()},
+\code{\link{summarize_SS}()},
+\code{\link{visualize_season}()}
 }
 \concept{exploratory data analysis functions}

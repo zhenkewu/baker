@@ -4,9 +4,16 @@
 \alias{get_pEti_samp_reg}
 \title{get etiology samples by names (no regression)}
 \usage{
-get_pEti_samp_reg(DIR_NPLCM, model_options, stratum_bool = NULL,
-  pEti_subject = FALSE, reg_param = FALSE, truth = NULL,
-  return_metric = FALSE, RES_NPLCM = NULL)
+get_pEti_samp_reg(
+  DIR_NPLCM,
+  model_options,
+  stratum_bool = NULL,
+  pEti_subject = FALSE,
+  reg_param = FALSE,
+  truth = NULL,
+  return_metric = FALSE,
+  RES_NPLCM = NULL
+)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}

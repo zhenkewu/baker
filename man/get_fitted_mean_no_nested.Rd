@@ -4,8 +4,13 @@
 \alias{get_fitted_mean_no_nested}
 \title{get model fitted mean for conditional independence model}
 \usage{
-get_fitted_mean_no_nested(slice, res_nplcm, model_options, data_nplcm,
-  clean_options)
+get_fitted_mean_no_nested(
+  slice,
+  res_nplcm,
+  model_options,
+  data_nplcm,
+  clean_options
+)
 }
 \arguments{
 \item{slice}{the slice of BrS data that are modeled}

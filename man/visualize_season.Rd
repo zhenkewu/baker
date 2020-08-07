@@ -31,9 +31,11 @@ in PERCH application. Smoothing is done by penalized splines implemented by
 \code{\link[mgcv]{smooth.construct.ps.smooth.spec}}
 }
 \seealso{
-Other exploratory data analysis functions: \code{\link{get_top_pattern}},
-  \code{\link{plot_logORmat}},
-  \code{\link{show_individual}},
-  \code{\link{summarize_BrS}}, \code{\link{summarize_SS}}
+Other exploratory data analysis functions: 
+\code{\link{get_top_pattern}()},
+\code{\link{plot_logORmat}()},
+\code{\link{show_individual}()},
+\code{\link{summarize_BrS}()},
+\code{\link{summarize_SS}()}
 }
 \concept{exploratory data analysis functions}

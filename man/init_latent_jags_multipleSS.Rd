@@ -4,8 +4,11 @@
 \alias{init_latent_jags_multipleSS}
 \title{Initialize individual latent status (only for JAGS)}
 \usage{
-init_latent_jags_multipleSS(MSS_list, cause_list,
-  patho = unlist(lapply(MSS_list, colnames)))
+init_latent_jags_multipleSS(
+  MSS_list,
+  cause_list,
+  patho = unlist(lapply(MSS_list, colnames))
+)
 }
 \arguments{
 \item{MSS_list}{A list of silver-standard measurement data, possibly with more than one 

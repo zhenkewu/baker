@@ -4,8 +4,13 @@
 \alias{add_meas_BrS_param_Nest_reg_Slice_jags}
 \title{add parameters for a BrS measurement slice among cases and controls}
 \usage{
-add_meas_BrS_param_Nest_reg_Slice_jags(s, Mobs, prior, cause_list,
-  FPR_formula = NULL)
+add_meas_BrS_param_Nest_reg_Slice_jags(
+  s,
+  Mobs,
+  prior,
+  cause_list,
+  FPR_formula = NULL
+)
 }
 \arguments{
 \item{s}{the slice}
@@ -28,45 +33,47 @@ this plugged measurement slice
 regression model with nested subclasses; called by \link{insert_bugfile_chunk_reg_nest_meas}
 }
 \seealso{
-Other likelihood specification functions: \code{\link{add_meas_BrS_case_Nest_Slice_jags}},
-  \code{\link{add_meas_BrS_case_Nest_Slice}},
-  \code{\link{add_meas_BrS_case_NoNest_Slice_jags}},
-  \code{\link{add_meas_BrS_case_NoNest_Slice}},
-  \code{\link{add_meas_BrS_case_NoNest_reg_Slice_jags}},
-  \code{\link{add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags}},
-  \code{\link{add_meas_BrS_ctrl_Nest_Slice}},
-  \code{\link{add_meas_BrS_ctrl_NoNest_Slice}},
-  \code{\link{add_meas_BrS_ctrl_NoNest_reg_Slice_jags}},
-  \code{\link{add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags}},
-  \code{\link{add_meas_BrS_param_Nest_Slice_jags}},
-  \code{\link{add_meas_BrS_param_Nest_Slice}},
-  \code{\link{add_meas_BrS_param_NoNest_Slice_jags}},
-  \code{\link{add_meas_BrS_param_NoNest_Slice}},
-  \code{\link{add_meas_BrS_param_NoNest_reg_Slice_jags}},
-  \code{\link{add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags}},
-  \code{\link{add_meas_BrS_subclass_Nest_Slice}},
-  \code{\link{add_meas_SS_case}},
-  \code{\link{add_meas_SS_param}}
+Other likelihood specification functions: 
+\code{\link{add_meas_BrS_case_Nest_Slice_jags}()},
+\code{\link{add_meas_BrS_case_Nest_Slice}()},
+\code{\link{add_meas_BrS_case_NoNest_Slice_jags}()},
+\code{\link{add_meas_BrS_case_NoNest_Slice}()},
+\code{\link{add_meas_BrS_case_NoNest_reg_Slice_jags}()},
+\code{\link{add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags}()},
+\code{\link{add_meas_BrS_ctrl_Nest_Slice}()},
+\code{\link{add_meas_BrS_ctrl_NoNest_Slice}()},
+\code{\link{add_meas_BrS_ctrl_NoNest_reg_Slice_jags}()},
+\code{\link{add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags}()},
+\code{\link{add_meas_BrS_param_Nest_Slice_jags}()},
+\code{\link{add_meas_BrS_param_Nest_Slice}()},
+\code{\link{add_meas_BrS_param_NoNest_Slice_jags}()},
+\code{\link{add_meas_BrS_param_NoNest_Slice}()},
+\code{\link{add_meas_BrS_param_NoNest_reg_Slice_jags}()},
+\code{\link{add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags}()},
+\code{\link{add_meas_BrS_subclass_Nest_Slice}()},
+\code{\link{add_meas_SS_case}()},
+\code{\link{add_meas_SS_param}()}
 
-Other plug-and-play functions: \code{\link{add_meas_BrS_case_Nest_Slice_jags}},
-  \code{\link{add_meas_BrS_case_Nest_Slice}},
-  \code{\link{add_meas_BrS_case_NoNest_Slice_jags}},
-  \code{\link{add_meas_BrS_case_NoNest_Slice}},
-  \code{\link{add_meas_BrS_case_NoNest_reg_Slice_jags}},
-  \code{\link{add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags}},
-  \code{\link{add_meas_BrS_ctrl_Nest_Slice}},
-  \code{\link{add_meas_BrS_ctrl_NoNest_Slice}},
-  \code{\link{add_meas_BrS_ctrl_NoNest_reg_Slice_jags}},
-  \code{\link{add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags}},
-  \code{\link{add_meas_BrS_param_Nest_Slice_jags}},
-  \code{\link{add_meas_BrS_param_Nest_Slice}},
-  \code{\link{add_meas_BrS_param_NoNest_Slice_jags}},
-  \code{\link{add_meas_BrS_param_NoNest_Slice}},
-  \code{\link{add_meas_BrS_param_NoNest_reg_Slice_jags}},
-  \code{\link{add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags}},
-  \code{\link{add_meas_BrS_subclass_Nest_Slice}},
-  \code{\link{add_meas_SS_case}},
-  \code{\link{add_meas_SS_param}}
+Other plug-and-play functions: 
+\code{\link{add_meas_BrS_case_Nest_Slice_jags}()},
+\code{\link{add_meas_BrS_case_Nest_Slice}()},
+\code{\link{add_meas_BrS_case_NoNest_Slice_jags}()},
+\code{\link{add_meas_BrS_case_NoNest_Slice}()},
+\code{\link{add_meas_BrS_case_NoNest_reg_Slice_jags}()},
+\code{\link{add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags}()},
+\code{\link{add_meas_BrS_ctrl_Nest_Slice}()},
+\code{\link{add_meas_BrS_ctrl_NoNest_Slice}()},
+\code{\link{add_meas_BrS_ctrl_NoNest_reg_Slice_jags}()},
+\code{\link{add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags}()},
+\code{\link{add_meas_BrS_param_Nest_Slice_jags}()},
+\code{\link{add_meas_BrS_param_Nest_Slice}()},
+\code{\link{add_meas_BrS_param_NoNest_Slice_jags}()},
+\code{\link{add_meas_BrS_param_NoNest_Slice}()},
+\code{\link{add_meas_BrS_param_NoNest_reg_Slice_jags}()},
+\code{\link{add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags}()},
+\code{\link{add_meas_BrS_subclass_Nest_Slice}()},
+\code{\link{add_meas_SS_case}()},
+\code{\link{add_meas_SS_param}()}
 }
 \concept{likelihood specification functions}
 \concept{plug-and-play functions}

@@ -4,8 +4,16 @@
 \alias{write_model_Reg_Nest}
 \title{Write \code{.bug} model file for regression model WITH nested subclasses}
 \usage{
-write_model_Reg_Nest(Mobs, prior, cause_list, Eti_formula, FPR_formula,
-  use_measurements, ppd = NULL, use_jags = FALSE)
+write_model_Reg_Nest(
+  Mobs,
+  prior,
+  cause_list,
+  Eti_formula,
+  FPR_formula,
+  use_measurements,
+  ppd = NULL,
+  use_jags = FALSE
+)
 }
 \arguments{
 \item{Mobs}{Measurement data in the form of \code{data_nplcm}}
@@ -38,8 +46,9 @@ a long character string to be written into .bug file.
 chunk for measurements (plug-and-play.R); \link{insert_bugfile_chunk_noreg_etiology}
 for inserting .bug file chunk for distribution of latent status (etiology).
 
-Other model generation functions: \code{\link{write_model_NoReg}},
-  \code{\link{write_model_Reg_NoNest}},
-  \code{\link{write_model_Reg_discrete_predictor_NoNest}}
+Other model generation functions: 
+\code{\link{write_model_NoReg}()},
+\code{\link{write_model_Reg_NoNest}()},
+\code{\link{write_model_Reg_discrete_predictor_NoNest}()}
 }
 \concept{model generation functions}

@@ -22,17 +22,19 @@ parameter values at that iteration. The sample size of the new data set equals
 that of the actual data set, i.e. the same number of cases and controls.
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_etiology_regression}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{model checking functions}
 \concept{visualization functions}

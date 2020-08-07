@@ -4,8 +4,14 @@
 \alias{plot_subwt_regression}
 \title{visualize the subclass weight regression with a continuous covariate}
 \usage{
-plot_subwt_regression(DIR_NPLCM, stratum_bool, case = 0, slice = 1,
-  truth = NULL, RES_NPLCM = NULL)
+plot_subwt_regression(
+  DIR_NPLCM,
+  stratum_bool,
+  case = 0,
+  slice = 1,
+  truth = NULL,
+  RES_NPLCM = NULL
+)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -32,16 +38,18 @@ A figure of subclass regression curves
 visualize the subclass weight regression with a continuous covariate
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_regression}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()}
 }
 \concept{visualization functions}

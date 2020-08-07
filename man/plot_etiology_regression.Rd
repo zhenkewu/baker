@@ -4,9 +4,17 @@
 \alias{plot_etiology_regression}
 \title{visualize the etiology regression with a continuous covariate}
 \usage{
-plot_etiology_regression(DIR_NPLCM, stratum_bool, slice = 1,
-  plot_basis = FALSE, truth = NULL, RES_NPLCM = NULL,
-  do_plot = TRUE, return_metric = TRUE, plot_ma_dots = FALSE)
+plot_etiology_regression(
+  DIR_NPLCM,
+  stratum_bool,
+  slice = 1,
+  plot_basis = FALSE,
+  truth = NULL,
+  RES_NPLCM = NULL,
+  do_plot = TRUE,
+  return_metric = TRUE,
+  plot_ma_dots = FALSE
+)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -78,16 +86,18 @@ See example figures
 }
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

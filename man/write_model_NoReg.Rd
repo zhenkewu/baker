@@ -4,8 +4,15 @@
 \alias{write_model_NoReg}
 \title{Write .bug model file for model without regression}
 \usage{
-write_model_NoReg(k_subclass, Mobs, prior, cause_list, use_measurements,
-  ppd = NULL, use_jags = FALSE)
+write_model_NoReg(
+  k_subclass,
+  Mobs,
+  prior,
+  cause_list,
+  use_measurements,
+  ppd = NULL,
+  use_jags = FALSE
+)
 }
 \arguments{
 \item{k_subclass}{the number of subclasses for the slices that require 
@@ -37,8 +44,9 @@ a long character string to be written into .bug file.
 chunk for measurements (plug-and-play); \link{insert_bugfile_chunk_noreg_etiology}
 for inserting .bug file chunk for distribution of latent status (etiology).
 
-Other model generation functions: \code{\link{write_model_Reg_Nest}},
-  \code{\link{write_model_Reg_NoNest}},
-  \code{\link{write_model_Reg_discrete_predictor_NoNest}}
+Other model generation functions: 
+\code{\link{write_model_Reg_Nest}()},
+\code{\link{write_model_Reg_NoNest}()},
+\code{\link{write_model_Reg_discrete_predictor_NoNest}()}
 }
 \concept{model generation functions}

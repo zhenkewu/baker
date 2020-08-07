@@ -4,9 +4,15 @@
 \alias{beta_parms_from_quantiles}
 \title{Pick parameters in the Beta distribution to match the specified range}
 \usage{
-beta_parms_from_quantiles(q, p = c(0.025, 0.975), precision = 0.001,
-  derivative.epsilon = 0.001, start.with.normal.approx = TRUE,
-  start = c(1, 1), plot = FALSE)
+beta_parms_from_quantiles(
+  q,
+  p = c(0.025, 0.975),
+  precision = 0.001,
+  derivative.epsilon = 0.001,
+  start.with.normal.approx = TRUE,
+  start = c(1, 1),
+  plot = FALSE
+)
 }
 \arguments{
 \item{q}{A vector of lower and upper bounds, in which Beta distribution

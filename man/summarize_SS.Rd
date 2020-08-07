@@ -26,10 +26,11 @@ summarize_SS(data_nplcm$Mobs$MSS[[1]], data_nplcm$Y)
 
 }
 \seealso{
-Other exploratory data analysis functions: \code{\link{get_top_pattern}},
-  \code{\link{plot_logORmat}},
-  \code{\link{show_individual}},
-  \code{\link{summarize_BrS}},
-  \code{\link{visualize_season}}
+Other exploratory data analysis functions: 
+\code{\link{get_top_pattern}()},
+\code{\link{plot_logORmat}()},
+\code{\link{show_individual}()},
+\code{\link{summarize_BrS}()},
+\code{\link{visualize_season}()}
 }
 \concept{exploratory data analysis functions}

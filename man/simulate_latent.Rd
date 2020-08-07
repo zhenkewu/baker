@@ -45,7 +45,9 @@ also includes a template to look up measurement parameters for each type of caus
 Simulate Latent Status:
 }
 \seealso{
-Other simulation functions: \code{\link{simulate_brs}},
-  \code{\link{simulate_nplcm}}, \code{\link{simulate_ss}}
+Other simulation functions: 
+\code{\link{simulate_brs}()},
+\code{\link{simulate_nplcm}()},
+\code{\link{simulate_ss}()}
 }
 \concept{simulation functions}

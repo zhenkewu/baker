@@ -4,8 +4,15 @@
 \alias{insert_bugfile_chunk_noreg_meas}
 \title{Insert measurement likelihood (without regression) code chunks into .bug model file}
 \usage{
-insert_bugfile_chunk_noreg_meas(k_subclass, Mobs, prior, cause_list,
-  use_measurements = "BrS", ppd = NULL, use_jags = FALSE)
+insert_bugfile_chunk_noreg_meas(
+  k_subclass,
+  Mobs,
+  prior,
+  cause_list,
+  use_measurements = "BrS",
+  ppd = NULL,
+  use_jags = FALSE
+)
 }
 \arguments{
 \item{k_subclass}{the number of subclasses for the slices that require 

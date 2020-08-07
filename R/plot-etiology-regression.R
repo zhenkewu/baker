@@ -78,7 +78,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   #
   # Read data from DIR_NPLCM:
   #
-  data_nplcm <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
+  data_nplcm    <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
   parsed_model <- assign_model(model_options,data_nplcm)

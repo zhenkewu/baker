@@ -20,6 +20,7 @@ A list with two elements: \code{meas}-data frame with measurements;
 Read measurement slices
 }
 \seealso{
-Other raw data importing functions: \code{\link{extract_data_raw}}
+Other raw data importing functions: 
+\code{\link{extract_data_raw}()}
 }
 \concept{raw data importing functions}

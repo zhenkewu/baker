@@ -4,10 +4,17 @@
 \alias{plot_panels}
 \title{Plot three-panel figures for nested partially-latent model results}
 \usage{
-plot_panels(DIR_NPLCM, slices = "all", bg_color = list(BrS =
-  "lavenderblush", SS = "mistyrose", pie = "antiquewhite"),
-  select_latent = NULL, exact = TRUE, SS_upperlimit = 1,
-  eti_upperlimit = 1, silent = TRUE, ref_eti0 = NULL)
+plot_panels(
+  DIR_NPLCM,
+  slices = "all",
+  bg_color = list(BrS = "lavenderblush", SS = "mistyrose", pie = "antiquewhite"),
+  select_latent = NULL,
+  exact = TRUE,
+  SS_upperlimit = 1,
+  eti_upperlimit = 1,
+  silent = TRUE,
+  ref_eti0 = NULL
+)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -50,17 +57,18 @@ Missing data for BrS or SS are dropped when calculating observed measurement
 positive rates
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_regression}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

@@ -21,7 +21,8 @@ numeric vector for alpha (beta) parameters to specify Beta prior for TPRs.
 Set true positive rate (TPR) prior ranges for silver-standard data.
 }
 \seealso{
-Other prior specification functions: \code{\link{overall_uniform}},
-  \code{\link{set_prior_tpr_BrS_NoNest}}
+Other prior specification functions: 
+\code{\link{overall_uniform}()},
+\code{\link{set_prior_tpr_BrS_NoNest}()}
 }
 \concept{prior specification functions}

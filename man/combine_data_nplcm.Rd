@@ -69,7 +69,8 @@ set_parameter$PsiBS\%*\%matrix(eta,ncol=1)*(1-set_parameter$etiology)+
 
 }
 \seealso{
-Other data operation functions: \code{\link{merge_lists}},
-  \code{\link{subset_data_nplcm_by_index}}
+Other data operation functions: 
+\code{\link{merge_lists}()},
+\code{\link{subset_data_nplcm_by_index}()}
 }
 \concept{data operation functions}

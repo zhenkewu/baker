@@ -4,8 +4,7 @@
 \alias{make_meas_object}
 \title{Make measurement slice}
 \usage{
-make_meas_object(patho, specimen, test, quality, cause_list,
-  sep_char = "_")
+make_meas_object(patho, specimen, test, quality, cause_list, sep_char = "_")
 }
 \arguments{
 \item{patho}{A vector of pathogen names}
