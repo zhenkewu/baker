@@ -20,6 +20,7 @@
 #'  }
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @param do_plot TRUE for plotting
+#' @param do_rug FALSE for plotting
 #' @param return_metric TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
 #' @param plot_ma_dots plot moving averages among case and controls if TRUE; Defautl to FALSE.
@@ -61,7 +62,7 @@
 #' @family visualization functions
 #' @export
 plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,
-                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,return_metric=TRUE,
+                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,
                                      plot_ma_dots=FALSE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
@@ -81,8 +82,12 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   data_nplcm    <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
-  parsed_model <- assign_model(model_options,data_nplcm)
-  is_nested    <- parsed_model$nested
+  if(model_options$likelihood$k_subclass>1){
+    is_nested <- TRUE
+  } else{
+    is_nested <- FALSE
+  }
+  
   if (do_plot){
     cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
   }
@@ -111,7 +116,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   #####################################################################
   # add x-axis for dates:
   X <- data_nplcm$X
-  Y <- data_nplcm$Y
+ 
   # some date transformations:
   X$date_plot  <- as.Date(X$ENRLDATE)
   X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
@@ -202,6 +207,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   FPR_mean <- apply(FPR_prob_scale,c(1,2),mean)
   FPR_q    <- apply(FPR_prob_scale,c(1,2),quantile,c(0.025,0.975))
   
+  # ^ this could be changed theoretically to not use the observed data -> we could still make TPR/FPR plots with the posterior samples
+  
   # #
   # # LCM plotting subclass weight curves:
   # #
@@ -247,6 +254,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
     colSums(tpr*mixture + fpr*mixture)
   }
   
+  
+  Y <- data_nplcm$Y
   subset_FPR_case          <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
   plotid_FPR_case          <- which(subset_FPR_case)[order(data_nplcm$X$std_date[subset_FPR_case])]
   curr_date_FPR_case       <- data_nplcm$X$std_date[plotid_FPR_case]
@@ -312,9 +321,12 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
         polygon(c(curr_date_FPR, rev(curr_date_FPR)),
                 c(FPR_q[1,,j], rev(FPR_q[2,,j])),
                 col = grDevices::rgb(0, 1, 1,0.5),border = NA)
+        
         # rug plot:
-        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2",line=0)
-        rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2",line=1)
+        if(do_rug){
+          rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==1],side=3,col="dodgerblue2",line=0)
+          rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2",line=1)
+        }
         
         if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
         if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
@@ -327,20 +339,25 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
                 c(PR_case_q[1,,j], rev(PR_case_q[2,,j])),
                 col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
         if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
-        # rug plot:
-        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
-        rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
-        
-        if (j==1){
-          mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
-          mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
-          mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
-          mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
+       
+        # make this optional for plotting
+         # rug plot:
+        if(do_rug){
+          rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
+          rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
           
-          mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
+          #labels for the rug plot
+          if (j==1){
+            mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
+            mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
+            mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
+            mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
+            
+            mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
+          }
         }
-        
-        
+       
+
         if (!is_nested){
           abline(h=colMeans(thetaBS_samp)[j],col="red")
           abline(h=quantile(thetaBS_samp[,j],0.025),col="red",lty=2)
@@ -624,13 +641,34 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
   #
   # LCM plotting subclass weight curves:
   #
-  k_seq <- 1:K_curr #c(1,2,3)                                      # <----------------- adjust order of k.
+  k_seq <- 1:K_curr #c(1,2,3)  # <----------------- adjust order of k.
   if(!is.null(truth$ord_subclass)){k_seq <- truth$ord_subclass} #c(1,2,3)                                      # <----------------- adjust order of k.
   #k_seq <- c(1,5,2,3,4)#1:K # <----------------- adjust order of k.
   if (!is.null(truth$truth_subwt)){
     K_truth <- ncol(truth$truth_subwt);
     if (K_curr > K_truth){truth_subwt <- cbind(truth_subwt,matrix(0,nrow=Nd+Nu, ncol=K_curr - K_truth))}
   }
+  
+  ## match the truth subclass weights to the real data 
+  if(!is.null(truth$truth_subwt)){
+    true_classes = seq_along(k_seq)
+    class_to_true_class = rep(0, length(true_classes))
+
+    for (class in seq_along(class_to_true_class)) {
+      dist_class_true_class = matrix(data=NA, ncol=K_curr, nrow=K_curr)
+      for (true_class in true_classes) {
+        # find the data that has the highest correlation with the subweights
+        dist_class_true_class[class, true_class] <- mean(
+          stats::cor(subwt_samp[plotid_FPR_ctrl, k_seq[class], ], truth_subwt[plotid_FPR_ctrl, k_seq[true_class]])
+        )
+      }
+      class_to_true_class[class] <- which.max(dist_class_true_class[class,])
+      
+    }
+    
+  }
+  
+  
   par(mfrow=c(2,K_curr))
   for (k in seq_along(k_seq)){
     # posterior of subclass weight:
@@ -638,7 +676,8 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
             col=2,type="l",ylim=c(0,1),main=k,xlab="scaled date",ylab="subclass weight")
     # # posterior of subclass latent Gaussian mean:
     # #true subclass weights:
-    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],truth_subwt[plotid_FPR_ctrl,k],
+    true_k = class_to_true_class[k_seq[k]]
+    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl, true_k],
                                              type="l",add=TRUE,lwd=4,col=1,lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")} 
   }
   
@@ -652,7 +691,8 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
     # # posterior of subclass latent Gaussian mean:
     # matplot(x,t(res_mu_alpha),col=col3,type="l",main="posterior of latent Gaussian mean")
     # # true subclass weights:
-    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],truth_subwt[plotid_FPR_ctrl,k],type="l",add=TRUE,lwd=4,
+    true_k = class_to_true_class[k_seq[k]]
+    if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl,true_k],type="l",add=TRUE,lwd=4,
                                              col=c("black","black","black"),lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")}
   }
 }
