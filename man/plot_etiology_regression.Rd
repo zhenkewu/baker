@@ -12,6 +12,7 @@ plot_etiology_regression(
   truth = NULL,
   RES_NPLCM = NULL,
   do_plot = TRUE,
+  do_rug = FALSE,
   return_metric = TRUE,
   plot_ma_dots = FALSE
 )
@@ -38,6 +39,8 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}
 
 \item{do_plot}{TRUE for plotting}
+
+\item{do_rug}{FALSE for plotting}
 
 \item{return_metric}{TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 coverage, bias, truth and integrated mean squared errors (IMSE).}

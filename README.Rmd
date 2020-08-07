@@ -48,6 +48,7 @@ knitr::opts_chunk$set(
 - [9. Submit Jobs to Computing Cluster via a shell script](#id-section9)
 - [10. Connect `R` to `JAGS` on Windows](#id-section10)
 - [11. Example Datasets](#id-section11)
+
 <div id='id-section1'/>
 
 Installation
