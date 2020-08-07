@@ -58,6 +58,7 @@
 Table of content
 ----------------
 
+<div id='id-section1'/>
 -   [1. Installation](#id-section1)
 -   [2. Vignettes](#id-section2)
 -   [3. Graphical User Interface (GUI)](#id-section3)
@@ -68,8 +69,8 @@ Table of content
 -   [8. Connect `R` to `JAGS` on Unix systems or OSX](#id-section8)
 -   [9. Submit Jobs to Computing Cluster via a shell script](#id-section9)
 -   [10. Connect `R` to `JAGS` on Windows](#id-section10)
-
-<div id='id-section1'/>
+-   [11. Example Datasets](#id-section11)
+    <div id='id-section1'/>
 
 Installation
 ------------
@@ -274,3 +275,17 @@ date
 <!-- - [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
 <!--     1. Install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) -->
 <!--     2. Install the WinBUGS 1.4.x [immortality key](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
+<div id='id-section11'/>
+#### Datasets
+
+We provide two datasets for exploratory use with the `baker` package.
+
+1.  `data_nplcm_reg`: a dataset containing BrS measurements, case-control status, and regression covariates (testing site and enrollment date). This dataset was generated using the `simulate_nplcm` function. We also provide the BrS measurements, case-control status, and regression covariates (testing site and enrollment date). Code to fit the NPLCM to this dataset is in the accompanying software paper and the full code used to produce this dataset is available upon request. Using this dataset and the functionaltiy in `baker`, a user can reproduce Figures 7 and 8 in the accompanying software paper.
+
+2.  `baker_posterior_samples_example`: a folder which contains the output of an NPLCM fitted to real data. We are not able to provide the real data due to privacy restrictions. Instead, we provide:
+
+-   1.  the posterior samples, which can be found in `CODAchain1.txt` and `CODAindex.txt`.
+
+-   1.  the covariates used in fitting the model (`ENRLDATE` and `AGE`), which can be found in `data_nplcm.txt`. Note that this folder can be found here: (<https://github.com/raubsaurier/baker_data/tree/master/data>).
+
+Using the posterior samples in this folder, Figure 10 of the software paper can be replicated. If you would like to use `baker` visualization functions on this data, please download the compressed folder directly to your local drive, so that the path to the folder containing these `.txt` files can be provided as an argument for the plotting functions.
