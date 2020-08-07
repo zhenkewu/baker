@@ -271,7 +271,7 @@ get_pEti_samp <- function(res_nplcm,model_options){
 #'      \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
 #'      \item TPR a vector of length identical to \code{PR_case}
 #'  }
-#' @param return_metric TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL to save time.
 #' 

@@ -36,7 +36,7 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
     \item TPR a vector of length identical to \code{PR_case}
 }}
 
-\item{return_metric}{TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 coverage, bias, truth and integrated mean squared errors (IMSE).}
 
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL to save time.}

@@ -707,7 +707,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @param strata_weights a vector of weights that sum to one; for each pathogen
 #' the weights specify how the j-th etiology fraction should be combined across all
 #' levels of the discrete predictors in the data; can also specify as \code{"empirical"}
-#' to use empircal weights (fractions of subjects in each stratum)
+#' to use empirical weights (fractions of subjects in each stratum)
 #' @param truth a list of true values, e.g., 
 #' \code{truth=list(allEti = a list of etiology fractions)}
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.

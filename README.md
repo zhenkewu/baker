@@ -308,7 +308,7 @@ date
 
 <div id='id-section11'/>
 
-#### Datasets
+#### Example Datasets
 
 We provide two datasets for exploratory use with the `baker` package.
 

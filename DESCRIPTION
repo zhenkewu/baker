@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
 Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.9.7.5
-Date: 2019-05-10
+Version: 0.9.7.6
+Date: 2020-08-07
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@gmail.com",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),
@@ -19,7 +19,7 @@ Description: Provides functions to specify, fit and visualize
     of interest sum to one hundred percent, the PERCH scientists frequently refer to
     them as "population etiology pie" and "individual etiology pie", hence the name of the package.
 Depends:
-    R(>= 3.2)
+    R(>= 3.5.0)
 Imports:
     rjags(>= 4-6),
     R2jags(>= 0.5),
