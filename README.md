@@ -297,7 +297,7 @@ date
 3.  Fire up `R`, run `R` command `install.packages("rjags")`
 4.  Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/)
     (for building and installing R pacakges from source); Add the path
-    to `Rtools` (e.g. `C:\Rtools\`) into your environmental variables so
+    to `Rtools` (e.g.,`C:\Rtools\`) into your environmental variables so
     that R knows where to find it.
 
 <!-- - [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
@@ -322,19 +322,22 @@ We provide two datasets for exploratory use with the `baker` package.
     dataset is available upon request. Using this dataset and the
     functionaltiy in `baker`, a user can reproduce Figures 7 and 8 in
     the accompanying software paper.
+    
+    ```r
+    data(data_nplcm_reg)
+    ?data_nplcm_reg
+    ```
 
 2.  `baker_posterior_samples_example`: a folder which contains the
     output of an NPLCM fitted to real data. We are not able to provide
     the real data due to privacy restrictions. Instead, we provide:
     
-      - 1.  the posterior samples, which can be found in
+      -  the posterior samples, which can be found in
             `CODAchain1.txt` and `CODAindex.txt`.
     
-      - 2.  the covariates used in fitting the model (`ENRLDATE` and
-            `AGE`), which can be found in `data_nplcm.txt`. Note that
-            this folder can be found here:
-            (<https://github.com/raubsaurier/baker_data/tree/master/data>).
-
+      -  the covariates used in fitting the model (`ENRLDATE` and
+            `AGE`), which can be found in `data_nplcm.txt`. 
+            
 Using the posterior samples in this folder, Figure 10 of the software
 paper can be replicated. If you would like to use `baker` visualization
 functions on this data, please download the compressed folder directly
