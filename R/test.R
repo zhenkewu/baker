@@ -6,8 +6,8 @@
 #' users an option to choose slice s; currently default to the first slice.)
 #' 
 #' @param DIR_NPLCM File path to the folder containing posterior samples
-#' @param bugs.dat The posterior samples (loaded into the environment to save time) -> default is NULL 
 #' @param stratum_bool integer; for this function, indicates which strata to plot
+#' @param bugs.dat The posterior samples (loaded into the environment to save time) -> default is NULL 
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
 #'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
@@ -28,9 +28,9 @@
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
 #' model fit; See example for the legends.
 #' 
-#' 
-#' 
-plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat=NULL, stratum_bool=stratum_bool,slice=1, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE){
+
+plot_PERCH_regression <- function(
+  DIR_NPLCM, stratum_bool=stratum_bool, bugs.dat=NULL, slice=1, truth=NULL, RES_NPLCM=NULL, do_plot=TRUE, do_rug=FALSE, return_metric=TRUE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
