@@ -5,8 +5,7 @@
 \title{compute positive rates for nested model with subclass mixing weights that are the same across
 \code{Jcause} classes for each person (people may have different weights.)}
 \usage{
-compute_marg_PR_nested_reg(ThetaBS, PsiBS, pEti_mat, subwt_mat, case,
-  template)
+compute_marg_PR_nested_reg(ThetaBS, PsiBS, pEti_mat, subwt_mat, case, template)
 }
 \arguments{
 \item{ThetaBS}{True positive rates for JBrS measures (rows) among K subclasses (columns)}

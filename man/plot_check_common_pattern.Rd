@@ -5,8 +5,12 @@
 \title{Posterior predictive checking for the nested partially class models - 
 frequent patterns in the BrS data. (for multiple folders)}
 \usage{
-plot_check_common_pattern(DIR_list, slice_vec = rep(1, length(DIR_list)),
-  n_pat = 10, dodge_val = 0.8)
+plot_check_common_pattern(
+  DIR_list,
+  slice_vec = rep(1, length(DIR_list)),
+  n_pat = 10,
+  dodge_val = 0.8
+)
 }
 \arguments{
 \item{DIR_list}{The list of directory paths, each storing a model output.}
@@ -36,17 +40,19 @@ plot_check_common_pattern(DIR_list[[1]])
 
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_regression}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{model generating functions}
 \concept{visualization functions}

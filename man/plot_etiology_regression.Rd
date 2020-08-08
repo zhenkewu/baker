@@ -4,9 +4,18 @@
 \alias{plot_etiology_regression}
 \title{visualize the etiology regression with a continuous covariate}
 \usage{
-plot_etiology_regression(DIR_NPLCM, stratum_bool, slice = 1,
-  plot_basis = FALSE, truth = NULL, RES_NPLCM = NULL,
-  do_plot = TRUE, return_metric = TRUE, plot_ma_dots = FALSE)
+plot_etiology_regression(
+  DIR_NPLCM,
+  stratum_bool,
+  slice = 1,
+  plot_basis = FALSE,
+  truth = NULL,
+  RES_NPLCM = NULL,
+  do_plot = TRUE,
+  do_rug = FALSE,
+  return_metric = TRUE,
+  plot_ma_dots = FALSE
+)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -31,10 +40,12 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 
 \item{do_plot}{TRUE for plotting}
 
-\item{return_metric}{TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+\item{do_rug}{FALSE for plotting}
+
+\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 coverage, bias, truth and integrated mean squared errors (IMSE).}
 
-\item{plot_ma_dots}{plot moving averages among case and controls if TRUE; Defautl to FALSE.}
+\item{plot_ma_dots}{plot moving averages among case and controls if TRUE; Default to FALSE.}
 }
 \value{
 A figure of etiology regression curves and some marginal positive rate assessment of
@@ -78,16 +89,18 @@ See example figures
 }
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

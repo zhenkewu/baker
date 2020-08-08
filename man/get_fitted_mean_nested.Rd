@@ -4,8 +4,13 @@
 \alias{get_fitted_mean_nested}
 \title{get fitted mean for nested model with subclass mixing weights that are the same among cases}
 \usage{
-get_fitted_mean_nested(slice, res_nplcm, model_options, data_nplcm,
-  clean_options)
+get_fitted_mean_nested(
+  slice,
+  res_nplcm,
+  model_options,
+  data_nplcm,
+  clean_options
+)
 }
 \arguments{
 \item{slice}{the slice of BrS data that are modeled}

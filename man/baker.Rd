@@ -3,7 +3,6 @@
 \docType{package}
 \name{baker}
 \alias{baker}
-\alias{baker-package}
 \title{baker: \strong{B}ayesian \strong{A}nalytic \strong{K}it for 
 \strong{E}tiology \strong{R}esearch}
 \description{

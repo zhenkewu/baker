@@ -4,8 +4,13 @@
 \alias{create_bugs_regressor_Eti}
 \title{create regressor summation equation used in regression for etiology}
 \usage{
-create_bugs_regressor_Eti(n, dm_nm = "dm_Eti", b_nm = "betaEti",
-  ind_nm = "j", sub_ind_nm = "k")
+create_bugs_regressor_Eti(
+  n,
+  dm_nm = "dm_Eti",
+  b_nm = "betaEti",
+  ind_nm = "j",
+  sub_ind_nm = "k"
+)
 }
 \arguments{
 \item{n}{the length of coefficients}

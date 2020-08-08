@@ -29,7 +29,8 @@ listoflists
 merge_lists(listoflists)
 }
 \seealso{
-Other data operation functions: \code{\link{combine_data_nplcm}},
-  \code{\link{subset_data_nplcm_by_index}}
+Other data operation functions: 
+\code{\link{combine_data_nplcm}()},
+\code{\link{subset_data_nplcm_by_index}()}
 }
 \concept{data operation functions}

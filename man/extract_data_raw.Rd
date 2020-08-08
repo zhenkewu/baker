@@ -6,8 +6,13 @@
  
 \code{extract_data_raw} imports and converts the raw data to analyzable format}
 \usage{
-extract_data_raw(dat_prepared, strat_nm, strat_val, meas_object,
-  extra_covariates = NULL)
+extract_data_raw(
+  dat_prepared,
+  strat_nm,
+  strat_val,
+  meas_object,
+  extra_covariates = NULL
+)
 }
 \arguments{
 \item{dat_prepared}{The data set prepared in \code{clean_perch_data}.}
@@ -51,6 +56,7 @@ Import Raw PERCH Data
 \seealso{
 \code{\link{clean_perch_data}}
 
-Other raw data importing functions: \code{\link{read_meas_object}}
+Other raw data importing functions: 
+\code{\link{read_meas_object}()}
 }
 \concept{raw data importing functions}

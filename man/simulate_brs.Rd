@@ -48,7 +48,9 @@ columns of bronze-standard measurements
 simulate BrS measurements:
 }
 \seealso{
-Other simulation functions: \code{\link{simulate_latent}},
-  \code{\link{simulate_nplcm}}, \code{\link{simulate_ss}}
+Other simulation functions: 
+\code{\link{simulate_latent}()},
+\code{\link{simulate_nplcm}()},
+\code{\link{simulate_ss}()}
 }
 \concept{simulation functions}

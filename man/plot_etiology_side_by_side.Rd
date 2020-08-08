@@ -4,8 +4,13 @@
 \alias{plot_etiology_side_by_side}
 \title{compare the posterior distribution of population etiologies side-by-side}
 \usage{
-plot_etiology_side_by_side(DIR_list, DIR_pathogen_displayorder_lookup,
-  dodge_val = 0.5, right_panel = TRUE, reg_ind = NULL)
+plot_etiology_side_by_side(
+  DIR_list,
+  DIR_pathogen_displayorder_lookup,
+  dodge_val = 0.5,
+  right_panel = TRUE,
+  reg_ind = NULL
+)
 }
 \arguments{
 \item{DIR_list}{The list of directory paths, each storing a model output.}
@@ -49,17 +54,19 @@ plot_etiology_side_by_side(dir_list,
 }
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_regression}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_group_etiology}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{comparison functions}
 \concept{visualization functions}

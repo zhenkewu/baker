@@ -4,8 +4,11 @@
 \alias{nplcm_fit_Reg_discrete_predictor_NoNest}
 \title{Fit nested partially-latent class model with regression (low-level)}
 \usage{
-nplcm_fit_Reg_discrete_predictor_NoNest(data_nplcm, model_options,
-  mcmc_options)
+nplcm_fit_Reg_discrete_predictor_NoNest(
+  data_nplcm,
+  model_options,
+  mcmc_options
+)
 }
 \arguments{
 \item{data_nplcm}{Must put cases at the top in `Mobs$MBS` and control data at the bottom
@@ -120,8 +123,9 @@ jags into ENVIRONMENTAL VARIABLE!
 \link{write_model_NoReg} for automatically generate \code{.bug} model
 file; This present function store it in location: \code{mcmc_options$bugsmodel.dir}.
 
-Other model fitting functions: \code{\link{nplcm_fit_NoReg}},
-  \code{\link{nplcm_fit_Reg_Nest}},
-  \code{\link{nplcm_fit_Reg_NoNest}}
+Other model fitting functions: 
+\code{\link{nplcm_fit_NoReg}()},
+\code{\link{nplcm_fit_Reg_Nest}()},
+\code{\link{nplcm_fit_Reg_NoNest}()}
 }
 \concept{model fitting functions}

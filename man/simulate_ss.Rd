@@ -48,8 +48,9 @@ columns of silver-standard measurements
 simulate SS measurements:
 }
 \seealso{
-Other simulation functions: \code{\link{simulate_brs}},
-  \code{\link{simulate_latent}},
-  \code{\link{simulate_nplcm}}
+Other simulation functions: 
+\code{\link{simulate_brs}()},
+\code{\link{simulate_latent}()},
+\code{\link{simulate_nplcm}()}
 }
 \concept{simulation functions}

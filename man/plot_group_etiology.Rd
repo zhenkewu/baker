@@ -5,8 +5,7 @@
 \title{Plot grouped (two groups) posterior and cascade distributions (next top-three) 
 within each group}
 \usage{
-plot_group_etiology(DIR_NPLCM, dir_taxo = NULL, ksFrac = 1,
-  levellabel = 5)
+plot_group_etiology(DIR_NPLCM, dir_taxo = NULL, ksFrac = 1, levellabel = 5)
 }
 \arguments{
 \item{DIR_NPLCM}{The file path to the result folder}
@@ -30,16 +29,18 @@ function. This function picks out pathogens not based on pathogen category looku
 table, but based on the order of pathogens that enter the analysis.
 }
 \seealso{
-Other visualization functions: \code{\link{plot_BrS_panel}},
-  \code{\link{plot_SS_panel}},
-  \code{\link{plot_check_common_pattern}},
-  \code{\link{plot_check_pairwise_SLORD}},
-  \code{\link{plot_etiology_regression}},
-  \code{\link{plot_etiology_side_by_side}},
-  \code{\link{plot_etiology_strat_nested}},
-  \code{\link{plot_etiology_strat}},
-  \code{\link{plot_panels}}, \code{\link{plot_pie_panel}},
-  \code{\link{plot_selected_etiology}},
-  \code{\link{plot_subwt_regression}}
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

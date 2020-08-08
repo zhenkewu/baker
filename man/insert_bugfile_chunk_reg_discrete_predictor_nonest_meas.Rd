@@ -4,8 +4,14 @@
 \alias{insert_bugfile_chunk_reg_discrete_predictor_nonest_meas}
 \title{Insert measurement likelihood (with regression; discrete) code chunks into .bug model file}
 \usage{
-insert_bugfile_chunk_reg_discrete_predictor_nonest_meas(Mobs, prior,
-  cause_list, use_measurements = "BrS", ppd = NULL, use_jags = FALSE)
+insert_bugfile_chunk_reg_discrete_predictor_nonest_meas(
+  Mobs,
+  prior,
+  cause_list,
+  use_measurements = "BrS",
+  ppd = NULL,
+  use_jags = FALSE
+)
 }
 \arguments{
 \item{Mobs}{Measurement data in the form of \code{data_nplcm}}

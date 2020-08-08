@@ -20,9 +20,9 @@
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @param do_plot TRUE for plotting
 #' @param do_rug TRUE for plotting
-#' @param return_metric TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
-#' @param plot_ma_dots plot moving averages among case and controls if TRUE; Defautl to FALSE.
+#' @param plot_ma_dots plot moving averages among case and controls if TRUE; Default to FALSE.
 #' 
 #' 
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of

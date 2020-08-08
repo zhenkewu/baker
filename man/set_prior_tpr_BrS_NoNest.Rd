@@ -27,7 +27,8 @@ priors for the marginal TPR, i.e. TPRs for a disease class, not for the
 finer subclass.
 }
 \seealso{
-Other prior specification functions: \code{\link{overall_uniform}},
-  \code{\link{set_prior_tpr_SS}}
+Other prior specification functions: 
+\code{\link{overall_uniform}()},
+\code{\link{set_prior_tpr_SS}()}
 }
 \concept{prior specification functions}

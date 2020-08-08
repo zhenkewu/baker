@@ -4,9 +4,16 @@
 \alias{get_pEti_samp_reg}
 \title{get etiology samples by names (no regression)}
 \usage{
-get_pEti_samp_reg(DIR_NPLCM, model_options, stratum_bool = NULL,
-  pEti_subject = FALSE, reg_param = FALSE, truth = NULL,
-  return_metric = FALSE, RES_NPLCM = NULL)
+get_pEti_samp_reg(
+  DIR_NPLCM,
+  model_options,
+  stratum_bool = NULL,
+  pEti_subject = FALSE,
+  reg_param = FALSE,
+  truth = NULL,
+  return_metric = FALSE,
+  RES_NPLCM = NULL
+)
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
@@ -29,7 +36,7 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
     \item TPR a vector of length identical to \code{PR_case}
 }}
 
-\item{return_metric}{TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 coverage, bias, truth and integrated mean squared errors (IMSE).}
 
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL to save time.}

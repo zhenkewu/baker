@@ -21,9 +21,9 @@
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @param do_plot TRUE for plotting
 #' @param do_rug FALSE for plotting
-#' @param return_metric TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
-#' @param plot_ma_dots plot moving averages among case and controls if TRUE; Defautl to FALSE.
+#' @param plot_ma_dots plot moving averages among case and controls if TRUE; Default to FALSE.
 #' 
 #' 
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
@@ -79,7 +79,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   #
   # Read data from DIR_NPLCM:
   #
-  data_nplcm <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
+  data_nplcm    <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
   if(model_options$likelihood$k_subclass>1){
@@ -707,7 +707,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @param strata_weights a vector of weights that sum to one; for each pathogen
 #' the weights specify how the j-th etiology fraction should be combined across all
 #' levels of the discrete predictors in the data; can also specify as \code{"empirical"}
-#' to use empircal weights (fractions of subjects in each stratum)
+#' to use empirical weights (fractions of subjects in each stratum)
 #' @param truth a list of true values, e.g., 
 #' \code{truth=list(allEti = a list of etiology fractions)}
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
