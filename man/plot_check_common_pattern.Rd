@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-check-common-pattern.R
 \name{plot_check_common_pattern}
 \alias{plot_check_common_pattern}
-\title{Posterior predictive checking for the nested partially class models - 
+\title{Posterior predictive checking for the nested partially class models -
 frequent patterns in the BrS data. (for multiple folders)}
 \usage{
 plot_check_common_pattern(
@@ -23,11 +23,11 @@ Default is 10.}
 \item{dodge_val}{Default is 0.8; For width of boxplots.}
 }
 \value{
-A figure of posterior predicted frequencies compared with the observed 
+A figure of posterior predicted frequencies compared with the observed
 frequencies of the most common patterns for the BrS data.
 }
 \description{
-At each MCMC iteration, we generate a new data set based on the model and 
+At each MCMC iteration, we generate a new data set based on the model and
 parameter values at that iteration. The sample size of the new data set equals
 that of the actual data set, i.e. the same number of cases and controls.
 }

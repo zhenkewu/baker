@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-group-etiology.R
 \name{plot_group_etiology}
 \alias{plot_group_etiology}
-\title{Plot grouped (two groups) posterior and cascade distributions (next top-three) 
+\title{Plot grouped (two groups) posterior and cascade distributions (next top-three)
 within each group}
 \usage{
 plot_group_etiology(DIR_NPLCM, dir_taxo = NULL, ksFrac = 1, levellabel = 5)
@@ -11,7 +11,7 @@ plot_group_etiology(DIR_NPLCM, dir_taxo = NULL, ksFrac = 1, levellabel = 5)
 \item{DIR_NPLCM}{The file path to the result folder}
 
 \item{dir_taxo}{File path to taxonomy information (.csv). The default is \code{NULL}.
-If specified, it will override \code{patho_taxo_dir} in \code{clean_options} read 
+If specified, it will override \code{patho_taxo_dir} in \code{clean_options} read
 from \code{DIR_NPLCM}.}
 
 \item{ksFrac}{A number between 0 and 1, which is the fraction of samples used to

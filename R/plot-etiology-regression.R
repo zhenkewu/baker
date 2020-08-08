@@ -10,18 +10,18 @@
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 #' @param plot_basis TRUE for plotting basis functions; Default to FALSE
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
-#'  Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
+#'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
 #'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 #'  \itemize{
-#'      \item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
-#'      \item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-#'      \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-#'      \item TPR a vector of length identical to \code{PR_case}
+#'      \item Eti matrix of # of rows = # of subjects, # columns: `length(cause_list)` for Eti
+#'      \item FPR matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
+#'      \item PR_case matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
+#'      \item TPR a vector of length identical to `PR_case`
 #'  }
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @param do_plot TRUE for plotting
 #' @param do_rug FALSE for plotting
-#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if `truth$Eti` is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
 #' @param plot_ma_dots plot moving averages among case and controls if TRUE; Default to FALSE.
 #' 
@@ -56,8 +56,8 @@
 #'        
 #' @references See example figures 
 #' \itemize{
-#' \item A Figure using simulated data for six pathogens: \url{https://bit.ly/2FWoYeM}
-#' \item The legends for the figure above: \url{https://bit.ly/2OU8F60}
+#' \item A Figure using simulated data for six pathogens: <https://bit.ly/2FWoYeM>
+#' \item The legends for the figure above: <https://bit.ly/2OU8F60>
 #' }
 #' @family visualization functions
 #' @export
@@ -477,7 +477,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
 #' the weights specify how the j-th etiology fraction should be combined across all
 #' levels of the discrete predictors in the data
 #' @param truth a list of true values, e.g., 
-#' \code{truth=list(allEti = a list of etiology fractions)}
+#' `truth=list(allEti = a list of etiology fractions)`
 #' 
 #' @import graphics
 #' @family visualization functions
@@ -585,7 +585,7 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights=NULL,truth=NULL){
 #' @param case 1 for plotting cases, 0 for plotting controls; default to 0.
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
-#'  Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
+#'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
 #'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 #'  \itemize{
 #'      \item truth_subwt matrix of # of rows = # of subjects, # columns: number of true subclasses
@@ -706,10 +706,10 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @param DIR_NPLCM File path to the folder containing posterior samples
 #' @param strata_weights a vector of weights that sum to one; for each pathogen
 #' the weights specify how the j-th etiology fraction should be combined across all
-#' levels of the discrete predictors in the data; can also specify as \code{"empirical"}
+#' levels of the discrete predictors in the data; can also specify as `"empirical"`
 #' to use empirical weights (fractions of subjects in each stratum)
 #' @param truth a list of true values, e.g., 
-#' \code{truth=list(allEti = a list of etiology fractions)}
+#' `truth=list(allEti = a list of etiology fractions)`
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @import graphics
 #' @family visualization functions

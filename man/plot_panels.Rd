@@ -24,8 +24,7 @@ specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
 3rd slice of BrS measurements and 1st of SS measurement.}
 
 \item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors.
-The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose", 
-pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
+The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose",  pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
 measurement, e.g., \code{BrS = NULL}.}
 
 \item{select_latent}{a vector of character strings representing latent status. It is used for
@@ -49,7 +48,7 @@ posterior subpanel (the rightmost panel). The default value is .4}
 A figure with two or three columns
 }
 \description{
-`plot_panels()` visualizes the model outputs for communicating how the data inform final
+\code{plot_panels()} visualizes the model outputs for communicating how the data inform final
 latent disease status (etiology). It works for singleton or combo etiologies.
 }
 \details{

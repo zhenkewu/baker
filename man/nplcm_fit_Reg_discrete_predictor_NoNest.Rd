@@ -11,7 +11,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest(
 )
 }
 \arguments{
-\item{data_nplcm}{Must put cases at the top in `Mobs$MBS` and control data at the bottom
+\item{data_nplcm}{Must put cases at the top in \code{Mobs$MBS} and control data at the bottom
 (this is related to the coding scheme in JAGS).
 \itemize{
 \item  \code{Mobs} A list of measurements. The elements of the list
@@ -22,12 +22,12 @@ is not available, please specify it as, e.g., \code{MGS=NULL}
 \item \code{MBS} a list of data frame of bronze-standard (BrS) measurements.
 Rows are subjects, columns are pathogens. We use list here to accommodate
 the possibility of multiple sets of BrS data.
-They have imperfect sensitivity/specificity (e.g. nasopharyngeal PCR). 
-\item \code{MSS} a list of data frame of silver-standard (SS) measurements. 
+They have imperfect sensitivity/specificity (e.g. nasopharyngeal PCR).
+\item \code{MSS} a list of data frame of silver-standard (SS) measurements.
 Rows are subjects, columns are pathogens measured in specimen (e.g. blood culture).
 These measurements have perfect specificity but imperfect sensitivity.
-\item \code{MGS} a list of data frame of gold-standard (GS) measurements. 
-Rows are subject, columns are pathogen measurements. 
+\item \code{MGS} a list of data frame of gold-standard (GS) measurements.
+Rows are subject, columns are pathogen measurements.
 These measurements have perfect sensitivity and specificity.
 }
 
@@ -37,45 +37,25 @@ data, not design matrix for regression models.
 }}
 
 \item{model_options}{A list of model options.
-
+\describe{
+\item{\code{likelihood}}{
 \itemize{
+\item{cause_list} The vector of latent status;
+\item{k_subclass} The number of nested subclasses. 1 for conditional independence,1 for conditional dependence; It is a vector of length equal to the number of slicesof BrS measurements;\item{Eti_formula} formula for etiology regressions. You can uses_date_Eti() to specify the design matrix for R format enrollment date;it will produce natural cubic spline basis. Specify ~ 1 if noregression is intended.\item{FPR_formula}formula for false positive rates (FPR) regressions; seeformula(). You can use s_date_FPR() to specify partof the design matrix for R format enrollment date; it will produce penalized-splinebasis (based on B-splines). Specify ~ 1 if noregression is intended. NB: If effect="fixed", dm_Rdate_FPR()will just specify a design matrix with appropriately standardized dates.}}\item{use_measurements}{a vector of characters strings; can be any singleton or combinations of "BrS", "SS", "GS".}
 
-\item \code{likelihood}{
-    \itemize{
-         \item{cause_list} The vector of latent status;
-         \item{k_subclass} The number of nested subclasses. 1 for conditional independence,
->1 for conditional dependence; It is a vector of length equal to the number of slices
-of BrS measurements;
-         \item{Eti_formula} formula for etiology regressions. You can use 
-\code{\link{s_date_Eti}} to specify the design matrix for R format enrollment date;
-it will produce natural cubic spline basis. Specify \code{~ 1} if no
-regression is intended.
-         \item{FPR_formula}formula for false positive rates (FPR) regressions; see
-\code{\link{formula}}. You can use \code{\link{s_date_FPR}} to specify part
-of the design matrix for R format enrollment date; it will produce penalized-spline
-basis (based on B-splines). Specify \code{~ 1} if no
-regression is intended. NB: If \code{effect="fixed"}, \code{\link{dm_Rdate_FPR}}
-will just specify a design matrix with appropriately standardized dates. 
-    }
-}
-\item \code{use_measurements}{
-     a vector of characters strings; can be any singleton or combinations of "BrS", "SS", "GS".
-}
-
-\item \code{prior}{
-    \itemize{
-         \item{Eti_prior}Description of etiology prior 
-(e.g., \code{overall_uniform} - all hyperparameters are 1; or \code{0_1} - all hyperparameters
+\item{\code{prior}}{
+\itemize{
+\item{Eti_prior}Description of etiology prior
+(e.g., \code{overall_uniform} - all hyperparameters are 1; or \verb{0_1} - all hyperparameters
 are 0.1);
-         \item{TPR_prior}Description of priors for the measurements 
-(e.g., informative vs non-informative). 
+\item{TPR_prior}Description of priors for the measurements
+(e.g., informative vs non-informative).
 Its length should be the same with \code{M_use};
-    }
+}
 }
 }}
 
 \item{mcmc_options}{A list of Markov chain Monte Carlo (MCMC) options.
-
 \itemize{
 \item \code{debugstatus} Logical - whether to pause WinBUGS after it finishes
 model fitting;
@@ -86,14 +66,14 @@ model fitting;
 variables in the \code{.bug} file);
 \code{FALSE} otherwise;
 \item \code{ppd} \code{TRUE} to simulate new data (\code{XXX.new}
-variables in the \code{.bug} file) from the posterior predictive 
+variables in the \code{.bug} file) from the posterior predictive
 distribution (ppd); \code{FALSE} otherwise;
-\item \code{get.pEti} \code{TRUE} for getting posterior samples of individual etiologic fractions; 
-\code{FALSE} otherwise. For non-regression, or regression models with all discrete predictors, 
+\item \code{get.pEti} \code{TRUE} for getting posterior samples of individual etiologic fractions;
+\code{FALSE} otherwise. For non-regression, or regression models with all discrete predictors,
 this is defaulted to be \code{TRUE}; no need to specify this entry. It is only relevant for regression models
-with non-discrete covariates. Because individuals have distinct etiology pies at their specific covariate values, 
+with non-discrete covariates. Because individuals have distinct etiology pies at their specific covariate values,
 it's easier to just store the posterior samples of the regression coefficients and reconstruct the pies afterwards,
-rather than storing them through JAGS. 
+rather than storing them through JAGS.
 \item \code{result.folder} Path to folder storing the results;
 \item \code{bugsmodel.dir} Path to \code{.bug} model files;
 \item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
@@ -106,13 +86,13 @@ BUGS fit results.
 Fit nested partially-latent class model with regression (low-level)
 }
 \details{
-This function prepares data, specifies hyperparameters in priors 
+This function prepares data, specifies hyperparameters in priors
 (true positive rates and etiology fractions), initializes the posterior
 sampling chain, writes the model file (for JAGS or WinBUGS with slight
 differences in syntax), and fits the model. Features:
 \itemize{
 \item regression;
-\item no nested subclasses, i.e. conditional independence of 
+\item no nested subclasses, i.e. conditional independence of
 multivariate measurements given disease class and covariates;
 \item multiple BrS + multiple SS.
 }

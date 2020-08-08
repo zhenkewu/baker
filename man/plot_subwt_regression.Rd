@@ -22,11 +22,11 @@ plot_subwt_regression(
 
 \item{slice}{integer; specifies which slice of bronze-standard data to visualize; Default to 1.}
 
-\item{truth}{a list of truths computed from true parameters in simulations; elements: 
- Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
- Currently only works for one slice of bronze-standard measurements (in a non-nested model).
- \itemize{
-     \item truth_subwt matrix of # of rows = # of subjects, # columns: number of true subclasses
+\item{truth}{a list of truths computed from true parameters in simulations; elements:
+Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
+Currently only works for one slice of bronze-standard measurements (in a non-nested model).
+\itemize{
+\item truth_subwt matrix of # of rows = # of subjects, # columns: number of true subclasses
 }}
 
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}

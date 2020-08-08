@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-check-pairwise-SLORD.R
 \name{plot_check_pairwise_SLORD}
 \alias{plot_check_pairwise_SLORD}
-\title{Posterior predictive checking for nested partially latent class models - 
+\title{Posterior predictive checking for nested partially latent class models -
 pairwise log odds ratio (only for bronze-standard data)}
 \usage{
 plot_check_pairwise_SLORD(DIR_NPLCM, slice = 1)
@@ -13,11 +13,11 @@ plot_check_pairwise_SLORD(DIR_NPLCM, slice = 1)
 \item{slice}{Default is 1, for the first slice of BrS data.}
 }
 \value{
-A figure of posterior predicted log odds ratio compared with the observed 
+A figure of posterior predicted log odds ratio compared with the observed
 log odds ratio for the BrS data. The function generates this figure in your working directory automatically.
 }
 \description{
-At each MCMC iteration, we generate a new data set based on the model and 
+At each MCMC iteration, we generate a new data set based on the model and
 parameter values at that iteration. The sample size of the new data set equals
 that of the actual data set, i.e. the same number of cases and controls.
 }

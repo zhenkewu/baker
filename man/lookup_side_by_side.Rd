@@ -16,8 +16,8 @@ lookup_side_by_side(disp_order, union_nm, nm_list)
 \value{
 a list of two elements:
 \itemize{
-\item \code{model_res} a list of length same as \code{DIR_list} in 
-\code{\link{plot_etiology_side_by_side}}. Each element is the order
+\item \code{model_res} a list of length same as \code{DIR_list} in
+\code{\link[=plot_etiology_side_by_side]{plot_etiology_side_by_side()}}. Each element is the order
 for that particular name in the list; the length is the same as union_nm.
 \item \code{union_res} the names of the causes after union and re-ordering
 }

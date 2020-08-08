@@ -9,18 +9,18 @@
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 #' @param plot_basis TRUE for plotting basis functions; Default to FALSE
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
-#'  Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
+#'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
 #'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 #'  \itemize{
-#'      \item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
-#'      \item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-#'      \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-#'      \item TPR a vector of length identical to \code{PR_case}
+#'      \item Eti matrix of # of rows = # of subjects, # columns: `length(cause_list)` for Eti
+#'      \item FPR matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
+#'      \item PR_case matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
+#'      \item TPR a vector of length identical to `PR_case`
 #'  }
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @param do_plot TRUE for plotting
 #' @param do_rug TRUE for plotting
-#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if `truth$Eti` is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
 #' @param plot_ma_dots plot moving averages among case and controls if TRUE; Default to FALSE.
 #' 

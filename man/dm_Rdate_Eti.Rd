@@ -37,5 +37,5 @@ natural cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-proba
 sample quantiles.
 }
 \seealso{
-\code{\link{nplcm}}
+\code{\link[=nplcm]{nplcm()}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{merge_lists}
 \alias{merge_lists}
-\title{For a list of many sublists each of which has matrices as its member, 
+\title{For a list of many sublists each of which has matrices as its member,
 we combine across the many sublists to produce a final list}
 \usage{
 merge_lists(list_of_lists)
@@ -14,7 +14,7 @@ merge_lists(list_of_lists)
 a list after merge
 }
 \description{
-For a list of many sublists each of which has matrices as its member, 
+For a list of many sublists each of which has matrices as its member,
 we combine across the many sublists to produce a final list
 }
 \examples{

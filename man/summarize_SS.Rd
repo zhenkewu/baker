@@ -7,7 +7,7 @@
 summarize_SS(SS_dat, Y)
 }
 \arguments{
-\item{SS_dat}{a data frame of silver-standard data. It can usually 
+\item{SS_dat}{a data frame of silver-standard data. It can usually
 be obtained by \code{data_nplcm$Mobs$MSS[[1]]}, meaning the first SS measurement
 slice.}
 

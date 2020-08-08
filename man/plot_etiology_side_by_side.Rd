@@ -20,7 +20,7 @@ that stores the display order of pathogens in the combined music sheet plot.}
 
 \item{dodge_val}{default is 0.5; for width and position of boxplots.}
 
-\item{right_panel}{default is \code{TRUE}, for bacterial, viral, combo, other groupings. 
+\item{right_panel}{default is \code{TRUE}, for bacterial, viral, combo, other groupings.
 Set to \code{FALSE} if not wanted.}
 
 \item{reg_ind}{A vector of \code{TRUE} or \code{FALSE}, indicating each directory in the DIR_list
@@ -34,12 +34,12 @@ two or more folders
 compare the posterior distribution of population etiologies side-by-side
 }
 \details{
-\code{plot_etiology_side_by_side} produces what we call "music-sheet plot" 
-to compare estimates of population distribution of latent health status 
+\code{plot_etiology_side_by_side} produces what we call "music-sheet plot"
+to compare estimates of population distribution of latent health status
 (a.k.a population etiology, or population etiology pie). It reads in two or more
 folders where Bayesian inference results are combined. We implemented a check to make sure
 that pathogens from one analysis are subset of another. NB: current implementation
-does not check whether the results are from the same stratum, e.g., same site. 
+does not check whether the results are from the same stratum, e.g., same site.
 We recommend putting information in the the folder names under comparisons.
 }
 \examples{

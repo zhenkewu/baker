@@ -26,5 +26,5 @@ lookup_quality("HH")
 
 }
 \seealso{
-\code{\link{extract_data_raw}}
+\code{\link[=extract_data_raw]{extract_data_raw()}}
 }

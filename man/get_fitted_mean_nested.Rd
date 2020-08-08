@@ -17,11 +17,11 @@ get_fitted_mean_nested(
 
 \item{res_nplcm}{matrix of MCMC samples}
 
-\item{model_options}{see \code{\link{nplcm}}}
+\item{model_options}{see \code{\link[=nplcm]{nplcm()}}}
 
-\item{data_nplcm}{see \code{\link{nplcm}}}
+\item{data_nplcm}{see \code{\link[=nplcm]{nplcm()}}}
 
-\item{clean_options}{see \code{\link{clean_perch_data}}}
+\item{clean_options}{see \code{\link[=clean_perch_data]{clean_perch_data()}}}
 }
 \value{
 a matrix of no. of rows equal to retained MCMC samples, no. of columns

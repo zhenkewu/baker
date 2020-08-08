@@ -2,7 +2,7 @@
 % Please edit documentation in R/eda.R
 \name{show_individual}
 \alias{show_individual}
-\title{get an individual's data from the output of \code{\link{clean_perch_data}}}
+\title{get an individual's data from the output of \code{\link[=clean_perch_data]{clean_perch_data()}}}
 \usage{
 show_individual(data_nplcm, ID)
 }
@@ -15,7 +15,7 @@ show_individual(data_nplcm, ID)
 a list with the inquired patient's data
 }
 \description{
-get an individual's data from the output of \code{\link{clean_perch_data}}
+get an individual's data from the output of \code{\link[=clean_perch_data]{clean_perch_data()}}
 }
 \examples{
 \dontrun{

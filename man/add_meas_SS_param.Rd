@@ -9,11 +9,11 @@ add_meas_SS_param(nslice, Mobs, prior, cause_list)
 \arguments{
 \item{nslice}{the total number of SS measurement slices}
 
-\item{Mobs}{see \code{data_nplcm} described in \code{\link{nplcm}}}
+\item{Mobs}{see \code{data_nplcm} described in \code{\link[=nplcm]{nplcm()}}}
 
-\item{prior}{see \code{model_options} described in \code{\link{nplcm}}}
+\item{prior}{see \code{model_options} described in \code{\link[=nplcm]{nplcm()}}}
 
-\item{cause_list}{the list of causes in \code{model_options} described in \code{\link{nplcm}}}
+\item{cause_list}{the list of causes in \code{model_options} described in \code{\link[=nplcm]{nplcm()}}}
 }
 \value{
 a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}

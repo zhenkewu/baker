@@ -2,7 +2,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 
 ##' compare the posterior distribution of population etiologies side-by-side
 #'
-#' @details \code{plot_etiology_side_by_side} produces what we call "music-sheet plot" 
+#' @details `plot_etiology_side_by_side` produces what we call "music-sheet plot" 
 #' to compare estimates of population distribution of latent health status 
 #' (a.k.a population etiology, or population etiology pie). It reads in two or more
 #' folders where Bayesian inference results are combined. We implemented a check to make sure
@@ -16,9 +16,9 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("cause","probability","DI
 #'that stores the display order of pathogens in the combined music sheet plot.
 #'
 #'@param dodge_val default is 0.5; for width and position of boxplots.
-#'@param right_panel default is \code{TRUE}, for bacterial, viral, combo, other groupings. 
-#'Set to \code{FALSE} if not wanted. 
-#'@param reg_ind A vector of \code{TRUE} or \code{FALSE}, indicating each directory in the DIR_list
+#'@param right_panel default is `TRUE`, for bacterial, viral, combo, other groupings. 
+#'Set to `FALSE` if not wanted. 
+#'@param reg_ind A vector of `TRUE` or `FALSE`, indicating each directory in the DIR_list
 #'contains a regression result or not
 #' 
 #'@import ggplot2
@@ -190,10 +190,10 @@ plot_etiology_side_by_side <- function(DIR_list,
 #' 
 #' @return a list of two elements:
 #' \itemize{
-#' \item \code{model_res} a list of length same as \code{DIR_list} in 
-#' \code{\link{plot_etiology_side_by_side}}. Each element is the order
+#' \item `model_res` a list of length same as `DIR_list` in 
+#' [plot_etiology_side_by_side()]. Each element is the order
 #' for that particular name in the list; the length is the same as union_nm.
-#' \item \code{union_res} the names of the causes after union and re-ordering
+#' \item `union_res` the names of the causes after union and re-ordering
 #' }
 #' 
 #' @examples  
@@ -233,8 +233,8 @@ lookup_side_by_side <- function(disp_order, union_nm, nm_list){
 #' 
 #' @return A list:
 #' \itemize{
-#'    \code{pEti_mat}: a matrix of posterior samples (iteration by cause); overall etiology
-#'    \code{latent_nm}: a vector of character strings representing the names of the causes
+#'    `pEti_mat`: a matrix of posterior samples (iteration by cause); overall etiology
+#'    `latent_nm`: a vector of character strings representing the names of the causes
 #' }
 #' 
 #' @export
@@ -258,29 +258,29 @@ get_pEti_samp <- function(res_nplcm,model_options){
 #' get etiology samples by names (no regression)
 #' 
 #' @param DIR_NPLCM File path to the folder containing posterior samples
-#' @param model_options See \code{\link{nplcm}}
+#' @param model_options See [nplcm()]
 #' @param stratum_bool a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include
-#' @param pEti_subject TRUE for getting individual specific samples; Default to \code{FALSE}
-#' @param reg_param TRUE for getting regression parameters; Default to \code{FALSE}
+#' @param pEti_subject TRUE for getting individual specific samples; Default to `FALSE`
+#' @param reg_param TRUE for getting regression parameters; Default to `FALSE`
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
-#'  Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
+#'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
 #'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 #'  \itemize{
-#'      \item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
-#'      \item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-#'      \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-#'      \item TPR a vector of length identical to \code{PR_case}
+#'      \item Eti matrix of # of rows = # of subjects, # columns: `length(cause_list)` for Eti
+#'      \item FPR matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
+#'      \item PR_case matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
+#'      \item TPR a vector of length identical to `PR_case`
 #'  }
-#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+#' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if `truth$Eti` is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL to save time.
 #' 
 #' @return A list:
 #' \itemize{
-#'    \code{pEti_mat}: a matrix of posterior samples (iteration by cause); overall etiology
-#'    \code{latent_nm}: a vector of character strings representing the names of the causes
-#'    \code{pEti_subject}: an array of individual specific etiology; cause by subject by iteration
-#'    \code{betaEti}: an array of samples of the etiology regression parameters; coefficient by cause by iteration
+#'    `pEti_mat`: a matrix of posterior samples (iteration by cause); overall etiology
+#'    `latent_nm`: a vector of character strings representing the names of the causes
+#'    `pEti_subject`: an array of individual specific etiology; cause by subject by iteration
+#'    `betaEti`: an array of samples of the etiology regression parameters; coefficient by cause by iteration
 #' }
 #' 
 #' @export
@@ -462,9 +462,9 @@ get_pEti_samp_reg <- function(DIR_NPLCM,model_options,
 #' from several model fits. Usually, it is also the display order that one wants to 
 #' show.
 #' 
-#' @return A vector of length \code{length(vec)}; \code{NA} means no pattern matches
-#' vec; 1 at position 10 means the first element of \code{pattern} matches the 
-#' 10th element of \code{vec}.
+#' @return A vector of length `length(vec)`; `NA` means no pattern matches
+#' vec; 1 at position 10 means the first element of `pattern` matches the 
+#' 10th element of `vec`.
 #' 
 #' 
 #' @examples 
@@ -493,7 +493,7 @@ match_cause <- function(pattern, vec){
 #' get the names of causes by the number of pathogens associated with that cause.
 #' For now it is specifically for PERCH.
 #' 
-#' @param cause_list see \code{model_options}
+#' @param cause_list see `model_options`
 #' @param num the number of pathogens for a cause
 #' 
 #' @examples 
@@ -546,12 +546,12 @@ unique_cause <- function(cause_vec){
 
 #' pick categories from a vector of causes
 #' 
-#' @param cause_list see \code{model_options}
+#' @param cause_list see `model_options`
 #' @param taxo_group a character string, can be "virus", "bacterium", "combo".
 #' @param lookup_table a data frame with two columns ("Category" and "Cause").
 #' 
 #' @return a vector of indices indicating if each element belongs to 
-#' \code{taxo_group}.
+#' `taxo_group`.
 #' 
 #' @export
 

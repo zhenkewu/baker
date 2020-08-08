@@ -19,13 +19,13 @@ the weights specify how the j-th etiology fraction should be combined across all
 levels of the discrete predictors in the data; can also specify as \code{"empirical"}
 to use empirical weights (fractions of subjects in each stratum)}
 
-\item{truth}{a list of true values, e.g., 
-\code{truth=list(allEti = a list of etiology fractions)}}
+\item{truth}{a list of true values, e.g.,
+\verb{truth=list(allEti = a list of etiology fractions)}}
 
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}
 }
 \description{
-This function visualizes the etiology estimates against one discrete covariate, e.g., 
+This function visualizes the etiology estimates against one discrete covariate, e.g.,
 age groups.
 }
 \seealso{

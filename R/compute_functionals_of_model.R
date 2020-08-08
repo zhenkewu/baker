@@ -153,7 +153,7 @@ compute_logOR_single_and_other_cause <- function(set_parameter){
 
 
 #' compute positive rates for nested model with subclass mixing weights that are the same across
-#' \code{Jcause} classes for each person (people may have different weights.)
+#' `Jcause` classes for each person (people may have different weights.)
 #' 
 #' 
 #' @param ThetaBS True positive rates for JBrS measures (rows) among K subclasses (columns)
@@ -198,9 +198,9 @@ compute_marg_PR_nested_reg <-  function(ThetaBS,PsiBS,pEti_mat,subwt_mat,case,te
 
 
 #' compute positive rates for nested model with subclass mixing weights that are the same across
-#' \code{Jcause} classes for each person (people may have different weights.)
+#' `Jcause` classes for each person (people may have different weights.)
 #' 
-#' This is an array-version of \link{compute_marg_PR_nested_reg}
+#' This is an array-version of [compute_marg_PR_nested_reg]
 #' 
 #' @param ThetaBS_array An array of: True positive rates for JBrS measures (rows) among K subclasses (columns)
 #' @param PsiBS_array An array of: False positive rates; dimension same as above

@@ -1,14 +1,14 @@
 #' Set true positive rate (TPR) prior ranges for bronze-standard (BrS) data
 #' 
-#' \code{set_prior_tpr_BrS_NoNest} is for for conditional independence models.
+#' `set_prior_tpr_BrS_NoNest` is for for conditional independence models.
 #' We currently also use it for conditional dependence model: subclass TPRs
 #' are independently assigned a beta prior. Ongoing work will enable specifying
 #' priors for the marginal TPR, i.e. TPRs for a disease class, not for the 
 #' finer subclass.
 #' 
 #' @param slice The BrS measurement slice under consideration.
-#' @param model_options See \code{\link{nplcm}} function.
-#' @param data_nplcm See \code{\link{assign_model}} function.
+#' @param model_options See [nplcm()] function.
+#' @param data_nplcm See [assign_model()] function.
 #' 
 #' @return Parameters for the BrS dta TPR priors. It is a list of two lists 
 #' (alpha and beta). Alpha and beta are of the same length, the number of BrS 
@@ -116,8 +116,8 @@ set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
 
 #' Set true positive rate (TPR) prior ranges for silver-standard data. 
 #'
-#' @param model_options See \code{\link{nplcm}} function.
-#' @param data_nplcm See \code{\link{assign_model}} function.
+#' @param model_options See [nplcm()] function.
+#' @param data_nplcm See [assign_model()] function.
 #' 
 #' @return Parameters for the SS data TPR priors. It is a list of two lists 
 #' (alpha and beta). Alpha and beta are of the same length, the number of 

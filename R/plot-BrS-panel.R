@@ -2,22 +2,22 @@
 #' 
 #' 
 #' @param slice the index of measurement slice for BrS.
-#' @param data_nplcm See \code{\link{nplcm}}
-#' @param model_options See \code{\link{nplcm}}
-#' @param clean_options See \code{\link{clean_perch_data}}
-#' @param res_nplcm See \code{\link{nplcm_read_folder}}
+#' @param data_nplcm See [nplcm()]
+#' @param model_options See [nplcm()]
+#' @param clean_options See [clean_perch_data()]
+#' @param res_nplcm See [nplcm_read_folder()]
 #' @param bugs.dat Data input for the model fitting.
 #' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param select_latent a vector of character strings representing latent status. It is used for
-#' just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
-#' to plot all latent status information relevant to \code{"HINF"}.
-#' @param exact Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
-#' specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.
+#' just plotting a subset of latent status. For example, you can specify `select_latent = "HINF"`
+#' to plot all latent status information relevant to `"HINF"`.
+#' @param exact Default is `TRUE` to use `select_latent` as exact names of causes. If you want to
+#' specify a name and plot all single or combo causes with that name, specify it to be `FALSE`.
 #' @param top_BrS Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the BrS panel.
 #' @param cexval Default is 1 - size of text of the BrS percentages.
 #' @param srtval Default is 0 - the direction of the text for the BrS percentages.
-#' @param prior_shape \code{interval} or \code{boxplot} - for how to represent
+#' @param prior_shape `interval` or `boxplot` - for how to represent
 #' prior/posteriors of the TPR/FPRs of measurements.
 #' @param silent Default is TRUE to not print any warning messages; FALSE otherwise.
 #' 
@@ -516,9 +516,9 @@ get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
 #' 
 #' @param slice the slice of BrS data that are modeled
 #' @param res_nplcm matrix of MCMC samples
-#' @param model_options see \code{\link{nplcm}}
-#' @param data_nplcm see \code{\link{nplcm}}
-#' @param clean_options see \code{\link{clean_perch_data}}
+#' @param model_options see [nplcm()]
+#' @param data_nplcm see [nplcm()]
+#' @param clean_options see [clean_perch_data()]
 #' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
 #' equal to the no. of measurement dimensions within a slice.
 #' 
@@ -603,8 +603,8 @@ get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
 #' 
 #' @param slice the slice of BrS data that are modeled
 #' @param res_nplcm matrix of MCMC samples
-#' @param model_options see \code{\link{nplcm}}
-#' @param data_nplcm see \code{\link{nplcm}}
+#' @param model_options see [nplcm()]
+#' @param data_nplcm see [nplcm()]
 #' 
 #' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
 #' equal to the no. of measurement dimensions within a slice.
@@ -630,8 +630,8 @@ get_marginal_rates_no_nested <- function(slice, res_nplcm, model_options,data_np
 #' 
 #' @param slice the slice of BrS data that are modeled
 #' @param res_nplcm matrix of MCMC samples
-#' @param model_options see \code{\link{nplcm}}
-#' @param data_nplcm see \code{\link{nplcm}}
+#' @param model_options see [nplcm()]
+#' @param data_nplcm see [nplcm()]
 #' 
 #' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
 #' equal to the no. of measurement dimensions within a slice.
@@ -679,8 +679,8 @@ get_marginal_rates_nested <- function(slice, res_nplcm, model_options,data_nplcm
 ###' 
 ###' @param slice the slice of BrS data that are modeled
 ###' @param res_nplcm matrix of MCMC samples
-###' @param model_options see \code{\link{nplcm}}
-###' @param data_nplcm see \code{\link{nplcm}}
+###' @param model_options see [nplcm()]
+###' @param data_nplcm see [nplcm()]
 ###' 
 ###' @return a list; of dimension (number of subjects, dimension of the bronze-standard
 ###' measurement slice, the number of MCMC iterations retained).

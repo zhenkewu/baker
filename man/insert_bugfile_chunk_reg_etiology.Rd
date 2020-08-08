@@ -15,7 +15,7 @@ status; equals \code{length(model_options$likelihood$cause_list)}.}
 \item{ppd}{Default is NULL; set to TRUE for posterior predictive checking}
 }
 \value{
-a long character string to be inserted into .bug model file 
+a long character string to be inserted into .bug model file
 as distribution specification for latent status
 }
 \description{

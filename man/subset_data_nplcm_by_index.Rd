@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{subset_data_nplcm_by_index}
 \alias{subset_data_nplcm_by_index}
-\title{subset data from the output of \code{\link{clean_perch_data}}}
+\title{subset data from the output of \code{\link[=clean_perch_data]{clean_perch_data()}}}
 \usage{
 subset_data_nplcm_by_index(data_nplcm, index)
 }

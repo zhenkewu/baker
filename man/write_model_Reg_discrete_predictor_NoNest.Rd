@@ -18,8 +18,8 @@ write_model_Reg_discrete_predictor_NoNest(
 
 \item{prior}{Prior specification from \code{model_options}}
 
-\item{cause_list}{A list of latent status names (crucial for building templates; 
-see \code{\link{make_template}})}
+\item{cause_list}{A list of latent status names (crucial for building templates;
+see \code{\link[=make_template]{make_template()}})}
 
 \item{use_measurements}{"BrS", or "SS"}
 

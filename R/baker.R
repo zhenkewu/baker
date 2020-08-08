@@ -1,16 +1,16 @@
-#' baker: \strong{B}ayesian \strong{A}nalytic \strong{K}it for 
-#' \strong{E}tiology \strong{R}esearch 
+#' baker: **B**ayesian **A**nalytic **K**it for 
+#' **E**tiology **R**esearch 
 #'
-#' \code{baker} is designed for disease etiology studies from case-control data 
+#' `baker` is designed for disease etiology studies from case-control data 
 #' with multiple sources of measurements with potential errors. If you are 
 #' interested in estimating the population etiology pie (a vector of fractions
 #' that sum to one), and the probability of each cause for a particular 
-#' individual case, try \code{baker}. 
+#' individual case, try `baker`. 
 #' 
-#' \code{baker} implements hierarchical Bayesian models to infer disease etiology
-#' for multivariate binary data. We created \code{baker} to catalyze effective 
+#' `baker` implements hierarchical Bayesian models to infer disease etiology
+#' for multivariate binary data. We created `baker` to catalyze effective 
 #' communications between analysts and practicing clinicians that are vital to
-#' the success of etiology studies. The \code{baker} package offers 
+#' the success of etiology studies. The `baker` package offers 
 #' modules to  
 #' \itemize{
 #' \item Import and tidy the
@@ -22,7 +22,7 @@
 #' \item Check and compare the fitted models.
 #' }
 #' 
-#' \code{baker} has implemented models for dependent 
+#' `baker` has implemented models for dependent 
 #' measurements given disease status, regression analyses of etiology, 
 #' multiple imperfect measurements, different priors for true positive rates 
 #' among cases with differential measurement characteristics, and 
@@ -33,14 +33,14 @@
 #' 
 #' @seealso 
 #' \itemize{
-#' \item \url{https://github.com/zhenkewu/baker} for the source code
-#' and system/software requirements to use \code{baker} for your data.
+#' \item <https://github.com/zhenkewu/baker> for the source code
+#' and system/software requirements to use `baker` for your data.
 #' }
 #'
 #' @import rjags
 #'
 #' @section baker functions:
-#' \code{\link{nplcm}}
+#' [nplcm()]
 #'
 #' @docType package
 #' @name baker

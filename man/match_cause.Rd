@@ -11,17 +11,17 @@ match_cause(pattern, vec)
 \item{pattern}{a vector of latent cause names, e.g., from a particular fit}
 
 \item{vec}{a vector of latent cause names, e.g., usually a union of cause names
-from several model fits. Usually, it is also the display order that one wants to 
+from several model fits. Usually, it is also the display order that one wants to
 show.}
 }
 \value{
 A vector of length \code{length(vec)}; \code{NA} means no pattern matches
-vec; 1 at position 10 means the first element of \code{pattern} matches the 
+vec; 1 at position 10 means the first element of \code{pattern} matches the
 10th element of \code{vec}.
 }
 \description{
 @details In our cause_list, "A+B" represents the same cause
-  as "B+A". It is used for plotting side-by-side posterior sample comparisons
+as "B+A". It is used for plotting side-by-side posterior sample comparisons
 }
 \examples{
 

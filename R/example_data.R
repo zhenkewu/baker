@@ -6,14 +6,13 @@
 #' @format A matrix of two columns
 #' \describe{
 #'   \item{pathogen}{names of the hypothetical pathogens, A-Z}
-#'   \item{pathogen_type}{category of the hypothetical pathogens, \code{B} for
-#'   bacterium, \code{V} for virus, which are randomly assigned.}
+#'   \item{pathogen_type}{category of the hypothetical pathogens, `B` for
+#'   bacterium, `V` for virus, which are randomly assigned.}
 #' }
 #' @usage data("pathogen_category_simulation")
 "pathogen_category_simulation"
 
-
-#' Simulated dataset that is structured in the format necessary for an nplcm with regression 
+#' Simulated dataset that is structured in the format necessary for an [nplcm()] with regression 
 #'
 #' Data set for illustrating regression functionalities
 #' 

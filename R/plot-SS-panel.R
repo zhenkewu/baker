@@ -2,22 +2,22 @@
 #' 
 #' 
 #' @param slice the index of measurement slice for SS.
-#' @param data_nplcm See \code{\link{nplcm}}
-#' @param model_options See \code{\link{nplcm}}
-#' @param clean_options See \code{\link{clean_perch_data}}
-#' @param res_nplcm See \code{\link{nplcm_read_folder}}
+#' @param data_nplcm See [nplcm()]
+#' @param model_options See [nplcm()]
+#' @param clean_options See [clean_perch_data()]
+#' @param res_nplcm See [nplcm_read_folder()]
 #' @param bugs.dat Data input for the model fitting.
 #' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param select_latent a vector of character strings representing latent status. It is used for
-#' just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
-#' to plot all latent status information relevant to \code{"HINF"}.
-#' @param exact Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
-#' specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.
+#' just plotting a subset of latent status. For example, you can specify `select_latent = "HINF"`
+#' to plot all latent status information relevant to `"HINF"`.
+#' @param exact Default is `TRUE` to use `select_latent` as exact names of causes. If you want to
+#' specify a name and plot all single or combo causes with that name, specify it to be `FALSE`.
 #' @param top_SS Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the SS panel.
 #' @param cexval Default is 1 - size of text of the SS percentages.
 #' @param srtval Default is 0 - the direction of the text for the SS percentages.
-#' @param prior_shape \code{interval} or \code{boxplot} - for how to represent
+#' @param prior_shape `interval` or `boxplot` - for how to represent
 #' prior/posteriors of the TPR/FPRs of measurements.
 #' 
 #' @importFrom binom binom.confint

@@ -11,9 +11,9 @@ get_marginal_rates_nested(slice, res_nplcm, model_options, data_nplcm)
 
 \item{res_nplcm}{matrix of MCMC samples}
 
-\item{model_options}{see \code{\link{nplcm}}}
+\item{model_options}{see \code{\link[=nplcm]{nplcm()}}}
 
-\item{data_nplcm}{see \code{\link{nplcm}}}
+\item{data_nplcm}{see \code{\link[=nplcm]{nplcm()}}}
 }
 \value{
 a matrix of no. of rows equal to retained MCMC samples, no. of columns

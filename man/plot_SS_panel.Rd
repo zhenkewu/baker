@@ -23,15 +23,15 @@ plot_SS_panel(
 \arguments{
 \item{slice}{the index of measurement slice for SS.}
 
-\item{data_nplcm}{See \code{\link{nplcm}}}
+\item{data_nplcm}{See \code{\link[=nplcm]{nplcm()}}}
 
-\item{model_options}{See \code{\link{nplcm}}}
+\item{model_options}{See \code{\link[=nplcm]{nplcm()}}}
 
-\item{clean_options}{See \code{\link{clean_perch_data}}}
+\item{clean_options}{See \code{\link[=clean_perch_data]{clean_perch_data()}}}
 
 \item{bugs.dat}{Data input for the model fitting.}
 
-\item{res_nplcm}{See \code{\link{nplcm_read_folder}}}
+\item{res_nplcm}{See \code{\link[=nplcm_read_folder]{nplcm_read_folder()}}}
 
 \item{bg_color}{A list with names "BrS", "SS", "pie" to specify background colors}
 
@@ -42,7 +42,7 @@ to plot all latent status information relevant to \code{"HINF"}.}
 \item{exact}{Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
 specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.}
 
-\item{top_SS}{Numerical value to specify the rightmost limit 
+\item{top_SS}{Numerical value to specify the rightmost limit
 on the horizontal axis for the SS panel.}
 
 \item{cexval}{Default is 1 - size of text of the SS percentages.}

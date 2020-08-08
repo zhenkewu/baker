@@ -11,10 +11,10 @@ init_latent_jags_multipleSS(
 )
 }
 \arguments{
-\item{MSS_list}{A list of silver-standard measurement data, possibly with more than one 
-slices; see \code{data_nplcm} argument in \code{\link{nplcm}}}
+\item{MSS_list}{A list of silver-standard measurement data, possibly with more than one
+slices; see \code{data_nplcm} argument in \code{\link[=nplcm]{nplcm()}}}
 
-\item{cause_list}{See \code{model_options} arguments in \code{\link{nplcm}}}
+\item{cause_list}{See \code{model_options} arguments in \code{\link[=nplcm]{nplcm()}}}
 
 \item{patho}{A vector of measured pathogen name for MSS; default is \code{colnames(MSS)}}
 }
@@ -27,7 +27,7 @@ Initialize individual latent status (only for JAGS)
 \details{
 In JAGS 3.4.0, if an initial value contradicts the probabilistic specification, e.g.
 \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
-then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
+then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the
 silver-standard data is 1. Note: this is not a problem in WinBUGS.
 }
 \concept{initialization functions}

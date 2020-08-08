@@ -7,14 +7,14 @@
 read_meas_object(object, data)
 }
 \arguments{
-\item{object}{Outputs from \code{\link{make_meas_object}}}
+\item{object}{Outputs from \code{\link[=make_meas_object]{make_meas_object()}}}
 
-\item{data}{Raw data with column names 
+\item{data}{Raw data with column names
 \code{\{pathogen name\}_\{specimen\}\{test\}}}
 }
 \value{
 A list with two elements: \code{meas}-data frame with measurements;
-\code{position}-see \code{\link{lookup_quality}}
+\code{position}-see \code{\link[=lookup_quality]{lookup_quality()}}
 }
 \description{
 Read measurement slices

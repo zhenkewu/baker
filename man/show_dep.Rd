@@ -11,7 +11,7 @@ show_dep(fname, pckg = "package:baker", ...)
 
 \item{pckg}{Package name; default is \code{"package:baker"}}
 
-\item{...}{Other parameters accepted by \code{\link[mvbutils]{foodweb}}}
+\item{...}{Other parameters accepted by \code{\link[mvbutils:foodweb]{mvbutils::foodweb()}}}
 }
 \value{
 A figure showing function dependencies

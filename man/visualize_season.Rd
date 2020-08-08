@@ -7,7 +7,7 @@
 visualize_season(data_nplcm, patho, slice = 1, slice_SS = 1)
 }
 \arguments{
-\item{data_nplcm}{Data set produced by \code{\link{clean_perch_data}}}
+\item{data_nplcm}{Data set produced by \code{\link[=clean_perch_data]{clean_perch_data()}}}
 
 \item{patho}{the index of pathogen}
 
@@ -25,10 +25,10 @@ visualize trend of pathogen observation rate for NPPCR data (both cases and cont
 }
 \details{
 This function shows observed
-positive rate for continuous covariates,e.g., enrollment date 
-in PERCH application. Smoothing is done by penalized splines implemented by 
-\code{mgcv} package. The penalized spline smoothing term is constructed by 
-\code{\link[mgcv]{smooth.construct.ps.smooth.spec}}
+positive rate for continuous covariates,e.g., enrollment date
+in PERCH application. Smoothing is done by penalized splines implemented by
+\code{mgcv} package. The penalized spline smoothing term is constructed by
+\code{\link[mgcv:smooth.construct.ps.smooth.spec]{mgcv::smooth.construct.ps.smooth.spec()}}
 }
 \seealso{
 Other exploratory data analysis functions: 

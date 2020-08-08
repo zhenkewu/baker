@@ -8,7 +8,7 @@ both cases and controls}
 plot_logORmat(data_nplcm, pathogen_display, BrS_slice = 1, logOR_rounding = 2)
 }
 \arguments{
-\item{data_nplcm}{See \code{\link{assign_model}}.}
+\item{data_nplcm}{See \code{\link[=assign_model]{assign_model()}}.}
 
 \item{pathogen_display}{The pathogen vector in desired order for display.
 It can be of larger length than that of \code{pathogen_BrS}.}
@@ -26,11 +26,11 @@ both cases and controls
 }
 \details{
 \code{plot_logORmat} visualizes a matrix of pairwise log odds ratios (LOR)
- for cases (upper) and controls (lower). LOR is at the top of the cell. 
- Below it, its standard error is in smaller type, using the same color as the LOR. 
- Then the estimate is divided by its standard error. We put the actual value when
-  the Z-statistics has an absolute value greater than $2$; a plus (red) or minus (blue)
- if between $1$ and $2$; blank otherwise.
+for cases (upper) and controls (lower). LOR is at the top of the cell.
+Below it, its standard error is in smaller type, using the same color as the LOR.
+Then the estimate is divided by its standard error. We put the actual value when
+the Z-statistics has an absolute value greater than $2$; a plus (red) or minus (blue)
+if between $1$ and $2$; blank otherwise.
 }
 \seealso{
 Other exploratory data analysis functions: 

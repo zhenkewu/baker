@@ -9,7 +9,7 @@ get_individual_data(i, data_nplcm)
 \arguments{
 \item{i}{index of individual as appeared in \code{data_nplcm}}
 
-\item{data_nplcm}{the data for nplcm; see \code{\link{nplcm}}}
+\item{data_nplcm}{the data for nplcm; see \code{\link[=nplcm]{nplcm()}}}
 }
 \value{
 a list of the same structure as \code{data_nplcm}; just with one row of values

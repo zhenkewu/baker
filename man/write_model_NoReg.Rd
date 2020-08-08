@@ -15,16 +15,16 @@ write_model_NoReg(
 )
 }
 \arguments{
-\item{k_subclass}{the number of subclasses for the slices that require 
-conditional dependence modeling (only applicable to BrS data); its length is 
+\item{k_subclass}{the number of subclasses for the slices that require
+conditional dependence modeling (only applicable to BrS data); its length is
 of the same value as the number of BrS slices.}
 
 \item{Mobs}{measurement data in the form of \code{data_nplcm}}
 
 \item{prior}{prior specification from \code{model_options}}
 
-\item{cause_list}{a list of latent status names (crucial for building templates; 
-see \code{\link{make_template}})}
+\item{cause_list}{a list of latent status names (crucial for building templates;
+see \code{\link[=make_template]{make_template()}})}
 
 \item{use_measurements}{"BrS", or "SS"}
 

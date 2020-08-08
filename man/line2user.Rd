@@ -12,17 +12,17 @@ line2user(line, side)
 \item{side}{integer; 1-4}
 }
 \description{
-Here's a version that works with log-scale and linear scale axes. 
-The trick is to express line locations in npc coordinates rather than user coordinates, 
+Here's a version that works with log-scale and linear scale axes.
+The trick is to express line locations in npc coordinates rather than user coordinates,
 since the latter are of course not linear when axes are on log scales.
 }
 \details{
 \code{par('cin')[2] * par('cex') * par('lheight')} returns the current line height
- in inches, which we convert to user coordinates by multiplying by 
- \code{diff(grconvertX(0:1, 'inches', 'user'))}, the length of an inch in user
-  coordinates (horizontally, in this case - if interested in the vertical
-   height of a line in user coords we would use 
-   \code{diff(grconvertY(0:1, 'inches', 'user')))}.
+in inches, which we convert to user coordinates by multiplying by
+\code{diff(grconvertX(0:1, 'inches', 'user'))}, the length of an inch in user
+coordinates (horizontally, in this case - if interested in the vertical
+height of a line in user coords we would use
+\verb{diff(grconvertY(0:1, 'inches', 'user')))}.
 }
 \examples{
 

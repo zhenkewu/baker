@@ -85,12 +85,12 @@ get_metric <- function(DIR_NPLCM,truth){
 #'
 #' @param DIR_list The list of  where Bayesian results are stored
 #' @param truth True etiologic fraction vector (must sum to 1)  used to generate data;
-#' Default is \code{NULL}. If a vector is supplied, then only the first path in \code{DIR_LIST}
+#' Default is `NULL`. If a vector is supplied, then only the first path in `DIR_LIST`
 #' is used.
 #' @param silent Default is FALSE. To suppress printing messages, set to TRUE.
 #' 
-#' @return a list of length two. \code{diff} is the direct differences; 
-#' \code{prb} is the percent relative bias.
+#' @return a list of length two. `diff` is the direct differences; 
+#' `prb` is the percent relative bias.
 #' @export
 #'
 get_direct_bias <- function(DIR_list,truth=NULL,silent=FALSE){
@@ -168,7 +168,7 @@ get_direct_bias <- function(DIR_list,truth=NULL,silent=FALSE){
 #' truth     <- c(0.5,0.2,0.15,0.1,0.05)
 #' get_coverage(DIR_NPLCM,truth)
 #' }
-#' @return A logic vector of length as \code{truth}. 1 for covered; 0 for not.
+#' @return A logic vector of length as `truth`. 1 for covered; 0 for not.
 #' @export
 #'
 get_coverage <- function(DIR_NPLCM,truth){

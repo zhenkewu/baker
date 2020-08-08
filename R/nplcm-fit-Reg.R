@@ -19,8 +19,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #' @inheritParams nplcm
 #' @return BUGS fit results.
 #' 
-#' @seealso \link{write_model_NoReg} for automatically generate \code{.bug} model
-#'file; This present function store it in location: \code{mcmc_options$bugsmodel.dir}.
+#' @seealso [write_model_NoReg] for automatically generate `.bug` model
+#'file; This present function store it in location: `mcmc_options$bugsmodel.dir`.
 #' 
 #' @family model fitting functions 
 #' 
@@ -748,8 +748,8 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
 #' @inheritParams nplcm
 #' @return BUGS fit results.
 #' 
-#' @seealso \link{write_model_NoReg} for constructing .bug model file; This function
-#' then put it in the folder \code{mcmc_options$bugsmodel.dir}.
+#' @seealso [write_model_NoReg] for constructing .bug model file; This function
+#' then put it in the folder `mcmc_options$bugsmodel.dir`.
 #' 
 #' @family model fitting functions 
 #' 
@@ -1472,8 +1472,8 @@ nplcm_fit_Reg_NoNest <-
 
 #' Fit nested partially-latent class model with regression (low-level)
 #'
-#' Called by \link{nplcm}() upon being assigned to this nested regression by 
-#' \link{assign_model}
+#' Called by [nplcm]() upon being assigned to this nested regression by 
+#' [assign_model]
 #'
 #' @details This function prepares data, specifies hyperparameters in priors 
 #' (true positive rates and etiology fractions), initializes the posterior
@@ -1489,8 +1489,8 @@ nplcm_fit_Reg_NoNest <-
 #' @inheritParams nplcm
 #' @return BUGS fit results.
 #' 
-#' @seealso \link{write_model_NoReg} for constructing .bug model file; This function
-#' then put it in the folder \code{mcmc_options$bugsmodel.dir}.
+#' @seealso [write_model_NoReg] for constructing .bug model file; This function
+#' then put it in the folder `mcmc_options$bugsmodel.dir`.
 #' 
 #' @family model fitting functions 
 #' 

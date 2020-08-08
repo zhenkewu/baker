@@ -18,7 +18,7 @@ on B-spline basis functions}
 the number of columns is \code{dof}
 if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.}
 
-\item{...}{Other arguments as in \code{\link[splines]{bs}}}
+\item{...}{Other arguments as in \code{\link[splines:bs]{splines::bs()}}}
 }
 \value{
 Design matrix for FPR regression, with cases' rows on top of
@@ -28,5 +28,5 @@ controls'.
 \code{s_date_FPR} creates design matrices for FPR regressions;
 }
 \seealso{
-\code{\link{nplcm}}
+\code{\link[=nplcm]{nplcm()}}
 }

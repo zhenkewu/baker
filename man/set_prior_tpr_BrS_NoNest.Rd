@@ -9,21 +9,21 @@ set_prior_tpr_BrS_NoNest(slice, model_options, data_nplcm)
 \arguments{
 \item{slice}{The BrS measurement slice under consideration.}
 
-\item{model_options}{See \code{\link{nplcm}} function.}
+\item{model_options}{See \code{\link[=nplcm]{nplcm()}} function.}
 
-\item{data_nplcm}{See \code{\link{assign_model}} function.}
+\item{data_nplcm}{See \code{\link[=assign_model]{assign_model()}} function.}
 }
 \value{
-Parameters for the BrS dta TPR priors. It is a list of two lists 
-(alpha and beta). Alpha and beta are of the same length, the number of BrS 
-measurement slices. Each element of the alpha (beta) list is a numeric vector 
+Parameters for the BrS dta TPR priors. It is a list of two lists
+(alpha and beta). Alpha and beta are of the same length, the number of BrS
+measurement slices. Each element of the alpha (beta) list is a numeric vector
 for alpha (beta) parameters as in BETA distribution.
 }
 \description{
 \code{set_prior_tpr_BrS_NoNest} is for for conditional independence models.
 We currently also use it for conditional dependence model: subclass TPRs
 are independently assigned a beta prior. Ongoing work will enable specifying
-priors for the marginal TPR, i.e. TPRs for a disease class, not for the 
+priors for the marginal TPR, i.e. TPRs for a disease class, not for the
 finer subclass.
 }
 \seealso{

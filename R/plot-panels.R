@@ -8,17 +8,17 @@
 #'
 #' @param DIR_NPLCM File path to the folder containing posterior samples
 #' @param slices DEFAULT is "all" - to plot all measurements; Otherwise, one can
-#' specify a list: \code{list(MBS=c(1,3),MSS=1)} means to plot the 1st and
+#' specify a list: `list(MBS=c(1,3),MSS=1)` means to plot the 1st and
 #' 3rd slice of BrS measurements and 1st of SS measurement.
 #' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors.
-#' The current default is \code{list(BrS = "lavenderblush", SS = "mistyrose", 
-#' pie="antiquewhite")}. If no background is intended, specify as NULL or for a particular
-#' measurement, e.g., \code{BrS = NULL}.
+#' The current default is `list(BrS = "lavenderblush", SS = "mistyrose", 
+#' pie="antiquewhite")`. If no background is intended, specify as NULL or for a particular
+#' measurement, e.g., `BrS = NULL`.
 #' @param select_latent a vector of character strings representing latent status. It is used for
-#' just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
-#' to plot all latent status information relevant to \code{"HINF"}.
-#' @param exact Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
-#' specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.
+#' just plotting a subset of latent status. For example, you can specify `select_latent = "HINF"`
+#' to plot all latent status information relevant to `"HINF"`.
+#' @param exact Default is `TRUE` to use `select_latent` as exact names of causes. If you want to
+#' specify a name and plot all single or combo causes with that name, specify it to be `FALSE`.
 #' @param SS_upperlimit The upper limit of horizontal bar for the silver-standard
 #' subpanel (the middle panel). The default value is .25.
 #'
@@ -178,7 +178,7 @@ plot_panels <- function(DIR_NPLCM,
 #' @param res_nplcm result from model fits
 #' @param model_options model specification
 #' 
-#' @return a list with order (\code{ord}) and ordered posterior samples (by column)
+#' @return a list with order (`ord`) and ordered posterior samples (by column)
 #' 
 #' @export
 order_post_eti <- function(res_nplcm,model_options){
@@ -219,7 +219,7 @@ is_length_all_one <- function(x){
 
 #' get a list of measurement index where to look for data
 #' 
-#' @param template See \code{\link{nplcm}}
+#' @param template See [nplcm()]
 #' 
 #' @return a list of index vectors
 #' 
@@ -253,10 +253,10 @@ get_plot_num <- function(e, height){
 
 #' plotting the labels on the left margin for panels plot
 #' 
-#' @param model_options See \code{\link{nplcm}}
-#' @param height no. of rows in the panels plot; commonly set as \code{length(select_latent)}
+#' @param model_options See [nplcm()]
+#' @param height no. of rows in the panels plot; commonly set as `length(select_latent)`
 #' @return a plot
-#' @seealso \link{plot_panels}
+#' @seealso [plot_panels]
 #' @export
 
 plot_leftmost <- function(model_options,height){

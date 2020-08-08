@@ -1,7 +1,7 @@
-#' get an individual's data from the output of \code{\link{clean_perch_data}}
+#' get an individual's data from the output of [clean_perch_data()]
 #'
-#' @param data_nplcm data for fitting nplcm; See \link{nplcm}
-#' @param ID patient id: \code{patid}.
+#' @param data_nplcm data for fitting nplcm; See [nplcm]
+#' @param ID patient id: `patid`.
 #'
 #' @return a list with the inquired patient's data
 #'
@@ -27,16 +27,16 @@ show_individual <- function(data_nplcm,ID) {
 #' Visualize pairwise log odds ratios (LOR) for data that are available in
 #' both cases and controls
 #'
-#' @details \code{plot_logORmat} visualizes a matrix of pairwise log odds ratios (LOR)
+#' @details `plot_logORmat` visualizes a matrix of pairwise log odds ratios (LOR)
 #'  for cases (upper) and controls (lower). LOR is at the top of the cell. 
 #'  Below it, its standard error is in smaller type, using the same color as the LOR. 
 #'  Then the estimate is divided by its standard error. We put the actual value when
 #'   the Z-statistics has an absolute value greater than $2$; a plus (red) or minus (blue)
 #'  if between $1$ and $2$; blank otherwise. 
 #'
-#' @param data_nplcm See \code{\link{assign_model}}.
+#' @param data_nplcm See [assign_model()].
 #' @param pathogen_display The pathogen vector in desired order for display.
-#' It can be of larger length than that of \code{pathogen_BrS}.
+#' It can be of larger length than that of `pathogen_BrS`.
 #' @param BrS_slice Default is 1 - the set of BrS data to visualize.
 #' @param logOR_rounding Rounding number of the log odds ratio. Default is 2.
 #' 
@@ -189,7 +189,7 @@ plot_logORmat = function(data_nplcm,
 #' silver-standard data summary
 #' 
 #' @param SS_dat a data frame of silver-standard data. It can usually 
-#' be obtained by \code{data_nplcm$Mobs$MSS[[1]]}, meaning the first SS measurement
+#' be obtained by `data_nplcm$Mobs$MSS[[1]]`, meaning the first SS measurement
 #' slice.
 #' 
 #' @param Y a vector of case control status: 1 for case; 0 for control.
@@ -230,7 +230,7 @@ summarize_SS <- function(SS_dat, Y){
 
 #' summarize bronze-standard data
 #' 
-#' @param BrS_dat bronze-standard data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' @param BrS_dat bronze-standard data, which is usually `data_nplcm$Mobs$MBS[[1]]`
 #' 
 #' @param Y A vector of case/control status: 1 for case; 0 for control
 #' 
@@ -276,7 +276,7 @@ summarize_BrS <- function(BrS_dat,Y){
 
 #' get top patterns from a slice of bronze-standard measurement
 #' 
-#' @param BrS_dat bronze-standard data, which is usually \code{data_nplcm$Mobs$MBS[[1]]}
+#' @param BrS_dat bronze-standard data, which is usually `data_nplcm$Mobs$MBS[[1]]`
 #' 
 #' @param Y A vector of case/control status: 1 for case; 0 for control
 #' @param case_status 1 for case; 0 for controls
@@ -289,10 +289,10 @@ summarize_BrS <- function(BrS_dat,Y){
 #' res <- get_top_pattern(data_nplcm$Mobs$MBS[[1]],data_nplcm$Y,1,30,FALSE)
 #' }
 #' 
-#' @return a list of results: \code{obs_pat} - observed rates; 
-#' \code{pattern_names}; \code{exist_other} - if
-#' actual no. of patterns is larger than \code{n_pat}; \code{N}- No. of individuals
-#' with \code{Y = case_status}.
+#' @return a list of results: `obs_pat` - observed rates; 
+#' `pattern_names`; `exist_other` - if
+#' actual no. of patterns is larger than `n_pat`; `N`- No. of individuals
+#' with `Y = case_status`.
 #' 
 #' @family exploratory data analysis functions
 #' @export
@@ -358,10 +358,10 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
 #' @details This function shows observed
 #' positive rate for continuous covariates,e.g., enrollment date 
 #' in PERCH application. Smoothing is done by penalized splines implemented by 
-#' \code{mgcv} package. The penalized spline smoothing term is constructed by 
-#' \code{\link[mgcv]{smooth.construct.ps.smooth.spec}}
+#' `mgcv` package. The penalized spline smoothing term is constructed by 
+#' [mgcv::smooth.construct.ps.smooth.spec()]
 #' 
-#' @param data_nplcm Data set produced by \code{\link{clean_perch_data}}
+#' @param data_nplcm Data set produced by [clean_perch_data()]
 #' @param patho the index of pathogen
 #' @param slice the slice of BrS data for visualization; default is 1.
 #' @param slice_SS the slice of SS data to add onto BrS plots; default is 1, usually

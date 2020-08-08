@@ -1,38 +1,38 @@
 #' Interpret the model specified by user
 #'
-#' \code{assign_model} translates options specified by a user (e.g., in 
-#' \code{model_options}) into information that can be understood by \code{baker}.
+#' `assign_model` translates options specified by a user (e.g., in 
+#' `model_options`) into information that can be understood by `baker`.
 #' 
-#' @details \code{assign_model} will be modified to check if data are conformable
+#' @details `assign_model` will be modified to check if data are conformable
 #' to specified model.
 #' 
-#' @param data_nplcm Data. See \code{\link{nplcm}} function for data structure.
-#' @param model_options See \code{\link{nplcm}} function.
-#' @param silent Default is \code{TRUE} for no messages; \code{FALSE} otherwise.
+#' @param data_nplcm Data. See [nplcm()] function for data structure.
+#' @param model_options See [nplcm()] function.
+#' @param silent Default is `TRUE` for no messages; `FALSE` otherwise.
 #' @return A list of model specifications:
 #' \itemize{
-#'    \item \code{num_slice} A vector counting the No. of measurement slices for each
+#'    \item `num_slice` A vector counting the No. of measurement slices for each
 #'    level of measurement quality (e.g., MBS, MSS, MGS representing
 #'    Bronze-Standard Measurements - case-control, 
 #'    Silver-Standard Measurements and Gold-Standard
 #'    Measurements - case-only);
-#'    \item \code{nested} Local dependence specification for modeling bronze-standard
-#'    data. \code{TRUE} for nested models (conditional dependence given disease class); 
-#'    \code{FALSE} for non-nested models (conditional independence given disease class). 
+#'    \item `nested` Local dependence specification for modeling bronze-standard
+#'    data. `TRUE` for nested models (conditional dependence given disease class); 
+#'    `FALSE` for non-nested models (conditional independence given disease class). 
 #'    One for each BrS slice.
-#'    \item \code{regression}
+#'    \item `regression`
 #'        \itemize{
-#'            \item \code{do_reg_Eti} \code{TRUE} for doing etiology regression.
+#'            \item `do_reg_Eti` `TRUE` for doing etiology regression.
 #'            It means let the etiology fractions vary with explanatory variables. 
-#'            \code{FALSE} otherwise;
-#'            \item \code{do_reg_FPR} A vector whose names represent the slices
+#'            `FALSE` otherwise;
+#'            \item `do_reg_FPR` A vector whose names represent the slices
 #'            of bronze-standard data. For each slice of BrS measurements, 
-#'            \code{TRUE} does false positive rate regression. It means the false
+#'            `TRUE` does false positive rate regression. It means the false
 #'            positive rates, estimatable from controls, can vary with 
-#'            covariates; \code{FALSE} otherwise.
-#'            \item \code{is_discrete_predictor} A list of names "Eti", and 
-#'            the names for every slice of bronze-standard data. \code{TRUE}
-#'            if all predictors are discrete; \code{FALSE} otherwise.
+#'            covariates; `FALSE` otherwise.
+#'            \item `is_discrete_predictor` A list of names "Eti", and 
+#'            the names for every slice of bronze-standard data. `TRUE`
+#'            if all predictors are discrete; `FALSE` otherwise.
 #'        }
 #' }
 #' 

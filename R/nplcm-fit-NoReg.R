@@ -14,8 +14,8 @@
 #' @inheritParams nplcm
 #' @return BUGS fit results.
 #' 
-#' @seealso \link{write_model_NoReg} for constructing .bug model file; This function
-#' then put it in the folder \code{mcmc_options$bugsmodel.dir}.
+#' @seealso [write_model_NoReg] for constructing .bug model file; This function
+#' then put it in the folder `mcmc_options$bugsmodel.dir`.
 #' 
 #' @family model fitting functions 
 #' 
@@ -582,15 +582,15 @@ nplcm_fit_NoReg<-
 #' Initialize individual latent status (only for JAGS)
 #' 
 #' @details In JAGS 3.4.0, if an initial value contradicts the probabilistic specification, e.g.
-#' \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
+#' `MSS_1[i,j] ~ dbern(mu_ss_1[i,j])`, where `MSS_1[i,j]=1` but `mu_ss_1[i,j]=0`,
 #' then JAGS cannot understand it. In PERCH application, this is most likely used when the specificity of the 
 #' silver-standard data is 1. Note: this is not a problem in WinBUGS.
 #' 
 #' 
 #' @param MSS_list A list of silver-standard measurement data, possibly with more than one 
-#' slices; see \code{data_nplcm} argument in \code{\link{nplcm}}
-#' @param cause_list See \code{model_options} arguments in \code{\link{nplcm}}
-#' @param patho A vector of measured pathogen name for MSS; default is \code{colnames(MSS)}
+#' slices; see `data_nplcm` argument in [nplcm()]
+#' @param cause_list See `model_options` arguments in [nplcm()]
+#' @param patho A vector of measured pathogen name for MSS; default is `colnames(MSS)`
 #' 
 #' @return a list of numbers, indicating categories of individual latent causes.
 #' 

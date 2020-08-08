@@ -19,8 +19,8 @@ insert_bugfile_chunk_reg_nonest_meas(
 
 \item{prior}{Prior specification from \code{model_options}}
 
-\item{cause_list}{A list of latent status names (crucial for building templates; 
-see \code{\link{make_template}})}
+\item{cause_list}{A list of latent status names (crucial for building templates;
+see \code{\link[=make_template]{make_template()}})}
 
 \item{FPR_formula}{A list of FPR regression formula; check \code{model_options$likelihood$FPR_formula}}
 

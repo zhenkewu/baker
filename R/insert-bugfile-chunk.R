@@ -3,10 +3,10 @@
 #' @param k_subclass the number of subclasses for the slices that require 
 #' conditional dependence modeling (only applicable to BrS data); its length is 
 #' of the same value as the number of BrS slices.
-#' @param Mobs measurement data in the form of \code{data_nplcm}
-#' @param prior prior specification from \code{model_options}
+#' @param Mobs measurement data in the form of `data_nplcm`
+#' @param prior prior specification from `model_options`
 #' @param cause_list a list of latent status names (crucial for building templates; 
-#' see \code{\link{make_template}})
+#' see [make_template()])
 #' @param use_measurements "BrS", or "SS"
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking
 #' @param use_jags Default is FALSE; set to TRUE if want to use JAGS for model fitting.
@@ -14,8 +14,8 @@
 #' @return a long character string to be inserted into .bug model file as measurement
 #' likelihood
 #' 
-#' @seealso It is used in \link{write_model_NoReg} for constructing a .bug file along with
-#' specification of latent status distribution (\link{insert_bugfile_chunk_noreg_etiology})
+#' @seealso It is used in [write_model_NoReg] for constructing a .bug file along with
+#' specification of latent status distribution ([insert_bugfile_chunk_noreg_etiology])
 #' 
 #' @export
 insert_bugfile_chunk_noreg_meas <-
@@ -152,11 +152,11 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
 
 #' Insert measurement likelihood (with regression) code chunks into .bug model file
 #' 
-#' @param Mobs Measurement data in the form of \code{data_nplcm}
-#' @param prior Prior specification from \code{model_options}
+#' @param Mobs Measurement data in the form of `data_nplcm`
+#' @param prior Prior specification from `model_options`
 #' @param cause_list A list of latent status names (crucial for building templates; 
-#' see \code{\link{make_template}})
-#' @param FPR_formula A list of FPR regression formula; check \code{model_options$likelihood$FPR_formula}
+#' see [make_template()])
+#' @param FPR_formula A list of FPR regression formula; check `model_options$likelihood$FPR_formula`
 #' @param use_measurements "BrS", or "SS"
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking
 #' @param use_jags Default is FALSE; set to TRUE if want to use JAGS for model fitting.
@@ -164,8 +164,8 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
 #' @return A long character string to be inserted into .bug model file as measurement
 #' likelihood
 #' 
-#' @seealso It is used in \link{write_model_Reg_NoNest} for constructing a .bug file along with
-#' specification of latent status regression (\link{insert_bugfile_chunk_reg_etiology})
+#' @seealso It is used in [write_model_Reg_NoNest] for constructing a .bug file along with
+#' specification of latent status regression ([insert_bugfile_chunk_reg_etiology])
 #' 
 #' @export
 insert_bugfile_chunk_reg_nonest_meas <-
@@ -269,11 +269,11 @@ insert_bugfile_chunk_reg_nonest_meas <-
 #' Insert measurement likelihood (nested model+regression) code chunks into .bug model file
 #' 
 #' 
-#' @param Mobs Measurement data in the form of \code{data_nplcm}
-#' @param prior Prior specification from \code{model_options}
+#' @param Mobs Measurement data in the form of `data_nplcm`
+#' @param prior Prior specification from `model_options`
 #' @param cause_list A list of latent status names (crucial for building templates; 
-#' see \code{\link{make_template}})
-#' @param FPR_formula A list of FPR regression formula; check \code{model_options$likelihood$FPR_formula}
+#' see [make_template()])
+#' @param FPR_formula A list of FPR regression formula; check `model_options$likelihood$FPR_formula`
 #' @param use_measurements "BrS", or "SS"
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking
 #' @param use_jags Default is FALSE; set to TRUE if want to use JAGS for model fitting.
@@ -281,9 +281,9 @@ insert_bugfile_chunk_reg_nonest_meas <-
 #' @return A long character string to be inserted into .bug model file as measurement
 #' likelihood
 #' 
-#' @seealso Called by \link{write_model_Reg_NoNest} for constructing a \code{.bug} file.
+#' @seealso Called by [write_model_Reg_NoNest] for constructing a `.bug` file.
 #' This is usually called along with specification of latent status regression 
-#' (\link{insert_bugfile_chunk_reg_etiology}).
+#' ([insert_bugfile_chunk_reg_etiology]).
 #' 
 #' @export
 insert_bugfile_chunk_reg_nest_meas <-
@@ -373,10 +373,10 @@ insert_bugfile_chunk_reg_nest_meas <-
 
 #' insert etiology regression for latent status code chunk into .bug file
 #' 
-#' @param Eti_formula Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.
+#' @param Eti_formula Etiology regression formula; Check `model_options$likelihood$Eti_formula`.
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking 
 #' @param Jcause The number of distinct causes, i.e., categories of latent health
-#' status; equals \code{length(model_options$likelihood$cause_list)}.
+#' status; equals `length(model_options$likelihood$cause_list)`.
 #' 
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status
@@ -531,10 +531,10 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
 
 #' Insert measurement likelihood (with regression; discrete) code chunks into .bug model file
 #' 
-#' @param Mobs Measurement data in the form of \code{data_nplcm}
-#' @param prior Prior specification from \code{model_options}
+#' @param Mobs Measurement data in the form of `data_nplcm`
+#' @param prior Prior specification from `model_options`
 #' @param cause_list A list of latent status names (crucial for building templates; 
-#' see \code{\link{make_template}})
+#' see [make_template()])
 #' @param use_measurements "BrS", or "SS"
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking
 #' @param use_jags Default is FALSE; set to TRUE if want to use JAGS for model fitting.
@@ -542,8 +542,8 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
 #' @return A long character string to be inserted into .bug model file as measurement
 #' likelihood
 #' 
-#' @seealso It is used in \link{write_model_Reg_NoNest} for constructing a .bug file along with
-#' specification of latent status regression (\link{insert_bugfile_chunk_reg_etiology})
+#' @seealso It is used in [write_model_Reg_NoNest] for constructing a .bug file along with
+#' specification of latent status regression ([insert_bugfile_chunk_reg_etiology])
 #' 
 #' @export
 insert_bugfile_chunk_reg_discrete_predictor_nonest_meas <-
@@ -649,7 +649,7 @@ insert_bugfile_chunk_reg_discrete_predictor_nonest_meas <-
 #' 
 #' @param ppd Default is NULL; set to TRUE for posterior predictive checking 
 #' @param Jcause The number of distinct causes, i.e., categories of latent health
-#' status; equals \code{length(model_options$likelihood$cause_list)}.
+#' status; equals `length(model_options$likelihood$cause_list)`.
 #' 
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status

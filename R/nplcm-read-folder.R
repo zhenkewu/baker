@@ -4,11 +4,11 @@
 #' 
 #' @return A list with data, options and posterior samples.
 #' \itemize{
-#' \item \code{bugs.dat}
-#' \item \code{model_options}
-#' \item \code{clean_otions}
-#' \item \code{Nd}; \code{Nu}; \code{Y}; \code{Mobs}; 
-#' \item \code{res_nplcm}.
+#' \item `bugs.dat`
+#' \item `model_options`
+#' \item `clean_otions`
+#' \item `Nd`; `Nu`; `Y`; `Mobs`; 
+#' \item `res_nplcm`.
 #' }
 #'
 #' @export
@@ -106,10 +106,10 @@ nplcm_read_folder <- function(DIR_NPLCM){
 #' get individual prediction (Bayesian posterior)
 #' 
 #' @param read_res a list read from a folder that stores fitted model results; 
-#' Commonly, it is the returned value from function \code{\link{nplcm_read_folder}}
+#' Commonly, it is the returned value from function [nplcm_read_folder()]
 #' 
 #' @return a matrix of individual predictions; rows for cases, columns for causes 
-#' specified in \code{model_options$likelihood$cause_list}; See \code{\link{nplcm}}
+#' specified in `model_options$likelihood$cause_list`; See [nplcm()]
 #' 
 #' @examples 
 #' \dontrun{
@@ -140,10 +140,10 @@ get_individual_prediction <- function(read_res){
 
 #' get individual data
 #' 
-#' @param i index of individual as appeared in \code{data_nplcm}
-#' @param data_nplcm the data for nplcm; see \code{\link{nplcm}}
+#' @param i index of individual as appeared in `data_nplcm`
+#' @param data_nplcm the data for nplcm; see [nplcm()]
 #' 
-#' @return a list of the same structure as \code{data_nplcm}; just with one row of values
+#' @return a list of the same structure as `data_nplcm`; just with one row of values
 #' 
 #' @export
 #' 

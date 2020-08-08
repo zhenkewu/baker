@@ -6,13 +6,13 @@
 #' table, but based on the order of pathogens that enter the analysis.
 #'
 #' @param DIR_NPLCM The file path to the result folder
-#' @param dir_taxo File path to taxonomy information (.csv). The default is \code{NULL}.
-#' If specified, it will override \code{patho_taxo_dir} in \code{clean_options} read 
-#' from \code{DIR_NPLCM}.
+#' @param dir_taxo File path to taxonomy information (.csv). The default is `NULL`.
+#' If specified, it will override `patho_taxo_dir` in `clean_options` read 
+#' from `DIR_NPLCM`.
 #' @param ksFrac A number between 0 and 1, which is the fraction of samples used to
 #' calculate kernel stats::density
 #' @param levellabel The contour line to be drawn in the final plot. Default is
-#' \code{5}, which represents the contour of the \code{95} percent support region.
+#' `5`, which represents the contour of the `95` percent support region.
 #' @return A figure with group etiology.
 #'
 #' @family visualization functions
@@ -291,7 +291,7 @@ plot_group_etiology <- function(DIR_NPLCM,dir_taxo=NULL,ksFrac = 1,levellabel = 
 #' @param ksFrac A number between 0 and 1, which is the fraction of samples used to
 #' calculate kernel stats::density
 #' @param levellabel The contour line to be drawn in the final plot. Default is
-#' \code{5}, which represents the contour of the \code{95} percent support region.
+#' `5`, which represents the contour of the `95` percent support region.
 #' @return A figure with group etiology.
 #' @family visualization functions
 #' @export

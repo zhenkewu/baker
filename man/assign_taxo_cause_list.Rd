@@ -7,14 +7,14 @@
 assign_taxo_cause_list(cause_list, dir_taxo = NULL)
 }
 \arguments{
-\item{cause_list}{See \code{cause_list} in \code{model_options$likelihood} (see 
-parameter settings in \code{\link{nplcm}})}
+\item{cause_list}{See \code{cause_list} in \code{model_options$likelihood} (see
+parameter settings in \code{\link[=nplcm]{nplcm()}})}
 
 \item{dir_taxo}{File path to the .csv file storing two columns of information:
 \code{pathogen}, and \code{pathogen_type}.}
 }
 \value{
-A vector of factors of taxonomy information (currently for "B","F","V"). 
+A vector of factors of taxonomy information (currently for "B","F","V").
 The names of the vector are pathogen names.
 }
 \description{

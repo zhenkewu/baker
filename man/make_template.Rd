@@ -7,9 +7,9 @@
 make_template(patho, cause_list)
 }
 \arguments{
-\item{patho}{A vector of pathogen names for a particular measurement slice. 
+\item{patho}{A vector of pathogen names for a particular measurement slice.
 \code{patho} must be a substring of some elements in \code{cause_list}, e.g.,
- "PNEU" is a substring of "PNEU_VT13". Also see Examples for this function.}
+"PNEU" is a substring of "PNEU_VT13". Also see Examples for this function.}
 
 \item{cause_list}{A vector of characters; Potential categories of latent statuses.}
 }
@@ -20,20 +20,20 @@ a mapping from \code{patho} to \code{cause_list}.
 which measurements are informative of a particular category of latent status.
 }
 \description{
-\code{make_template} creates a mapping matrix (binary values). Each pathogen 
+\code{make_template} creates a mapping matrix (binary values). Each pathogen
 in a measurement slice (e.g., nasal-pharyngeal PCR test) is mapped to inform
-one category of latent status. All the possible categories (e.g., causes of pneumonia) 
+one category of latent status. All the possible categories (e.g., causes of pneumonia)
 remain the same regardless of the measurement slice used (e.g., NPPCR or BCX).
 }
 \details{
-The first argument has to be character substrings from the second argument. 
-For example, the two arguments can respectively be \code{"A"} and \code{"A_1"}, 
-or \code{"A"} and \code{"A+B"}.The second argument can have character strings not 
-matched in the first argument. If so, it means some causes of diseases are not 
-directly measured in the current measurement slice. 
+The first argument has to be character substrings from the second argument.
+For example, the two arguments can respectively be \code{"A"} and \code{"A_1"},
+or \code{"A"} and \code{"A+B"}.The second argument can have character strings not
+matched in the first argument. If so, it means some causes of diseases are not
+directly measured in the current measurement slice.
 For each element of \code{patho}, the function matches from the start of the strings
-of \code{cause_list}. Therefore, make sure that latent statuses from the same family 
-(e.g., "PNEU_VT13" and "PNEU_NOVT13") need to start with the same family name 
+of \code{cause_list}. Therefore, make sure that latent statuses from the same family
+(e.g., "PNEU_VT13" and "PNEU_NOVT13") need to start with the same family name
 (e.g., "PNEU") followed by subcategories (e.g., "_VT13" and "_NOVT13").
 }
 \examples{

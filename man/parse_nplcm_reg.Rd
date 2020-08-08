@@ -10,10 +10,10 @@ parse_nplcm_reg(form, data_nplcm, silent = TRUE)
 \arguments{
 \item{form}{regression formula}
 
-\item{data_nplcm}{data object for nplcm; may contain covariates X; 
+\item{data_nplcm}{data object for nplcm; may contain covariates X;
 must have case-control status Y.}
 
-\item{silent}{Default is \code{TRUE} for no message about covariates; 
+\item{silent}{Default is \code{TRUE} for no message about covariates;
 \code{FALSE} otherwise.}
 }
 \value{

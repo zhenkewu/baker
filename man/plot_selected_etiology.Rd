@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-group-etiology.R
 \name{plot_selected_etiology}
 \alias{plot_selected_etiology}
-\title{Plot grouped (two groups) posterior and cascade distributions (next top-three) 
+\title{Plot grouped (two groups) posterior and cascade distributions (next top-three)
 within each group}
 \usage{
 plot_selected_etiology(selected, DIR_NPLCM, ksFrac = 1, levellabel = 5)
@@ -23,11 +23,11 @@ calculate kernel stats::density}
 A figure with group etiology.
 }
 \description{
-Plot grouped (two groups) posterior and cascade distributions (next top-three) 
+Plot grouped (two groups) posterior and cascade distributions (next top-three)
 within each group
 }
 \details{
-By default the function automatically orders pathogens by posterior 
+By default the function automatically orders pathogens by posterior
 means (increase clockwise)
 }
 \seealso{

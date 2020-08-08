@@ -4,7 +4,7 @@
 #' 
 #' @param cause_list a list of latent status
 #' 
-#' @return a vector of length \code{length(cause_list)}
+#' @return a vector of length `length(cause_list)`
 #' @family prior specification functions
 #' @export
 #'

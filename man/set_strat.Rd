@@ -20,7 +20,7 @@ A list with following elements:
 }
 }
 \description{
-\code{set_strat} makes group indicators based on \code{model_options$X_reg_*}
+\code{set_strat} makes group indicators based on \verb{model_options$X_reg_*}
 }
 \details{
 the results from this function will help stratify etiology or FPR for

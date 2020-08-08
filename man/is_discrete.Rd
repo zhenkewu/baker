@@ -10,7 +10,7 @@ is_discrete(X, X_reg)
 \item{X}{A data frame of covariates}
 
 \item{X_reg}{The vector of covariates that will stratify the analyses. These
-variables have to be categorical. Or a formula (can be tested by \code{plyr::is.formula}), 
+variables have to be categorical. Or a formula (can be tested by \code{plyr::is.formula}),
 e.g., \code{~as.factor(SITE8) + as.factor(AGECAT > 1)}.}
 }
 \value{
@@ -23,5 +23,5 @@ variables.
 \details{
 Note that this function should be used with caution. It used
 \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an \emph{ad hoc} criterion.
-It is not the same as \code{\link[plyr]{is.discrete}}
+It is not the same as \code{\link[plyr:is.discrete]{plyr::is.discrete()}}
 }

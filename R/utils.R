@@ -95,7 +95,7 @@ expit <- function(x)
 #' Sample a vector of Bernoulli variables.
 #'
 #' Sample a vector of Bernoulli variables with higher speed
-#' (same length with \code{"p"}).
+#' (same length with `"p"`).
 #' The Bernoulli random variables can have different means.
 #'
 #' @param p A vector of probabilities, each being the head probability
@@ -182,7 +182,7 @@ symb2I <-
 
 #' Convert 0/1 coding to pathogen/combinations
 #'
-#' Reverse to \code{\link{symb2I}}
+#' Reverse to [symb2I()]
 #' @param binary_code Binary indicators for pathogens
 #' @param pathogen_list The complete list of pathogen names
 #'
@@ -204,11 +204,11 @@ I2symb <- function(binary_code,pathogen_list) {
 
 #' Convert a matrix of binary indicators to categorical variables
 #'
-#' @param binary_mat The matrix of binary indicators. Rows for subjects, columns for pathogens in the \code{"pathogen.list"}
+#' @param binary_mat The matrix of binary indicators. Rows for subjects, columns for pathogens in the `"pathogen.list"`
 #' @param cause_list The list of causes
 #' @param pathogen_list The complete list of pathogen names
 #'
-#' @return A vector of categorical variables. Its length equals the length of \code{"allowed.list"}
+#' @return A vector of categorical variables. Its length equals the length of `"allowed.list"`
 #'
 #' @examples
 #'
@@ -277,7 +277,7 @@ unfactor <- function(f) {
 #' sort.data.frame(Oats,~-Variety+Block)\cr
 #'
 #'
-#'@param form A Formula. See example in \strong{Description}.
+#'@param form A Formula. See example in **Description**.
 #'@param dat Data frame to be ordered.
 #'
 #'@return Ordered data frame.
@@ -341,8 +341,8 @@ sort_data_frame <- function(form,dat) {
 #' @param disp_order The vector of names to be displayed (order matters)
 #' @param raw_nm The vector of names from raw measurements (order matters)
 #'
-#' @return A permuted vector from 1 to \code{length(raw_nm)}. For example, if
-#' its first element is 3, it means that the 3rd pathogen in \code{raw_nm}
+#' @return A permuted vector from 1 to `length(raw_nm)`. For example, if
+#' its first element is 3, it means that the 3rd pathogen in `raw_nm`
 #' should be arranged to the first in the raw measurements.
 #'
 #' @examples
@@ -430,14 +430,14 @@ logOR <- function(MBS.case,MBS.ctrl) {
 #'
 #' @param mat matrix of values: upper for cases, lower for controls;
 #' @param dim_names names of the columns, from left to right. It is also the
-#' names of the rows, from bottom to top. Default is 1 through \code{ncol(mat)};
+#' names of the rows, from bottom to top. Default is 1 through `ncol(mat)`;
 #' @param cell_metrics the meaning of number in every cell;
-#' @param folding_line Default is \code{TRUE} for adding dashed major diagonal
+#' @param folding_line Default is `TRUE` for adding dashed major diagonal
 #' line.
-#' @param axes plot axes; default is \code{FALSE};
+#' @param axes plot axes; default is `FALSE`;
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis
-#' @param asp aspect ratio; default is \code{1} to ensure square shape
+#' @param asp aspect ratio; default is `1` to ensure square shape
 #' @param title text for the figure
 #'
 #' @export
@@ -513,24 +513,24 @@ NA2dot <- function(s) {
 
 #' Pick parameters in the Beta distribution to match the specified range
 #'
-#' \code{beta_parms_from_quantiles} produces prior Beta parameters for
+#' `beta_parms_from_quantiles` produces prior Beta parameters for
 #'  the true positive rates (TPR)
 #'
 #' @param q A vector of lower and upper bounds, in which Beta distribution
-#' will have quantiles specified by \code{p}. For example, \code{q=c(0.5,0.99)}
+#' will have quantiles specified by `p`. For example, `q=c(0.5,0.99)`
 #' @param p The lower and upper quantiles of the range one wants to specify.
 #' @param precision Approximation precisions.
 #' @param derivative.epsilon Precision of calculating derivative.
-#' @param start.with.normal.approx Default is \code{TRUE}, for normal approximation.
+#' @param start.with.normal.approx Default is `TRUE`, for normal approximation.
 #' @param start Starting values of beta parameters.
-#' @param plot Default is \code{FALSE} to suppress plotting of the beta density,
-#' otherwise, set to \code{TRUE}.
+#' @param plot Default is `FALSE` to suppress plotting of the beta density,
+#' otherwise, set to `TRUE`.
 #'
-#' @return A list containing the selected Beta parameters \code{a}, and \code{b}.
+#' @return A list containing the selected Beta parameters `a`, and `b`.
 #' Other elements of the list include some details about the computations involved
-#' in finding \code{a} and \code{b}.
+#' in finding `a` and `b`.
 #'
-#' @references \url{http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html}
+#' @references <http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html>
 #' @export
 #'
 beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
@@ -895,14 +895,14 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
 
 #' Load or install a package
 #'
-#'\code{load_or_install} checks if a package is installed,
+#'`load_or_install` checks if a package is installed,
 #' loads it if it is, and installs it if not.
 #'
 #' @param package_names A vector of package names
 #' @param repos URL for downloading the packages. 
 #'
 #' @references Credit:
-#'  \url{http://www.vikparuchuri.com/blog/loading-andor-installing-packages/}
+#'  <http://www.vikparuchuri.com/blog/loading-andor-installing-packages/>
 #' @return No message if it successfully loads the specified packages; Error
 #'  if such a package does not exist.
 #'
@@ -927,11 +927,11 @@ load_or_install <-
     }
   }
 
-#' Convert \code{NULL} to zero.
+#' Convert `NULL` to zero.
 #'
-#' \code{null_as_zero} make \code{NULL} to be zero.
+#' `null_as_zero` make `NULL` to be zero.
 #'
-#' @param x A number (usually a member of a list) that might be \code{NULL}
+#' @param x A number (usually a member of a list) that might be `NULL`
 #' @return A number
 #'
 #' @export
@@ -947,7 +947,7 @@ null_as_zero <- function(x) {
 
 #' Stratification setup by covariates
 #'
-#' \code{set_strat} makes group indicators based on \code{model_options$X_reg_*}
+#' `set_strat` makes group indicators based on `model_options$X_reg_*`
 #'
 #' @details the results from this function will help stratify etiology or FPR for
 #' different strata; the ways of stratification for etiology and FPR can be based
@@ -959,8 +959,8 @@ null_as_zero <- function(x) {
 #'
 #' @return A list with following elements:
 #' \itemize{
-#' \item \code{N_group} The number of groups
-#' \item \code{group} A vector of group indicator for every observation
+#' \item `N_group` The number of groups
+#' \item `group` A vector of group indicator for every observation
 #' }
 #'
 #' @export
@@ -1009,19 +1009,19 @@ set_strat <- function(X,X_reg) {
 
 #' Check if covariates are discrete
 #'
-#' \code{is_discrete} checks if the specified covariates could be regarded as discrete
+#' `is_discrete` checks if the specified covariates could be regarded as discrete
 #' variables.
 #'
 #' @details Note that this function should be used with caution. It used
-#' \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an \emph{ad hoc} criterion.
-#' It is not the same as \code{\link[plyr]{is.discrete}}
+#' \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an *ad hoc* criterion.
+#' It is not the same as [plyr::is.discrete()]
 #'
 #' @param X   A data frame of covariates
 #' @param X_reg The vector of covariates that will stratify the analyses. These
-#' variables have to be categorical. Or a formula (can be tested by \code{plyr::is.formula}), 
-#' e.g., \code{~as.factor(SITE8) + as.factor(AGECAT > 1)}.
+#' variables have to be categorical. Or a formula (can be tested by `plyr::is.formula`), 
+#' e.g., `~as.factor(SITE8) + as.factor(AGECAT > 1)`.
 #'
-#' @return \code{TRUE} for all being discrete; \code{FALSE} otherwise.
+#' @return `TRUE` for all being discrete; `FALSE` otherwise.
 #' @export
 
 is_discrete <- function(X,X_reg) {
@@ -1054,8 +1054,8 @@ is_discrete <- function(X,X_reg) {
 #' @param x An object to be test if it is "try-error"
 #'
 #'
-#' @references  \url{http://adv-r.had.co.nz/Exceptions-Debugging.html}
-#' @return Logical. \code{TRUE} for "try-error"; \code{FALSE} otherwise
+#' @references  <http://adv-r.had.co.nz/Exceptions-Debugging.html>
+#' @return Logical. `TRUE` for "try-error"; `FALSE` otherwise
 #' @export
 is.error <- function(x)
   inherits(x, "try-error")
@@ -1064,12 +1064,12 @@ is.error <- function(x)
 
 #' Get unique month from Date
 #'
-#' \code{unique_month} converts observed dates into unique months
+#' `unique_month` converts observed dates into unique months
 #' to help visualize sampled months
 #'
 #' @param Rdate standard date format in R
 #'
-#' @return a vector of characters with \code{month-year}, e.g., \code{4-2012}.
+#' @return a vector of characters with `month-year`, e.g., `4-2012`.
 #' @export
 #'
 #'
@@ -1081,12 +1081,12 @@ unique_month <- function(Rdate) {
 
 #' get symmetric difference of months from two vector of R-format dates
 #'
-#' \code{sym_diff_month} evaluates the symmetric difference between two sets
+#' `sym_diff_month` evaluates the symmetric difference between two sets
 #' of R-formatted date
 #'
-#' @param Rdate1,Rdate2 R-formatted R dates. See \code{\link{as.Date}}
+#' @param Rdate1,Rdate2 R-formatted R dates. See [as.Date()]
 #'
-#' @return \code{NULL} if no difference; the set of different months otherwise.
+#' @return `NULL` if no difference; the set of different months otherwise.
 #'
 #' @export
 #'
@@ -1110,7 +1110,7 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 
 #' Make FPR design matrix for dates with R format.
 #'
-#' \code{dm_Rdate_FPR} creates design matrices for false positive rate regressions; 
+#' `dm_Rdate_FPR` creates design matrices for false positive rate regressions; 
 #' can also be used to standardize dates.
 #'
 #' @param Rdate a vector of dates of R format
@@ -1118,22 +1118,22 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 #' @param effect The design matrix for "random" or "fixed" effect; Default
 #' is "fixed". When specified as "fixed", it produces standardized R-format dates
 #' using control's mean and standard deviation; When specified as "random", it produces
-#' \code{num_knots_FPR} columns of design matrix for thin-plate regression splines (TPRS) fitting.
-#' One needs both "fixed" and "random" in a FPR regression formula in \code{model_options}
-#' to enable TPRS fitting. For example, \code{model_options$likelihood$FPR_formula} can be \cr
+#' `num_knots_FPR` columns of design matrix for thin-plate regression splines (TPRS) fitting.
+#' One needs both "fixed" and "random" in a FPR regression formula in `model_options`
+#' to enable TPRS fitting. For example, `model_options$likelihood$FPR_formula` can be \cr
 #' \cr
-#' \code{~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)}\cr
+#' `~ AGECAT+HIV+dm_Rdate_FPR(ENRLDATE,Y,"fixed")+dm_Rdate_FPR(ENRLDATE,Y,"random",10)`\cr
 #' \cr
 #' means FPR regression with intercept, main effects for 'AGECAT' and 'HIV', and TPRS
 #' bases for 'ENRLDATE' using 10 knots placed at 10 equal-probability-spaced sample quantiles.
-#' @param num_knots_FPR number of knots for FPR regression; default is \code{NULL}
+#' @param num_knots_FPR number of knots for FPR regression; default is `NULL`
 #' to accommodate fixed effect specification.
 #'
-#' @seealso \code{\link{nplcm}}
+#' @seealso [nplcm()]
 #' @return Design matrix for FPR regression:
 #' \itemize{
-#' \item \code{Z_FPR_ctrl} transformed design matrix for FPR regression for controls
-#' \item \code{Z_FPR_case} transformed design matrix for borrowing FPR
+#' \item `Z_FPR_ctrl` transformed design matrix for FPR regression for controls
+#' \item `Z_FPR_case` transformed design matrix for borrowing FPR
 #' regression from controls to cases. It is obtained using control-standardization,
 #' and square-root the following matrix (\eqn{\Omega}]) with (\eqn{j_1},\eqn{j_2}) element being
 #' \deqn{\Omega_{j_1j_2}=\|knots_{j_1}-knots_{j_2}\|^3}.
@@ -1207,7 +1207,7 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
 
 #' Make etiology design matrix for dates with R format.
 #'
-#' \code{dm_Rdate_Eti} creates design matrices for etiology regressions.
+#' `dm_Rdate_Eti` creates design matrices for etiology regressions.
 #'
 #' @param Rdate a vector of dates of R format
 #' @param Y binary case/control status; 1 for case; 0 for controls
@@ -1216,19 +1216,19 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
 #' cubic splines) or "tprs" (thin-plate regression splines). Default is "ncs". "tprs"
 #' will be implemented later.
 #'
-#' @details It is used in \code{model_options$likeihood$Eti_formula}. For example, one can specify
+#' @details It is used in `model_options$likeihood$Eti_formula`. For example, one can specify
 #' it as: \cr
 #' \cr
-#' \code{~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)} \cr
+#' `~ AGECAT+HIV+dm_Rdate_Eti(ENRLDATE,Y,5)` \cr
 #' \cr
 #' to call an etiology regression with intercept, main effects for 'AGECAT' and 'HIV', and
 #' natural cubic spline bases for 'ENRLDATE' using 5 knots defined as 5 equal-probability-spaced
 #' sample quantiles.
 #'
-#' @seealso \code{\link{nplcm}}
+#' @seealso [nplcm()]
 #' @return Design matrix for etiology regression:
 #' \itemize{
-#' \item \code{Z_Eti} transformed design matrix for etiology regression
+#' \item `Z_Eti` transformed design matrix for etiology regression
 #' }
 #' @export
 dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
@@ -1285,14 +1285,14 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
 
 #' create regressor summation equation used in regression for FPR
 #'
-#' \code{create_bugs_regressor_FPR} creates linear product of coefficients
+#' `create_bugs_regressor_FPR` creates linear product of coefficients
 #' and a row of design matrix used in regression
 #'
 #' @param n the length of coefficients
-#' @param dm_nm name of design matrix; default \code{"dm_FPR"}
-#' @param b_nm name of the coefficients; default \code{"b"}
-#' @param ind_nm name of the coefficient iterator; default \code{"j"}
-#' @param sub_ind_nm name of the subject iterator; default \code{"k"}
+#' @param dm_nm name of design matrix; default `"dm_FPR"`
+#' @param b_nm name of the coefficients; default `"b"`
+#' @param ind_nm name of the coefficient iterator; default `"j"`
+#' @param sub_ind_nm name of the subject iterator; default `"k"`
 #'
 #' @return a character string with linear product form
 #'
@@ -1312,14 +1312,14 @@ create_bugs_regressor_FPR <- function(n,dm_nm = "dm_FPR",
 
 #' create regressor summation equation used in regression for etiology
 #'
-#' \code{create_bugs_regressor_Eti} creates linear product of coefficients
+#' `create_bugs_regressor_Eti` creates linear product of coefficients
 #' and a row of design matrix used in regression
 #'
 #' @param n the length of coefficients
-#' @param dm_nm name of design matrix; default \code{"dm_Eti"}
-#' @param b_nm name of the coefficients; default \code{"betaEti"}
-#' @param ind_nm name of the coefficient iterator; default \code{"j"}
-#' @param sub_ind_nm name of the subject iterator; default \code{"k"}
+#' @param dm_nm name of design matrix; default `"dm_Eti"`
+#' @param b_nm name of the coefficients; default `"betaEti"`
+#' @param ind_nm name of the coefficient iterator; default `"j"`
+#' @param sub_ind_nm name of the subject iterator; default `"k"`
 #'
 #' @return a character string with linear product form
 #'
@@ -1339,14 +1339,14 @@ create_bugs_regressor_Eti <- function(n,dm_nm = "dm_Eti",
 
 #' Deletes a pattern from the start of a string, or each of a vector of strings.
 #'
-#' \code{delete_start_with} is used for clean the column names in raw data.
+#' `delete_start_with` is used for clean the column names in raw data.
 #' For example, R adds "X" at the start of variable names. This function deletes
 #' "X_"s from the column names. This can happen if the raw data have column
-#' names such as "\code{_CASE_ABX}". Check \code{\link{clean_perch_data}} for 
+#' names such as "`_CASE_ABX`". Check [clean_perch_data()] for 
 #' its actual usage.
 #'
 #' @param s the pattern (a single string) to be deleted from the start.
-#' @param vec a vector of strings with unwanted starting strings (specified by \code{s}).
+#' @param vec a vector of strings with unwanted starting strings (specified by `s`).
 #'
 #' @return string(s) with deleted patterns from the start.
 #'
@@ -1371,8 +1371,8 @@ delete_start_with = function(s,vec) {
 #' derived from the names of the R objects.
 #'
 #' Roger Peng's listlabeling challenge from
-#' \url{http://simplystatistics.tumblr.com/post/11988685443/computing-on-the-language}.
-#' Code copied from \url{https://gist.github.com/ajdamico/1329117/0134148987859856fcecbe4446cfd37e500e4272}
+#' <http://simplystatistics.tumblr.com/post/11988685443/computing-on-the-language>.
+#' Code copied from <https://gist.github.com/ajdamico/1329117/0134148987859856fcecbe4446cfd37e500e4272>
 #'
 #' @param ... any R objects
 #'
@@ -1433,23 +1433,23 @@ make_numbered_list <- function(...) {
 
 #' make a mapping template for model fitting
 #'
-#' \code{make_template} creates a mapping matrix (binary values). Each pathogen 
+#' `make_template` creates a mapping matrix (binary values). Each pathogen 
 #' in a measurement slice (e.g., nasal-pharyngeal PCR test) is mapped to inform
 #' one category of latent status. All the possible categories (e.g., causes of pneumonia) 
 #' remain the same regardless of the measurement slice used (e.g., NPPCR or BCX).
 #'
 #' @details The first argument has to be character substrings from the second argument. 
-#' For example, the two arguments can respectively be \code{"A"} and \code{"A_1"}, 
-#' or \code{"A"} and \code{"A+B"}.The second argument can have character strings not 
+#' For example, the two arguments can respectively be `"A"` and `"A_1"`, 
+#' or `"A"` and `"A+B"`.The second argument can have character strings not 
 #' matched in the first argument. If so, it means some causes of diseases are not 
 #' directly measured in the current measurement slice. 
-#' For each element of \code{patho}, the function matches from the start of the strings
-#' of \code{cause_list}. Therefore, make sure that latent statuses from the same family 
+#' For each element of `patho`, the function matches from the start of the strings
+#' of `cause_list`. Therefore, make sure that latent statuses from the same family 
 #' (e.g., "PNEU_VT13" and "PNEU_NOVT13") need to start with the same family name 
 #' (e.g., "PNEU") followed by subcategories (e.g., "_VT13" and "_NOVT13").
 #' 
 #' @param patho A vector of pathogen names for a particular measurement slice. 
-#' \code{patho} must be a substring of some elements in \code{cause_list}, e.g.,
+#' `patho` must be a substring of some elements in `cause_list`, e.g.,
 #'  "PNEU" is a substring of "PNEU_VT13". Also see Examples for this function.
 #'  
 #' @param cause_list A vector of characters; Potential categories of latent statuses.
@@ -1478,9 +1478,9 @@ make_numbered_list <- function(...) {
 #'  make_template(patho,cause)
 #'  
 #'  
-#' @return a mapping from \code{patho} to \code{cause_list}.
-#'\code{NROW = length(cause_list)+1};
-#'\code{NCOL = length(patho)}. This value is crucial in model fitting to determine
+#' @return a mapping from `patho` to `cause_list`.
+#'`NROW = length(cause_list)+1`;
+#'`NCOL = length(patho)`. This value is crucial in model fitting to determine
 #'which measurements are informative of a particular category of latent status.
 #'
 #' @export
@@ -1522,7 +1522,7 @@ make_template <- function(patho, cause_list) {
 #' lookup_quality("HH")
 #' }
 #' 
-#' @seealso \code{\link{extract_data_raw}}
+#' @seealso [extract_data_raw()]
 #' 
 #' @export
 
@@ -1551,9 +1551,9 @@ lookup_quality <- function(quality_nm) {
 #' @param form regression formula
 #' @param data_nplcm data object for nplcm; may contain covariates X; 
 #' must have case-control status Y.
-#' @param silent Default is \code{TRUE} for no message about covariates; 
-#' \code{FALSE} otherwise.
-#' @return \code{TRUE} for doing regression; \code{FALSE} otherwise.
+#' @param silent Default is `TRUE` for no message about covariates; 
+#' `FALSE` otherwise.
+#' @return `TRUE` for doing regression; `FALSE` otherwise.
 #' 
 #' @export
 parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
@@ -1585,7 +1585,7 @@ parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
 #' 
 #' @param form Regression formula
 #' 
-#' @return \code{TRUE} for intercept-only; \code{FALSE} otherwise
+#' @return `TRUE` for intercept-only; `FALSE` otherwise
 #' 
 #' @export
 is_intercept_only <- function(form){
@@ -1616,7 +1616,7 @@ as.matrix_or_vec <- function(x){
 
 #' get index of latent status
 #' 
-#' @param cause_list see mode_options in \link{nplcm}
+#' @param cause_list see mode_options in [nplcm]
 #' @param ord order of cause_list according to posterior mean
 #' @param select_latent Default is NULL
 #' @param exact Default is TRUE
@@ -1670,7 +1670,7 @@ marg_H <- function(m_px){-m_px*log(m_px)-(1-m_px)*log(1-m_px)}
 #' 
 #' @param objName the name of the object
 #' @param file the file path
-#' @param envir environment; default is calling environment: \link{parent.frame}
+#' @param envir environment; default is calling environment: [parent.frame]
 #' @param assign.on.exit default is TRUE
 #' 
 #' @return a new environment
@@ -1722,8 +1722,8 @@ tsb <- function(u){
 #' Show function dependencies
 #' 
 #' @param fname Character string for one function
-#' @param pckg Package name; default is \code{"package:baker"}
-#' @param ... Other parameters accepted by \code{\link[mvbutils]{foodweb}}
+#' @param pckg Package name; default is `"package:baker"`
+#' @param ... Other parameters accepted by [mvbutils::foodweb()]
 #' @return A figure showing function dependencies
 #' @importFrom mvbutils foodweb
 #' 
@@ -1802,21 +1802,21 @@ has_non_basis <- function(form){
 
 #' Make Etiology design matrix for dates with R format.
 #'
-#' \code{s_date_Eti} creates design matrices for etiology regressions; 
+#' `s_date_Eti` creates design matrices for etiology regressions; 
 #' 
 #' @param Rdate a vector of dates of R format
 #' @param Y Binary case/control status; 1 for case; 0 for controls
 #' @param basis "ncs" for natural cubic splines; "ps" for penalized-splines based
 #' on B-spline basis functions (NB: baker does not recommend setting ncs using 
 #' this function; use splines::ns)
-#' @param dof Degree-of-freedom for the bases. For "ncs" basis, \code{dof} is
-#' the number of columns; For "ps" basis,  the number of columns is \code{dof}
-#' if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.
-#' @param ... Other arguments as in \code{\link[splines]{bs}}
-#' @seealso \code{\link{nplcm}}
+#' @param dof Degree-of-freedom for the bases. For "ncs" basis, `dof` is
+#' the number of columns; For "ps" basis,  the number of columns is `dof`
+#' if `intercept=TRUE`; `dof-1` if `FALSE`.
+#' @param ... Other arguments as in [splines::bs()]
+#' @seealso [nplcm()]
 #' @return 
 #' \itemize{
-#' \item \code{Z_Eti} design matrix for etiology regression on dates.
+#' \item `Z_Eti` design matrix for etiology regression on dates.
 #' }
 #' @importFrom stats quantile
 #' @export
@@ -1865,19 +1865,19 @@ s_date_Eti <- function(Rdate,Y,basis = "ps",dof=ifelse(basis=="ncs",5,10),...) {
 
 #' Make false positive rate (FPR) design matrix for dates with R format.
 #'
-#' \code{s_date_FPR} creates design matrices for FPR regressions; 
+#' `s_date_FPR` creates design matrices for FPR regressions; 
 #' 
 #' @param Rdate a vector of dates of R format
 #' @param Y Binary case/control status; 1 for case; 0 for controls
 #' @param basis "ps" for penalized-splines based
 #' on B-spline basis functions
 #' @param dof Degree-of-freedom for the bases.For "ps" basis,  
-#' the number of columns is \code{dof}
-#' if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.
-#' @param ... Other arguments as in \code{\link[splines]{bs}}
+#' the number of columns is `dof`
+#' if `intercept=TRUE`; `dof-1` if `FALSE`.
+#' @param ... Other arguments as in [splines::bs()]
 #'
 #' @importFrom stats quantile
-#' @seealso \code{\link{nplcm}}
+#' @seealso [nplcm()]
 #' @return Design matrix for FPR regression, with cases' rows on top of
 #' controls'.
 #' @export
@@ -1971,7 +1971,7 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #' 
 #' @inheritParams R2jags::jags
 #' @import R2jags
-#' @seealso \code{\link[R2jags]{jags}}
+#' @seealso [R2jags::jags()]
 #' @export
 jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bug", 
                          n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
@@ -2137,13 +2137,13 @@ softmax <- function (x) {
 }
 
 
-#' subset data from the output of \code{\link{clean_perch_data}}
+#' subset data from the output of [clean_perch_data()]
 #'
 #' It is particularly useful in simulating data from a regression model where one
 #' generates a case and control at a particular covariate value, and just choose
 #' a case or control to retain in the simulated data.
 #'
-#' @param data_nplcm data for fitting nplcm; See \link{nplcm}
+#' @param data_nplcm data for fitting nplcm; See [nplcm]
 #' @param index a vector of indices indicating the observations you hope to subset;
 #' it will subset in all the sublists of data_nplcm
 #'
@@ -2236,7 +2236,7 @@ merge_lists <- function(list_of_lists){
 
 #' combine multiple data_nplcm (useful when simulating data from regression models)
 #' 
-#' @param data_nplcm_list a list of data_nplcm in \link{nplcm}
+#' @param data_nplcm_list a list of data_nplcm in [nplcm]
 #' 
 #' @examples 
 #' 
@@ -2319,17 +2319,17 @@ combine_data_nplcm <- function(data_nplcm_list){
 #' The trick is to express line locations in npc coordinates rather than user coordinates, 
 #' since the latter are of course not linear when axes are on log scales.
 #' 
-#' \code{par('cin')[2] * par('cex') * par('lheight')} returns the current line height
+#' `par('cin')[2] * par('cex') * par('lheight')` returns the current line height
 #'  in inches, which we convert to user coordinates by multiplying by 
-#'  \code{diff(grconvertX(0:1, 'inches', 'user'))}, the length of an inch in user
+#'  `diff(grconvertX(0:1, 'inches', 'user'))`, the length of an inch in user
 #'   coordinates (horizontally, in this case - if interested in the vertical
 #'    height of a line in user coords we would use 
-#'    \code{diff(grconvertY(0:1, 'inches', 'user')))}.
+#'    `diff(grconvertY(0:1, 'inches', 'user')))`.
 #'    
 #'    
 #' @param line integer
 #' @param side integer; 1-4
-#' @references \url{https://stackoverflow.com/questions/29125019/get-margin-line-locations-mgp-in-user-coordinates}
+#' @references <https://stackoverflow.com/questions/29125019/get-margin-line-locations-mgp-in-user-coordinates>
 #' @export
 #' @examples 
 #' 

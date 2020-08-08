@@ -7,14 +7,14 @@
 set_prior_tpr_SS(model_options, data_nplcm)
 }
 \arguments{
-\item{model_options}{See \code{\link{nplcm}} function.}
+\item{model_options}{See \code{\link[=nplcm]{nplcm()}} function.}
 
-\item{data_nplcm}{See \code{\link{assign_model}} function.}
+\item{data_nplcm}{See \code{\link[=assign_model]{assign_model()}} function.}
 }
 \value{
-Parameters for the SS data TPR priors. It is a list of two lists 
-(alpha and beta). Alpha and beta are of the same length, the number of 
-BrS measurement slices. Each element of the alpha (beta) list is a 
+Parameters for the SS data TPR priors. It is a list of two lists
+(alpha and beta). Alpha and beta are of the same length, the number of
+BrS measurement slices. Each element of the alpha (beta) list is a
 numeric vector for alpha (beta) parameters to specify Beta prior for TPRs.
 }
 \description{

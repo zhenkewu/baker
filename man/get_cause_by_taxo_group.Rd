@@ -14,7 +14,7 @@ get_cause_by_taxo_group(cause_list, taxo_group, lookup_table)
 \item{lookup_table}{a data frame with two columns ("Category" and "Cause").}
 }
 \value{
-a vector of indices indicating if each element belongs to 
+a vector of indices indicating if each element belongs to
 \code{taxo_group}.
 }
 \description{

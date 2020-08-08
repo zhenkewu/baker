@@ -7,12 +7,12 @@
 get_individual_prediction(read_res)
 }
 \arguments{
-\item{read_res}{a list read from a folder that stores fitted model results; 
-Commonly, it is the returned value from function \code{\link{nplcm_read_folder}}}
+\item{read_res}{a list read from a folder that stores fitted model results;
+Commonly, it is the returned value from function \code{\link[=nplcm_read_folder]{nplcm_read_folder()}}}
 }
 \value{
-a matrix of individual predictions; rows for cases, columns for causes 
-specified in \code{model_options$likelihood$cause_list}; See \code{\link{nplcm}}
+a matrix of individual predictions; rows for cases, columns for causes
+specified in \code{model_options$likelihood$cause_list}; See \code{\link[=nplcm]{nplcm()}}
 }
 \description{
 get individual prediction (Bayesian posterior)

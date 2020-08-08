@@ -3,7 +3,7 @@
 \name{extract_data_raw}
 \alias{extract_data_raw}
 \title{Import Raw PERCH Data
- 
+
 \code{extract_data_raw} imports and converts the raw data to analyzable format}
 \usage{
 extract_data_raw(
@@ -25,7 +25,7 @@ Each element corresponds to elements in \code{X}. For example, in PERCH
 data cleaning, \code{Xval = list("02GAM","1")}.}
 
 \item{meas_object}{A list of bronze-standard or silver-standard measurement
-objects made by function \code{\link{make_meas_object}}.}
+objects made by function \code{\link[=make_meas_object]{make_meas_object()}}.}
 
 \item{extra_covariates}{The vector of covariate name for regression purposes.
 The default is NULL, which means not reading in any covariate.}
@@ -34,27 +34,27 @@ The default is NULL, which means not reading in any covariate.}
 A list of data.
 \itemize{
 \item{Mobs}{
-   \itemize{
-   \item{MBS} A list of Bronze-Standard (BrS) measurements.
-   The names of the list take the form of \code{specimen}_\code{test}. 
-   Each element of the list is a data frame. The rows of the data frame 
-   are for subjects; the columns are for measured pathogens.
-   \item{MSS} A list of Silver-Standard (SS) measurements. 
-   The formats are the same as \code{MBS} above.
-   \item{MGS} A list of Gold-Standard (GS) measurements. 
-   It equals \code{NULL} if no GS data exist.
-   }
+\itemize{
+\item{MBS} A list of Bronze-Standard (BrS) measurements.
+The names of the list take the form of \code{specimen}_\code{test}.
+Each element of the list is a data frame. The rows of the data frame
+are for subjects; the columns are for measured pathogens.
+\item{MSS} A list of Silver-Standard (SS) measurements.
+The formats are the same as \code{MBS} above.
+\item{MGS} A list of Gold-Standard (GS) measurements.
+It equals \code{NULL} if no GS data exist.
+}
 }
 \item{X} A data frame with columns specified by \code{extra_covariates}.
 }
 }
 \description{
 Import Raw PERCH Data
- 
+
 \code{extract_data_raw} imports and converts the raw data to analyzable format
 }
 \seealso{
-\code{\link{clean_perch_data}}
+\code{\link[=clean_perch_data]{clean_perch_data()}}
 
 Other raw data importing functions: 
 \code{\link{read_meas_object}()}

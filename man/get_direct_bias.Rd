@@ -17,7 +17,7 @@ is used.}
 \item{silent}{Default is FALSE. To suppress printing messages, set to TRUE.}
 }
 \value{
-a list of length two. \code{diff} is the direct differences; 
+a list of length two. \code{diff} is the direct differences;
 \code{prb} is the percent relative bias.
 }
 \description{

@@ -13,11 +13,11 @@ plot_etiology_strat(DIR_NPLCM, strata_weights = NULL, truth = NULL)
 the weights specify how the j-th etiology fraction should be combined across all
 levels of the discrete predictors in the data}
 
-\item{truth}{a list of true values, e.g., 
-\code{truth=list(allEti = a list of etiology fractions)}}
+\item{truth}{a list of true values, e.g.,
+\verb{truth=list(allEti = a list of etiology fractions)}}
 }
 \description{
-This function visualizes the etiology estimates against one discrete covariate, e.g., 
+This function visualizes the etiology estimates against one discrete covariate, e.g.,
 age groups.
 }
 \seealso{

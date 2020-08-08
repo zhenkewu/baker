@@ -1,15 +1,15 @@
 #' Plot etiology (pie) panel
 #' 
 #' 
-#' @param model_options See \code{\link{nplcm}}
-#' @param res_nplcm See \code{\link{nplcm_read_folder}}
+#' @param model_options See [nplcm()]
+#' @param res_nplcm See [nplcm_read_folder()]
 #' @param bugs.dat Data input for the model fitting.
 #' @param bg_color A list with names "BrS", "SS", "pie" to specify background colors
 #' @param select_latent a vector of character strings representing latent status. It is used for
-#' just plotting a subset of latent status. For example, you can specify \code{select_latent = "HINF"}
-#' @param exact Default is \code{TRUE} to use \code{select_latent} as exact names of causes. If you want to
-#' specify a name and plot all single or combo causes with that name, specify it to be \code{FALSE}.
-#' to plot all latent status information relevant to \code{"HINF"}.
+#' just plotting a subset of latent status. For example, you can specify `select_latent = "HINF"`
+#' @param exact Default is `TRUE` to use `select_latent` as exact names of causes. If you want to
+#' specify a name and plot all single or combo causes with that name, specify it to be `FALSE`.
+#' to plot all latent status information relevant to `"HINF"`.
 #' @param top_pie Numerical value to specify the rightmost limit 
 #' on the horizontal axis for the pie panel.
 #' @param label_size the size of latent status labels on the right margin

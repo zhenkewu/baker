@@ -18,7 +18,7 @@ get_pEti_samp_reg(
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
 
-\item{model_options}{See \code{\link{nplcm}}}
+\item{model_options}{See \code{\link[=nplcm]{nplcm()}}}
 
 \item{stratum_bool}{a vector of TRUE/FALSE with TRUE indicating the rows of subjects to include}
 
@@ -26,17 +26,17 @@ get_pEti_samp_reg(
 
 \item{reg_param}{TRUE for getting regression parameters; Default to \code{FALSE}}
 
-\item{truth}{a list of truths computed from true parameters in simulations; elements: 
+\item{truth}{a list of truths computed from true parameters in simulations; elements:
 Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
 Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 \itemize{
-    \item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
-    \item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-    \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-    \item TPR a vector of length identical to \code{PR_case}
+\item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
+\item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+\item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+\item TPR a vector of length identical to \code{PR_case}
 }}
 
-\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied,
 coverage, bias, truth and integrated mean squared errors (IMSE).}
 
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL to save time.}
@@ -44,10 +44,10 @@ coverage, bias, truth and integrated mean squared errors (IMSE).}
 \value{
 A list:
 \itemize{
-   \code{pEti_mat}: a matrix of posterior samples (iteration by cause); overall etiology
-   \code{latent_nm}: a vector of character strings representing the names of the causes
-   \code{pEti_subject}: an array of individual specific etiology; cause by subject by iteration
-   \code{betaEti}: an array of samples of the etiology regression parameters; coefficient by cause by iteration
+\code{pEti_mat}: a matrix of posterior samples (iteration by cause); overall etiology
+\code{latent_nm}: a vector of character strings representing the names of the causes
+\code{pEti_subject}: an array of individual specific etiology; cause by subject by iteration
+\code{betaEti}: an array of samples of the etiology regression parameters; coefficient by cause by iteration
 }
 }
 \description{

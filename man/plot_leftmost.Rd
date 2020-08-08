@@ -7,7 +7,7 @@
 plot_leftmost(model_options, height)
 }
 \arguments{
-\item{model_options}{See \code{\link{nplcm}}}
+\item{model_options}{See \code{\link[=nplcm]{nplcm()}}}
 
 \item{height}{no. of rows in the panels plot; commonly set as \code{length(select_latent)}}
 }

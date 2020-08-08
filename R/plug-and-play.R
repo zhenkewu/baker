@@ -5,11 +5,11 @@
 #' add a likelihood component for a BrS measurement slice among cases (conditional independence)
 #' 
 #' @param s the slice
-#' @param Mobs See \code{data_nplcm} described in \code{\link{nplcm}}
-#' @param cause_list the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}
+#' @param Mobs See `data_nplcm` described in [nplcm()]
+#' @param cause_list the list of causes in `data_nplcm` described in [nplcm()]
 #' @param ppd Default is NULL; Set to TRUE for enabling posterior predictive checking.
-#' @return a list of two elements: the first is \code{plug}, the .bug code; 
-#' the second is \code{parameters} that stores model parameters introduced by this 
+#' @return a list of two elements: the first is `plug`, the .bug code; 
+#' the second is `parameters` that stores model parameters introduced by this 
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -110,7 +110,7 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -190,7 +190,7 @@ add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
@@ -246,7 +246,7 @@ add_meas_BrS_param_NoNest_Slice <- function(s,Mobs,cause_list) {
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -343,7 +343,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -409,7 +409,7 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
@@ -507,7 +507,7 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separa
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' @param reg Default is NULL; set to TRUE if doing regression (double index of subclass weights: subject and subclass)
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -607,11 +607,11 @@ add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL,reg=NULL
 #' 
 #' 
 #' @param nslice the total number of SS measurement slices
-#' @param Mobs see \code{data_nplcm} described in \code{\link{nplcm}}
-#' @param prior see \code{model_options} described in \code{\link{nplcm}}
-#' @param cause_list the list of causes in \code{model_options} described in \code{\link{nplcm}}
+#' @param Mobs see `data_nplcm` described in [nplcm()]
+#' @param prior see `model_options` described in [nplcm()]
+#' @param cause_list the list of causes in `model_options` described in [nplcm()]
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -710,7 +710,7 @@ add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
 #' 
 #' @inheritParams add_meas_SS_case
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -877,12 +877,12 @@ add_meas_SS_param <- function(nslice,Mobs,prior,cause_list) {
 #' add a likelihood component for a BrS measurement slice among cases (conditional independence)
 #' 
 #' @param s the slice
-#' @param Mobs See \code{data_nplcm} described in \code{\link{nplcm}}
+#' @param Mobs See `data_nplcm` described in [nplcm()]
 #' @param prior Prior specifications.
-#' @param cause_list the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}
+#' @param cause_list the list of causes in `data_nplcm` described in [nplcm()]
 #' @param ppd Default is NULL; Set to TRUE for enabling posterior predictive checking.
-#' @return a list of two elements: the first is \code{plug}, the .bug code; 
-#' the second is \code{parameters} that stores model parameters introduced by this 
+#' @return a list of two elements: the first is `plug`, the .bug code; 
+#' the second is `parameters` that stores model parameters introduced by this 
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -1058,7 +1058,7 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=NULL
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' @param prior Prior specifications.
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -1152,7 +1152,7 @@ add_meas_BrS_param_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list) {
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -1250,7 +1250,7 @@ add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -1344,12 +1344,12 @@ add_meas_BrS_param_Nest_Slice_jags <- function(s,Mobs,cause_list) {
 #' regression model with no nested subclasses
 #' 
 #' @param s the slice
-#' @param Mobs See \code{data_nplcm} described in \code{\link{nplcm}}
+#' @param Mobs See `data_nplcm` described in [nplcm()]
 #' @param prior Prior specifications.
-#' @param cause_list the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}
+#' @param cause_list the list of causes in `data_nplcm` described in [nplcm()]
 #' @param ppd Default is NULL; Set to TRUE for enabling posterior predictive checking.
-#' @return a list of two elements: the first is \code{plug}, the .bug code; 
-#' the second is \code{parameters} that stores model parameters introduced by this 
+#' @return a list of two elements: the first is `plug`, the .bug code; 
+#' the second is `parameters` that stores model parameters introduced by this 
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -1521,9 +1521,9 @@ add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_reg_Slice_jags
 #' @param FPR_formula False positive regression formula for slice s of BrS data.
-#' Check \code{model_options$likelihood$FPR_formula[[s]]}.
+#' Check `model_options$likelihood$FPR_formula[[s]]`.
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
@@ -1831,7 +1831,7 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_reg_Slice_jags
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -1912,14 +1912,14 @@ add_meas_BrS_ctrl_NoNest_reg_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL)
 ##############################################################################
 #' add parameters for a BrS measurement slice among cases and controls
 #' 
-#' regression model with nested subclasses; called by \link{insert_bugfile_chunk_reg_nest_meas}
+#' regression model with nested subclasses; called by [insert_bugfile_chunk_reg_nest_meas]
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_reg_Slice_jags
 #' @param FPR_formula False positive regression formula for slice s of BrS data.
-#' Check \code{model_options$likelihood$FPR_formula[[s]]}.
+#' Check `model_options$likelihood$FPR_formula[[s]]`.
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; 
-#' the second is \code{parameters} that stores model parameters introduced by
+#' @return a list of two elements: the first is `plug`, the .bug code; 
+#' the second is `parameters` that stores model parameters introduced by
 #' this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
@@ -2135,12 +2135,12 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
 #' regression model with no nested subclasses; discrete predictors
 #' 
 #' @param s the slice
-#' @param Mobs See \code{data_nplcm} described in \code{\link{nplcm}}
+#' @param Mobs See `data_nplcm` described in [nplcm()]
 #' @param prior Prior specifications.
-#' @param cause_list the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}
+#' @param cause_list the list of causes in `data_nplcm` described in [nplcm()]
 #' @param ppd Default is NULL; Set to TRUE for enabling posterior predictive checking.
-#' @return a list of two elements: the first is \code{plug}, the .bug code; 
-#' the second is \code{parameters} that stores model parameters introduced by this 
+#' @return a list of two elements: the first is `plug`, the .bug code; 
+#' the second is `parameters` that stores model parameters introduced by this 
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
@@ -2313,7 +2313,7 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_reg_Slice_jags
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
@@ -2413,7 +2413,7 @@ add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,p
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_reg_Slice_jags
 #' 
-#' @return a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions

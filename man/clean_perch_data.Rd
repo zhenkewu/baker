@@ -22,15 +22,15 @@ to perform SEPARATE analyses;}
 data only have individuals with \code{identical(X_strat,X_strat_val)==TRUE}.
 To perform analysis on a single site, say \code{"02GAM"}, use \code{X_strat="newSITE"} and
 \code{X_strat_val=list("02GAM")};}
-\item{\code{BrS_objects}}{: A list of BrS objects built by \code{\link{make_meas_object}};}
-\item{\code{SS_objects}}{: A list of SS objects built by \code{\link{make_meas_object}};}
+\item{\code{BrS_objects}}{: A list of BrS objects built by \code{\link[=make_meas_object]{make_meas_object()}};}
+\item{\code{SS_objects}}{: A list of SS objects built by \code{\link[=make_meas_object]{make_meas_object()}};}
 \item{\code{X_extra}}{: A vector of covariate names for regression
 or visualization;}
 \item{\code{patho_taxo_dir}}{: The file path to the pathogen category or taxonomy
 information (.csv). The information should be as complete as possible for a particular
 analysis. If not, the pathogen without taxonomy information could not be
-assigned to bacterial or viral groups (see \code{\link{plot_group_etiology}});
-See \code{\link{assign_taxo_cause_list}} that requires this taxonomy information.}.
+assigned to bacterial or viral groups (see \code{\link[=plot_group_etiology]{plot_group_etiology()}});
+See \code{\link[=assign_taxo_cause_list]{assign_taxo_cause_list()}} that requires this taxonomy information.}.
 }}
 }
 \value{
@@ -38,7 +38,7 @@ A List: \code{list(Mobs,Y,X)}
 \itemize{
 \item \code{Mobs} A list of bronze- (\code{MBS}), silver- (\code{MSS}),
 and gold-standard (\code{MGS}, if available) measurements. See the formats
- of these measurements in \code{\link{extract_data_raw}}.
+of these measurements in \code{\link[=extract_data_raw]{extract_data_raw()}}.
 \item \code{Y} 1 for case; 0 for control;
 \item \code{X} Data frame of covariates for cases and controls. The covariate
 names are specified in \code{X_extra};
@@ -54,6 +54,6 @@ or other covariates) into a list. It is designed for PERCH data format.
 \link{make_meas_object} for wrapping information about a particular
 type of measurement; \link{extract_data_raw} for reading raw data table
 and organizing them into \code{data_nplcm} format. Also see \link{clean_combine_subsites}
-for combining subsites and \link[lubridate]{parse_date_time} for parsing date.
+for combining subsites and \link[lubridate:parse_date_time]{parse_date_time} for parsing date.
 }
 \concept{data tidying functions}

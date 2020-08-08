@@ -18,7 +18,7 @@ get_top_pattern(BrS_dat, Y, case_status, n_pat, exclude_missing = TRUE)
 \item{exclude_missing}{DEFAULT is TRUE for excluding any individual with missing measurements.}
 }
 \value{
-a list of results: \code{obs_pat} - observed rates; 
+a list of results: \code{obs_pat} - observed rates;
 \code{pattern_names}; \code{exist_other} - if
 actual no. of patterns is larger than \code{n_pat}; \code{N}- No. of individuals
 with \code{Y = case_status}.

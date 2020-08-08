@@ -9,9 +9,9 @@ add_meas_BrS_case_Nest_Slice(s, Mobs, cause_list, ppd = NULL)
 \arguments{
 \item{s}{the slice}
 
-\item{Mobs}{See \code{data_nplcm} described in \code{\link{nplcm}}}
+\item{Mobs}{See \code{data_nplcm} described in \code{\link[=nplcm]{nplcm()}}}
 
-\item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}}
+\item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link[=nplcm]{nplcm()}}}
 
 \item{ppd}{Default is NULL; Set to TRUE for enabling posterior predictive checking.}
 }

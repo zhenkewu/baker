@@ -17,7 +17,7 @@ make_meas_object(patho, specimen, test, quality, cause_list, sep_char = "_")
 
 \item{cause_list}{The vector of potential latent status}
 
-\item{sep_char}{a character string that separate the pathogen names and the 
+\item{sep_char}{a character string that separate the pathogen names and the
 specimen-test pair; Default to \code{"_"}}
 }
 \value{
@@ -39,6 +39,6 @@ which measurements are informative of a particular category of latent status.
 Wrap the information about a particular type of measurement, e.g., NPPCR.
 }
 \seealso{
-\code{\link{make_template}}
+\code{\link[=make_template]{make_template()}}
 }
 \concept{data standardization functions}

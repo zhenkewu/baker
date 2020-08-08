@@ -14,8 +14,8 @@ get_pEti_samp(res_nplcm, model_options)
 \value{
 A list:
 \itemize{
-   \code{pEti_mat}: a matrix of posterior samples (iteration by cause); overall etiology
-   \code{latent_nm}: a vector of character strings representing the names of the causes
+\code{pEti_mat}: a matrix of posterior samples (iteration by cause); overall etiology
+\code{latent_nm}: a vector of character strings representing the names of the causes
 }
 }
 \description{

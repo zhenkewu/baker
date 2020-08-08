@@ -13,7 +13,7 @@ load_or_install(package_names, repos)
 }
 \value{
 No message if it successfully loads the specified packages; Error
- if such a package does not exist.
+if such a package does not exist.
 }
 \description{
 \code{load_or_install} checks if a package is installed,
@@ -21,5 +21,5 @@ loads it if it is, and installs it if not.
 }
 \references{
 Credit:
- \url{http://www.vikparuchuri.com/blog/loading-andor-installing-packages/}
+\url{http://www.vikparuchuri.com/blog/loading-andor-installing-packages/}
 }

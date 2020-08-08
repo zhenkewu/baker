@@ -19,8 +19,8 @@ insert_bugfile_chunk_reg_nest_meas(
 
 \item{prior}{Prior specification from \code{model_options}}
 
-\item{cause_list}{A list of latent status names (crucial for building templates; 
-see \code{\link{make_template}})}
+\item{cause_list}{A list of latent status names (crucial for building templates;
+see \code{\link[=make_template]{make_template()}})}
 
 \item{FPR_formula}{A list of FPR regression formula; check \code{model_options$likelihood$FPR_formula}}
 
@@ -39,6 +39,6 @@ Insert measurement likelihood (nested model+regression) code chunks into .bug mo
 }
 \seealso{
 Called by \link{write_model_Reg_NoNest} for constructing a \code{.bug} file.
-This is usually called along with specification of latent status regression 
+This is usually called along with specification of latent status regression
 (\link{insert_bugfile_chunk_reg_etiology}).
 }

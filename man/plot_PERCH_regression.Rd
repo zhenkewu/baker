@@ -23,14 +23,14 @@ plot_PERCH_regression(
 
 \item{plot_basis}{TRUE for plotting basis functions; Default to FALSE}
 
-\item{truth}{a list of truths computed from true parameters in simulations; elements: 
+\item{truth}{a list of truths computed from true parameters in simulations; elements:
 Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
 Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 \itemize{
-    \item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
-    \item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-    \item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
-    \item TPR a vector of length identical to \code{PR_case}
+\item Eti matrix of # of rows = # of subjects, # columns: \code{length(cause_list)} for Eti
+\item FPR matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+\item PR_case matrix of # of rows = # of subjects, # columns: \code{ncol(data_nplcm$Mobs$MBS$MBS1)}
+\item TPR a vector of length identical to \code{PR_case}
 }}
 
 \item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}
@@ -39,7 +39,7 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 
 \item{do_rug}{TRUE for plotting}
 
-\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied,
 coverage, bias, truth and integrated mean squared errors (IMSE).}
 
 \item{plot_ma_dots}{plot moving averages among case and controls if TRUE; Default to FALSE.}
@@ -49,8 +49,8 @@ A figure of etiology regression curves and some marginal positive rate assessmen
 model fit; See example for the legends.
 }
 \description{
-This function is specifically designed for PERCH data, e.g., 
- (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?
+This function is specifically designed for PERCH data, e.g.,
+(NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?
 also there this function only plots the first slice - so generalization may be useful - give
 users an option to choose slice s; currently default to the first slice.)
 }

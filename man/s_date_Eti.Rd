@@ -12,14 +12,14 @@ s_date_Eti(Rdate, Y, basis = "ps", dof = ifelse(basis == "ncs", 5, 10), ...)
 \item{Y}{Binary case/control status; 1 for case; 0 for controls}
 
 \item{basis}{"ncs" for natural cubic splines; "ps" for penalized-splines based
-on B-spline basis functions (NB: baker does not recommend setting ncs using 
+on B-spline basis functions (NB: baker does not recommend setting ncs using
 this function; use splines::ns)}
 
 \item{dof}{Degree-of-freedom for the bases. For "ncs" basis, \code{dof} is
 the number of columns; For "ps" basis,  the number of columns is \code{dof}
 if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.}
 
-\item{...}{Other arguments as in \code{\link[splines]{bs}}}
+\item{...}{Other arguments as in \code{\link[splines:bs]{splines::bs()}}}
 }
 \value{
 \itemize{
@@ -30,5 +30,5 @@ if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.}
 \code{s_date_Eti} creates design matrices for etiology regressions;
 }
 \seealso{
-\code{\link{nplcm}}
+\code{\link[=nplcm]{nplcm()}}
 }

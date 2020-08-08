@@ -15,17 +15,17 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags(
 \arguments{
 \item{s}{the slice}
 
-\item{Mobs}{See \code{data_nplcm} described in \code{\link{nplcm}}}
+\item{Mobs}{See \code{data_nplcm} described in \code{\link[=nplcm]{nplcm()}}}
 
 \item{prior}{Prior specifications.}
 
-\item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link{nplcm}}}
+\item{cause_list}{the list of causes in \code{data_nplcm} described in \code{\link[=nplcm]{nplcm()}}}
 
 \item{ppd}{Default is NULL; Set to TRUE for enabling posterior predictive checking.}
 }
 \value{
-a list of two elements: the first is \code{plug}, the .bug code; 
-the second is \code{parameters} that stores model parameters introduced by this 
+a list of two elements: the first is \code{plug}, the .bug code;
+the second is \code{parameters} that stores model parameters introduced by this
 plugged measurement slice
 }
 \description{

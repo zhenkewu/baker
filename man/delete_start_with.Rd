@@ -18,7 +18,7 @@ string(s) with deleted patterns from the start.
 \code{delete_start_with} is used for clean the column names in raw data.
 For example, R adds "X" at the start of variable names. This function deletes
 "X_"s from the column names. This can happen if the raw data have column
-names such as "\code{_CASE_ABX}". Check \code{\link{clean_perch_data}} for 
+names such as "\verb{_CASE_ABX}". Check \code{\link[=clean_perch_data]{clean_perch_data()}} for
 its actual usage.
 }
 \examples{

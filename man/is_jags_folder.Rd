@@ -7,7 +7,7 @@
 is_jags_folder(DIR_NPLCM)
 }
 \arguments{
-\item{DIR_NPLCM}{directory to the folder with results. 
+\item{DIR_NPLCM}{directory to the folder with results.
 "mcmc_options.txt" must be in the folder.}
 }
 \value{

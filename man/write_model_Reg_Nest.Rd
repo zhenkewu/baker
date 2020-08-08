@@ -20,12 +20,12 @@ write_model_Reg_Nest(
 
 \item{prior}{Prior specification from \code{model_options}}
 
-\item{cause_list}{A list of latent status names (crucial for building templates; 
-see \code{\link{make_template}})}
+\item{cause_list}{A list of latent status names (crucial for building templates;
+see \code{\link[=make_template]{make_template()}})}
 
 \item{Eti_formula}{Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.}
 
-\item{FPR_formula}{A list of FPR regression formula; check 
+\item{FPR_formula}{A list of FPR regression formula; check
 \code{model_options$likelihood$FPR_formula}}
 
 \item{use_measurements}{"BrS", or "SS"}

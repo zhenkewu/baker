@@ -1,15 +1,15 @@
 #' Write .bug model file for model without regression
 #' 
-#' \code{write_model_NoReg} automatically generates model file according to
-#' \code{model_options}
+#' `write_model_NoReg` automatically generates model file according to
+#' `model_options`
 #' 
 #' @inheritParams insert_bugfile_chunk_noreg_meas
 #' 
 #' @return a long character string to be written into .bug file.
 #' 
 #' @seealso 
-#' \link{insert_bugfile_chunk_noreg_meas} for inserting .bug file
-#' chunk for measurements (plug-and-play); \link{insert_bugfile_chunk_noreg_etiology}
+#' [insert_bugfile_chunk_noreg_meas] for inserting .bug file
+#' chunk for measurements (plug-and-play); [insert_bugfile_chunk_noreg_etiology]
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
@@ -33,18 +33,18 @@ write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,
 
 #' Write .bug model file for regression model without nested subclasses
 #' 
-#' \code{write_model_Reg_NoNest} automatically generates model file according to
-#' \code{model_options}
+#' `write_model_Reg_NoNest` automatically generates model file according to
+#' `model_options`
 #' 
 #' @inheritParams insert_bugfile_chunk_reg_nonest_meas
-#' @param Eti_formula Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.
+#' @param Eti_formula Etiology regression formula; Check `model_options$likelihood$Eti_formula`.
 #' @param FPR_formula A list of FPR regression formula; check 
-#' \code{model_options$likelihood$FPR_formula}
+#' `model_options$likelihood$FPR_formula`
 #' @return a long character string to be written into .bug file.
 #' 
 #' @seealso 
-#' \link{insert_bugfile_chunk_noreg_meas} for inserting .bug file
-#' chunk for measurements (plug-and-play); \link{insert_bugfile_chunk_noreg_etiology}
+#' [insert_bugfile_chunk_noreg_meas] for inserting .bug file
+#' chunk for measurements (plug-and-play); [insert_bugfile_chunk_noreg_etiology]
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
@@ -67,16 +67,16 @@ write_model_Reg_NoNest <- function(Mobs,prior,cause_list,Eti_formula,FPR_formula
 
 #' Write .bug model file for regression model without nested subclasses
 #' 
-#' \code{write_model_Reg_discrete_predictor_NoNest} automatically generates model file according to
-#' \code{model_options}
+#' `write_model_Reg_discrete_predictor_NoNest` automatically generates model file according to
+#' `model_options`
 #' 
 #' @inheritParams insert_bugfile_chunk_reg_nonest_meas
 #' 
 #' @return a long character string to be written into .bug file.
 #' 
 #' @seealso 
-#' \link{insert_bugfile_chunk_noreg_meas} for inserting .bug file
-#' chunk for measurements (plug-and-play); \link{insert_bugfile_chunk_noreg_etiology}
+#' [insert_bugfile_chunk_noreg_meas] for inserting .bug file
+#' chunk for measurements (plug-and-play); [insert_bugfile_chunk_noreg_etiology]
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
@@ -96,20 +96,20 @@ write_model_Reg_discrete_predictor_NoNest <- function(Mobs,prior,cause_list,
          "}#END OF MODEL.")
 }
 
-#' Write \code{.bug} model file for regression model WITH nested subclasses
+#' Write `.bug` model file for regression model WITH nested subclasses
 #' 
-#' \code{write_model_Reg_Nest} automatically generates model file according to
-#' \code{model_options}; This is called within \link{nplcm_fit_Reg_Nest}.
+#' `write_model_Reg_Nest` automatically generates model file according to
+#' `model_options`; This is called within [nplcm_fit_Reg_Nest].
 #' 
 #' @inheritParams insert_bugfile_chunk_reg_nonest_meas
-#' @param Eti_formula Etiology regression formula; Check \code{model_options$likelihood$Eti_formula}.
+#' @param Eti_formula Etiology regression formula; Check `model_options$likelihood$Eti_formula`.
 #' @param FPR_formula A list of FPR regression formula; check 
-#' \code{model_options$likelihood$FPR_formula}
+#' `model_options$likelihood$FPR_formula`
 #' @return a long character string to be written into .bug file.
 #' 
 #' @seealso 
-#' \link{insert_bugfile_chunk_noreg_meas} for inserting .bug file
-#' chunk for measurements (plug-and-play.R); \link{insert_bugfile_chunk_noreg_etiology}
+#' [insert_bugfile_chunk_noreg_meas] for inserting .bug file
+#' chunk for measurements (plug-and-play.R); [insert_bugfile_chunk_noreg_etiology]
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
