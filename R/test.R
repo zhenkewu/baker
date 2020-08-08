@@ -6,10 +6,9 @@
 #' users an option to choose slice s; currently default to the first slice.)
 #' 
 #' @param DIR_NPLCM File path to the folder containing posterior samples
-#' @param bugs.dat The posterior samples (loaded into the environment to save time)
+#' @param bugs.dat The posterior samples (loaded into the environment to save time) -> default is NULL 
 #' @param stratum_bool integer; for this function, indicates which strata to plot
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
-#' @param plot_basis TRUE for plotting basis functions; Default to FALSE
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
 #'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
 #'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
@@ -24,7 +23,6 @@
 #' @param do_rug TRUE for plotting
 #' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if `truth$Eti` is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
-#' @param plot_ma_dots plot moving averages among case and controls if TRUE; Default to FALSE.
 #' 
 #' 
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
@@ -32,11 +30,10 @@
 #' 
 #' 
 #' 
-plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat, stratum_bool=stratum_bool,slice=1,plot_basis=FALSE, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,plot_ma_dots=FALSE){
+plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat=NULL, stratum_bool=stratum_bool,slice=1, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
-  # plot_basis   <- TRUE
   # discrete_X_names <- c("AGE","ALL_VS") # must be the discrete variables used in Eti_formula.
   # <------------------------------- end of testing.
   old_par <- graphics::par(graphics::par("mfrow", "mar"))
@@ -64,12 +61,14 @@ plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat, stratum_bool=stratum_bool,
   
   
   # structure the posterior samples:
-  # new_env <- new.env()
-  # source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
-  # bugs.dat <- as.list(new_env)
-  # rm(new_env)
-
-
+  if(is.null(bugs.dat)){
+    new_env <- new.env()
+    source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
+    bugs.dat <- as.list(new_env)
+    rm(new_env)
+  } 
+  
+  
   ncol_dm_FPR <- ncol(bugs.dat[[paste0("Z_FPR_",slice)]]) 
   JBrS        <- ncol(bugs.dat[[paste0("MBS_",slice)]]) #how to get # of measurements
   
@@ -317,7 +316,6 @@ plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat, stratum_bool=stratum_bool,
         
         if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
         if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
-        if(plot_basis){matplot(curr_date_FPR,(bugs.dat[[paste0("Z_FPR_",slice)]])[plotid_FPR_ctrl,],col="blue",type="l",add=TRUE)}
         
         mtext(names(data_nplcm$Mobs$MBS[[1]])[j],side = 3,cex=1.5,line=1)
         
@@ -364,12 +362,10 @@ plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat, stratum_bool=stratum_bool,
         response.ctrl <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_ctrl,j]
         dat_ctrl <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_ctrl])[!is.na(response.ctrl),,drop=FALSE]
         dat_ctrl$runmean <- ma_cont(response.ctrl[!is.na(response.ctrl)],dat_ctrl$std_date[!is.na(response.ctrl)])
-        if (plot_ma_dots) {points(runmean ~ std_date,data=dat_ctrl[!is.na(response.ctrl),],lty=2,pch=1,cex=0.5,type="o",col="dodgerblue2")}
         
         response.case <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_case,j]
         dat_case <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_case])[!is.na(response.case),,drop=FALSE]
         dat_case$runmean <- ma_cont(response.case[!is.na(response.case)],dat_case$std_date[!is.na(response.case)])
-        if (plot_ma_dots){points(runmean ~ std_date,data=dat_case,lty=2,pch=1,cex=0.5,type="o")}
       }
       #
       # Figure 2 for Etiology Regression:
@@ -382,7 +378,6 @@ plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat, stratum_bool=stratum_bool,
         points(curr_date_Eti,truth$Eti[plotid_Eti,j],type="l",lwd=3,col="black")
         abline(h=colMeans(truth$Eti[data_nplcm$Y==1,])[j],col="blue",lwd=3)
       }
-      if(plot_basis){matplot(curr_date_Eti,bugs.dat$Z_Eti[plotid_Eti,],col="blue",type="l",add=TRUE)}
       
       # overall pie:
       abline(h=Eti_overall_mean[j],col="black",lwd=2)
