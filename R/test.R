@@ -9,17 +9,6 @@
 #' @param stratum_bool integer; for this function, indicates which strata to plot
 #' @param bugs.dat The posterior samples (loaded into the environment to save time) -> default is NULL 
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
-#'  Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
-#' @param plot_basis TRUE for plotting basis functions; Default to FALSE
-#' @param truth a list of truths computed from true parameters in simulations; elements: 
-#'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
-#'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
-#'  \itemize{
-#'      \item Eti matrix of # of rows = # of subjects, # columns: `length(cause_list)` for Eti
-#'      \item FPR matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
-#'      \item PR_case matrix of # of rows = # of subjects, # columns: `ncol(data_nplcm$Mobs$MBS$MBS1)`
-#'      \item TPR a vector of length identical to `PR_case`
-#'  }
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @param do_plot TRUE for plotting
 #' @param do_rug TRUE for plotting
