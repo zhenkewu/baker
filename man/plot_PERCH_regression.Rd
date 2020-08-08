@@ -6,24 +6,24 @@
 \usage{
 plot_PERCH_regression(
   DIR_NPLCM,
+  stratum_bool = stratum_bool,
+  bugs.dat = NULL,
   slice = 1,
-  plot_basis = FALSE,
-  truth = NULL,
   RES_NPLCM = NULL,
   do_plot = TRUE,
   do_rug = FALSE,
-  return_metric = TRUE,
-  plot_ma_dots = FALSE
+  return_metric = TRUE
 )
 }
 \arguments{
 \item{DIR_NPLCM}{File path to the folder containing posterior samples}
 
-\item{slice}{integer; specifies which slice of bronze-standard data to visualize; Default to 1.}
+\item{stratum_bool}{integer; for this function, indicates which strata to plot}
 
-\item{plot_basis}{TRUE for plotting basis functions; Default to FALSE}
+\item{bugs.dat}{The posterior samples (loaded into the environment to save time) -> default is NULL}
 
-\item{truth}{a list of truths computed from true parameters in simulations; elements:
+
+\item{slice}{integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
 Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 \itemize{
@@ -41,8 +41,6 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 
 \item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied,
 coverage, bias, truth and integrated mean squared errors (IMSE).}
-
-\item{plot_ma_dots}{plot moving averages among case and controls if TRUE; Default to FALSE.}
 }
 \value{
 A figure of etiology regression curves and some marginal positive rate assessment of

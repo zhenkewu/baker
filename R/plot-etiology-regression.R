@@ -198,8 +198,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   
   
   #
-  # 2. use this code if date is included in etiology and fal
-  se positive regressions:
+  # 2. use this code if date is included in etiology and false positive regressions:
   #
   # false positive rates:
   subset_FPR_ctrl     <- data_nplcm$Y==0 & stratum_bool # <--- specifies who to look at.
