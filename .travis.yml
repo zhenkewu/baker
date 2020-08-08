@@ -12,7 +12,6 @@ addons:
     packages:
     - libfftw3-dev
     - libgsl0-dev
-    - libgsl0ldbl
     - jags
 
 
