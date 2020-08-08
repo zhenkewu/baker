@@ -39,7 +39,7 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 
 \item{do_rug}{TRUE for plotting}
 
-\item{return_metric}{TRUE for showing overal mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
+\item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied, 
 coverage, bias, truth and integrated mean squared errors (IMSE).}
 
 \item{plot_ma_dots}{plot moving averages among case and controls if TRUE; Default to FALSE.}

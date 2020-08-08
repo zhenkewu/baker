@@ -31,8 +31,10 @@ data_nplcm_reg
 data_nplcm_reg
 }
 \description{
-Simulated dataset that is structured in the format necessary for an nplcm with regression
-
-Simulated dataset that is structured in the format necessary for an nplcm with regression
+Data set for illustrating regression functionalities
+}
+\examples{
+data("data_nplcm_reg")
+str(data_nplcm_reg)
 }
 \keyword{datasets}

@@ -19,4 +19,8 @@ pathogen_category_simulation
 This is used in simulations where the pathogen names are from the alphabet,
 and we hope to plot etiologies grouped by virus or bacteria
 }
+\examples{
+data("pathogen_category_simulation")
+str(pathogen_category_simulation)
+}
 \keyword{datasets}

@@ -249,7 +249,7 @@ date
 
 We provide two datasets for exploratory use with the `baker` package. 
 
-1. `data_nplcm_reg`: a dataset containing BrS measurements, case-control status, and regression covariates (testing site and enrollment date). This dataset was generated using the `simulate_nplcm` function. We also provide the BrS measurements, case-control status, and regression covariates (testing site and enrollment date). Code to fit the NPLCM to this dataset is in the accompanying software paper and the full code used to produce this dataset is available upon request. Using this dataset and the functionaltiy in `baker`, a user can reproduce Figures 7 and 8 in the accompanying software paper. 
+1. `data_nplcm_reg`: a dataset containing BrS measurements, case-control status, and regression covariates (testing site and enrollment date). This dataset was generated using the `simulate_nplcm` function. We also provide the BrS measurements, case-control status, and regression covariates (testing site and enrollment date). Code to fit the NPLCM to this dataset is in the accompanying software paper and the full code used to produce this dataset is available upon request. Using this dataset and the functionality in `baker`, a user can reproduce Figures 7 and 8 in the accompanying software paper. 
 
 2. `baker_posterior_samples_example`: a folder which contains the output of an NPLCM fitted to real data. We are not able to provide the real data due to privacy restrictions. Instead, we provide: 
    * a. the posterior samples, which can be found in `CODAchain1.txt` and `CODAindex.txt`.
