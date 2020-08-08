@@ -7,7 +7,7 @@
 #' 
 #' @param DIR_NPLCM File path to the folder containing posterior samples
 #' @param bugs.dat The posterior samples (loaded into the environment to save time)
-#' @param stratum_bool integer; for this function, indicates which strata to plot Default to 1.
+#' @param stratum_bool integer; for this function, indicates which strata to plot
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 #' @param plot_basis TRUE for plotting basis functions; Default to FALSE
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
