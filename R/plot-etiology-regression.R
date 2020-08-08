@@ -117,6 +117,9 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   # add x-axis for dates:
   X <- data_nplcm$X
  
+  if(is.null(X$ENRLDATE)|is.null(X$std_date)){
+    stop("'ENRLDATE' and/or 'std_date' is not a variable in your dataset! Make sure that the continuous covariate exists and retry this function.")
+  }
   # some date transformations:
   X$date_plot  <- as.Date(X$ENRLDATE)
   X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
@@ -195,7 +198,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   
   
   #
-  # 2. use this code if date is included in etiology and false positive regressions:
+  # 2. use this code if date is included in etiology and fal
+  se positive regressions:
   #
   # false positive rates:
   subset_FPR_ctrl     <- data_nplcm$Y==0 & stratum_bool # <--- specifies who to look at.
