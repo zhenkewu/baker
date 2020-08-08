@@ -9,8 +9,7 @@
 #' @param stratum_bool integer; for this function, indicates which strata to plot
 #' @param bugs.dat The posterior samples (loaded into the environment to save time) -> default is NULL 
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
-#' @param truth a list of truths computed from true parameters in simulations; elements: 
-#'  Eti, FPR, PR_case,TPR; All default to `NULL` in real data analyses.
+#'  Eti, FPR, PR_case,TPR; All default to \code{NULL} in real data analyses.
 #'  Currently only works for one slice of bronze-standard measurements (in a non-nested model).
 #'  \itemize{
 #'      \item Eti matrix of # of rows = # of subjects, # columns: `length(cause_list)` for Eti
@@ -30,7 +29,7 @@
 #' 
 
 plot_PERCH_regression <- function(
-  DIR_NPLCM, stratum_bool=stratum_bool, bugs.dat=NULL, slice=1, truth=NULL, RES_NPLCM=NULL, do_plot=TRUE, do_rug=FALSE, return_metric=TRUE){
+  DIR_NPLCM, stratum_bool=stratum_bool, bugs.dat=NULL, slice=1, RES_NPLCM=NULL, do_plot=TRUE, do_rug=FALSE, return_metric=TRUE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
@@ -107,11 +106,11 @@ plot_PERCH_regression <- function(
   
   dd <-  as.Date(X$ENRLDATE)
   min_d <- min(dd)
-  min_d_std <- unique(X$std_date[which(X$ENRLDATE==min_d)])
+  min_d_std <- unique(X$std_date[which(as.Date(X$ENRLDATE)==min_d)])
   min_plot_d <- min_d+days_in_month(month(min_d))-day(min_d)+1
   
   max_d <- max(dd)
-  max_d_std <- unique(X$std_date[which(X$ENRLDATE==max_d)])
+  max_d_std <- unique(X$std_date[which(as.Date(X$ENRLDATE)==max_d)])
   max_plot_d <- max_d-day(max_d)+1
   plot_d <- seq.Date(min_plot_d,max_plot_d,by = "quarter")
   
@@ -195,42 +194,6 @@ plot_PERCH_regression <- function(
   
   # ^ this could be changed theoretically to not use the observed data -> we could still make TPR/FPR plots with the posterior samples
   
-  # #
-  # # LCM plotting subclass weight curves:
-  # #
-  # k_seq <- c(1,2,3)                                      # <----------------- adjust order of k.
-  # #k_seq <- c(1,5,2,3,4)#1:K # <----------------- adjust order of k.
-  # fig_name <- "compare_true_and_estimated_subclass_weight_curves.png"
-  # png(file.path(mcmc_options$result.folder,fig_name),width=K_curr*3,height=16,units = "in",res=72)
-  # 
-  # truth_subwt <- rbind(simu_eta_reordered[data_nplcm$Y==1,],simu_nu_reordered[data_nplcm$Y==0,])
-  # if (K_curr > K_truth){truth_subwt <- cbind(truth_subwt,matrix(0,nrow=Nd+Nu, ncol=K_curr > K_truth))}
-  # par(mfrow=c(2,K_curr))
-  # for (k in seq_along(k_seq)){
-  #   # posterior of subclass weight:
-  #   matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],subwt_samp[plotid_FPR_ctrl,k_seq[k],],col=2,type="l",ylim=c(0,1),main=k)
-  #   # # posterior of subclass latent Gaussian mean:
-  #   # #true subclass weights:
-  #   matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],truth_subwt[plotid_FPR_ctrl,k],type="l",add=TRUE,lwd=4,col=1,lty=c(1,1,1))
-  # }
-  # 
-  # for (k in seq_along(k_seq)){
-  #   # posterior of subclass weight:
-  #   matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],t(apply(subwt_samp[plotid_FPR_ctrl,k_seq[k],],1,quantile, c(0.025,0.975))),
-  #           col="blue",#c(col1,col2,col3)[k],
-  #           type="l",ylim=c(0,1),main=k,lty=2)
-  #   points(data_nplcm$X$std_date[plotid_FPR_ctrl],apply(subwt_samp[plotid_FPR_ctrl,k_seq[k],],1,mean),col="black",lty=2,
-  #          type="l")
-  #   # # posterior of subclass latent Gaussian mean:
-  #   # matplot(x,t(res_mu_alpha),col=col3,type="l",main="posterior of latent Gaussian mean")
-  #   # # true subclass weights:
-  #   matplot(data_nplcm$X$std_date[plotid_FPR_ctrl],truth_subwt[plotid_FPR_ctrl,k],type="l",add=TRUE,lwd=4,
-  #           col=c("black","black","black"),lty=c(1,1,1))
-  # }
-  # dev.off()
-  # #
-  # #   <---- END LCM sparse weighs plot!
-  # #
   
   # positive rates for cases:
   fitted_margin_case <- function(pEti_ord,theta,psi,template){
@@ -314,35 +277,30 @@ plot_PERCH_regression <- function(
           rug(curr_date_FPR[data_nplcm$Mobs$MBS[[1]][plotid_FPR_ctrl,j]==0],side=1,col="dodgerblue2",line=1)
         }
         
-        if(!is.null(truth$FPR)){lines(curr_date_FPR,truth$FPR[plotid_FPR_ctrl,j],col="blue",lwd=3)}
-        if(!is.null(truth$TPR)){abline(h=truth$TPR[j],lwd=3,col="black")}
-        
         mtext(names(data_nplcm$Mobs$MBS[[1]])[j],side = 3,cex=1.5,line=1)
         
         points(curr_date_FPR_case,PR_case_mean[,j],type="l",ylim=c(0,1))
         polygon(c(curr_date_FPR_case, rev(curr_date_FPR_case)),
                 c(PR_case_q[1,,j], rev(PR_case_q[2,,j])),
                 col =  grDevices::rgb(1, 0, 0,0.5),border = NA)
-        if(!is.null(truth$PR_case)){lines(curr_date_FPR_case,truth$PR_case[plotid_FPR_case,j],col="black",lwd=3)}
         
-        # make this optional for plotting
-        # rug plot:
-        if(do_rug){
-          rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
-          rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
-          
-          #labels for the rug plot
-          if (j==1){
-            mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
-            mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
-            mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
-            mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
-            
-            mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
-          }
-        }
-        
-        
+        # # make this optional for plotting
+        # # rug plot:
+        # if(do_rug){
+        #   rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==1],side=3,line= 1)
+        #   rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
+        #   
+        #   #labels for the rug plot
+        #   if (j==1){
+        #     mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
+        #     mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
+        #     mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
+        #     mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
+        #     
+        #     mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
+        #   }
+        # }
+        # 
         if (!is_nested){
           abline(h=colMeans(thetaBS_samp)[j],col="red")
           abline(h=quantile(thetaBS_samp[,j],0.025),col="red",lty=2)
@@ -350,22 +308,22 @@ plot_PERCH_regression <- function(
         }
         
         # add raw moving average dots:
-        ma <- function(x,n=60){stats::filter(x,rep(1/n,n), sides=2)}
-        
-        ma_cont <- function(y,x,hw=0.35){
-          res <- rep(NA,length(y))
-          for (i in seq_along(y)){
-            res[i] <- mean(y[which(x>=x[i]-hw & x<=x[i]+hw)])
-          }
-          res
-        }
+        # ma <- function(x,n=60){stats::filter(x,rep(1/n,n), sides=2)}
+        # 
+        # ma_cont <- function(y,x,hw=0.35){
+        #   res <- rep(NA,length(y))
+        #   for (i in seq_along(y)){
+        #     res[i] <- mean(y[which(x>=x[i]-hw & x<=x[i]+hw)])
+        #   }
+        #   res
+        # }
         response.ctrl <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_ctrl,j]
         dat_ctrl <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_ctrl])[!is.na(response.ctrl),,drop=FALSE]
-        dat_ctrl$runmean <- ma_cont(response.ctrl[!is.na(response.ctrl)],dat_ctrl$std_date[!is.na(response.ctrl)])
+        # dat_ctrl$runmean <- ma_cont(response.ctrl[!is.na(response.ctrl)],dat_ctrl$std_date[!is.na(response.ctrl)])
         
         response.case <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_case,j]
         dat_case <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_case])[!is.na(response.case),,drop=FALSE]
-        dat_case$runmean <- ma_cont(response.case[!is.na(response.case)],dat_case$std_date[!is.na(response.case)])
+        # dat_case$runmean <- ma_cont(response.case[!is.na(response.case)],dat_case$std_date[!is.na(response.case)])
       }
       #
       # Figure 2 for Etiology Regression:
@@ -374,10 +332,6 @@ plot_PERCH_regression <- function(
       plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1),xlab="standardized date",
            ylab=c("","etiologic fraction")[(j==1)+1],bty="n",xaxt="n",yaxt="n",las=2)
       ## ONLY FOR SIMULATIONS <---------------------- FIX!
-      if(!is.null(truth$Eti)){
-        points(curr_date_Eti,truth$Eti[plotid_Eti,j],type="l",lwd=3,col="black")
-        abline(h=colMeans(truth$Eti[data_nplcm$Y==1,])[j],col="blue",lwd=3)
-      }
       
       # overall pie:
       abline(h=Eti_overall_mean[j],col="black",lwd=2)
@@ -426,20 +380,7 @@ plot_PERCH_regression <- function(
     }
   }
   if (return_metric){
-    if (!is.null(truth$Eti)){
-      Eti_overall_truth  <- colMeans(truth$Eti[plotid_Eti,])
-      # compute integrated squared error:
-      Eti_ISE <- apply(Eti_mean-t(truth$Eti[plotid_Eti,]),1,function(v) sum(v^2)/length(v))
-      Eti_overall_cover  <- sapply(seq_along(Eti_overall_mean),
-                                   function(s) (Eti_overall_truth[s]<= Eti_overall_q[2,s]) &&
-                                     (Eti_overall_truth[s]>= Eti_overall_q[1,s]))
-      Eti_overall_bias  <- Eti_overall_mean -  Eti_overall_truth
-      return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,
-                       Eti_overall_cover, Eti_overall_bias,Eti_overall_truth,Eti_ISE))
-    } else{
       return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd))
     }
   }
-  
-} 
 
