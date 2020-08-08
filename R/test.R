@@ -6,6 +6,8 @@
 #' users an option to choose slice s; currently default to the first slice.)
 #' 
 #' @param DIR_NPLCM File path to the folder containing posterior samples
+#' @param bugs.dat The posterior samples (loaded into the environment to save time)
+#' @param stratum_bool integer; for this function, indicates which strata to plot Default to 1.
 #' @param slice integer; specifies which slice of bronze-standard data to visualize; Default to 1.
 #' @param plot_basis TRUE for plotting basis functions; Default to FALSE
 #' @param truth a list of truths computed from true parameters in simulations; elements: 
@@ -30,7 +32,7 @@
 #' 
 #' 
 #' 
-plot_PERCH_regression <- function(DIR_NPLCM,slice=1,plot_basis=FALSE, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,plot_ma_dots=FALSE){
+plot_PERCH_regression <- function(DIR_NPLCM,bugs.dat, stratum_bool=stratum_bool,slice=1,plot_basis=FALSE, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,plot_ma_dots=FALSE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
   # stratum_bool <- DISCRETE_BOOL
@@ -62,12 +64,12 @@ plot_PERCH_regression <- function(DIR_NPLCM,slice=1,plot_basis=FALSE, truth=NULL
   
   
   # structure the posterior samples:
-  new_env <- new.env()
-  source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
-  bugs.dat <- as.list(new_env)
-  rm(new_env)
+  # new_env <- new.env()
+  # source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
+  # bugs.dat <- as.list(new_env)
+  # rm(new_env)
 
-  
+
   ncol_dm_FPR <- ncol(bugs.dat[[paste0("Z_FPR_",slice)]]) 
   JBrS        <- ncol(bugs.dat[[paste0("MBS_",slice)]]) #how to get # of measurements
   
@@ -180,7 +182,7 @@ plot_PERCH_regression <- function(DIR_NPLCM,slice=1,plot_basis=FALSE, truth=NULL
   # 2. use this code if date is included in etiology and false positive regressions:
   #
   # false positive rates:
-  subset_FPR_ctrl <- data_nplcm$Y==0
+  subset_FPR_ctrl <- data_nplcm$Y==0 & stratum_bool # <--- specifies who to look at.
   plotid_FPR_ctrl <- which(subset_FPR_ctrl)[order(data_nplcm$X$std_date[subset_FPR_ctrl])]
   curr_date_FPR <- data_nplcm$X$std_date[plotid_FPR_ctrl]
   if(!is_nested){
