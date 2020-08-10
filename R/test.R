@@ -283,14 +283,14 @@ plot_PERCH_regression <- function(
         #   rug(curr_date_FPR_case[data_nplcm$Mobs$MBS[[1]][plotid_FPR_case,j]==0],side=1,line= 0)
         #   
         #   #labels for the rug plot
-        #   if (j==1){
+           if (j==1){
         #     mtext(text = "case   -->",side=2,at=line2user(1,3),cex=0.8,las=1)
         #     mtext(text = "case   -->",side=2,at=line2user(0,1),cex=0.8,las=1)
         #     mtext(text = "control-->",side=2,at=line2user(0,3), cex=0.8,las=1,col="dodgerblue2")
         #     mtext(text = "control-->",side=2,at=line2user(1,1), cex=0.8,las=1,col="dodgerblue2")
         #     
-        #     mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
-        #   }
+            mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
+          }
         # }
         # 
         if (!is_nested){
