@@ -61,8 +61,8 @@ plot_PERCH_regression <- function(
   
   
   ncol_dm_FPR <- ncol(bugs.dat[[paste0("Z_FPR_",slice)]]) 
-  JBrS        <- ncol(bugs.dat[[paste0("MBS_",slice)]]) #how to get # of measurements
-  
+  JBrS        <- 7L #how to get # of measurements
+
   ncol_dm_Eti   <- ncol(bugs.dat$Z_Eti)
   
   templateBS    <- bugs.dat[[paste0("templateBS_",slice)]]
@@ -90,7 +90,7 @@ plot_PERCH_regression <- function(
   ## we could require that people have ENRL
   # add x-axis for dates:
   X <- data_nplcm$X
-  
+  Y <- data_nplcm$Y
   # some date transformations:
   X$date_plot  <- as.Date(X$ENRLDATE)
   X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
@@ -113,60 +113,28 @@ plot_PERCH_regression <- function(
   pred_d_std <- as.numeric(pred_d - min_d)*unit_x+min_d_std
   #####################################################################
   
-  # pred_dataframe <- data.frame(ENRLDATE=as.POSIXct.Date(pred_d,tz="UTC"),
-  #                              t(replicate(length(pred_d),unlist(unique(X[discrete_names])[1,]))))
-  # if (nrow(unique(X[discrete_names]))>1){
-  #   for (l in 2:nrow(unique(X[discrete_names]))){
-  #     pred_dataframe <- rbind(pred_dataframe,
-  #                             data.frame(ENRLDATE=as.POSIXct.Date(pred_d,tz="UTC"),
-  #                                        t(replicate(length(pred_d),unlist(unique(X[discrete_names])[l,])))))
-  #   }
-  # }
-  # 
-  # 
-  # pred_dataframe$std_date <- dm_Rdate_FPR(c(pred_dataframe$ENRLDATE,data_nplcm$X$ENRLDATE),
-  #                                         c(rep(1,nrow(pred_dataframe)),data_nplcm$Y),
-  #                                         effect = "fixed")[-(1:nrow(data_nplcm$X))]
-  # pred_dataframe_ok <- cbind(pred_dataframe,Y=rep(1,nrow(pred_dataframe)))
-  # 
-  # Z_Eti_pred       <- stats::model.matrix(model_options$likelihood$Eti_formula,
-  #                                         pred_dataframe_ok)
-  # 
+  betaFPR_samp <- array(t(get_res(paste0("^betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
+  case_betaFPR_samp <- array(t(get_res(paste0("^case_betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
+  betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept)) #useful in effect estimation.
+  ThetaBS_samp <- array(t(get_res(paste0("^ThetaBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
+  PsiBS_samp <- array(t(get_res(paste0("^PsiBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
+  Eta_samp <- array(t(get_res(paste0("^Eta_",slice,"\\["))),c(Nd,K_curr,n_samp_kept))
+  Lambda_samp <- array(t(get_res(paste0("^Lambda_",slice,"\\["))),c(Nu,K_curr,n_samp_kept))
+  subwt_samp <- abind::abind(Eta_samp,Lambda_samp,along=1)
+  linpred      <- function(beta,design_matrix){design_matrix%*%beta}
+
   
-  if (!is_nested){
-    betaFPR_samp <- array(t(get_res(paste0("^betaFPR_",slice,"\\["))),c(ncol_dm_FPR,JBrS,n_samp_kept))
-    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept))
-    thetaBS_samp <- get_res(paste0("^thetaBS_",slice,"\\["))
-    linpred      <- function(beta,design_matrix){design_matrix%*%beta} 
-    
-    out_FPR_linpred     <- array(apply(betaFPR_samp,3,linpred,design_matrix=bugs.dat[[paste0("Z_FPR_",slice)]]),
-                                 c(Nd+Nu,JBrS,n_samp_kept))
-    out_Eti_linpred     <- array(apply(betaEti_samp,3,linpred,design_matrix=bugs.dat$Z_Eti),
-                                 c(Nd,Jcause,n_samp_kept))
-  } else{
-    betaFPR_samp <- array(t(get_res(paste0("^betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
-    case_betaFPR_samp <- array(t(get_res(paste0("^case_betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
-    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept)) #useful in effect estimation.
-    ThetaBS_samp <- array(t(get_res(paste0("^ThetaBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
-    PsiBS_samp <- array(t(get_res(paste0("^PsiBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
-    Eta_samp <- array(t(get_res(paste0("^Eta_",slice,"\\["))),c(Nd,K_curr,n_samp_kept))
-    Lambda_samp <- array(t(get_res(paste0("^Lambda_",slice,"\\["))),c(Nu,K_curr,n_samp_kept))
-    subwt_samp <- abind::abind(Eta_samp,Lambda_samp,along=1)
-    linpred      <- function(beta,design_matrix){design_matrix%*%beta}
-    
-    # out_caseFPR_linpred     <- array(apply(case_betaFPR_samp,3,linpred,design_matrix=bugs.dat[[paste0("Z_FPR_",slice)]]),
-    #                              c(Nd+Nu,K_curr,n_samp_kept))
-    out_Eti_linpred     <- array(apply(betaEti_samp,3,linpred,design_matrix=bugs.dat$Z_Eti),
-                                 c(Nd,Jcause,n_samp_kept)) # can potentially just add pEti to the monitoring.
-    #pEti_samp           <- apply(out_Eti_linpred,c(1,3),softmax) # Jcause by Nd by niter.
-    pEti_samp           <- abind::abind(aperm(apply(out_Eti_linpred,c(1,3),softmax),c(2,1,3)),
-                                        array(0,c(Nu,Jcause,n_samp_kept)),along=1)
-    PR_case_ctrl <- compute_marg_PR_nested_reg_array(ThetaBS_array = ThetaBS_samp,PsiBS_array = PsiBS_samp,
-                                                     pEti_mat_array = pEti_samp,subwt_mat_array = subwt_samp,
-                                                     case = data_nplcm$Y,template = templateBS)
-    
-  }
+  out_Eti_linpred     <- array(apply(betaEti_samp,3,linpred,design_matrix=bugs.dat$Z_Eti),
+                               c(Nd,Jcause,n_samp_kept)) # can potentially just add pEti to the monitoring.
   
+  pEti_samp <-abind::abind(aperm(apply(out_Eti_linpred,c(1,3),softmax),c(2,1,3)),
+                                      array(0,c(Nu,Jcause,n_samp_kept)),along=1)
+  PR_case_ctrl <- compute_marg_PR_nested_reg_array(ThetaBS_array = ThetaBS_samp,PsiBS_array = PsiBS_samp,
+                                                   pEti_mat_array = pEti_samp,subwt_mat_array = subwt_samp,
+                                                   case = data_nplcm$Y,template = templateBS)
+  
+
+
   
   #
   # 2. use this code if date is included in etiology and false positive regressions:
@@ -175,11 +143,7 @@ plot_PERCH_regression <- function(
   subset_FPR_ctrl <- data_nplcm$Y==0 & stratum_bool # <--- specifies who to look at.
   plotid_FPR_ctrl <- which(subset_FPR_ctrl)[order(data_nplcm$X$std_date[subset_FPR_ctrl])]
   curr_date_FPR <- data_nplcm$X$std_date[plotid_FPR_ctrl]
-  if(!is_nested){
-    FPR_prob_scale <- expit(out_FPR_linpred[plotid_FPR_ctrl,,])
-    } else{
-    FPR_prob_scale <- PR_case_ctrl[plotid_FPR_ctrl,,]
-    }
+  FPR_prob_scale <- PR_case_ctrl[plotid_FPR_ctrl,,]
   
   FPR_mean <- apply(FPR_prob_scale,c(1,2),mean)
   FPR_q    <- apply(FPR_prob_scale,c(1,2),quantile,c(0.025,0.975))
@@ -197,21 +161,18 @@ plot_PERCH_regression <- function(
   
   
   Y <- data_nplcm$Y
-  subset_FPR_case          <- data_nplcm$Y==1
+  subset_FPR_case          <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
   plotid_FPR_case          <- which(subset_FPR_case)[order(data_nplcm$X$std_date[subset_FPR_case])]
   curr_date_FPR_case       <- data_nplcm$X$std_date[plotid_FPR_case]
-  if (!is_nested){
-    FPR_prob_scale_case      <- expit(out_FPR_linpred[plotid_FPR_case,,])
-  }else{FPR_prob_scale_case      <- PR_case_ctrl[plotid_FPR_case,,]}
+  FPR_prob_scale_case      <- PR_case_ctrl[plotid_FPR_case,,]
   
   # etiology:
-  subset_Eti <- data_nplcm$Y==1
+  subset_Eti <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
   plotid_Eti <- which(subset_Eti)[order(data_nplcm$X$std_date[subset_Eti])]
   curr_date_Eti  <- data_nplcm$X$std_date[plotid_Eti]
   
-  if (!is_nested){
-    Eti_prob_scale <- apply(out_Eti_linpred[plotid_Eti,,],c(1,3),softmax)
-  }else{Eti_prob_scale <- aperm(pEti_samp,c(2,1,3))[,plotid_Eti,]}
+  ## compute the probabilities and posterior mean/quantiles
+  Eti_prob_scale <- aperm(pEti_samp,c(2,1,3))[,plotid_Eti,]
   Eti_mean <- apply(Eti_prob_scale,c(1,2),mean)
   Eti_q    <- apply(Eti_prob_scale,c(1,2),quantile,c(0.025,0.975))
   Eti_overall <- apply(Eti_prob_scale,c(1,3),mean)
@@ -219,19 +180,8 @@ plot_PERCH_regression <- function(
   Eti_overall_sd   <- apply(Eti_overall,1,sd)
   Eti_overall_q    <- apply(Eti_overall,1,quantile,c(0.025,0.975))
   
-  if (!is_nested){
-    PR_case <- array(NA,c(length(plotid_Eti),JBrS,n_samp_kept))
-    for (i in 1:(length(plotid_Eti))){
-      for (t in 1:n_samp_kept){
-        PR_case[i,,t] <- fitted_margin_case(Eti_prob_scale[,i,t],
-                                            thetaBS_samp[t,],
-                                            FPR_prob_scale_case[i,,t],
-                                            bugs.dat$templateBS[1:Jcause,]
-        )
-      }
-    }
-  } else{PR_case <- PR_case_ctrl[plotid_Eti,,]}
-  
+  ## for cases
+  PR_case <- PR_case_ctrl[plotid_Eti,,]
   PR_case_mean <- apply(PR_case,c(1,2),mean)
   PR_case_q <- apply(PR_case,c(1,2),quantile,c(0.025,0.975))
   
@@ -293,22 +243,7 @@ plot_PERCH_regression <- function(
           }
         # }
         # 
-        if (!is_nested){
-          abline(h=colMeans(thetaBS_samp)[j],col="red")
-          abline(h=quantile(thetaBS_samp[,j],0.025),col="red",lty=2)
-          abline(h=quantile(thetaBS_samp[,j],0.975),col="red",lty=2)
-        }
-        
-        # add raw moving average dots:
-        # ma <- function(x,n=60){stats::filter(x,rep(1/n,n), sides=2)}
-        # 
-        # ma_cont <- function(y,x,hw=0.35){
-        #   res <- rep(NA,length(y))
-        #   for (i in seq_along(y)){
-        #     res[i] <- mean(y[which(x>=x[i]-hw & x<=x[i]+hw)])
-        #   }
-        #   res
-        # }
+
         response.ctrl <- (bugs.dat[[paste0("MBS_",slice)]])[plotid_FPR_ctrl,j]
         dat_ctrl <- data.frame(std_date=data_nplcm$X$std_date[plotid_FPR_ctrl])[!is.na(response.ctrl),,drop=FALSE]
         # dat_ctrl$runmean <- ma_cont(response.ctrl[!is.na(response.ctrl)],dat_ctrl$std_date[!is.na(response.ctrl)])
