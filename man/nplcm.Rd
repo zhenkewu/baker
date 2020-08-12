@@ -76,7 +76,7 @@ rather than storing them through JAGS.
 }}
 }
 \value{
-A JAGS result, fitted by function \code{\link[R2jags:jags]{R2jags::jags2()}} from \code{R2jags}.
+A JAGS result, fitted by function \code{\link[R2jags:jags2]{R2jags::jags2()}} from \code{R2jags}.
 Current implemented models follow the hierarchy below:
 \itemize{
 \item no regression:  \link{write_model_NoReg}

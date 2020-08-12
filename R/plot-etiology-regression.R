@@ -635,7 +635,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
   Lambda_samp <- array(t(get_res(paste0("^Lambda_",slice,"\\["))),c(Nu,K_curr,n_samp_kept))
   subwt_samp <- abind::abind(Eta_samp,Lambda_samp,along=1)
   
-  if(is.null(X$std_date)){
+  if(is.null(data_nplcm$X$std_date)){
     stop("'ENRLDATE' and/or 'std_date' is not a variable in your dataset! Make sure that the continuous covariate exists and retry this function.")
   }
   
