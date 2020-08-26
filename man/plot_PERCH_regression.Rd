@@ -43,3 +43,20 @@ This function is specifically designed for PERCH data, e.g.,
 also there this function only plots the first slice - so generalization may be useful - give
 users an option to choose slice s; currently default to the first slice.)
 }
+\seealso{
+Other visualization functions: 
+\code{\link{plot_BrS_panel}()},
+\code{\link{plot_SS_panel}()},
+\code{\link{plot_check_common_pattern}()},
+\code{\link{plot_check_pairwise_SLORD}()},
+\code{\link{plot_etiology_regression}()},
+\code{\link{plot_etiology_side_by_side}()},
+\code{\link{plot_etiology_strat_nested}()},
+\code{\link{plot_etiology_strat}()},
+\code{\link{plot_group_etiology}()},
+\code{\link{plot_panels}()},
+\code{\link{plot_pie_panel}()},
+\code{\link{plot_selected_etiology}()},
+\code{\link{plot_subwt_regression}()}
+}
+\concept{visualization functions}

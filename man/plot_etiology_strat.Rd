@@ -23,6 +23,7 @@ age groups.
 \seealso{
 Other visualization functions: 
 \code{\link{plot_BrS_panel}()},
+\code{\link{plot_PERCH_regression}()},
 \code{\link{plot_SS_panel}()},
 \code{\link{plot_check_common_pattern}()},
 \code{\link{plot_check_pairwise_SLORD}()},

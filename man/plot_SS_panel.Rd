@@ -58,6 +58,7 @@ Plot silver-standard (SS) panel
 \seealso{
 Other visualization functions: 
 \code{\link{plot_BrS_panel}()},
+\code{\link{plot_PERCH_regression}()},
 \code{\link{plot_check_common_pattern}()},
 \code{\link{plot_check_pairwise_SLORD}()},
 \code{\link{plot_etiology_regression}()},
