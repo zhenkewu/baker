@@ -16,7 +16,6 @@
 #'
 #' Data set for illustrating regression functionalities
 #' 
-#'
 #' @format A list containing three items 
 #' \describe{
 #'   \item{Mobs}{BrS level measurements: N = 1,200 (half cases and half controls);
@@ -29,3 +28,8 @@
 #' 
 #' @usage data("data_nplcm_reg")
 "data_nplcm_reg"
+
+
+# NB: a few more data sets: data_nplcm_no_reg (no regression setting); this can be used in a lot of functions
+# for visualization. Perhaps also need to add posterior samples as data set just as a way to 
+# demonstrate the plotting functionality and unit test.

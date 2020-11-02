@@ -12,7 +12,7 @@ plot_etiology_regression(
   truth = NULL,
   RES_NPLCM = NULL,
   do_plot = TRUE,
-  do_rug = FALSE,
+  do_rug = TRUE,
   return_metric = TRUE,
   plot_ma_dots = FALSE
 )
@@ -40,7 +40,7 @@ Currently only works for one slice of bronze-standard measurements (in a non-nes
 
 \item{do_plot}{TRUE for plotting}
 
-\item{do_rug}{FALSE for plotting}
+\item{do_rug}{TRUE for plotting}
 
 \item{return_metric}{TRUE for showing overall mean etiology, quantiles, s.d., and if \code{truth$Eti} is supplied,
 coverage, bias, truth and integrated mean squared errors (IMSE).}
@@ -52,7 +52,7 @@ A figure of etiology regression curves and some marginal positive rate assessmen
 model fit; See example for the legends.
 }
 \description{
-This function visualizes the etiology regression against one continuous covariates, e.g.,
+This function visualizes the etiology regression against one continuous covariate, e.g.,
 enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?
 also there this function only plots the first slice - so generalization may be useful - give
 users an option to choose slice s; currently default to the first slice.)

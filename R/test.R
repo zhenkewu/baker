@@ -28,8 +28,6 @@
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
 #' model fit; See example for the legends.
 #' 
-#' 
-#' 
 plot_PERCH_regression <- function(DIR_NPLCM,slice=1,plot_basis=FALSE, truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,plot_ma_dots=FALSE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder

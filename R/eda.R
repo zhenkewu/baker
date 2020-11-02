@@ -23,7 +23,6 @@ show_individual <- function(data_nplcm,ID) {
        X    = data_nplcm$X[index,])
 }
 
-
 #' Visualize pairwise log odds ratios (LOR) for data that are available in
 #' both cases and controls
 #'

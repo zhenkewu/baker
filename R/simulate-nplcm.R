@@ -1,48 +1,51 @@
 #' Simulate data from nested partially-latent class model (npLCM) family
 #'
-#' @details Use different case and control subclass mixing weights. Eta is of
-#' dimension J times K. NB: document the elements in `set_parameter`. Also, current
-#' function is written in a way to facilitate adding more measurement components.
-#'
-#' @param set_parameter True model parameters in a npLCM specification. It is a list comprised
-#' of the following elements:
+#' 
+#' 
+#' 
+#' @param set_parameter True model parameters in an npLCM specification:
 #'  \itemize{
-#'     \item{`cause_list`} a vector of disease classes names among cases (since
-#'     the causes could be multi-pathogen, so its length could be longer than the total number of unique
-#'     pathogens)
-#'     \item{`etiology`} a vector of proportions that sum to one
-#'     \item{`pathogen_BrS`} a vector of pathogen names measured in bronze-standard data.
-#'     This current function only simulates one slice defined by {specimen}{test}{pathogen}
-#'     \item{`pathogen_SS`} a vector of pathogen names measured in silver-standard data.
+#'     \item{`cause_list`} a vector of disease class names among cases (since
+#'     the causes could be multi-agent (e.g., multiple pathogens may cause an individual case's
+#'     pneumonia), so its length could be longer than the total number of unique
+#'     causative agents)
+#'     \item{`etiology`} a vector of proportions that sum to 100 percent
+#'     \item{`pathogen_BrS`} a vector of putative causative agents' names measured in bronze-standard (BrS) data.
+#'     This function simulates only one slice defined by {specimen}{test}{pathogen}
+#'     \item{`pathogen_SS`} a vector of pathogen names measured in silver-standard (SS) data.
 #'     \item{`meas_nm`} a list of {specimen}{test} names e.g., `list(MBS = c("NPPCR"),MSS="BCX")`
-#'     for nasalpharyngeal specimen tested by polymerase chain reaction and blood tested by culture (Cx)
-#'     \item{`Lambda`} subclass weights \eqn{\nu_1, \nu_2, \ldots, \nu_K} among controls; 
+#'     for nasopharyngeal (NP) specimen tested by polymerase chain reaction (PCR) - `NPPCR` and
+#'      blood (B) tested by culture (Cx) - `BCX`
+#'     \item{`Lambda`} controls' subclass weights \eqn{\nu_1, \nu_2, \ldots, \nu_K}
 #'     a vector of `K` probabilities that sum to 1.
-#'     \item{`Eta`}    a matrix of dimension `length(cause_list)` by K;
-#'     each row are subclass weights \eqn{\eta_1, \eta_2, \ldots, \eta_K} for each disease class,
-#'     so needs to sum to one. In Wu et al 2016, the subclass weights are the same across disease
+#'     \item{`Eta`}    a matrix of dimension `length(cause_list)` by `K`;
+#'     each row represents a disease class (among cases); the values in that row
+#'     are subclass weights \eqn{\eta_1, \eta_2, \ldots, \eta_K} for that disease class,
+#'     so needs to sum to one. In Wu et al. 2016 (JRSS-C), the subclass weights are the same across disease
 #'     classes across rows. But when simulating data, one can specify rows with distinct
-#'     probabilities - it is a matter whether we can recover these parameters (possible when
-#'     we randomly observe some cases' true disease classes)
-#'     \item{`PsiBS/PsiSS`} False positive rates \eqn{\Psi} for Bronze-Standard data and 
-#'     for Silver-Standard data. Dimension is J by K. 
-#'     `PsiSS` is supposed to be 0 vector (by perfect specificity in silver-standard measures).
-#'     \item{`ThetaBS/ThetaSS`}  true positive rates \eqn{\Theta} for Bronze-Standard data and 
-#'     for Silver-Standard data. Dimension is J by K (can contain NA if the total number of pathogens is
-#'     more than the measured pathogens in SS).
-#'     \item{`Nu`} the number of controls
-#'     \item{`Nd`} the number of cases
+#'     subclass weights - it is a matter whether we can recover these parameters (possible when
+#'     some cases' true disease classes are observed)
+#'     \item{`PsiBS/PsiSS`} False positive rates for Bronze-Standard data and 
+#'     for Silver-Standard data. For example, the rows of `PsiBS` correspond to the dimension of the particular
+#'     slice of BrS measures, e.g., `10` for 10 causative agents measured by NPPCR; the
+#'     columns correspond to `K` subclasses; generically, the dimension is `J` by `K`
+#'     `PsiSS` is supposed to be a vector of all zeros (perfect specificity in silver-standard measures).
+#'     \item{`ThetaBS/ThetaSS`}  True positive rates \eqn{\Theta} for Bronze-Standard data and 
+#'     for Silver-Standard data. Dimension is `J` by `K` (can contain `NA` if the total number of 
+#'     causative agents measured by BrS or SS exceeds the measured causative agents in SS. For example,
+#'     in PERCH study, nasopharyngeal polymerase chain reaction (NPPCR; bronze-standard) may target 30 distinct pathogens, but blood culture (BCX; silver-standard) may only target a subset of the 30,
+#'     so we have to specify `NA` in `ThetaSS`for those pathogens not targeted by BCX).
+#'     \item{`Nu`} the number of control subjects
+#'     \item{`Nd`} the number of case subjects
 #'  }
 #' 
-#' @return A list of measurements, true latent statues:
+#' @return A list of diagnostic test measurements, true latent statues:
 #' \itemize{
 #'  \item{`data_nplcm`} a list of structured data (see [nplcm()] for
-#'  description) for use in visualization
-#'  e.g., [plot_logORmat()] or model fitting, e.g., [nplcm()].
-#'  The pathogen taxonomy is set to default "B".
-#'  \item{`template`} a matrix: rows for causes, columns for measurements;
-#'  generated as a lookup table to match mixture component parameters for every type
-#'   (a particular cause) of individuals.
+#'  description). 
+#'  \item{`template`} a matrix: rows for causes (may comprise a single or multiple causative agents), 
+#'  columns for measurements; generated as a lookup table to match disease-class specific 
+#'  parameters (true and false positive rates)
 #'  \item{`latent_cat`} integer values to indicate the latent category. The integer
 #'  code corresponds to the order specified in `set_parameter$etiology`.
 #'  Controls are coded as `length(set_parameter$etiology)+1`.)
@@ -73,7 +76,6 @@
 #' ThetaSS_withNA <- c(NA,rep(c(0.15,NA,0.15,0.15),5))
 #' PsiSS_withNA <- c(NA,rep(c(0,NA,0,0),5))
 #' 
-#' # the following paramter names are set using names in the 'baker' package:
 #' set_parameter <- list(
 #'   cause_list      = c(LETTERS[1:J]),
 #'   etiology        = c(c(0.36,0.1,0.1,0.1,0.1,0.05,0.05,0.05,
@@ -98,10 +100,10 @@
 #'  
 #'  pathogen_display <- rev(set_parameter$pathogen_BrS)
 #'  plot_logORmat(data_nplcm,pathogen_display)
-#'
+#'  # more examples are provided in the vignette, including settings with 
+#'  # covariates.
 #' @family simulation functions
 #' @export
-
 simulate_nplcm <- function(set_parameter) {
   # simulate latent status
   latent <- simulate_latent(set_parameter)
@@ -138,11 +140,10 @@ simulate_nplcm <- function(set_parameter) {
 #' 
 #' @inheritParams simulate_nplcm
 #'
-#' @return a list of latent status samples for use in sampling measurements. It
-#' also includes a template to look up measurement parameters for each type of causes.
-#' @family simulation functions
-#' @export
-#'
+#' @return a list of latent status samples for use in simulating measurements. It
+#' also includes a template to look up measurement parameters for each disease class.
+#' 
+#' @family internal simulation functions
 simulate_latent <- function(set_parameter) {
   # etiology common to all measurements:
   cause_list <- set_parameter$cause_list
@@ -180,18 +181,16 @@ simulate_latent <- function(set_parameter) {
   make_list(iLcat,iLnm)
 }
 
-#' Simulate Bronze-Standard Data
+#' Simulate Bronze-Standard (BrS) Data
 #'
 #'
-#' simulate BrS measurements:
 #' @inheritParams simulate_nplcm
-#' @param latent_samples sampled latent status for all the subjects, for use in simulate
+#' @param latent_samples simulated latent status for all the subjects, for use in simulating
 #' BrS measurements.
 #'
 #' @return a data frame with first column being case-control status (case at top) and
 #' columns of bronze-standard measurements
-#' @family simulation functions
-#' @export
+#' @family internal simulation functions
 simulate_brs <- function(set_parameter,latent_samples) {
   pathogen_BrS    <- set_parameter$pathogen_BrS
   cause_list      <- set_parameter$cause_list
@@ -251,18 +250,15 @@ simulate_brs <- function(set_parameter,latent_samples) {
   make_list(datres,template)
 }
 
-#' Simulate Silver-Standard Data
+#' Simulate Silver-Standard (SS) Data
 #'
-#'
-#' simulate SS measurements:
 #' @inheritParams simulate_nplcm
-#' @param latent_samples sampled latent status for all the subjects, for use in simulate
-#' BrS measurements.
+#' @param latent_samples simulated latent status for all the subjects, 
+#' for use in simulating SS measurements.
 #'
 #' @return a data frame with first column being case-control status (case at top) and
 #' columns of silver-standard measurements
-#' @family simulation functions
-#' @export
+#' @family internal simulation functions
 simulate_ss <- function(set_parameter,latent_samples) {
   pathogen_SS    <- set_parameter$pathogen_SS
   cause_list      <- set_parameter$cause_list

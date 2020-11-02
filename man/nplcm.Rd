@@ -2,51 +2,76 @@
 % Please edit documentation in R/nplcm.R
 \name{nplcm}
 \alias{nplcm}
-\title{Fit nested partially latent class models (high-level wrapper function)}
+\title{Fit nested partially-latent class models (highest-level wrapper function)}
 \usage{
 nplcm(data_nplcm, model_options, mcmc_options)
 }
 \arguments{
-\item{data_nplcm}{Must put cases at the top in \code{Mobs$MBS} and control data at the bottom
-(this is related to the coding scheme in JAGS).
+\item{data_nplcm}{Cases are on top of controls in the rows of diagnostic
+test results and the covariate matrix. This is assumed by \code{baker} to automatically
+write model files (\code{.bug}).
 \itemize{
-\item  \code{Mobs} A list of measurements. The elements of the list
+\item  \code{Mobs} A list of measurements of distinct qualities (Bronze-, Silver, and Gold-Standard:
+\code{MBS},\code{MSS},\code{MGS}). The elements of the list
 should include \code{MBS}, \code{MSS}, and \code{MGS}. If any of the component
 is not available, please specify it as, e.g., \code{MGS=NULL}
 (effectively deleting \code{MGS} from \code{Mobs}).
 \itemize{
 \item \code{MBS} a list of data frame of bronze-standard (BrS) measurements.
-Rows are subjects, columns are pathogens. We use list here to accommodate
-the possibility of multiple sets of BrS data.
-They have imperfect sensitivity/specificity (e.g. nasopharyngeal PCR).
+Rows are subjects, columns are causative agents (e.g., pathogen species).
+We use \code{list} here to accommodate the possibility of multiple sets of BrS data.
+They have imperfect sensitivity/specificity (e.g. nasopharyngeal polymerase chain
+reaction - NPPCR).
 \item \code{MSS} a list of data frame of silver-standard (SS) measurements.
-Rows are subjects, columns are pathogens measured in specimen (e.g. blood culture).
+Rows are subjects, columns are causative agents measured in specimen (e.g. blood culture).
 These measurements have perfect specificity but imperfect sensitivity.
 \item \code{MGS} a list of data frame of gold-standard (GS) measurements.
-Rows are subject, columns are pathogen measurements.
+Rows are subject, columns are measured causative agents
 These measurements have perfect sensitivity and specificity.
 }
 
-\item \code{Y} Vector of disease status: 1 for case, 0 for control.
-\item \code{X} Covariate matrix for regression modeling. It contains raw covariate
-data, not design matrix for regression models.
+\item \code{Y} Vector of disease status: \code{1} for case, \code{0} for control.
+\item \code{X} Covariate matrix. A subset of columns are primary covariates in cause-specific-
+case-fraction (CSCF) functions and hence must be available for cases, and another subset
+are covariates that are available in the cases and the controls.
+The two sets of covariates may be identical, overlapping or completely different.
+In general, this is not the design matrix for regression models,
+because for enrollment date in a study which may have non-linear effect,
+basis expansion is often needed for approximation.
 }}
 
-\item{model_options}{A list of model options.
+\item{model_options}{A list of model options: likelihood and prior.
 \describe{
 \item{\code{likelihood}}{
 \itemize{
-\item{cause_list} The vector of latent status;
-\item{k_subclass} The number of nested subclasses. 1 for conditional independence,1 for conditional dependence; It is a vector of length equal to the number of slicesof BrS measurements;\item{Eti_formula} formula for etiology regressions. You can uses_date_Eti() to specify the design matrix for R format enrollment date;it will produce natural cubic spline basis. Specify ~ 1 if noregression is intended.\item{FPR_formula}formula for false positive rates (FPR) regressions; seeformula(). You can use s_date_FPR() to specify partof the design matrix for R format enrollment date; it will produce penalized-splinebasis (based on B-splines). Specify ~ 1 if noregression is intended. NB: If effect="fixed", dm_Rdate_FPR()will just specify a design matrix with appropriately standardized dates.}}\item{use_measurements}{a vector of characters strings; can be any singleton or combinations of "BrS", "SS", "GS".}
+\item{cause_list} The vector of causes (NB: specify);
+\item{k_subclass} The number of nested subclasses in each
+disease class (one of case classes or the control class; the same \code{k_subclass}
+is assumed for each class) and each slice of BrS measurements.
+\code{1} for conditional independence; larger than \code{1} for conditional dependence.
+It is only available for BrS measurements. It is a vector of length equal to
+the number of slices of BrS measurements;
+\item{Eti_formula} Formula for etiology regressions. You can use
+\code{\link[=s_date_Eti]{s_date_Eti()}} to specify the design matrix for \code{R} format enrollment date;
+it will produce natural cubic spline basis. Specify \code{~ 1} if no regression is intended.
+\item{FPR_formula}formula for false positive rates (FPR) regressions; see \code{\link[=formula]{formula()}}.
+You can use \code{\link[=s_date_FPR]{s_date_FPR()}} to specify part of the design matrix for \code{R}
+format enrollment date; it will produce penalized-spline basis (based on B-splines).
+Specify \code{~ 1} if no regression is intended. (NB: If \code{effect="fixed"}, \code{\link[=dm_Rdate_FPR]{dm_Rdate_FPR()}}
+will just specify a design matrix with appropriately standardized dates.)
+}
+}
+\item{\code{use_measurements}}{
+A vector of characters strings; can be one or more from \code{"BrS"}, \code{"SS"}, \code{"GS"}.
+}
 
 \item{\code{prior}}{
 \itemize{
-\item{Eti_prior}Description of etiology prior
-(e.g., \code{overall_uniform} - all hyperparameters are 1; or \verb{0_1} - all hyperparameters
-are 0.1);
+\item{Eti_prior}Description of etiology prior (e.g., \code{overall_uniform} -
+all hyperparameters are \code{1}; or \verb{0_1} - all hyperparameters are \code{0.1});
 \item{TPR_prior}Description of priors for the measurements
-(e.g., informative vs non-informative).
-Its length should be the same with \code{M_use};
+(e.g., informative vs non-informative). Its length should be the same with \code{M_use}.
+(NB: not sure what M use is...)
 }
 }
 }}
@@ -54,44 +79,62 @@ Its length should be the same with \code{M_use};
 \item{mcmc_options}{A list of Markov chain Monte Carlo (MCMC) options.
 \itemize{
 \item \code{debugstatus} Logical - whether to pause WinBUGS after it finishes
-model fitting;
+model fitting; (NB: is this obsolete? Test.)
 \item \code{n.chains} Number of MCMC chains;
-\item \code{n.burnin} Number of burn-in samples;
+\item \code{n.burnin} Number of burn-in iterations;
 \item \code{n.thin} To keep every other \code{n.thin} samples after burn-in period;
 \item \code{individual.pred} \code{TRUE} to perform individual prediction (\code{Icat}
-variables in the \code{.bug} file);
-\code{FALSE} otherwise;
+variables in the \code{.bug} file); \code{FALSE} otherwise;
 \item \code{ppd} \code{TRUE} to simulate new data (\code{XXX.new}
-variables in the \code{.bug} file) from the posterior predictive
-distribution (ppd); \code{FALSE} otherwise;
+variables in the \code{.bug} file) from the posterior predictive distribution (ppd);
+\code{FALSE} otherwise;
 \item \code{get.pEti} \code{TRUE} for getting posterior samples of individual etiologic fractions;
 \code{FALSE} otherwise. For non-regression, or regression models with all discrete predictors,
-this is defaulted to be \code{TRUE}; no need to specify this entry. It is only relevant for regression models
-with non-discrete covariates. Because individuals have distinct etiology pies at their specific covariate values,
+by default this is \code{TRUE}, so no need to specify this entry. It is only relevant for regression models
+with non-discrete covariates. Because individuals have distinct CSCFs at their specific covariate values,
 it's easier to just store the posterior samples of the regression coefficients and reconstruct the pies afterwards,
-rather than storing them through JAGS.
+rather than storing them through \code{JAGS}.
 \item \code{result.folder} Path to folder storing the results;
 \item \code{bugsmodel.dir} Path to \code{.bug} model files;
-\item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed.
+\item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed. (NB: redundant?)
+\item \code{use_jags} \code{TRUE} for using \code{JAGS} (NB: redundant?)
 }}
 }
 \value{
-A JAGS result, fitted by function \code{\link[R2jags:jags]{R2jags::jags2()}} from \code{R2jags}.
+A \code{JAGS} output result, fitted by function \code{\link[R2jags:jags]{R2jags::jags2()}} from \code{R2jags}.
 Current implemented models follow the hierarchy below:
 \itemize{
-\item no regression:  \link{write_model_NoReg}
+\item no regression:  Fitted by at low level by \link{nplcm_fit_NoReg}
 
 \item regression:
-Given disease class (control or a subtype of cases infected with the same sets of pathogens)
+Given disease class (control or a class of cases with the same subset of causative agents):
 \itemize{
-\item local independence model for BrS measures: \link{write_model_Reg_NoNest}
-\item local dependence model for BrS measures: \link{write_model_Reg_Nest}
+\item local independence model for BrS measures:
+Fitted at lower level by
+\itemize{
+\item \link{nplcm_fit_Reg_NoNest} deals with the setting with two sets of covariates,
+one for CSCF regression and the other for FPR regression. The two sets of
+covariates may be identical, overlapping or non-overlapping.
+This function is called when there exists one or more than one discrete covariate among
+the union of the two covariate sets. The method implemented by this function
+directly lets FPR depend upon covariates.
+This is different from Wu and Chen (2020+), which let the subclass
+weights depend upon covariates. We implemented this function for methods comparison.
+\item \link{nplcm_fit_Reg_discrete_predictor_NoNest} deals with the setting
+with all discrete covariates for FPRs and CSCFs. The strata defined by the two sets of
+covariates need not be identical, e.g., as a result of distinct sets of covariates. Again,
+this is directly to let FPR be stratifed by covariates, hence different from Wu and Chen (2020+)
+We implemented this function for methods comparison.
+}
+\item local dependence model for BrS measures:
+Fitted at lower level by \link{nplcm_fit_Reg_Nest}: This is the method introduced in
+Wu and Chen (2020+): CSCF regression + case/control subclass weight regression.
+It does not provide a specialized function for the setting with all discrete covariates.
 }
 }
 }
 \description{
-Uses JAGS in Windows system or JAGS in OSX system for Bayesian inference
-(see README file for an instruction to install JAGS).
-For stratification/regression functionalities, true positive rates are constant
-across strata or covariate values.
+Uses \code{JAGS} (OSX or Windows) operating system for Bayesian posterior inference
+(see \code{README} file for an instruction to install \code{JAGS}). If running \code{JAGS} on windows,
+please go to control panel to add the directory to \code{JAGS} into ENVIRONMENTAL VARIABLE.
 }
