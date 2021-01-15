@@ -18,8 +18,6 @@
 #' 
 #' @return A figure of etiology regression curves and some marginal positive rate assessment of
 #' model fit; See example for the legends.
-#' @family visualization functions
-#' @export
 plot_PERCH_regression <- function(
   DIR_NPLCM, stratum_bool=stratum_bool, bugs.dat=NULL, slice=1, RES_NPLCM=NULL, do_plot=TRUE, do_rug=FALSE, return_metric=TRUE){
   # only for testing; remove after testing:

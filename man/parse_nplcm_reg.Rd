@@ -3,14 +3,14 @@
 \name{parse_nplcm_reg}
 \alias{parse_nplcm_reg}
 \title{parse regression components (either false positive rate or etiology regression)
-for fitting nplcm; Only use this when formula is non-null.}
+for fitting npLCM; Only use this when formula is not \code{NULL}.}
 \usage{
 parse_nplcm_reg(form, data_nplcm, silent = TRUE)
 }
 \arguments{
 \item{form}{regression formula}
 
-\item{data_nplcm}{data object for nplcm; may contain covariates X;
+\item{data_nplcm}{data object for \code{\link[=nplcm]{nplcm()}}; may contain covariates X;
 must have case-control status Y.}
 
 \item{silent}{Default is \code{TRUE} for no message about covariates;
@@ -21,5 +21,5 @@ must have case-control status Y.}
 }
 \description{
 parse regression components (either false positive rate or etiology regression)
-for fitting nplcm; Only use this when formula is non-null.
+for fitting npLCM; Only use this when formula is not \code{NULL}.
 }

@@ -20,5 +20,4 @@ l = list(a = 5, b = 1:2)
 is_length_all_one(l) # FALSE
 l = list(a = 5, b = 1)
 is_length_all_one(l) # TRUE
-
 }

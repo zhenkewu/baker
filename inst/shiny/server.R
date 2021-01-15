@@ -16,7 +16,6 @@ options(shiny.maxRequestSize=30*1024^2)
 library(shinyFiles)
 library(shinydashboard)
 
-
 # Define global values; can modify if other options are required, e.g., more
 # causes, more stratifying variables and their values, etc:
 sitename_choices <- c("Kenya"="01KEN",

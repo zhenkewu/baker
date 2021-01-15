@@ -1,6 +1,6 @@
 #' visualize the etiology regression with a continuous covariate
 #' 
-#' This function visualizes the etiology regression against one continuous covariates, e.g., 
+#' This function visualizes the etiology regression against one continuous covariate, e.g., 
 #' enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuous covariates?
 #' also there this function only plots the first slice - so generalization may be useful - give
 #' users an option to choose slice s; currently default to the first slice.)
@@ -20,7 +20,7 @@
 #'  }
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @param do_plot TRUE for plotting
-#' @param do_rug FALSE for plotting
+#' @param do_rug TRUE for plotting
 #' @param return_metric TRUE for showing overall mean etiology, quantiles, s.d., and if `truth$Eti` is supplied, 
 #'  coverage, bias, truth and integrated mean squared errors (IMSE).
 #' @param plot_ma_dots plot moving averages among case and controls if TRUE; Default to FALSE.
@@ -62,7 +62,8 @@
 #' @family visualization functions
 #' @export
 plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,
-                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=FALSE, return_metric=TRUE,
+                                     truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=TRUE, 
+                                     return_metric=TRUE,
                                      plot_ma_dots=FALSE){
   # only for testing; remove after testing:
   # DIR_NPLCM <- result_folder
@@ -103,7 +104,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   get_res   <- function(x) res_nplcm[,grep(x,colnames(res_nplcm))]
   
   # structure the posterior samples:
-  ncol_dm_FPR <- ncol(bugs.dat[[paste0("Z_FPR_",slice)]])
+  ncol_dm_FPR <- ncol(bugs.dat[[paste0("Z_FPR_",slice)]]) # design matrix
   JBrS        <- ncol(bugs.dat[[paste0("MBS_",slice)]])
   n_samp_kept   <- nrow(res_nplcm)
   ncol_dm_Eti   <- ncol(bugs.dat$Z_Eti)
@@ -257,14 +258,13 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
     colSums(tpr*mixture + fpr*mixture)
   }
   
-  
   Y <- data_nplcm$Y
   subset_FPR_case          <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
   plotid_FPR_case          <- which(subset_FPR_case)[order(data_nplcm$X$std_date[subset_FPR_case])]
   curr_date_FPR_case       <- data_nplcm$X$std_date[plotid_FPR_case]
   if (!is_nested){
     FPR_prob_scale_case      <- expit(out_FPR_linpred[plotid_FPR_case,,])
-  }else{FPR_prob_scale_case      <- PR_case_ctrl[plotid_FPR_case,,]}
+  }else{FPR_prob_scale_case  <- PR_case_ctrl[plotid_FPR_case,,]}
   
   # etiology:
   subset_Eti <- data_nplcm$Y==1 & stratum_bool # <--- specifies who to look at.
@@ -359,7 +359,6 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
             mtext("1)",side=2,at=0.8,line=3, cex=2,las=1)
           }
         }
-       
 
         if (!is_nested){
           abline(h=colMeans(thetaBS_samp)[j],col="red")
@@ -414,7 +413,6 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       }
       
       if (j==1){mtext("2)",side=2,at=0.85,line=3, cex=2,las=1)}
-      
       
       color2 <- grDevices::rgb(190, 190, 190, alpha=200, maxColorValue=255)
       color1 <- grDevices::rgb(216,191,216, alpha=200, maxColorValue=255)

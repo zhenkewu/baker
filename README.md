@@ -22,10 +22,10 @@ to report reproducible issues.
 estimation from case-control data, please cite the following papers:
 
 |                                      | Citation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Paper Link                                                                                                                 |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | partially Latent Class Models (pLCM) | Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. *J. R. Stat. Soc. C*, 65: 97–114. <doi:10.1111/rssc.12101>                                                                                                                                                                                                                                                                                                                         | [Link](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/full)                                                         |
 | nested pLCM                          | Wu, Z., Deloria-Knoll, M., Zeger, S.L.; Nested partially latent class models for dependent binary data; estimating disease etiology. *Biostatistics* 2017; 18 (2): 200-213. doi: 10.1093/biostatistics/kxw037                                                                                                                                                                                                                                                                                                                                                                                              | [Link](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent) |
-| nested pLCM regression               | Wu, Z., Chen, I; Regression Analysis of Dependent Binary Data for Estimating Disease Etiology from Case-Control Studies. *Submitted* (2019+)                                                                                                                                                                                                                                                                                                                                                                                                                                                               | [Link](https://zhenkewu.com/papers/nplcm_reg)                                                                              |
+| nested pLCM regression               | Wu, Z., Chen, I (2020). Probabilistic Cause-of-disease Assignment using Case-control Diagnostic Tests: A Hierarchical Bayesian Approach. *Statistics in Medicine*. To Appear. <DOI:10.1002/sim.8804>.                                                                                                                                                                                                                                                                                                                                                                                                      | [Link](https://doi.org/10.1101/672808)                                                                                     |
 | Application                          | Maria Deloria Knoll, Wei Fu, Qiyuan Shi, Christine Prosperi, Zhenke Wu, Laura L. Hammitt, Daniel R. Feikin, Henry C. Baggett, Stephen R.C. Howie, J. Anthony G. Scott, David R. Murdoch, Shabir A. Madhi, Donald M. Thea, W. Abdullah Brooks, Karen L. Kotloff, Mengying Li, Daniel E. Park, Wenyi Lin, Orin S. Levine, Katherine L. O’Brien, Scott L. Zeger; Bayesian Estimation of Pneumonia Etiology: Epidemiologic Considerations and Applications to the Pneumonia Etiology Research for Child Health Study, *Clinical Infectious Diseases*, Volume 64, Issue suppl\_3, 15 June 2017, Pages S213–S227 | [Link](https://academic.oup.com/cid/article/64/suppl_3/S213/3858226/Bayesian-Estimation-of-Pneumonia-Etiology)             |
 | Primary PERCH Analysis               | The PERCH Study Group (2019). Aetiology of severe hospitalized pneumonia in HIV-uninfected children from Africa and Asia: the Pneumonia Aetiology Research for Child Health (PERCH) Case-Control Study. *The Lancet*, In press.                                                                                                                                                                                                                                                                                                                                                                            | [Link]()                                                                                                                   |
 
@@ -33,18 +33,18 @@ estimation from case-control data, please cite the following papers:
 
 <div id='id-section1'/>
 
-  - [1. Installation](#id-section1)
-  - [2. Vignettes](#id-section2)
-  - [3. Graphical User Interface (GUI)](#id-section3)
-  - [4. Analytic Goal](#id-section4)
-  - [5. Comparison to Other Existing Solutions](#id-section5)
-  - [6. Details](#id-section6)
-  - [7. Platform](#id-section7)
-  - [8. Connect `R` to `JAGS` on Unix systems or OSX](#id-section8)
-  - [9. Submit Jobs to Computing Cluster via a shell
+-   [1. Installation](#id-section1)
+-   [2. Vignettes](#id-section2)
+-   [3. Graphical User Interface (GUI)](#id-section3)
+-   [4. Analytic Goal](#id-section4)
+-   [5. Comparison to Other Existing Solutions](#id-section5)
+-   [6. Details](#id-section6)
+-   [7. Platform](#id-section7)
+-   [8. Connect `R` to `JAGS` on Unix systems or OSX](#id-section8)
+-   [9. Submit Jobs to Computing Cluster via a shell
     script](#id-section9)
-  - [10. Connect `R` to `JAGS` on Windows](#id-section10)
-  - [11. Example Datasets](#id-section11)
+-   [10. Connect `R` to `JAGS` on Windows](#id-section10)
+-   [11. Example Datasets](#id-section11)
 
 <div id='id-section1'/>
 
@@ -57,12 +57,12 @@ devtools::install_github("zhenkewu/baker")
 
 Note:
 
-  - run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package
+-   run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package
     is reported as missing.
-  - Windows User: use
+-   Windows User: use
     `devtools::install_github("zhenkewu/baker",INSTALL_opts=c("--no-multiarch"))`
-    instead if you see an error message `ERROR: loading failed for
-    'i386'` (Thanks Chrissy\!).
+    instead if you see an error message
+    `ERROR: loading failed for 'i386'` (Thanks Chrissy!).
 
 <div id='id-section2'/>
 
@@ -102,7 +102,7 @@ You will get a dynamic figure. A snapshot is below:
 
 ## Analytic Goal
 
-  - To study disease etiology from case-control data from multiple
+-   To study disease etiology from case-control data from multiple
     sources that have measurement errors. If you are interested in
     estimating the population etiology pie (fraction), and the
     probability of each cause for individual case, try `baker`.
@@ -111,9 +111,9 @@ You will get a dynamic figure. A snapshot is below:
 
 ## Comparison to Other Existing Solutions
 
-  - Acknowledges various levels of measurement errors and combines
+-   Acknowledges various levels of measurement errors and combines
     multiple sources of data for optimal disease diagnosis.
-  - Main function: `nplcm()` that fits the model with or without
+-   Main function: `nplcm()` that fits the model with or without
     covariates.
 
 <div id='id-section6'/>
@@ -141,7 +141,7 @@ You will get a dynamic figure. A snapshot is below:
 
 ## Platform
 
-  - The `baker` package is compatible with OSX, Linux and Windows
+-   The `baker` package is compatible with OSX, Linux and Windows
     systems, each requiring a slightly different setup as described
     below. If you need to speed up the installation and analysis, please
     contact the maintainer or chat by clicking the `gitter` button at
@@ -162,8 +162,6 @@ You will get a dynamic figure. A snapshot is below:
 5.  Run `R` command `library(rjags)` in R console; If the installations
     are successful, you’ll see some notes like this:
 
-<!-- end list -->
-
 ``` r
 >library(rjags)
 Loading required package: coda
@@ -171,12 +169,10 @@ Linked to JAGS 4.x.0
 Loaded modules: basemod,bugs
 ```
 
-  - Run `R` command `library(baker)`. If the package `ks` cannot be
+-   Run `R` command `library(baker)`. If the package `ks` cannot be
     loaded due to failure of loading package `rgl`, first install X11 by
     going [here](https://www.xquartz.org/releases/XQuartz-2.7.11.html),
     followed by
-
-<!-- end list -->
 
 ``` r
 install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1504.tar.gz",repo=NULL,type="source")
@@ -189,43 +185,43 @@ installation
 guide](https://sourceforge.net/projects/mcmc-jags/files/Manuals/4.x/)
 offers extra information.
 
-1.  Download source code for
-    [JAGS 4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/JAGS-4.2.0.tar.gz/download);
+1.  Download source code for [JAGS
+    4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/JAGS-4.2.0.tar.gz/download);
 
 2.  Suppose you’ve downloaded it in `~/local/jags/4.2.0`. Follow the
     bash commands below:
-    
+
     ``` bash
     # change to the directory with the newly downloaded source files:
     cd ~/local/jags/4.2.0
-    
+
     # create a new folder named "usr"
     mkdir usr
-    
+
     # decompress files:
     tar zxvf JAGS-4.2.0.tar.gz
-    
+
     # change to the directory with newly decompressed files:
     cd ~/local/jags/4.2.0/JAGS-4.2.0
-    
-    
-    
+
+
+
     # specify new JAGS home:
     export JAGS_HOME=$HOME/local/jags/4.2.0/usr
     export PATH=$JAGS_HOME/bin:$PATH
-    
+
     # link to BLAS and LAPACK:
     # Here I have used "/usr/lib64/atlas/" and "/usr/lib64/" on JHPCE that give me
     # access to libblas.so.3 and liblapack.so.3. Please modify to paths on your system.
     LDFLAGS="-L/usr/lib64/atlas/ -L/usr/lib64/" ./configure --prefix=$JAGS_HOME --libdir=$JAGS_HOME/lib64 
-    
+
     # if you have 8 cores:
     make -j8
     make install
-    
+
     # prepare to install R package, rjags:
     export PKG_CONFIG_PATH=$HOME/local/jags/4.2.0/usr/lib64/pkgconfig 
-    
+
     module load R
     R> install.packages("rjags")
     # or if the above fails, try:
@@ -275,37 +271,28 @@ date
 
 #### Windows
 
-  - JAGS 4.2.0
-
-<!-- end list -->
+-   JAGS 4.2.0
 
 1.  Install `R`; Download from [here](https://cran.r-project.org/)
-2.  Install
-    [JAGS 4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/);
+2.  Install [JAGS
+    4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/);
     Add the path to JAGS 4.2.0 into the environmental variable
     (essential for R to find the jags program). See
     [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10)
     for setting environmental variables;
 
-<!-- end list -->
+-   alternatives are `brew install -v jags` for OSX,
+    `sudo apt-get install jags` for Ubuntu/Debian
 
-  - alternatives are `brew install -v jags` for OSX, `sudo apt-get
-    install jags` for Ubuntu/Debian
-
-<!-- end list -->
-
-3.  Fire up `R`, run `R` command `install.packages("rjags")`
-4.  Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/)
+1.  Fire up `R`, run `R` command `install.packages("rjags")`
+2.  Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/)
     (for building and installing R pacakges from source); Add the path
     to `Rtools` (e.g. `C:\Rtools\`) into your environmental variables so
     that R knows where to find it.
 
 <!-- - [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
-
 <!--     1. Install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) -->
-
 <!--     2. Install the WinBUGS 1.4.x [immortality key](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
-
 <div id='id-section11'/>
 
 #### Datasets
@@ -326,11 +313,11 @@ We provide two datasets for exploratory use with the `baker` package.
 2.  `baker_posterior_samples_example`: a folder which contains the
     output of an NPLCM fitted to real data. We are not able to provide
     the real data due to privacy restrictions. Instead, we provide:
-    
-      - 1.  the posterior samples, which can be found in
+
+    -   1.  the posterior samples, which can be found in
             `CODAchain1.txt` and `CODAindex.txt`.
-    
-      - 2.  the covariates used in fitting the model (`ENRLDATE` and
+
+    -   1.  the covariates used in fitting the model (`ENRLDATE` and
             `AGE`), which can be found in `data_nplcm.txt`. Note that
             this folder can be found here [to be added]()
 

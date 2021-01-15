@@ -8,27 +8,26 @@
 compute_marg_PR_nested_reg(ThetaBS, PsiBS, pEti_mat, subwt_mat, case, template)
 }
 \arguments{
-\item{ThetaBS}{True positive rates for JBrS measures (rows) among K subclasses (columns)}
+\item{ThetaBS}{True positive rates for \code{JBrS} measures (rows) among \code{K} subclasses (columns)}
 
 \item{PsiBS}{False positive rates; dimension same as above}
 
-\item{pEti_mat}{a matrix of etiology pies for N subjects (rows) and Jcause causes (columns)
+\item{pEti_mat}{a matrix of etiology pies for \code{N} subjects (rows) and \code{Jcause} causes (columns)
 rows sum to ones.}
 
-\item{subwt_mat}{a matrix of subclass weights for cases and controls. N by K. Rows sum
+\item{subwt_mat}{a matrix of subclass weights for cases and controls. \code{N} by \code{K}. Rows sum
 to ones.}
 
-\item{case}{a N-vector of 1s (cases) and 0s (controls)}
+\item{case}{a N-vector of \code{1}s (cases) and \code{0}s (controls)}
 
-\item{template}{a binary matrix with Jcause+1 rows (Jcause classes of cases and 1 class of controls)
-and JBrS columns for the Bronze-standard measurement (say, pick one type/slice).
+\item{template}{a binary matrix with \code{Jcause+1} rows (\code{Jcause} classes of cases and \code{1} class of controls)
+and \code{JBrS} columns for the Bronze-standard measurement (say, pick one type/slice).
 The ones in each row indicate the measurements that will show up more frequently in cases given the cause.}
 }
 \value{
-a matrix of values between 0 and 1 (need not to have row sums of ones); of dimension (number of subjects, dimension of the bronze-standard
-measurement slice).
+a matrix of values between \code{0} and \code{1} (need not to have row sums of ones);
+of dimension (number of subjects, dimension of the bronze-standard measurement slice).
 }
 \description{
-compute positive rates for nested model with subclass mixing weights that are the same across
-\code{Jcause} classes for each person (people may have different weights.)
+The array version of this function (\link{compute_marg_PR_nested_reg_array}) is used in \link{plot_etiology_regression}
 }

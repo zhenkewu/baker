@@ -306,6 +306,7 @@ clean_combine_subsites <-
 #' Make measurement slice
 #' 
 #' Wrap the information about a particular type of measurement, e.g., NPPCR.
+#' NB: add example! copy some from the vignette file.
 #'
 #'@param patho A vector of pathogen names
 #'@param specimen Specimen name
@@ -333,7 +334,6 @@ clean_combine_subsites <-
 #'
 #'@seealso [make_template()]
 #'@export
-
 make_meas_object <-
   function(patho,specimen,test,quality,cause_list,sep_char="_") {
     nm_spec_test <- paste0(specimen,test)
@@ -343,6 +343,8 @@ make_meas_object <-
   }
 
 #' Read measurement slices
+#' 
+#' NB: add example, small data
 #' 
 #' @param object Outputs from [make_meas_object()] 
 #' @param data Raw data with column names 
@@ -368,6 +370,8 @@ read_meas_object <- function(object,data) {
 
 
 #' assign taxonomy information to cause list
+#' 
+#' NB: need example; change dir_taxo to an actual matrix or data frame.
 #' 
 #' @param cause_list See `cause_list` in `model_options$likelihood` (see 
 #' parameter settings in [nplcm()])

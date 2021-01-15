@@ -36,5 +36,5 @@ An array of: a matrix of values between 0 and 1 (need not to have row sums of on
 measurement slice).
 }
 \description{
-This is an array-version of \link{compute_marg_PR_nested_reg}
+This is an array-version of \link{compute_marg_PR_nested_reg}. This is used in \link{plot_etiology_regression}
 }
