@@ -24,7 +24,6 @@ that of the actual data set, i.e. the same number of cases and controls.
 \seealso{
 Other visualization functions: 
 \code{\link{plot_BrS_panel}()},
-\code{\link{plot_PERCH_regression}()},
 \code{\link{plot_SS_panel}()},
 \code{\link{plot_check_common_pattern}()},
 \code{\link{plot_etiology_regression}()},

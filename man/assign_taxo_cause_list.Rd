@@ -18,5 +18,5 @@ A vector of factors of taxonomy information (currently for "B","F","V").
 The names of the vector are pathogen names.
 }
 \description{
-assign taxonomy information to cause list
+NB: need example; change dir_taxo to an actual matrix or data frame.
 }

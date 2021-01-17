@@ -17,7 +17,7 @@ A list with two elements: \code{meas}-data frame with measurements;
 \code{position}-see \code{\link[=lookup_quality]{lookup_quality()}}
 }
 \description{
-Read measurement slices
+NB: add example, small data
 }
 \seealso{
 Other raw data importing functions: 
