@@ -37,6 +37,7 @@ which measurements are informative of a particular category of latent status.
 }
 \description{
 Wrap the information about a particular type of measurement, e.g., NPPCR.
+NB: add example! copy some from the vignette file.
 }
 \seealso{
 \code{\link[=make_template]{make_template()}}
