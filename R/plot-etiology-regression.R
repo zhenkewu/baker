@@ -910,10 +910,6 @@ plot_etiology_strat_nested <- function(DIR_NPLCM,strata_weights = NULL,
 plot_case_study <- function(
   DIR_NPLCM, stratum_bool=stratum_bool, bugs.dat=NULL, slice=1, RES_NPLCM=NULL, do_plot=TRUE, do_rug=FALSE, return_metric=TRUE){
   # only for testing; remove after testing:
-  # DIR_NPLCM <- result_folder
-  # stratum_bool <- DISCRETE_BOOL
-  # discrete_X_names <- c("AGE","ALL_VS") # must be the discrete variables used in Eti_formula.
-  # <------------------------------- end of testing.
   old_par <- graphics::par(graphics::par("mfrow", "mar"))
   on.exit(graphics::par(old_par))
   if (!is_jags_folder(DIR_NPLCM)){
@@ -979,17 +975,17 @@ plot_case_study <- function(
   X <- data_nplcm$X
   Y <- data_nplcm$Y
   # some date transformations:
-  X$date_plot  <- as.Date(X$ENRLDATE)
+  X$date_plot  <- as.Date(X$ENRLDATE, origin="1900-01-01")
   X$date_month_centered <- as.Date(cut(X$date_plot,breaks="2 months"))+30
   X$date_month <- as.Date(cut(X$date_plot,breaks="2 months"))
   
-  dd <-  as.Date(X$ENRLDATE)
+  dd <-  as.Date(X$ENRLDATE, origin="1900-01-01")
   min_d <- min(dd)
-  min_d_std <- unique(X$std_date[which(as.Date(X$ENRLDATE)==min_d)])
+  min_d_std <- unique(X$std_date[which(as.Date(X$ENRLDATE, origin="1900-01-01")==min_d)])
   min_plot_d <- min_d+days_in_month(month(min_d))-day(min_d)+1
   
   max_d <- max(dd)
-  max_d_std <- unique(X$std_date[which(as.Date(X$ENRLDATE)==max_d)])
+  max_d_std <- unique(X$std_date[which(as.Date(X$ENRLDATE, origin="1900-01-01")==max_d)])
   max_plot_d <- max_d-day(max_d)+1
   plot_d <- seq.Date(min_plot_d,max_plot_d,by = "quarter")
   
@@ -1175,18 +1171,18 @@ plot_case_study <- function(
       format_seq <- rep("%b-%d",length(plot_d))
       format_seq[cumsum(c(1,rle_res$lengths[-length(rle_res$lengths)]))] <- "%Y:%b-%d"
       
-      axis(1, plot_d_std,
-           format(c(plot_d), 
-                  format_seq),
+      axis(1, round(plot_d_std,2),
+           # format(c(plot_d), 
+           #        format_seq),
            cex.axis = 0.8,las=2)
       
       axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2),las=2)
       
-      rug(X$std_date[c(plotid_FPR_case)],side=1,line=-0.2,cex=1)
-      
-      if (j==1){
-        mtext(text = "case   -->",side=2,at=line2user(-0.2,1),cex=0.8,las=1)
-      }
+      # rug(X$std_date[c(plotid_FPR_case)],side=1,line=-0.2,cex=1)
+      # 
+      # if (j==1){
+      #   mtext(text = "case   -->",side=2,at=line2user(-0.2,1),cex=0.8,las=1)
+      # }
       
       polygon(c(curr_date_Eti, rev(curr_date_Eti)),
               c(Eti_q[1,j,], rev(Eti_q[2,j,])),
