@@ -1139,7 +1139,7 @@ plot_case_study <- function(
       # Figure 2 for Etiology Regression:
       #
       par(mar=c(2,5,0,1))
-      plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1),xlab="standardized date",
+      plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1), xlab="Time",
            ylab=c("","etiologic fraction")[(j==1)+1],bty="n",xaxt="n",yaxt="n",las=2)
       ## ONLY FOR SIMULATIONS <---------------------- FIX!
       
@@ -1157,7 +1157,9 @@ plot_case_study <- function(
       }
       
       if (j==1){mtext("2)",side=2,at=0.85,line=3, cex=2,las=1)}
-      
+      if(j==4){
+        mtext(side=1, line=2, "Time", font=1.5,cex=1.2)
+      }
       
       color2 <- grDevices::rgb(190, 190, 190, alpha=200, maxColorValue=255)
       color1 <- grDevices::rgb(216,191,216, alpha=200, maxColorValue=255)
@@ -1171,13 +1173,9 @@ plot_case_study <- function(
       format_seq <- rep("%b-%d",length(plot_d))
       format_seq[cumsum(c(1,rle_res$lengths[-length(rle_res$lengths)]))] <- "%Y:%b-%d"
       
-      axis(1, round(plot_d_std,2),
-           # format(c(plot_d), 
-           #        format_seq),
-           cex.axis = 0.8,las=2)
+      axis(1, round(plot_d_std,2), cex.axis = 0.8,las=2, tick = FALSE, labels = FALSE)
       
       axis(2,at = seq(0,1,by=0.2),labels=seq(0,1,by=0.2),las=2)
-      
       # rug(X$std_date[c(plotid_FPR_case)],side=1,line=-0.2,cex=1)
       # 
       # if (j==1){
