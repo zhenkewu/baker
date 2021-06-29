@@ -543,38 +543,92 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights=NULL,truth=NULL){
   # marginalized posterior etiology quantiles using user-defined weights
   Eti_overall_q_usr_weight    <- apply(Eti_overall_usr_weight,1,quantile,c(0.025,0.975))
   
+  # # plot posterior distribution for etiology probability
+  # par(mfcol=c(1+n_unique_Eti_level,Jcause),mar=c(3,10,1,0))
+  # for (j in 1:Jcause){
+  #   # if (j==1) {par(mar=c(3,0,2,0))}
+  #   # if (j>1)  {par(mar=c(3,0,1,0))}
+  #   for (site in 1:n_unique_Eti_level){
+  #     hist(Eti_prob_scale[,site,j],xlim=c(0,1),breaks="Scott",freq=FALSE,main="",xlab="")
+  #     if (!is.null(truth$allEti)){
+  #       abline(v = truth$allEti[[site]][[j]], col="blue", lwd=3, lty=2) # mark the truth.
+  #       q_interval <- quantile(Eti_prob_scale[,site,j],c(0.025,0.975))
+  #       is_included <- truth$allEti[[site]][[j]] < q_interval[2] && truth$allEti[[site]][[j]] > q_interval[1]
+  #       abline(v = q_interval,col=c("gray","red")[2-is_included],lwd=2,lty=1)
+  #     }
+  #     mtext(text = paste0('level',levels(as.factor(data_nplcm$X$SITE))[site],": ",
+  #                         Jcause[j]),3,-1,cex=2,adj = 0.9)
+  #     if (j==1){
+  #       mtext(paste0(round(user_weight[site],4)),2,5,cex=2,col="blue",las=1)
+  #       if (site==ceiling(n_unique_Eti_level/2)) {mtext("User-specified weight towards overall pie:", 2,12, cex=3)}
+  #     }
+  #   }
+  #   hist(Eti_overall_usr_weight[j,],xlim=c(0,1),breaks="Scott",freq=FALSE,main="",col="blue",
+  #        xlab="Etiology")
+  #   if (!is.null(truth$allEti)){
+  #     truth_overall <- c(matrix(user_weight,nrow=1)%*%do.call(rbind,truth$allEti))
+  #     abline(v=truth_overall[site],col="orange",lty=1,lwd=2) # mark the truth.
+  #     q_interval_Eti_overall <- quantile(Eti_overall_usr_weight[j,],c(0.025,0.975))
+  #     is_included_Eti_overall <- truth_overall < q_interval_Eti_overall[2] && 
+  #       truth_overall > q_interval_Eti_overall[1]
+  #     abline(v = q_interval_Eti_overall,col=c("gray","red")[2-is_included_Eti_overall],lwd=2,lty=1)
+  #     
+  #   }
+  #   mtext(text = paste0("Overall: ",model_options$likelihood$cause_list[j]),3,adj=0.9,cex=2,col="blue")
+  # }
+  
+  
+  likelihood <- model_options$likelihood
   # plot posterior distribution for etiology probability
   par(mfcol=c(1+n_unique_Eti_level,Jcause),mar=c(3,10,1,0))
   for (j in 1:Jcause){
     # if (j==1) {par(mar=c(3,0,2,0))}
     # if (j>1)  {par(mar=c(3,0,1,0))}
     for (site in 1:n_unique_Eti_level){
-      hist(Eti_prob_scale[,site,j],xlim=c(0,1),breaks="Scott",freq=FALSE,main="",xlab="")
+      hist(Eti_prob_scale[,site,j],xlim=c(0,1),breaks="Scott",freq=FALSE,main="",xlab="",
+           ylim=c(0,20))
       if (!is.null(truth$allEti)){
         abline(v = truth$allEti[[site]][[j]], col="blue", lwd=3, lty=2) # mark the truth.
         q_interval <- quantile(Eti_prob_scale[,site,j],c(0.025,0.975))
         is_included <- truth$allEti[[site]][[j]] < q_interval[2] && truth$allEti[[site]][[j]] > q_interval[1]
         abline(v = q_interval,col=c("gray","red")[2-is_included],lwd=2,lty=1)
       }
-      mtext(text = paste0('level',levels(as.factor(data_nplcm$X$SITE))[site],": ",
-                          Jcause[j]),3,-1,cex=2,adj = 0.9)
+      
+      if (site==1){mtext(text = likelihood$cause_list[j],3,-1.2,cex=2,adj = 0.9)}
       if (j==1){
-        mtext(paste0(round(user_weight[site],4)),2,5,cex=2,col="blue",las=1)
-        if (site==ceiling(n_unique_Eti_level/2)) {mtext("User-specified weight towards overall pie:", 2,12, cex=3)}
+        Lines <- list(bquote(paste("level ",.(levels(as.factor(data_nplcm$X$SITE))[site]))),
+                      bquote(paste("",.(round(user_weight[site],4)))))
+        mtext(do.call(expression, Lines),side=2,line=c(5.5,3.75),cex=1.5,col="blue")
+        
+        #mtext(paste0(round(user_weight[site],4)),2,5,cex=2,col="blue",las=1)
+        #if (site==ceiling(n_unique_Eti_level/2)) {mtext("User-specified weight towards overall pie:", 2,12, cex=3)}
       }
     }
-    hist(Eti_overall_usr_weight[j,],xlim=c(0,1),breaks="Scott",freq=FALSE,main="",col="blue",
-         xlab="Etiology")
+    hist(Eti_overall_usr_weight[j,],xlim=c(0,1),breaks="Scott",freq=FALSE,main="",#col="blue",
+         xlab="Etiology",ylim=c(0,20))
+    if (j==1){
+      if (!is.null(strata_weights) && strata_weights=="empirical"){
+        #mtext("overall pie: empirical weights", 2,5, cex=1)
+        
+        Lines <- list(bquote(paste("overall pie (", pi[l],"*)")),
+                      "empirical weights")
+        mtext(do.call(expression, Lines),side=2,line=c(5.5,3.5),cex=1.5)
+        
+        #mtext(side=2, line=c(5,4), expression(paste("overall pie:",pi[l]," \n empirical weights"))) 
+      } else{
+        mtext("overall pie: ", 2,5, cex=1)
+      }
+    }
     if (!is.null(truth$allEti)){
       truth_overall <- c(matrix(user_weight,nrow=1)%*%do.call(rbind,truth$allEti))
-      abline(v=truth_overall[site],col="orange",lty=1,lwd=2) # mark the truth.
+      abline(v=truth_overall[j],col="blue",lty=1,lwd=2) # mark the truth.
       q_interval_Eti_overall <- quantile(Eti_overall_usr_weight[j,],c(0.025,0.975))
-      is_included_Eti_overall <- truth_overall < q_interval_Eti_overall[2] && 
-        truth_overall > q_interval_Eti_overall[1]
+      is_included_Eti_overall <- truth_overall[j] < q_interval_Eti_overall[2] &&
+        truth_overall[j] > q_interval_Eti_overall[1]
       abline(v = q_interval_Eti_overall,col=c("gray","red")[2-is_included_Eti_overall],lwd=2,lty=1)
       
     }
-    mtext(text = paste0("Overall: ",model_options$likelihood$cause_list[j]),3,adj=0.9,cex=2,col="blue")
+    #mtext(text = model_options$likelihood$cause_list[j],3,adj=0.9,cex=2,col="blue")
   }
 }
 
