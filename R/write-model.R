@@ -3263,7 +3263,8 @@ add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags <- function(s, Mobs,c
       "       
       ## control BrS measurements; no subclass:
       for (j in 1:",JBrS_nm[s],"){
-      ",MBS_nm[s],"[i,j] ~ dbern(",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j])
+      ",mu_bs_nm[s],"[i,j] <- ",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j]
+      ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
       }
       "
     )
@@ -3271,7 +3272,8 @@ add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags <- function(s, Mobs,c
     plug <- paste0(
       "
       ## control BrS measurements; no subclass (only one column):
-      ",MBS_nm[s],"[i] ~ dbern(",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1])
+      ",mu_bs_nm[s],"[i] <- ",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
+      ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
       "
     )
   }
@@ -3286,6 +3288,7 @@ add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags <- function(s, Mobs,c
         "       
         ## control BrS measurements; no subclass:
         for (j in 1:",JBrS_nm[s],"){
+        ",mu_bs_nm[s],"[i,j] <- ",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],j]
         ",MBS_nm[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
         ## posterior predictive distribution
         ",MBS_nm.new[s],"[i,j] ~ dbern(",mu_bs_nm[s],"[i,j])
@@ -3296,6 +3299,7 @@ add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags <- function(s, Mobs,c
       plug <- paste0(
         "
         ## control BrS measurements; no subclass (only one column):
+        ",mu_bs_nm[s],"[i] <- ",psiBS_nm[s],"[",FPR_stratum_id_nm[s],"[i],1]
         ",MBS_nm[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
         ## posterior predictive distribution:
         ",MBS_nm.new[s],"[i] ~ dbern(",mu_bs_nm[s],"[i])
