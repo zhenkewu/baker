@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
-Title: Bayesian Analysis Kit for Etiology Research
-Version: 0.9.7.9
-Date: 2021-08-04
+Title: An R Package for Nested Partially Latent Class Models
+Version: 0.9.8
+Date: 2022-01-02
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@gmail.com",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),
@@ -29,6 +29,7 @@ Imports:
     ks(>= 1.9),
     robCompositions(>= 2.0.3),
     ggplot2(>= 1.0),
+    ggpubr(>= 0.4.0),
     gridExtra(>= 2.0),
     reshape2(>= 1.4),
     mgcv(>= 1.8-6),

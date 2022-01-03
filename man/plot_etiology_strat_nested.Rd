@@ -6,9 +6,10 @@
 \usage{
 plot_etiology_strat_nested(
   DIR_NPLCM,
-  strata_weights = NULL,
+  strata_weights = "empirical",
   truth = NULL,
-  RES_NPLCM = NULL
+  RES_NPLCM = NULL,
+  show_levels = 0
 )
 }
 \arguments{
@@ -16,13 +17,17 @@ plot_etiology_strat_nested(
 
 \item{strata_weights}{a vector of weights that sum to one; for each pathogen
 the weights specify how the j-th etiology fraction should be combined across all
-levels of the discrete predictors in the data; can also specify as \code{"empirical"}
-to use empirical weights (fractions of subjects in each stratum)}
+levels of the discrete predictors in the data; default is \code{"empirical"}
+to use empirical weights (observed fractions of subjects across strata).}
 
 \item{truth}{a list of true values, e.g.,
-\verb{truth=list(allEti = a list of etiology fractions)}}
+\verb{truth=list(allEti = <a list of etiology fractions, each of identical length - the # of strata; >)};
+if available, will be shown in thicker red solid vertical lines.}
 
-\item{RES_NPLCM}{pre-read res_nplcm; default to NULL.}
+\item{RES_NPLCM}{pre-read \code{res_nplcm}; default to \code{NULL}.}
+
+\item{show_levels}{a vector of integers less than or equal to the total number of
+levels of strata; default to \code{0} for overall.}
 }
 \description{
 This function visualizes the etiology estimates against one discrete covariate, e.g.,
