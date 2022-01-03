@@ -2,11 +2,11 @@
 % Please edit documentation in R/plot-etiology-regression.R
 \name{plot_etiology_strat}
 \alias{plot_etiology_strat}
-\title{visualize the etiology estimates for each discrete level}
+\title{visualize the etiology estimates for each discrete levels}
 \usage{
 plot_etiology_strat(
   DIR_NPLCM,
-  strata_weights = NULL,
+  strata_weights = "empirical",
   truth = NULL,
   RES_NPLCM = NULL,
   show_levels = 0
@@ -17,11 +17,12 @@ plot_etiology_strat(
 
 \item{strata_weights}{a vector of weights that sum to one; for each pathogen
 the weights specify how the j-th etiology fraction should be combined across all
-levels of the discrete predictors in the data; default to \code{empirical} to use
-empirical weights (observed fractions of subjects across strata).}
+levels of the discrete predictors in the data; default is \code{"empirical"}
+to use empirical weights (observed fractions of subjects across strata).}
 
 \item{truth}{a list of true values, e.g.,
-\verb{truth=list(allEti = <a list of etiology fractions, each of identical length - the # of strata; >)}}
+\verb{truth=list(allEti = <a list of etiology fractions, each of identical length - the # of strata; >)};
+if available, will be shown in thicker red solid vertical lines.}
 
 \item{RES_NPLCM}{pre-read \code{res_nplcm}; default to \code{NULL}.}
 
@@ -30,7 +31,7 @@ levels of strata; default to \code{0} for overall.}
 }
 \description{
 This function visualizes the etiology estimates against one discrete covariate, e.g.,
-age groups. Needs \code{pEti} to be obtained in the \code{nplcm()} call.
+age groups.
 }
 \seealso{
 Other visualization functions: 
@@ -40,7 +41,6 @@ Other visualization functions:
 \code{\link{plot_check_pairwise_SLORD}()},
 \code{\link{plot_etiology_regression}()},
 \code{\link{plot_etiology_side_by_side}()},
-\code{\link{plot_etiology_strat_nested}()},
 \code{\link{plot_group_etiology}()},
 \code{\link{plot_panels}()},
 \code{\link{plot_pie_panel}()},
