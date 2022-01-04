@@ -2,7 +2,7 @@
 % Please edit documentation in R/nplcm.R
 \name{assign_model}
 \alias{assign_model}
-\title{Interpret the model specified by user}
+\title{Interpret the specified model structure}
 \usage{
 assign_model(model_options, data_nplcm, silent = TRUE)
 }

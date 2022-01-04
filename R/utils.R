@@ -2607,4 +2607,114 @@ get_postsd <- function(DIR_NPLCM){
 
 
 
+## moved from plot_etiology_side_by_side.R
+
+
+
+
+#' get etiology samples by names (no regression)
+#' 
+#' @inheritParams order_post_eti
+#' 
+#' @return A list:
+#' \itemize{
+#'    `pEti_mat`: a matrix of posterior samples (iteration by cause); overall etiology
+#'    `latent_nm`: a vector of character strings representing the names of the causes
+#' }
+#' 
+#' @export
+
+get_pEti_samp <- function(res_nplcm,model_options){
+  cause_list <- model_options$likelihood$cause_list
+  # total no. of causes:
+  Jcause     <- length(cause_list)
+  # extract and process some data and posterior samples:
+  SubVarName <- rep(NA,Jcause)
+  for (j in 1:Jcause){
+    SubVarName[j] = paste("pEti","[",j,"]",sep="")
+  }
+  # get etiology fraction MCMC samples:
+  pEti_mat   <- as.data.frame(res_nplcm[,SubVarName,drop=FALSE])
+  latent_nm  <- model_options$likelihood$cause_list
+  make_list(pEti_mat,latent_nm)
+}
+
+
+
+#' Match latent causes that might have the same combo but
+#' different specifications
+#' 
+#'  @details In our cause_list, "A+B" represents the same cause
+#'   as "B+A". It is used for plotting side-by-side posterior sample comparisons
+#' 
+#' @param pattern a vector of latent cause names, e.g., from a particular fit
+#' @param vec a vector of latent cause names, e.g., usually a union of cause names
+#' from several model fits. Usually, it is also the display order that one wants to 
+#' show.
+#' 
+#' @return A vector of length `length(vec)`; `NA` means no pattern matches
+#' vec; 1 at position 10 means the first element of `pattern` matches the 
+#' 10th element of `vec`.
+#' 
+#' 
+#' @examples 
+#' 
+#' pattern <- c("X+Y","A+Z","C")
+#' vec     <- c(LETTERS[1:26],"Y+Z","Y+X","Z+A")
+#' match_cause(pattern,vec)
+#' 
+#' @export
+match_cause <- function(pattern, vec){
+  has_plus_sign <- grepl("\\+",pattern)
+  vec_split <- strsplit(vec,"\\+")
+  res <- rep(NA,length(vec))
+  for (p in seq_along(pattern)){
+    tmp <- pattern[p]
+    if (has_plus_sign[p]) {
+      tmp <- strsplit(pattern[p],"\\+")[[1]]
+    }
+    find_match <- lapply(vec_split,setequal,y=tmp)
+    res[which(find_match==TRUE)] <- p
+  }
+  res
+}
+
+
+
+#' get unique causes, regardless of the actual order in combo
+#' 
+#' @param cause_vec a vector of characters with potential combo repetitions
+#' written in scrambled orders separated by "+"
+#' 
+#' @examples 
+#' x <- c("A","B","A","CC+DD","DD+CC","E+F+G","B")
+#' unique_cause(x)
+#' 
+#' @return a vector of characters with unique meanings for latent causes
+#' 
+#' @export
+
+unique_cause <- function(cause_vec){
+  cause_split <- strsplit(cause_vec,"\\+")
+  num <- lapply(cause_split,length)
+  res <- list()
+  res[[1]] <- cause_split[[1]] 
+  
+  if (length(cause_vec)==1){return(cause_vec)}
+  
+  j <- 1
+  for (i in 2:length(cause_vec)){
+    got_new <- TRUE
+    for (iter in 1:j){
+      if (setequal(cause_split[[i]],res[[iter]])){got_new <- FALSE}
+    }
+    if (got_new){j <- j+1;res[[j]]<-cause_split[[i]]}
+  }
+  unlist(lapply(res,paste,collapse="+"))
+}
+
+
+
+
+
 

@@ -102,6 +102,7 @@ rather than storing them through \code{JAGS}.
 }
 \value{
 A \code{JAGS} output result, fitted by function \code{\link[R2jags:jags]{R2jags::jags2()}} from \code{R2jags}.
+It is an object of class \code{nplcm} and \code{bugs}.
 Current implemented models follow the hierarchy below:
 \itemize{
 \item no regression:  Fitted by at low level by \link{nplcm_fit_NoReg}

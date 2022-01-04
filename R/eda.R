@@ -13,14 +13,16 @@
 #' @family exploratory data analysis functions
 #' @export
 show_individual <- function(data_nplcm,ID) {
+  
+  data_nplcm$X <- as.data.frame(data_nplcm$X) # convert to data.frame if only one covariate.
   index <- which(data_nplcm$X$patid == ID)
   Mobs  <- list()
   for (i in seq_along(data_nplcm$Mobs)) {
     Mobs[[i]] <- lapply(data_nplcm$Mobs[[i]],function(df)
       df[index,])
   }
-  list(Mobs = Mobs,
-       X    = data_nplcm$X[index,])
+  return(list(Mobs = Mobs,
+       X    = data_nplcm$X[index,]))
 }
 
 #' Visualize pairwise log odds ratios (LOR) for data that are available in
@@ -269,7 +271,7 @@ summarize_BrS <- function(BrS_dat,Y){
   MBS_q1 <- rbind(tmp.case[,c("lower")],tmp.ctrl[,c("lower")]); rownames(MBS_q1) = c("case","control")
   MBS_q2 <- rbind(tmp.case[,c("upper")],tmp.ctrl[,c("upper")]); rownames(MBS_q2) = c("case","control")
 
-  make_list(Nd, MBS_mean, MBS_q1, MBS_q2, MBS_nm)
+  make_list(Nd, Nu, MBS_mean, MBS_q1, MBS_q2, MBS_nm)
 }
 
 

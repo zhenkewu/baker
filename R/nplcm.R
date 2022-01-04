@@ -100,6 +100,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #' \item `use_jags` `TRUE` for using `JAGS` (NB: redundant?)
 #' }
 #' @return A `JAGS` output result, fitted by function [R2jags::jags2()] from `R2jags`. 
+#' It is an object of class `nplcm` and `bugs`.
 #' Current implemented models follow the hierarchy below:
 #' \itemize{
 #' \item no regression:  Fitted by at low level by [nplcm_fit_NoReg]
@@ -136,7 +137,9 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 nplcm <- function(data_nplcm,model_options,mcmc_options){
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
-  if (length(rle(Y)[["values"]])>2 | Y[1]!=1) {stop("==[baker] 'data_nplcm$Y' must have cases on top of controls. Use 'baker::subset_data_nplcm_by_index()' to shuffle the rows. Then retry.==\n")}
+  if (length(rle(Y)[["values"]])>2 | Y[1]!=1) {
+  stop("==[baker] 'data_nplcm$Y' must have cases on top of controls. 
+  Use 'baker::subset_data_nplcm_by_index()' to shuffle the rows. Then retry.==\n")}
   X    <- data_nplcm$X
   
   parsed_model <- assign_model(model_options,data_nplcm)
@@ -151,30 +154,38 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   
   do_nested <- parsed_model$nested
   
+  fitted_type <- NA
   if(!do_reg){
     res <- nplcm_fit_NoReg(data_nplcm,model_options,mcmc_options)
+    fitted_type <- "no_reg"
   } 
   if (do_reg & !any(do_nested)){
     if (do_discrete){
+    fitted_type   <- "reg_nonest_strat"
       # when every regression is a regression upon discrete variables;
       # when it is not a regression, the fitting function treats it as a single stratum
       # when specifying the model in the .bug file (in the assign_model function, ~1 
       # is considered not a regression, i.e., covariate independent)
       res <- nplcm_fit_Reg_discrete_predictor_NoNest(data_nplcm,model_options,mcmc_options)
     } else{
+      fitted_type <- "reg_nonest"
       # a mix of discrete and continuous regressions:
       res <- nplcm_fit_Reg_NoNest(data_nplcm,model_options,mcmc_options)
     }
   }
   if (do_reg & any(do_nested)){
+    if (do_discrete) {fitted_type <- "reg_nest_strat"}else{fitted_type <- "reg_nest"}
     res <- nplcm_fit_Reg_Nest(data_nplcm,model_options,mcmc_options)
   }
-  res
+  res$DIR_NPLCM <- mcmc_options$result.folder  # <--- add info about where results are stored.
+  res$fitted_type <- fitted_type
+  class(res) <- c("nplcm","bugs")
+  return(res)
 }
 
 
 
-#' Interpret the model specified by user
+#' Interpret the specified model structure
 #'
 #' `assign_model` translates options specified by a user (e.g., in 
 #' `model_options`) into information that can be understood by `baker`.
@@ -916,7 +927,7 @@ nplcm_fit_NoReg<-
 #' @details In `JAGS` 3.4.0, if an initial value contradicts the probabilistic specification, e.g.
 #' `MSS_1[i,j] ~ dbern(mu_ss_1[i,j])`, where `MSS_1[i,j]=1` but `mu_ss_1[i,j]=0`,
 #' then `JAGS` cannot understand it. In PERCH application, this is most likely used when the specificity of the 
-#' silver-standard data is 1. Note: this is not a problem in `WinBUGS`.
+#' silver-standard data is `1`. Note: this is not a problem in `WinBUGS`.
 #' 
 #' @param MSS_list A list of silver-standard measurement data, possibly with more than one 
 #' slices; see `data_nplcm` argument in [nplcm()]

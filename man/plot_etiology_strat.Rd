@@ -9,7 +9,8 @@ plot_etiology_strat(
   strata_weights = "empirical",
   truth = NULL,
   RES_NPLCM = NULL,
-  show_levels = 0
+  show_levels = 0,
+  is_plot = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ if available, will be shown in thicker red solid vertical lines.}
 
 \item{show_levels}{a vector of integers less than or equal to the total number of
 levels of strata; default to \code{0} for overall.}
+
+\item{is_plot}{default to TRUE, plotting the figures; if \code{FALSE} only returning summaries}
 }
 \description{
 This function visualizes the etiology estimates against one discrete covariate, e.g.,
@@ -40,11 +43,8 @@ Other visualization functions:
 \code{\link{plot_check_common_pattern}()},
 \code{\link{plot_check_pairwise_SLORD}()},
 \code{\link{plot_etiology_regression}()},
-\code{\link{plot_etiology_side_by_side}()},
-\code{\link{plot_group_etiology}()},
 \code{\link{plot_panels}()},
 \code{\link{plot_pie_panel}()},
-\code{\link{plot_selected_etiology}()},
 \code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

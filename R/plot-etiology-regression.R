@@ -83,14 +83,13 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   data_nplcm    <- dget(file.path(DIR_NPLCM,"data_nplcm.txt"))  
   model_options <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
-  if(model_options$likelihood$k_subclass>1){
-    is_nested <- TRUE
-  } else{
-    is_nested <- FALSE
-  }
+  parsed_model <- assign_model(model_options,data_nplcm)
+  is_nested    <- parsed_model$nested
   
   if (do_plot){
-    cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model for BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
+    cat("==[baker] plotting etiology regression with 
+        >>",c("nested", "non-nested")[2-is_nested],"<< model for 
+        BrS Measure slice = ",slice,": ",names(data_nplcm$Mobs$MBS)[[slice]]," .==\n")
   }
   new_env <- new.env()
   source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
@@ -458,10 +457,19 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
                                    function(s) (Eti_overall_truth[s]<= Eti_overall_q[2,s]) && 
                                      (Eti_overall_truth[s]>= Eti_overall_q[1,s]))
       Eti_overall_bias  <- Eti_overall_mean -  Eti_overall_truth
+      
+      res <- t(do.call("rbind",make_list(Eti_overall_mean,Eti_overall_sd,Eti_overall_q)))
+      rownames(res) <- model_options$likelihood$cause_list
+      colnames(res) <- c("post.mean","post.sd","CrI_025","CrI_0975")
       return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,
-                       Eti_overall_cover, Eti_overall_bias,Eti_overall_truth,Eti_ISE))
+                       Eti_overall_cover, Eti_overall_bias,Eti_overall_truth,Eti_ISE,res,parsed_model))
     } else{
-      return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd))
+      
+      res <- t(do.call("rbind",make_list(Eti_overall_mean,Eti_overall_sd,Eti_overall_q)))
+      rownames(res) <- model_options$likelihood$cause_list
+      colnames(res) <- c("post.mean","post.sd","CrI_025","CrI_0975")
+      
+      return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,res,parsed_model))
     }
   }
   
@@ -609,13 +617,14 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @param RES_NPLCM pre-read `res_nplcm`; default to `NULL`.
 #' @param show_levels a vector of integers less than or equal to the total number of 
 #' levels of strata; default to `0` for overall.
+#' @param is_plot default to TRUE, plotting the figures; if `FALSE` only returning summaries
 #' @import graphics
 #' @importFrom ggpubr ggarrange
 #' @family visualization functions
 #' @export
 plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
-                                       truth=NULL,
-                                       RES_NPLCM=NULL,show_levels=0){
+                                truth=NULL,
+                                RES_NPLCM=NULL,show_levels=0,is_plot=TRUE){
   # ### test
   # DIR_NPLCM = result_folder_discrete
   # strata_weights = "empirical"
@@ -623,15 +632,6 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
   # RES_NPLCM = NULL
   # show_levels=0
   # ### test....
-  
-  # if (!is.null(strata_weights) & strata_weights == "equal"){
-  #   strata_weights=NULL
-  # }
-  # 
-  # if (!is.null(strata_weights) & strata_weights == "equal"){
-  #   strata_weights=NULL
-  # }
-  # 
   
   old_par <- graphics::par(graphics::par("mfrow", "mar"))
   on.exit(graphics::par(old_par))
@@ -647,7 +647,7 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
   mcmc_options <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
   parsed_model <- assign_model(model_options,data_nplcm)
   is_nested    <- parsed_model$nested
-  cat("==[baker] plotting etiology regression with >>",c("nested", "non-nested")[2-is_nested],"<< model==\n")
+  if(is_plot){cat("==[baker] plotting stratified etiologies with >>",c("nested", "non-nested")[2-is_nested],"<< model==\n")}
   new_env <- new.env()
   source(file.path(DIR_NPLCM,"jagsdata.txt"),local=new_env)
   bugs.dat <- as.list(new_env)
@@ -673,6 +673,9 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
   # generate design matrix for etiology regression:
   Eti_formula <- likelihood$Eti_formula
   
+  is_discrete_Eti     <- is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], Eti_formula)
+  if (!is_discrete_Eti){stop("==[baker] fitted model does not have all discrete covariates for etiology.==")}
+  
   if (!is_nested){
     unique_Eti_level <- dget(file.path(DIR_NPLCM,"unique_Eti_level.txt"))  
     n_unique_Eti_level <- bugs.dat$n_unique_Eti_level  # number of stratums
@@ -695,8 +698,6 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
   }
   
   if(is_nested){
-    is_discrete_Eti     <- is_discrete(data.frame(X,Y)[Y==1,,drop=FALSE], Eti_formula)
-    
     # design matrix for etiology regression (because this function is 
     # for all discrete predictors, the usual model.matrix is sufficient):
     Z_Eti       <- stats::model.matrix(Eti_formula,data.frame(X,Y)[Y==1,,drop=FALSE])
@@ -773,6 +774,7 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
   # start plotting:
   #
   plot_list <- list()
+  res_list <- list()
   for(site in 1:n_unique_Eti_level){
     
     # shape probabilities array into dataset for ggplot 
@@ -786,33 +788,34 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
                          aggregate(prob~cause,data=plotData,FUN=quantile,c(0.025,0.975))[,-1])
     
     colnames(summaryData)[c(2,3,4)] <- c("eti_mean","ci_025","ci_975")
+    res_list[[site]] <- summaryData
+    names(res_list)[site] <- paste0("Posterior distributions of CSCFs for stratum: ", site,"; weight: ",round(user_weight[site],4))
     
-    
-    ## plot histograms of the posterior probabilities for each stratum 
-    plot_list[[site]] <- ggplot(plotData, aes(x=prob)) +
-      geom_histogram(fill="#ffc04d",binwidth=0.05) + 
-      geom_vline(data=summaryData, 
-                 mapping = aes(xintercept=eti_mean), colour="#005b96") +
-      geom_vline(data=summaryData, 
-                 mapping = aes(xintercept=ci_025), colour="green", linetype="dashed") +
-      geom_vline(data=summaryData, 
-                 mapping = aes(xintercept=ci_975), colour="green", linetype="dashed") +
-      facet_wrap(~cause,ncol=nrow(summaryData)) +
-      labs(title=paste0("Posterior distributions of CSCFs for stratum: ", site,"; weight: ",round(user_weight[site],4)),
-           subtitle = "Posterior mean displayed as solid line \n 95% CrIs displayed as dashed lines",
-           x = "CSCF", y ="Frequency")
-    
-    
-    if (!is.null(truth$allEti)){# add truth if available.
-      summaryData$truth <- truth$allEti[[site]]
-      plot_list[[site]] <-plot_list[[site]] +
+    if (is_plot){ 
+      ## plot histograms of the posterior probabilities for each stratum 
+      plot_list[[site]] <- ggplot(plotData, aes(x=prob)) +
+        geom_histogram(fill="#ffc04d",binwidth=0.01) + 
         geom_vline(data=summaryData, 
-                   mapping = aes(xintercept=truth), colour="red", linetype="solid",lwd=1)
+                   mapping = aes(xintercept=eti_mean), colour="#005b96") +
+        geom_vline(data=summaryData, 
+                   mapping = aes(xintercept=ci_025), colour="green", linetype="dashed") +
+        geom_vline(data=summaryData, 
+                   mapping = aes(xintercept=ci_975), colour="green", linetype="dashed") +
+        facet_wrap(~cause,ncol=nrow(summaryData)) +
+        labs(title=paste0("Posterior distributions of CSCFs for stratum: ", site,"; weight: ",round(user_weight[site],4)),
+             subtitle = "Posterior mean displayed as solid line \n 95% CrIs displayed as dashed lines",
+             x = "CSCF", y ="Frequency")
+      
+      
+      if (!is.null(truth$allEti)){# add truth if available.
+        summaryData$truth <- truth$allEti[[site]]
+        plot_list[[site]] <-plot_list[[site]] +
+          geom_vline(data=summaryData, 
+                     mapping = aes(xintercept=truth), colour="red", linetype="solid",lwd=1)
+      }
     }
     
-    
   }
-  
   # shape the overall marginal etiology probabilities as a data frame 
   etiData = data.frame(t(Eti_overall_usr_weight))
   names(etiData) = cause_list
@@ -824,49 +827,58 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
   
   colnames(summaryData)[c(2,3,4)] <- c("eti_mean","ci_025","ci_975")
   
-  ## plot histograms of the posterior probabilities for overall etiology 
-  plot_list[[n_unique_Eti_level+1]] <- ggplot(plotData, aes(x=prob)) +
-    geom_histogram(fill="#ffc04d",binwidth=0.05) + 
-    geom_vline(data=summaryData, 
-               mapping = aes(xintercept=eti_mean), colour="#005b96") +
-    geom_vline(data=summaryData, 
-               mapping = aes(xintercept=ci_025), colour="green", linetype="dashed") +
-    geom_vline(data=summaryData, 
-               mapping = aes(xintercept=ci_975), colour="green", linetype="dashed") +
-    facet_wrap(~cause,ncol=nrow(summaryData)) +
-    labs(title=paste0("Posterior distributions of CSCFs (across all levels using weights: (",paste(user_weight,collapse=","),"))"),
-         subtitle = "Posterior mean displayed as solid line \n 95% CrIs displayed as dashed lines",
-         x = "CSCF", y ="Frequency")
+  res_list[[n_unique_Eti_level+1]] <- summaryData
+  names(res_list)[n_unique_Eti_level+1] <-paste0("Posterior distributions of CSCFs (across all levels using weights: (",paste(user_weight,collapse=","),"))")
   
-  
-  if (!is.null(truth$allEti)){ # add truth if available.
-    summaryData$truth <- c(matrix(user_weight,nrow=1)%*%do.call(rbind,truth$allEti))
-    plot_list[[n_unique_Eti_level+1]] <- plot_list[[n_unique_Eti_level+1]] +
+  if (is_plot){
+    ## plot histograms of the posterior probabilities for overall etiology 
+    plot_list[[n_unique_Eti_level+1]] <- ggplot(plotData, aes(x=prob)) +
+      geom_histogram(fill="#ffc04d",binwidth=0.01) + 
       geom_vline(data=summaryData, 
-                 mapping = aes(xintercept=truth), colour="red",  linetype="solid",lwd=1)
-  }
-  
-  print("==[baker] actual meanings of levels (by row):")
-  print(unique_Eti_level)
-  
-  if (sum(show_levels>n_unique_Eti_level)>0){stop("==[baker] check 'unique_Eti_level'; `show_levels`
+                 mapping = aes(xintercept=eti_mean), colour="#005b96") +
+      geom_vline(data=summaryData, 
+                 mapping = aes(xintercept=ci_025), colour="green", linetype="dashed") +
+      geom_vline(data=summaryData, 
+                 mapping = aes(xintercept=ci_975), colour="green", linetype="dashed") +
+      facet_wrap(~cause,ncol=nrow(summaryData)) +
+      labs(title=paste0("Posterior distributions of CSCFs (across all levels using weights: (",paste(user_weight,collapse=","),"))"),
+           subtitle = "Posterior mean displayed as solid line \n 95% CrIs displayed as dashed lines",
+           x = "CSCF", y ="Frequency")
+    
+    
+    if (!is.null(truth$allEti)){ # add truth if available.
+      summaryData$truth <- c(matrix(user_weight,nrow=1)%*%do.call(rbind,truth$allEti))
+      plot_list[[n_unique_Eti_level+1]] <- plot_list[[n_unique_Eti_level+1]] +
+        geom_vline(data=summaryData, 
+                   mapping = aes(xintercept=truth), colour="red",  linetype="solid",lwd=1)
+    }
+    
+
+    
+    if (sum(show_levels>n_unique_Eti_level)>0){stop("==[baker] check 'unique_Eti_level'; `show_levels`
                                               cannot be larger than its number of rows.")}
-  if (length(show_levels)==1){
-    if (show_levels ==0){plot_list_show <-  plot_list[n_unique_Eti_level+1]
-    } else{
-      plot_list_show <-  plot_list[show_levels]
-    }
-  }else{
-    if (0 %in% show_levels){
-      plot_list_show <- c(plot_list[show_levels[show_levels!=0]],plot_list[n_unique_Eti_level+1])
+    if (length(show_levels)==1){
+      if (show_levels ==0){plot_list_show <-  plot_list[n_unique_Eti_level+1]
+      } else{
+        plot_list_show <-  plot_list[show_levels]
+      }
     }else{
-      plot_list_show <- plot_list[show_levels]
+      if (0 %in% show_levels){
+        plot_list_show <- c(plot_list[show_levels[show_levels!=0]],plot_list[n_unique_Eti_level+1])
+      }else{
+        plot_list_show <- plot_list[show_levels]
+      }
     }
+    
+    print("==[baker] actual meanings of levels (by row):")
+    print(unique_Eti_level)
+    return(ggpubr::ggarrange(plotlist=plot_list_show,nrow = length(plot_list_show)))
   }
+
+  return(make_list(res_list,parsed_model,unique_Eti_level))
   
   # ggpubr::ggarrange(plotlist=plot_list_show,nrow = length(plot_list_show))
   
-  return(ggpubr::ggarrange(plotlist=plot_list_show,nrow = length(plot_list_show)))
   
   # # plot posterior distribution for etiology probability
   # par(mfcol=c(1+n_unique_Eti_level,Jcause),mar=c(3,8,1,0))

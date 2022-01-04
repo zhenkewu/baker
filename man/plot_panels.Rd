@@ -13,7 +13,8 @@ plot_panels(
   SS_upperlimit = 1,
   eti_upperlimit = 1,
   silent = TRUE,
-  ref_eti0 = NULL
+  ref_eti0 = NULL,
+  is_plot = TRUE
 )
 }
 \arguments{
@@ -43,9 +44,13 @@ posterior subpanel (the rightmost panel). The default value is .4}
 \item{silent}{Default is TRUE to not print any warning messages; FALSE otherwise.}
 
 \item{ref_eti0}{reference quantiles and means; a list: pEti_ref_q, pEti_ref_mean_ord}
+
+\item{is_plot}{default to \code{TRUE} for plotting only; set to \code{FALSE} if to get summary.}
 }
 \value{
-A figure with two or three columns
+A figure with two or three columns (if \code{is_plot=TRUE}); otherwise, it
+provide posterior summaries of Etiology information to
+used by \code{\link[=summary.nplcm.noreg]{summary.nplcm.noreg()}}
 }
 \description{
 \code{plot_panels()} visualizes the model outputs for communicating how the data inform final
@@ -62,11 +67,8 @@ Other visualization functions:
 \code{\link{plot_check_common_pattern}()},
 \code{\link{plot_check_pairwise_SLORD}()},
 \code{\link{plot_etiology_regression}()},
-\code{\link{plot_etiology_side_by_side}()},
 \code{\link{plot_etiology_strat}()},
-\code{\link{plot_group_etiology}()},
 \code{\link{plot_pie_panel}()},
-\code{\link{plot_selected_etiology}()},
 \code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

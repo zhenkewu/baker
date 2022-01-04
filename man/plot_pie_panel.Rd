@@ -13,7 +13,8 @@ plot_pie_panel(
   exact = TRUE,
   top_pie = 1,
   label_size = 1,
-  ref_eti = NULL
+  ref_eti = NULL,
+  is_plot = TRUE
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ on the horizontal axis for the pie panel.}
 \item{label_size}{the size of latent status labels on the right margin}
 
 \item{ref_eti}{reference quantiles and means; a list: pEti_ref_q, pEti_ref_mean_ord}
+
+\item{is_plot}{default to \code{TRUE} for plotting only; set to \code{FALSE} if to get summary.}
 }
 \description{
 Plot etiology (pie) panel
@@ -49,11 +52,8 @@ Other visualization functions:
 \code{\link{plot_check_common_pattern}()},
 \code{\link{plot_check_pairwise_SLORD}()},
 \code{\link{plot_etiology_regression}()},
-\code{\link{plot_etiology_side_by_side}()},
 \code{\link{plot_etiology_strat}()},
-\code{\link{plot_group_etiology}()},
 \code{\link{plot_panels}()},
-\code{\link{plot_selected_etiology}()},
 \code{\link{plot_subwt_regression}()}
 }
 \concept{visualization functions}

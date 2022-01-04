@@ -29,6 +29,6 @@ Initialize individual latent status (for \code{JAGS})
 In \code{JAGS} 3.4.0, if an initial value contradicts the probabilistic specification, e.g.
 \code{MSS_1[i,j] ~ dbern(mu_ss_1[i,j])}, where \code{MSS_1[i,j]=1} but \code{mu_ss_1[i,j]=0},
 then \code{JAGS} cannot understand it. In PERCH application, this is most likely used when the specificity of the
-silver-standard data is 1. Note: this is not a problem in \code{WinBUGS}.
+silver-standard data is \code{1}. Note: this is not a problem in \code{WinBUGS}.
 }
 \concept{initialization functions}

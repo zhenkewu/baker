@@ -1,3 +1,6 @@
+##### these are internal functions.
+
+
 #' Write .bug model file for model without regression
 #' 
 #' `write_model_NoReg` automatically generates model file according to
@@ -13,9 +16,6 @@
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
-#' 
-#' @export
-#' 
 write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,
                               use_measurements,ppd=NULL,use_jags=FALSE){
   ## 1) accommodate singletons, combos, and NoA;
@@ -48,9 +48,6 @@ write_model_NoReg <- function(k_subclass,Mobs,prior,cause_list,
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
-#' 
-#' @export
-#' 
 write_model_Reg_NoNest <- function(Mobs,prior,cause_list,Eti_formula,FPR_formula,
                                    use_measurements,ppd=NULL,use_jags=FALSE){
   chunk1 <- insert_bugfile_chunk_reg_nonest_meas(Mobs,
@@ -80,9 +77,6 @@ write_model_Reg_NoNest <- function(Mobs,prior,cause_list,Eti_formula,FPR_formula
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
-#' 
-#' @export
-#' 
 write_model_Reg_discrete_predictor_NoNest <- function(Mobs,prior,cause_list,
                                    use_measurements,ppd=NULL,use_jags=FALSE){
   chunk1 <- insert_bugfile_chunk_reg_discrete_predictor_nonest_meas(Mobs,
@@ -113,7 +107,6 @@ write_model_Reg_discrete_predictor_NoNest <- function(Mobs,prior,cause_list,
 #' for inserting .bug file chunk for distribution of latent status (etiology).
 #' 
 #' @family model generation functions
-#' @export
 
 write_model_Reg_Nest <- function(Mobs,prior,cause_list,Eti_formula,FPR_formula,
                                    use_measurements,ppd=NULL,use_jags=FALSE){
@@ -153,8 +146,6 @@ write_model_Reg_Nest <- function(Mobs,prior,cause_list,Eti_formula,FPR_formula,
 #' 
 #' @seealso It is used in [write_model_NoReg] for constructing a .bug file along with
 #' specification of latent status distribution ([insert_bugfile_chunk_noreg_etiology])
-#' 
-#' @export
 insert_bugfile_chunk_noreg_meas <-
   function(k_subclass,Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
@@ -263,8 +254,6 @@ insert_bugfile_chunk_noreg_meas <-
 #' 
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status
-#' 
-#' @export
 insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
   ppd_seg <- ""
   if (!is.null(ppd) && ppd){
@@ -304,7 +293,6 @@ insert_bugfile_chunk_noreg_etiology <- function(ppd = NULL){
 #' @seealso It is used in [write_model_Reg_NoNest] for constructing a .bug file along with
 #' specification of latent status regression ([insert_bugfile_chunk_reg_etiology])
 #' 
-#' @export
 insert_bugfile_chunk_reg_nonest_meas <-
   function(Mobs,prior,cause_list,FPR_formula,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
@@ -422,7 +410,6 @@ insert_bugfile_chunk_reg_nonest_meas <-
 #' This is usually called along with specification of latent status regression 
 #' ([insert_bugfile_chunk_reg_etiology]).
 #' 
-#' @export
 insert_bugfile_chunk_reg_nest_meas <-
   function(Mobs,prior,cause_list,FPR_formula,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
@@ -518,7 +505,6 @@ insert_bugfile_chunk_reg_nest_meas <-
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status
 #' 
-#' @export
 insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
   constant_Eti <- is_intercept_only(Eti_formula)
   
@@ -682,7 +668,7 @@ insert_bugfile_chunk_reg_etiology <- function(Eti_formula, Jcause, ppd = NULL){
 #' @seealso It is used in [write_model_Reg_NoNest] for constructing a .bug file along with
 #' specification of latent status regression ([insert_bugfile_chunk_reg_etiology])
 #' 
-#' @export
+#'     
 insert_bugfile_chunk_reg_discrete_predictor_nonest_meas <-
   function(Mobs,prior,cause_list,use_measurements = "BrS",ppd=NULL,use_jags=FALSE) {
     if (!("BrS" %in% use_measurements) && !("SS" %in% use_measurements)){
@@ -791,7 +777,7 @@ insert_bugfile_chunk_reg_discrete_predictor_nonest_meas <-
 #' @return a long character string to be inserted into .bug model file 
 #' as distribution specification for latent status
 #' 
-#' @export
+#'     
 insert_bugfile_chunk_reg_discrete_predictor_etiology <- function(Jcause, ppd = NULL){
   ppd_seg <- ""
   if (!is.null(ppd) && ppd){ppd_seg <- 
@@ -837,7 +823,7 @@ insert_bugfile_chunk_reg_discrete_predictor_etiology <- function(Jcause, ppd = N
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -938,7 +924,7 @@ add_meas_BrS_case_NoNest_Slice <- function(s,Mobs,cause_list,ppd=NULL) {
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -1018,7 +1004,7 @@ add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
-#' @export
+#'     
 
 add_meas_BrS_param_NoNest_Slice <- function(s,Mobs,cause_list) {
   # mapping template (by `make_template` function):
@@ -1074,7 +1060,7 @@ add_meas_BrS_param_NoNest_Slice <- function(s,Mobs,cause_list) {
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 #' 
 add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
   # mapping template (by `make_template` function):
@@ -1171,7 +1157,7 @@ add_meas_BrS_case_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL){
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 #' 
 add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
@@ -1237,7 +1223,7 @@ add_meas_BrS_ctrl_Nest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
-#' @export
+#'     
 #' 
 add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separated case and controls subclass weights.
   # mapping template (by `make_template` function):
@@ -1335,7 +1321,7 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separa
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 
 add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL,reg=NULL){
   # mapping template (by `make_template` function):
@@ -1439,7 +1425,7 @@ add_meas_BrS_subclass_Nest_Slice <- function(s,Mobs,cause_list,ppd=NULL,reg=NULL
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 
 add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
   # mapping template (by `make_template` function):
@@ -1538,7 +1524,7 @@ add_meas_SS_case <- function(nslice,Mobs,prior,cause_list) {
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 
 add_meas_SS_param <- function(nslice,Mobs,prior,cause_list) {
   # mapping template (by `make_template` function):
@@ -1710,7 +1696,7 @@ add_meas_SS_param <- function(nslice,Mobs,prior,cause_list) {
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -1886,7 +1872,7 @@ add_meas_BrS_case_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=NULL
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 
 add_meas_BrS_param_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list) {
   # mapping template (by `make_template` function):
@@ -1980,7 +1966,7 @@ add_meas_BrS_param_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list) {
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 #' 
 add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
   # mapping template (by `make_template` function):
@@ -2078,7 +2064,7 @@ add_meas_BrS_case_Nest_Slice_jags <- function(s,Mobs,cause_list,ppd=NULL){
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_param_Nest_Slice_jags <- function(s,Mobs,cause_list) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -2177,7 +2163,7 @@ add_meas_BrS_param_Nest_Slice_jags <- function(s,Mobs,cause_list) {
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -2351,7 +2337,7 @@ add_meas_BrS_case_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
-#' @export
+#'     
 add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_formula) {
   
   constant_FPR <- is_intercept_only(FPR_formula[[s]])
@@ -2659,7 +2645,7 @@ add_meas_BrS_param_NoNest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_ctrl_NoNest_reg_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -2747,7 +2733,7 @@ add_meas_BrS_ctrl_NoNest_reg_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL)
 #' this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
-#' @export
+#'     
 add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_formula=NULL) {
   #constant_FPR   <- is_intercept_only(FPR_formula[[s]]) # formula for the subclass weights.
   # mapping template (by `make_template` function):
@@ -2968,7 +2954,7 @@ add_meas_BrS_param_Nest_reg_Slice_jags <- function(s,Mobs,prior,cause_list,FPR_f
 #' plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,prior,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)
@@ -3141,7 +3127,7 @@ add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,pr
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
-#' @export
+#'     
 add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,prior,cause_list) {
   
   # mapping template (by `make_template` function):
@@ -3241,7 +3227,7 @@ add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags <- function(s,Mobs,p
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions
-#' @export
+#'     
 add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags <- function(s, Mobs,cause_list,ppd=NULL) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)

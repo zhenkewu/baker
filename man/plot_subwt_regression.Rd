@@ -44,11 +44,8 @@ Other visualization functions:
 \code{\link{plot_check_common_pattern}()},
 \code{\link{plot_check_pairwise_SLORD}()},
 \code{\link{plot_etiology_regression}()},
-\code{\link{plot_etiology_side_by_side}()},
 \code{\link{plot_etiology_strat}()},
-\code{\link{plot_group_etiology}()},
 \code{\link{plot_panels}()},
-\code{\link{plot_pie_panel}()},
-\code{\link{plot_selected_etiology}()}
+\code{\link{plot_pie_panel}()}
 }
 \concept{visualization functions}

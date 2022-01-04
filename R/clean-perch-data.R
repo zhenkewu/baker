@@ -355,7 +355,6 @@ make_meas_object <-
 #' 
 #' @family raw data importing functions
 #' @export
-#' 
 read_meas_object <- function(object,data) {
   position <- lookup_quality(object$quality)
   exist <- sapply(object$name_in_data,grep,colnames(data))
