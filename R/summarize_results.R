@@ -41,7 +41,6 @@ summary.nplcm <- function(object,...){
   class(res) <- paste0("summary.nplcm.",object$fitted_type)
   
   return(res)
-  
 }
 
 
@@ -242,5 +241,31 @@ print.summary.nplcm.reg_nest <- function(x,...) {
 }
 
 
-
+#
+# generic `plot` function
+#
+#' `plot.nplcm` plot the results from [nplcm()].
+#'
+#' @param object Output from [nplcm()].
+#' @param ... Arguments passed to summary and printing methods.
+#' @return a figure
+#'
+#' @family visualization functions
+#' @export
+plot.nplcm <- function(object, ...){
+  
+  if (object$fitted_type=="no_reg"){
+    res <- plot_panels(object$DIR_NPLCM,...)
+  }
+  
+  if (object$fitted_type=="reg_nonest_strat" | object$fitted_type=="reg_nest_strat"){
+    res <- plot_etiology_strat(object$DIR_NPLCM,...)
+  }
+  
+  if (object$fitted_type=="reg_nonest" | object$fitted_type=="reg_nest"){
+    res <- plot_etiology_regression(object$DIR_NPLCM,...)
+  }
+  # Return
+  return(invisible(object))
+}
 

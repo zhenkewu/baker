@@ -872,10 +872,10 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
     
     print("==[baker] actual meanings of levels (by row):")
     print(unique_Eti_level)
-    return(ggpubr::ggarrange(plotlist=plot_list_show,nrow = length(plot_list_show)))
+    print(ggpubr::ggarrange(plotlist=plot_list_show,nrow = length(plot_list_show)))
   }
 
-  return(make_list(res_list,parsed_model,unique_Eti_level))
+  if (!is_plot){return(make_list(res_list,parsed_model,unique_Eti_level))}
   
   # ggpubr::ggarrange(plotlist=plot_list_show,nrow = length(plot_list_show))
   
