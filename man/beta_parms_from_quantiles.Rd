@@ -40,6 +40,11 @@ in finding \code{a} and \code{b}.
 \code{beta_parms_from_quantiles} produces prior Beta parameters for
 the true positive rates (TPR)
 }
+\examples{
+
+beta_parms_from_quantiles(c(0.5,0.99))
+
+}
 \references{
 \url{http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html}
 }

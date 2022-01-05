@@ -17,3 +17,7 @@ None
 \description{
 Plot beta density
 }
+\examples{
+ 
+beta_plot(2,2)
+}

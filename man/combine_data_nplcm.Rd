@@ -14,10 +14,8 @@ combine multiple data_nplcm (useful when simulating data from regression models)
 }
 \examples{
 
-\dontrun{
-rm(list=ls())
-N=10000
-Y = rep(c(1,0),times=5000) # simulate two cases and two controls.
+N=100
+Y = rep(c(1,0),times=50) # simulate two cases and two controls.
 out_list <- vector("list",length=N)
 J = 3                          # number of causes
 cause_list = c(LETTERS[1:J])   # cause list
@@ -29,13 +27,13 @@ for (i in 1:N){
   #setup parameters for the present individual:
   set_parameter <- list(
     cause_list      = cause_list,
-    etiology        = c(0.5,0.2,0.3), # only meaningful for cases 
+    etiology        = c(0.5,0.2,0.3), # only meaningful for cases
     pathogen_BrS    = LETTERS[1:J],
     pathogen_SS     = LETTERS[1:2],
     meas_nm         = list(MBS = c("MBS1"),MSS=c("MSS1")),
-    Lambda          = lambda,         # for BrS   
+    Lambda          = lambda,         # for BrS
     Eta             = t(replicate(J,eta)),  # case subclass weight for BrS
-    PsiBS           = cbind(c(0.15,0.3,0.35),   
+    PsiBS           = cbind(c(0.15,0.3,0.35),
                             c(0.25,0.2,0.15)), # FPR
     PsiSS           = cbind(rep(0,J),rep(0,J)),
     ThetaBS         = cbind(c(0.95,0.9,0.85),    # TPR
@@ -43,7 +41,7 @@ for (i in 1:N){
     ThetaSS         = cbind(c(0.25,0.10),
                             c(0.25,0.10)),
     Nd      =     1,
-    Nu      =     1 
+    Nu      =     1
   )
   simu_out   <- simulate_nplcm(set_parameter)
   out <- simu_out$data_nplcm
@@ -52,20 +50,7 @@ for (i in 1:N){
 
 # extract cases and controls and combine all the data into one:
 data_nplcm_list <- lapply(1:N, function(s) subset_data_nplcm_by_index(out_list[[s]],2-Y[s]))
-data_nplcm_unordered      <- combine_data_nplcm(data_nplcm_list) 
-data_nplcm_unordered
-
-colMeans(data_nplcm_unordered$Mobs$MBS$MBS1[Y==1,])
-colMeans(data_nplcm_unordered$Mobs$MBS$MBS1[Y==0,])
-
-set_parameter$PsiBS\%*\%matrix(lambda,ncol=1)
-set_parameter$PsiBS\%*\%matrix(eta,ncol=1)*(1-set_parameter$etiology)+
-  set_parameter$ThetaBS\%*\%matrix(eta,ncol=1)*set_parameter$etiology
-
-# data_nplcm <- subset_data_nplcm_by_index(data_nplcm_unordered,
-#                    order(-data_nplcm_unordered$Y)) #put cases on top.
-
-}
+data_nplcm_unordered      <- combine_data_nplcm(data_nplcm_list)
 
 }
 \seealso{

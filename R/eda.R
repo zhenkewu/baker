@@ -6,9 +6,11 @@
 #' @return a list with the inquired patient's data
 #'
 #' @examples 
-#' \dontrun{
-#' show_individual(data_nplcm,"G01431")
-#' }
+#' data(data_nplcm_noreg)
+#' data_nplcm_noreg$X$patid <- paste("PAT",1:length(data_nplcm_noreg$Y0),sep="")
+#' data_nplcm_noreg$X <- as.data.frame(data_nplcm_noreg$X)
+#' subset_data_nplcm_by_index(data_nplcm_noreg,which(data_nplcm_noreg$X$patid%in%c("PAT12","PAT408")))
+#' data_nplcm_noreg$X <- NULL
 #' 
 #' @family exploratory data analysis functions
 #' @export
@@ -42,10 +44,12 @@ show_individual <- function(data_nplcm,ID) {
 #' @param logOR_rounding Rounding number of the log odds ratio. Default is 2.
 #' 
 #' @return Figure of LOR matrix and relevant s.e. and significance information.
+#' @examples 
+#' data(data_nplcm_noreg)
+#' plot_logORmat(data_nplcm_noreg,names(data_nplcm_noreg$Mobs$MBS[[1]]))
 #' 
 #' @family exploratory data analysis functions
 #' @export
-
 plot_logORmat = function(data_nplcm,
                          pathogen_display,
                          BrS_slice = 1,
@@ -196,6 +200,10 @@ plot_logORmat = function(data_nplcm,
 #' @param Y a vector of case control status: 1 for case; 0 for control.
 #' 
 #' @return a vector of number of positives
+#' @examples 
+#' 
+#' data(data_nplcm_noreg)
+#' summarize_BrS(data_nplcm_noreg$Mobs$MBS[[1]], data_nplcm_noreg$Y)
 #' 
 #' @examples 
 #' \dontrun{
@@ -237,13 +245,11 @@ summarize_SS <- function(SS_dat, Y){
 #' 
 #' @return a list of summaries for BrS data
 #' @examples 
-#' \dontrun{
-#' summarize_BrS(data_nplcm$Mobs$MBS[[1]], data_nplcm$Y)
-#' }
+#' data(data_nplcm_noreg)
+#' summarize_BrS(data_nplcm_noreg$Mobs$MBS[[1]], data_nplcm_noreg$Y)
 #' 
 #' @family exploratory data analysis functions
 #' @export
-
 summarize_BrS <- function(BrS_dat,Y){
   # get observed rates' summaries:
   Nd <- sum(Y==1)
@@ -294,6 +300,11 @@ summarize_BrS <- function(BrS_dat,Y){
 #' `pattern_names`; `exist_other` - if
 #' actual no. of patterns is larger than `n_pat`; `N`- No. of individuals
 #' with `Y = case_status`.
+#' 
+#' @examples 
+#' data(data_nplcm_noreg)
+#' get_top_pattern(data_nplcm_noreg$Mobs$MBS$MBS1,data_nplcm_noreg$Y,case_status=1,n_pat=5)
+#' 
 #' 
 #' @family exploratory data analysis functions
 #' @export
@@ -376,8 +387,6 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
 #' 
 #' @family exploratory data analysis functions
 #' 
-#' @export
-
 visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   ord_all <- order(data_nplcm$X$ENRLDATE)
   

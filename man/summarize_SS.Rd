@@ -20,6 +20,10 @@ a vector of number of positives
 silver-standard data summary
 }
 \examples{
+
+data(data_nplcm_noreg)
+summarize_BrS(data_nplcm_noreg$Mobs$MBS[[1]], data_nplcm_noreg$Y)
+
 \dontrun{
 summarize_SS(data_nplcm$Mobs$MSS[[1]], data_nplcm$Y)
 }

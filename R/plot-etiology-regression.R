@@ -1,3 +1,6 @@
+if(getRversion() >= "2.15.1") utils::globalVariables(c("eti_mean","ci_025","ci_975","prob"))
+
+
 #' visualize the etiology regression with a continuous covariate
 #' 
 #' This function visualizes the etiology regression against one continuous covariate, e.g., 
@@ -60,7 +63,7 @@
 #' \item The legends for the figure above: <https://bit.ly/2OU8F60>
 #' }
 #' @family visualization functions
-#' @export
+#'    
 plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=FALSE,
                                      truth=NULL,RES_NPLCM=NULL,do_plot=TRUE,do_rug=TRUE, 
                                      return_metric=TRUE,
@@ -492,7 +495,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
 #' @param RES_NPLCM pre-read res_nplcm; default to NULL.
 #' @return A figure of subclass regression curves 
 #' @family visualization functions
-#' @export
+#'    
 plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NULL,RES_NPLCM=NULL){
   old_par <- graphics::par(graphics::par("mfrow", "mar"))
   on.exit(graphics::par(old_par))
@@ -618,10 +621,12 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @param show_levels a vector of integers less than or equal to the total number of 
 #' levels of strata; default to `0` for overall.
 #' @param is_plot default to TRUE, plotting the figures; if `FALSE` only returning summaries
-#' @import graphics
+#' @import graphics ggplot2
 #' @importFrom ggpubr ggarrange
+#' @importFrom stats aggregate
+#' @importFrom reshape2 melt
 #' @family visualization functions
-#' @export
+#'    
 plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
                                 truth=NULL,
                                 RES_NPLCM=NULL,show_levels=0,is_plot=TRUE){
@@ -779,7 +784,7 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
     
     # shape probabilities array into dataset for ggplot 
     etiData = data.frame(Eti_prob_scale[,site,,drop=FALSE])
-    names(etiData) = cause_list
+    names(etiData) = model_options$likelihood$cause_list
     plotData = melt(etiData,id.vars = NULL)
     names(plotData) = c("cause", "prob")
     
@@ -818,7 +823,7 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
   }
   # shape the overall marginal etiology probabilities as a data frame 
   etiData = data.frame(t(Eti_overall_usr_weight))
-  names(etiData) = cause_list
+  names(etiData) = model_options$likelihood$cause_list
   plotData = melt(etiData,id.vars = NULL)
   names(plotData) = c("cause", "prob")
   

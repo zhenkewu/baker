@@ -22,3 +22,9 @@ A list with data, options and posterior samples.
 \description{
 Read data and other model information from a folder that stores model results.
 }
+\examples{
+
+\dontrun{
+nplcm_read_folder(nplcm_fit_noreg$DIR_NPLCM)
+}
+}

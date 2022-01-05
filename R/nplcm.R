@@ -132,9 +132,69 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #'        }
 #' }
 #' 
+#' @examples 
+#' 
+#' \dontrun{
+#' data(data_nplcm_noreg)
+#' model_options_no_reg <- list(
+#'   likelihood   = list(
+#'     cause_list = cause_list,
+#'     k_subclass = 2,
+#'     Eti_formula = ~-1, # no covariate for the etiology regression
+#'     FPR_formula = list(
+#'       MBS1 =   ~-1)    # no covariate for the subclass weight regression
+#'   ),
+#'   use_measurements = c("BrS"), # use bronze-standard data only for model estimation.
+#'   prior= list(
+#'     Eti_prior = overall_uniform(1,cause_list), # Dirichlet(1,...,1) prior for the etiology.
+#'     TPR_prior  = list(BrS = list(
+#'       info  = "informative", # informative prior for TPRs
+#'       input = "match_range", # specify the informative prior for TPRs by specifying a plausible range.
+#'       val = list(MBS1 = list(up =  list(rep(0.99,J.BrS)), # upper ranges: matched to 97.5% quantile of a Beta prior
+#'                              low = list(rep(0.55,J.BrS))))# lower ranges: matched to 2.5% quantile of a Beta prior
+#'     )
+#'     )
+#'   )
+#' )     
+#' 
+#' set.seed(1)
+#' # include stratification information in file name:
+#' thedir_dated    <- paste0(working_dir,Date,"_no_reg")
+#' 
+#' # create folders to store the model results 
+#' dir.create(thedir_dated, showWarnings = FALSE)
+#' result_folder_no_reg <- file.path(thedir_dated,paste("results",collapse="_"))
+#' thedir <- result_folder_no_reg
+#' dir.create(thedir, showWarnings = FALSE)
+#' 
+#' # options for MCMC chains:
+#' mcmc_options_no_reg <- list(
+#'   debugstatus = TRUE,
+#'   n.chains = 1,
+#'   n.itermcmc = as.integer(200), 
+#'   n.burnin = as.integer(100), 
+#'   n.thin = 1,
+#'   individual.pred = FALSE, 
+#'   ppd = TRUE,
+#'   result.folder = thedir,
+#'   bugsmodel.dir = thedir,
+#'   jags.dir = ""
+#' )
+#' 
+#' # place the nplcm data and cleaning options into the results folder
+#' dput(data_nplcm_noreg,file.path(thedir,"data_nplcm.txt")) 
+#' dput(clean_options, file.path(thedir,"data_clean_options.txt"))
+#' 
+#' rjags::load.module("glm")
+#' 
+#' nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
+#' 
+#' }
+#' 
 #' 
 #' @export
 nplcm <- function(data_nplcm,model_options,mcmc_options){
+  mcmc_options$use_jags <- TRUE  
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
   if (length(rle(Y)[["values"]])>2 | Y[1]!=1) {
@@ -223,8 +283,32 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
 #'        }
 #' }
 #' 
+#' @examples
+#' cause_list <- c(LETTERS[1:6]) 
+#' J.BrS <- 6
+#' model_options_no_reg <- list(
+#' likelihood   = list(
+#'   cause_list = cause_list,
+#'   k_subclass = 2,
+#'   Eti_formula = ~-1, # no covariate for the etiology regression
+#'   FPR_formula = list(
+#'     MBS1 =   ~-1)    # no covariate for the subclass weight regression
+#' ),
+#' use_measurements = c("BrS"), # use bronze-standard data only for model estimation.
+#' prior= list(
+#'   Eti_prior = overall_uniform(1,cause_list), # Dirichlet(1,...,1) prior for the etiology.
+#'   TPR_prior  = list(BrS = list(
+#'     info  = "informative", # informative prior for TPRs
+#'     input = "match_range", # specify the informative prior for TPRs by specifying a plausible range.
+#'     val = list(MBS1 = list(up =  list(rep(0.99,J.BrS)), # upper ranges: matched to 97.5% quantile of a Beta prior
+#'                            low = list(rep(0.55,J.BrS))))# lower ranges: matched to 2.5% quantile of a Beta prior
+#'   )
+#'   )
+#' )
+#' )     
+#' data("data_nplcm_noreg")
 #' 
-#' 
+#' assign_model(model_options_no_reg,data_nplcm_noreg)
 #' 
 #' @family specification checking functions
 #' @export
@@ -381,7 +465,7 @@ assign_model <- function(model_options,data_nplcm, silent=TRUE){
 #' 
 #' @family model fitting functions 
 #' 
-#' @export
+#'    
 nplcm_fit_NoReg<-
   function(data_nplcm,model_options,mcmc_options){
     # Record the settings of current analysis:
@@ -938,7 +1022,7 @@ nplcm_fit_NoReg<-
 #' @return a list of numbers, indicating categories of individual latent causes.
 #' 
 #' @family initialization functions
-#' @export
+#'    
 init_latent_jags_multipleSS <- function(MSS_list,cause_list,
                                         patho=unlist(lapply(MSS_list,colnames))){
   # <--- revising for multiple silver-standard data.
@@ -994,7 +1078,7 @@ init_latent_jags_multipleSS <- function(MSS_list,cause_list,
 #' 
 #' @family model fitting functions 
 #' 
-#' @export
+#'    
 nplcm_fit_Reg_discrete_predictor_NoNest <- 
   function(data_nplcm,model_options,mcmc_options){
     # Record the settings of current analysis:
@@ -1699,7 +1783,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
 #' 
 #' @family model fitting functions 
 #' 
-#' @export
+#'    
 nplcm_fit_Reg_NoNest <- 
   function(data_nplcm,model_options,mcmc_options){
     # Record the settings of current analysis:
@@ -1717,6 +1801,16 @@ nplcm_fit_Reg_NoNest <-
     likelihood       <- model_options$likelihood
     use_measurements <- model_options$use_measurements
     prior            <- model_options$prior
+    
+    
+    if(is.null(prior$Eti_hyper_pflex)){
+      prior$Eti_hyper_pflex = c(1,0.5)
+      # beta prior for selecting constant vs non-constant additive component
+    }
+    
+    if(is.null(prior$FPR_coef_prior)){
+      prior$FPR_coef_prior = c(2,2)
+    }
     
     #####################################################################
     # 1. prepare data (including hyper-parameters):
@@ -2384,7 +2478,7 @@ nplcm_fit_Reg_NoNest <-
 #' 
 #' @family model fitting functions 
 #' 
-#' @export
+#'    
 
 nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   # Record the settings of current analysis:
@@ -2402,6 +2496,28 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   likelihood       <- model_options$likelihood
   use_measurements <- model_options$use_measurements
   prior            <- model_options$prior
+  
+  
+  if(is.null(prior$half_nu_s2)){
+    prior$half_nu_s2 = c(1/2,100/2) # hyper-parameters 
+  }
+  
+  if(is.null(prior$Eti_hyper_pflex)){
+     prior$Eti_hyper_pflex = c(1,0.5)
+    # beta prior for selecting constant vs non-constant additive component
+  }
+  
+  if(is.null(prior$FPR_hyper_pflex)){
+    prior$FPR_hyper_pflex = c(0.5,1) # same as above, but for FPR regression in the controls.
+  }
+  
+  if(is.null(prior$case_FPR_hyper_pflex)){
+    prior$case_FPR_hyper_pflex = c(0.5,1) # same as above, but for FPR regression in the cases.
+  }
+  
+  if(is.null(prior$FPR_coef_prior)){
+    prior$FPR_coef_prior = c(2,2)
+  }
   
   for (s in seq_along(Mobs$MBS)){
     if (likelihood$k_subclass[s]>1 && ncol(Mobs$MBS[[s]])==1){
@@ -2671,7 +2787,7 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
         out_parameter <- c(out_parameter,paste(c("thetaBS","betaFPR"), s, sep="_"))
         out_parameter <- c(out_parameter,paste(c("taubeta"), s, sep="_")[unlist(has_basis_list)[s]])
       }else{
-        cat("==[baker] Running etiology regression with nested subclasses...==\n")
+        #cat("==[baker] Running etiology regression with nested subclasses...==\n")
         assign(paste("K", s, sep = "_"), likelihood$k_subclass[s])
         in_data       <- unique(c(in_data,paste0("K_",s))) # <---- No. of subclasses for this slice.
         out_parameter <- unique(c(out_parameter,

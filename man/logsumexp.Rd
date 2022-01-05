@@ -12,3 +12,8 @@ logsumexp(x)
 \description{
 log sum exp trick
 }
+\examples{
+
+logsumexp(c(-20,-30))
+
+}

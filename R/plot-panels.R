@@ -29,10 +29,10 @@
 #' @param is_plot default to `TRUE` for plotting only; set to `FALSE` if to get summary.
 #' @return A figure with two or three columns (if `is_plot=TRUE`); otherwise, it
 #' provide posterior summaries of Etiology information to 
-#' used by [summary.nplcm.noreg()]
+#' used by [print.summary.nplcm.no_reg()]
 #'
 #' @family visualization functions
-#' @export
+#'         
 plot_panels <- function(DIR_NPLCM,
                         slices = "all",
                         bg_color = list(BrS = "lavenderblush", 
@@ -219,10 +219,10 @@ order_post_eti <- function(res_nplcm,model_options){
 #' @return TRUE or FALSE
 #' @examples
 #' l = list(a = 5, b = 1:2)
-#' is_length_all_one(l) # FALSE
+#' baker:::is_length_all_one(l) # FALSE
 #' l = list(a = 5, b = 1)
-#' is_length_all_one(l) # TRUE
-#' @export
+#' baker:::is_length_all_one(l) # TRUE
+#'         
 is_length_all_one <- function(x){
   len_vec <-  unlist(lapply(x,length))
   all(len_vec==1)
@@ -973,7 +973,7 @@ get_marginal_rates_nested <- function(slice, res_nplcm, model_options,data_nplcm
 ### @return a list; of dimension (number of subjects, dimension of the bronze-standard
 ### measurement slice, the number of MCMC iterations retained).
 ### 
-### @export
+###         
 ### 
 ##get_marginal_rates_nested_reg <- function(slice, res_nplcm, model_options,data_nplcm){
 ##  JBrS_curr <- ncol(data_nplcm$Mobs$MBS[[slice]])

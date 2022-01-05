@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{jags2_baker}
 \alias{jags2_baker}
-\title{Run ‘JAGS’ from R}
+\title{Run \code{JAGS} from R}
 \usage{
 jags2_baker(
   data,

@@ -32,6 +32,11 @@ Then the estimate is divided by its standard error. We put the actual value when
 the Z-statistics has an absolute value greater than $2$; a plus (red) or minus (blue)
 if between $1$ and $2$; blank otherwise.
 }
+\examples{
+data(data_nplcm_noreg)
+plot_logORmat(data_nplcm_noreg,names(data_nplcm_noreg$Mobs$MBS[[1]]))
+
+}
 \seealso{
 Other exploratory data analysis functions: 
 \code{\link{get_top_pattern}()},

@@ -17,8 +17,6 @@ print.nplcm <- function(x, ...){
 #'
 #' @param object Output from [nplcm()].
 #' An object of class "nplcm"
-#' @param res_dir file path to folder where results are stored.
-#' @param type `NoReg`,`strat`, or `Reg`
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
@@ -91,7 +89,7 @@ print.summary.nplcm.no_reg <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' @export
+#' 
 #' @family nplcm results
 print.summary.nplcm.reg_nonest_strat <- function(x,...) {
   
@@ -135,7 +133,7 @@ print.summary.nplcm.reg_nonest_strat <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' @export
+#' 
 #' @family nplcm results
 print.summary.nplcm.reg_nest_strat <- function(x,...) {
   
@@ -176,7 +174,7 @@ print.summary.nplcm.reg_nest_strat <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' @export
+#' 
 #' @family nplcm results
 print.summary.nplcm.reg_nonest <- function(x,...) {
   
@@ -213,7 +211,7 @@ print.summary.nplcm.reg_nonest <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' @export
+#' 
 #' @family nplcm results
 print.summary.nplcm.reg_nest <- function(x,...) {
   
@@ -246,26 +244,26 @@ print.summary.nplcm.reg_nest <- function(x,...) {
 #
 #' `plot.nplcm` plot the results from [nplcm()].
 #'
-#' @param object Output from [nplcm()].
+#' @param x Output from [nplcm()].
 #' @param ... Arguments passed to summary and printing methods.
 #' @return a figure
 #'
 #' @family visualization functions
 #' @export
-plot.nplcm <- function(object, ...){
+plot.nplcm <- function(x, ...){
   
-  if (object$fitted_type=="no_reg"){
-    res <- plot_panels(object$DIR_NPLCM,...)
+  if (x$fitted_type=="no_reg"){
+    res <- plot_panels(x$DIR_NPLCM,...)
   }
   
-  if (object$fitted_type=="reg_nonest_strat" | object$fitted_type=="reg_nest_strat"){
-    res <- plot_etiology_strat(object$DIR_NPLCM,...)
+  if (x$fitted_type=="reg_nonest_strat" | x$fitted_type=="reg_nest_strat"){
+    res <- plot_etiology_strat(x$DIR_NPLCM,...)
   }
   
-  if (object$fitted_type=="reg_nonest" | object$fitted_type=="reg_nest"){
-    res <- plot_etiology_regression(object$DIR_NPLCM,...)
+  if (x$fitted_type=="reg_nonest" | x$fitted_type=="reg_nest"){
+    res <- plot_etiology_regression(x$DIR_NPLCM,...)
   }
   # Return
-  return(invisible(object))
+  return(invisible(x))
 }
 

@@ -19,3 +19,8 @@ A string for file name
 \description{
 Create new file name
 }
+\examples{
+
+make_filename(c("theta","alpha"),c(0.9,2),"csv")
+
+}

@@ -4,10 +4,10 @@
 \alias{plot.nplcm}
 \title{\code{plot.nplcm} plot the results from \code{\link[=nplcm]{nplcm()}}.}
 \usage{
-\method{plot}{nplcm}(object, ...)
+\method{plot}{nplcm}(x, ...)
 }
 \arguments{
-\item{object}{Output from \code{\link[=nplcm]{nplcm()}}.}
+\item{x}{Output from \code{\link[=nplcm]{nplcm()}}.}
 
 \item{...}{Arguments passed to summary and printing methods.}
 }

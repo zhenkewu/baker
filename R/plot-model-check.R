@@ -11,11 +11,70 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DI
 #' @param slice Default is 1, for the first slice of BrS data.
 #' @return A figure of posterior predicted log odds ratio compared with the observed 
 #' log odds ratio for the BrS data. The function generates this figure in your working directory automatically.
+#' 
+#' @examples 
+#' \dontrun{
+#' data(data_nplcm_noreg)
+#' model_options_no_reg <- list(
+#'   likelihood   = list(
+#'     cause_list = cause_list,
+#'     k_subclass = 2,
+#'     Eti_formula = ~-1, # no covariate for the etiology regression
+#'     FPR_formula = list(
+#'       MBS1 =   ~-1)    # no covariate for the subclass weight regression
+#'   ),
+#'   use_measurements = c("BrS"), # use bronze-standard data only for model estimation.
+#'   prior= list(
+#'     Eti_prior = overall_uniform(1,cause_list), # Dirichlet(1,...,1) prior for the etiology.
+#'     TPR_prior  = list(BrS = list(
+#'       info  = "informative", # informative prior for TPRs
+#'       input = "match_range", # specify the informative prior for TPRs by specifying a plausible range.
+#'       val = list(MBS1 = list(up =  list(rep(0.99,J.BrS)), # upper ranges: matched to 97.5% quantile of a Beta prior
+#'                              low = list(rep(0.55,J.BrS))))# lower ranges: matched to 2.5% quantile of a Beta prior
+#'     )
+#'     )
+#'   )
+#' )     
+#' 
+#' set.seed(1)
+#' # include stratification information in file name:
+#' thedir_dated    <- paste0(working_dir,Date,"_no_reg")
+#' 
+#' # create folders to store the model results 
+#' dir.create(thedir_dated, showWarnings = FALSE)
+#' result_folder_no_reg <- file.path(thedir_dated,paste("results",collapse="_"))
+#' thedir <- result_folder_no_reg
+#' dir.create(thedir, showWarnings = FALSE)
+#' 
+#' # options for MCMC chains:
+#' mcmc_options_no_reg <- list(
+#'   debugstatus = TRUE,
+#'   n.chains = 1,
+#'   n.itermcmc = as.integer(200), 
+#'   n.burnin = as.integer(100), 
+#'   n.thin = 1,
+#'   individual.pred = FALSE, 
+#'   ppd = TRUE,
+#'   result.folder = thedir,
+#'   bugsmodel.dir = thedir,
+#'   jags.dir = ""
+#' )
+#' 
+#' # place the nplcm data and cleaning options into the results folder
+#' dput(data_nplcm_noreg,file.path(thedir,"data_nplcm.txt")) 
+#' dput(clean_options, file.path(thedir,"data_clean_options.txt"))
+#' 
+#' rjags::load.module("glm")
+#' 
+#' nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
+#' 
+#' plot_check_pairwise_SLORD(nplcm_noreg$DIR_NPLCM,slice=1)
+#' }
+#' 
 #' @family visualization functions
 #' @family model checking functions
 #' @export
 #' 
-
 plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
   old_par <- graphics::par(graphics::par("mfrow", "mar"))
   on.exit(graphics::par(old_par))
@@ -117,11 +176,13 @@ plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
 #' @return A figure of posterior predicted frequencies compared with the observed 
 #' frequencies of the most common patterns for the BrS data. 
 #' 
+#' @import ggplot2
 #' @importFrom gridExtra grid.arrange
 #' 
 #' @examples 
 #' \dontrun{
-#' DIR_list <- list("C:\\2015_09_04_05SAF_k=1","C:\\2015_09_04_05SAF_k=2")
+#' DIR_list <- list(nplcm_noreg) 
+#' # see examples in plot_check_pairwise_SLORD() for nplcm_noreg.
 #' plot_check_common_pattern(DIR_list)
 #' plot_check_common_pattern(DIR_list[[1]])
 #' }
@@ -130,11 +191,16 @@ plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
 #' @family model generating functions
 #' 
 #' @export
-
 plot_check_common_pattern <- function(DIR_list,
                                       slice_vec = rep(1,length(DIR_list)),
                                       n_pat     = 10,
                                       dodge_val = 0.8){
+  
+  # DIR_list <- list(result_folder_no_reg)
+  # slice_vec = 1
+  # n_pat = 10
+  # dodge_val = 0.8
+  
   # read in data:
   # names of the measurements for the selected slice:
   name_vec <- vector("list",length(DIR_list))
@@ -156,13 +222,20 @@ plot_check_common_pattern <- function(DIR_list,
     }
   
   
-  curr_out <- out[[d]]
-  select =1
-  slice=slice_vec[d]
-  n_pat=10
-  curr_is_jags = TRUE
+  # curr_out <- out[[d]]
+  # select =1
+  # slice=slice_vec[d]
+  # n_pat=10
+  # curr_is_jags = TRUE
   
-  get_top_pattern <- function(curr_out,case_status,slice,n_pat,curr_is_jags){
+  get_top_pattern_here <- function(curr_out,case_status,slice,n_pat,curr_is_jags){
+    # curr_out=out[[d]]
+    # case_status=select
+    # slice = slice_vec[d]
+    # n_pat = n_pat
+    # curr_is_jags = is_jags[d]
+    # 
+    
     # getting data:
     curr_bugs.dat <- curr_out$bugs.dat
     curr_Nd       <- curr_out$Nd
@@ -273,10 +346,10 @@ plot_check_common_pattern <- function(DIR_list,
           res
         }
         ))
-        ppd_pat_ct[iter,(1:n_pat_used)[-ind_missing]] <- curr_ct/ncol(predicted_pat)
+        if(length(ind_missing)){ppd_pat_ct[iter,(1:n_pat_used)[-ind_missing]] <- curr_ct/ncol(predicted_pat)
+        }else{ppd_pat_ct[iter,(1:n_pat_used)] <- curr_ct/ncol(predicted_pat)}
         ppd_pat_ct[iter,n_pat_used+1] <- 1-sum(curr_ct)/ncol(predicted_pat)
       }
-      
     }
     
     
@@ -295,6 +368,7 @@ plot_check_common_pattern <- function(DIR_list,
   }
   
   plot_ppd <- function(DIR_list,case_or_control="case"){
+    
     case_res_list <- vector("list",length=length(DIR_list)) # posterior predictive pattern frequencies.
     case_pat_list <- vector("list",length=length(DIR_list)) # pattern names.
     res_list      <- vector("list",length=length(DIR_list)) # long format results with extra information.
@@ -304,7 +378,7 @@ plot_check_common_pattern <- function(DIR_list,
     if (case_or_control=="control"){select <- 0}
     
     for (d in seq_along(DIR_list)){
-      out_case_pat       <- get_top_pattern(out[[d]],select,slice_vec[d],n_pat,is_jags[d])
+      out_case_pat       <- get_top_pattern_here(out[[d]],select,slice_vec[d],n_pat,is_jags[d])
       case_res_list[[d]] <- out_case_pat$ppd_pat_ct
       case_res_list[[d]]$DIR <- d 
       case_res_list[[d]]$ITER <- 1:nrow(case_res_list[[d]])
@@ -380,7 +454,7 @@ plot_check_common_pattern <- function(DIR_list,
       annotate("text", label = case_or_control, 
                x = length(case_pat_list[[1]])/2, 
                y = ymax*0.67, size = 8, colour = "red")+
-      stat_summary(fun.y = identity,geom='errorbar', 
+      stat_summary(fun = identity,geom='errorbar', 
                     width=0.8,aes(ymax=..y..,ymin=..y..),
                     color="blue",size=0.9,data=hline.data)
       # geom_errorbar(stat = "hline", 
@@ -404,7 +478,7 @@ plot_check_common_pattern <- function(DIR_list,
 #   
 #   for (d in seq_along(DIR_list)){
 #       # cases:
-#       out_case_pat <- get_top_pattern(out[[d]],1,slice_vec[d],n_pat)
+#       out_case_pat <- get_top_pattern_here(out[[d]],1,slice_vec[d],n_pat)
 #       case_res_list[[d]] <- out_case_pat$ppd_pat_ct
 #       case_res_list[[d]]$DIR <- d 
 #       case_res_list[[d]]$ITER <- 1:nrow(case_res_list[[d]])
@@ -415,7 +489,7 @@ plot_check_common_pattern <- function(DIR_list,
 #                                       value.name = "frequency")
 #       
 #       # controls:
-#       out_ctrl_pat <- get_top_pattern(out[[d]],0,slice_vec[d],n_pat)
+#       out_ctrl_pat <- get_top_pattern_here(out[[d]],0,slice_vec[d],n_pat)
 #       ctrl_res_list[[d]] <- out_ctrl_pat$ppd_pat_ct
 #       ctrl_res_list[[d]]$DIR <- d 
 #       ctrl_res_list[[d]]$ITER <- 1:nrow(ctrl_res_list[[d]])

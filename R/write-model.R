@@ -1005,7 +1005,6 @@ add_meas_BrS_ctrl_NoNest_Slice <- function(s, Mobs,cause_list,ppd=NULL) {
 #' @family likelihood specification functions
 #' @family plug-and-play functions 
 #'     
-
 add_meas_BrS_param_NoNest_Slice <- function(s,Mobs,cause_list) {
   # mapping template (by `make_template` function):
   patho_BrS_list <- lapply(Mobs$MBS,colnames)

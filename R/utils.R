@@ -40,15 +40,22 @@ win2unixdir <- function(windir){
 #' @param parent_path The parent directory where to put the new folder
 #' @param parameter_names The parameters that distinguish this folder's scenario
 #' @param parameter_vals The actual parameter values
+#' @param sep file name separator - default to `"/"` for OSX; `"\\"` for Windows.
+#'
 #'
 #' @return A string for folder name
+#' @examples 
+#' 
+#' make_foldername("/user",c("theta","alpha","beta"),c(1,2,3))
+#' 
+#' 
 #' @export
 #'
 make_foldername <-
-  function(parent_path,parameter_names,parameter_vals) {
+  function(parent_path,parameter_names,parameter_vals,sep="/") {
     subfolder <-
       paste(parameter_names,parameter_vals,collapse = "_",sep = "=")
-    res       <- paste(parent_path,subfolder,sep = "\\")
+    res       <- paste(parent_path,subfolder,sep = sep) # windows
     res
   }
 
@@ -61,7 +68,9 @@ make_foldername <-
 #'
 #'
 #' @return A string for file name
-#'
+#' @examples 
+#' 
+#' make_filename(c("theta","alpha"),c(0.9,2),"csv")
 #'
 #' @export
 #'
@@ -76,6 +85,9 @@ make_filename <-
 #'
 #' @param p Probability between 0 and 1
 #' @return A real number
+#' 
+#' @examples 
+#' logit(0.5)
 #'
 #' @export
 logit <- function(p)
@@ -85,6 +97,10 @@ logit <- function(p)
 #'
 #' @param x A real number
 #' @return a Probability between 0 and 1
+#' @examples 
+#' 
+#' expit(-0.1)
+#' 
 #' @export
 expit <- function(x)
   1 / (1 + exp(-x))
@@ -102,6 +118,9 @@ expit <- function(x)
 #' of an independent coin toss
 #'
 #' @return A vector of 1s (head) and 0s (tail)
+#' @examples 
+#' rvbern(c(0.9,0.1,0.2,0.3))
+#' 
 #' @export
 rvbern <-
   function(p) {
@@ -119,6 +138,11 @@ rvbern <-
 #'
 #' @param binary_vector a binary number
 #' @return a decimal number
+#' 
+#' @examples 
+#' 
+#' bin2dec(c(1,0,1))
+#' 
 #' @export
 #'
 bin2dec <- function(binary_vector) {
@@ -231,7 +255,8 @@ Imat2cat <- function(binary_mat,cause_list,pathogen_list) {
 #' @param a The first parameter
 #' @param b The second parameter
 #' @return None
-#'
+#' @examples  
+#' beta_plot(2,2)
 #' @export
 beta_plot = function(a,b) {
   x = seq(0,1,by = 0.001)
@@ -245,6 +270,12 @@ beta_plot = function(a,b) {
 #' @param pckg package name
 #'
 #' @return None
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' getPckg("ggplot2")
+#' }
 #' @export
 getPckg <- function(pckg) {
   utils::install.packages(pckg, repos = "http://cran.r-project.org")
@@ -256,7 +287,11 @@ getPckg <- function(pckg) {
 #' @param f A factor
 #'
 #' @return A numeric vector
-#'
+#' 
+#' @examples 
+#' unfactor(factor(c("1","3","3"),levels=c("1","3")))
+#' # contrast this to:
+#' as.numeric(factor(c("1","3","3"),levels=c("1","3"))) 
 #' @export
 unfactor <- function(f) {
   as.numeric(levels(f))[f]
@@ -281,9 +316,11 @@ unfactor <- function(f) {
 #'@param dat Data frame to be ordered.
 #'
 #'@return Ordered data frame.
+#'@examples
+#' df <- as.data.frame(list(x1=c(2,3,1),x2=c(3,4,6)))
+#' sort_data_frame(~-x1+x2,df)
 #'
 #'@export
-
 sort_data_frame <- function(form,dat) {
   # Author: Kevin Wright
   # http://tolstoy.newcastle.edu.au/R/help/04/09/4300.html
@@ -371,9 +408,6 @@ my_reorder <- function(disp_order,raw_nm) {
 #' @param MBS.case Case Bronze-Standard (BrS) data
 #' @param MBS.ctrl Control Bronze-Standard (BrS) data
 #'
-#' @export
-#'
-
 logOR <- function(MBS.case,MBS.ctrl) {
   JBrS <- ncol(MBS.case)
   logORmat       <- matrix(NA,nrow = JBrS,ncol = JBrS)
@@ -440,7 +474,6 @@ logOR <- function(MBS.case,MBS.ctrl) {
 #' @param asp aspect ratio; default is `1` to ensure square shape
 #' @param title text for the figure
 #'
-#' @export
 visualize_case_control_matrix <- function(mat, dim_names = ncol(mat),
                                           cell_metrics = "",folding_line = TRUE,
                                           axes = FALSE, xlab = "",ylab = "",
@@ -505,7 +538,9 @@ visualize_case_control_matrix <- function(mat, dim_names = ncol(mat),
 #'
 #' @param s A string of characters that may contain "NA"
 #' @return A string of characters without 'NA'
-#' @export
+#' 
+#' 
+#' 
 NA2dot <- function(s) {
   gsub("NA",".",s,fixed = TRUE)
 }
@@ -529,6 +564,10 @@ NA2dot <- function(s) {
 #' @return A list containing the selected Beta parameters `a`, and `b`.
 #' Other elements of the list include some details about the computations involved
 #' in finding `a` and `b`.
+#' 
+#' @examples 
+#' 
+#' beta_parms_from_quantiles(c(0.5,0.99))
 #'
 #' @references <http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html>
 #' @export
@@ -906,7 +945,6 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
 #' @return No message if it successfully loads the specified packages; Error
 #'  if such a package does not exist.
 #'
-#' @export
 #'
 #'
 load_or_install <-
@@ -934,9 +972,6 @@ load_or_install <-
 #' @param x A number (usually a member of a list) that might be `NULL`
 #' @return A number
 #'
-#' @export
-#'
-#'
 null_as_zero <- function(x) {
   if (is.null(x)) {
     return(0)
@@ -963,8 +998,6 @@ null_as_zero <- function(x) {
 #' \item `group` A vector of group indicator for every observation
 #' }
 #'
-#' @export
-
 set_strat <- function(X,X_reg) {
   if (!is.data.frame(X)) {
     stop("==X is not a data frame. Please transform it into a data frame.==")
@@ -1022,8 +1055,6 @@ set_strat <- function(X,X_reg) {
 #' e.g., `~as.factor(SITE8) + as.factor(AGECAT > 1)`.
 #'
 #' @return `TRUE` for all being discrete; `FALSE` otherwise.
-#' @export
-
 is_discrete <- function(X,X_reg) {
   if (!is.data.frame(X)) {
     stop("==[baker]X is not a data frame. Please transform it into a data frame.==")
@@ -1056,7 +1087,7 @@ is_discrete <- function(X,X_reg) {
 #'
 #' @references  <http://adv-r.had.co.nz/Exceptions-Debugging.html>
 #' @return Logical. `TRUE` for "try-error"; `FALSE` otherwise
-#' @export
+#' 
 is.error <- function(x)
   inherits(x, "try-error")
 
@@ -1070,9 +1101,6 @@ is.error <- function(x)
 #' @param Rdate standard date format in R
 #'
 #' @return a vector of characters with `month-year`, e.g., `4-2012`.
-#' @export
-#'
-#'
 #'
 unique_month <- function(Rdate) {
   unique(paste(lubridate::month(Rdate),lubridate::year(Rdate),sep = "-"))
@@ -1088,7 +1116,6 @@ unique_month <- function(Rdate) {
 #'
 #' @return `NULL` if no difference; the set of different months otherwise.
 #'
-#' @export
 #'
 sym_diff_month <- function(Rdate1, Rdate2) {
   month1 <- unique_month(Rdate1)
@@ -1138,7 +1165,6 @@ sym_diff_month <- function(Rdate1, Rdate2) {
 #' and square-root the following matrix (\eqn{\Omega}]) with (\eqn{j_1},\eqn{j_2}) element being
 #' \deqn{\Omega_{j_1j_2}=\|knots_{j_1}-knots_{j_2}\|^3}.
 #' }
-#' @export
 dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
   if (is.null(num_knots_FPR) & effect == "random") {
     stop(
@@ -1230,7 +1256,6 @@ dm_Rdate_FPR <- function(Rdate,Y,effect = "fixed",num_knots_FPR = NULL) {
 #' \itemize{
 #' \item `Z_Eti` transformed design matrix for etiology regression
 #' }
-#' @export
 dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
   #       #
   #       # test:
@@ -1296,8 +1321,6 @@ dm_Rdate_Eti <- function(Rdate,Y,num_knots_Eti,basis_Eti = "ncs") {
 #'
 #' @return a character string with linear product form
 #'
-#' @export
-#'
 
 create_bugs_regressor_FPR <- function(n,dm_nm = "dm_FPR",
                                       b_nm = "b",ind_nm = "j",
@@ -1323,7 +1346,6 @@ create_bugs_regressor_FPR <- function(n,dm_nm = "dm_FPR",
 #'
 #' @return a character string with linear product form
 #'
-#' @export
 #'
 create_bugs_regressor_Eti <- function(n,dm_nm = "dm_Eti",
                                       b_nm = "betaEti",ind_nm = "j",
@@ -1386,8 +1408,6 @@ delete_start_with = function(s,vec) {
 #' #display the results
 #' make_list( x , y , z )
 #' @export
-
-#create the function
 make_list <- function(...) {
   #put all values into a list
   argument_values <- list(...)
@@ -1412,8 +1432,6 @@ make_list <- function(...) {
 #'
 #' @return a list with names numbered
 #'
-#' @export
-
 make_numbered_list <- function(...) {
   #put all values into a list
   argument_values <- list(...)
@@ -1515,15 +1533,7 @@ make_template <- function(patho, cause_list) {
 #' 
 #' @return position of the quality name: "BrS"-1; "SS"-2; "GS"-3.
 #' 
-#' @examples
-#' \dontrun{
-#' lookup_quality("BrS")
-#' lookup_quality("HH")
-#' }
-#' 
 #' @seealso [extract_data_raw()]
-#' 
-#' @export
 lookup_quality <- function(quality_nm) {
   res_pos <- list()
   for (i in seq_along(quality_nm)){
@@ -1553,7 +1563,6 @@ lookup_quality <- function(quality_nm) {
 #' `FALSE` otherwise.
 #' @return `TRUE` for doing regression; `FALSE` otherwise.
 #' 
-#' @export
 parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
   if (is.null(data_nplcm$X)) {
     if(!silent){print(" ==[baker] There are no covariate data in `data_nplcm`. ==\n")}; 
@@ -1584,7 +1593,6 @@ parse_nplcm_reg <- function(form,data_nplcm,silent=TRUE){
 #' 
 #' @return `TRUE` for intercept-only; `FALSE` otherwise
 #' 
-#' @export
 is_intercept_only <- function(form){
   form_remove_space <- gsub(" ","",form,fixed=TRUE)
   formula_parts <- strsplit(form_remove_space[2],"+",fixed=TRUE)[[1]]
@@ -1596,14 +1604,13 @@ is_intercept_only <- function(form){
 
 #' convert one column data frame to a vector
 #' 
-#' @details WinBUGS/JAGS cannot accept a dataframe with one column; This function
-#' converts it to a vector, which WinBUGS/JAGS will allow.
+#' @details JAGS cannot accept a data frame with one column; This function
+#' converts it to a vector, which JAGS will allow.
 #' 
 #' @param x an one-column data.frame
 #' 
 #' @return a vector
 #' 
-#' @export
 as.matrix_or_vec <- function(x){
   if (ncol(x)==1){
     return(c(as.matrix(x)))
@@ -1619,7 +1626,6 @@ as.matrix_or_vec <- function(x){
 #' @param exact Default is TRUE
 #' 
 #' @return a vector of indices
-#' @export
 get_latent_seq <- function(cause_list, ord,select_latent=NULL,exact=TRUE){
   cause_list_ord <- cause_list[ord]
   latent_seq <- 1:length(cause_list)
@@ -1646,6 +1652,11 @@ get_latent_seq <- function(cause_list, ord,select_latent=NULL,exact=TRUE){
 #' @param px a vector of positive numbers sum to 1
 #' 
 #' @return a non-negative number
+#' 
+#' @examples 
+#' 
+#' H(c(0.5,0.3,0.2))
+#' 
 #' @export
 #' 
 H <- function(px) {
@@ -1657,6 +1668,10 @@ H <- function(px) {
 #' @param m_px a number between 0 and 1
 #' 
 #' @return a non-negative number
+#' 
+#' @examples 
+#' 
+#' marg_H(0.1)
 #' 
 #' @export
 #' 
@@ -1671,7 +1686,6 @@ marg_H <- function(m_px){-m_px*log(m_px)-(1-m_px)*log(1-m_px)}
 #' @param assign.on.exit default is TRUE
 #' 
 #' @return a new environment
-#' @export
 loadOneName <- function(objName, file, envir = parent.frame(),
                         assign.on.exit = TRUE) {
   tempEnv <- new.env()
@@ -1703,7 +1717,6 @@ loadOneName <- function(objName, file, envir = parent.frame(),
 #' graphics::mtext("Truncated Stick-Breaking Dist. (10 segments)",3,
 #'      outer=TRUE,cex=1.5,line=1.5)
 #' @export
-#' 
 tsb <- function(u){
   K <- length(u)
   if (u[K]!=1) {stop("==The last element of u must be 1 for truncated stick-breaking!==\n")}
@@ -1726,13 +1739,12 @@ tsb <- function(u){
 #' @examples
 #' \dontrun{
 #' show_dep("nplcm",ancestor=FALSE)
-#' show_dep("nplcm",ancestor=FALSE)
+#' show_dep("nplcm")
 #' show_dep("nplcm_fit_NoReg",ancestor=FALSE)
 #' show_dep("nplcm_fit_NoReg")
 #' }
 #' 
 #' @export
-
 show_dep <- function(fname,pckg="package:baker",...){
   suppressWarnings(mvbutils::foodweb(where = pckg, prune = fname,
                                      #border = TRUE,
@@ -1752,6 +1764,9 @@ show_dep <- function(fname,pckg="package:baker",...){
 #' check existence and create folder if non-existent
 #' 
 #' @param path Folder path to check and create if not there.
+#' @examples 
+#' 
+#' check_dir_create(tempdir())
 #' 
 #' @export
 check_dir_create <- function(path){
@@ -1814,6 +1829,10 @@ has_non_basis <- function(form){
 #' \itemize{
 #' \item `Z_Eti` design matrix for etiology regression on dates.
 #' }
+#' @examples 
+#' 
+#' \dontrun{~ -1+s_date_Eti(DATE,Y,basis='ps',dof=7)}
+#' 
 #' @importFrom stats quantile
 #' @export
 s_date_Eti <- function(Rdate,Y,basis = "ps",dof=ifelse(basis=="ncs",5,10),...) {
@@ -1876,6 +1895,11 @@ s_date_Eti <- function(Rdate,Y,basis = "ps",dof=ifelse(basis=="ncs",5,10),...) {
 #' @seealso [nplcm()]
 #' @return Design matrix for FPR regression, with cases' rows on top of
 #' controls'.
+#' @examples 
+#' \dontrun{
+#' ~ -1 +s_date_FPR(DATE,Y,basis = "ps",dof=5)
+#' }
+#' 
 #' @export
 s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
   # standardization:
@@ -1956,7 +1980,7 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #   }
 # }
 
-#' Run ‘JAGS’ from R
+#' Run `JAGS` from R
 #' 
 #' The jags function takes data and starting values as input. 
 #' It automatically writes a jags script, calls the model, and saves the 
@@ -1968,7 +1992,6 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #' @inheritParams R2jags::jags
 #' @import R2jags
 #' @seealso [R2jags::jags()]
-#' @export
 jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bug", 
                          n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
                          n.thin = max(1, floor((n.iter - n.burnin)/1000)), DIC = TRUE, 
@@ -2110,6 +2133,10 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
 #' 
 #' @param x a vector of numbers
 #' @export
+#' @examples 
+#' 
+#' logsumexp(c(-20,-30))
+#' 
 logsumexp <- function (x) {
   y = max(x)
   y + log(sum(exp(x - y)))
@@ -2236,10 +2263,8 @@ merge_lists <- function(list_of_lists){
 #' 
 #' @examples 
 #' 
-#' \dontrun{
-#' rm(list=ls())
-#' N=10000
-#' Y = rep(c(1,0),times=5000) # simulate two cases and two controls.
+#' N=100
+#' Y = rep(c(1,0),times=50) # simulate two cases and two controls.
 #' out_list <- vector("list",length=N)
 #' J = 3                          # number of causes
 #' cause_list = c(LETTERS[1:J])   # cause list
@@ -2251,13 +2276,13 @@ merge_lists <- function(list_of_lists){
 #'   #setup parameters for the present individual:
 #'   set_parameter <- list(
 #'     cause_list      = cause_list,
-#'     etiology        = c(0.5,0.2,0.3), # only meaningful for cases 
+#'     etiology        = c(0.5,0.2,0.3), # only meaningful for cases
 #'     pathogen_BrS    = LETTERS[1:J],
 #'     pathogen_SS     = LETTERS[1:2],
 #'     meas_nm         = list(MBS = c("MBS1"),MSS=c("MSS1")),
-#'     Lambda          = lambda,         # for BrS   
+#'     Lambda          = lambda,         # for BrS
 #'     Eta             = t(replicate(J,eta)),  # case subclass weight for BrS
-#'     PsiBS           = cbind(c(0.15,0.3,0.35),   
+#'     PsiBS           = cbind(c(0.15,0.3,0.35),
 #'                             c(0.25,0.2,0.15)), # FPR
 #'     PsiSS           = cbind(rep(0,J),rep(0,J)),
 #'     ThetaBS         = cbind(c(0.95,0.9,0.85),    # TPR
@@ -2265,7 +2290,7 @@ merge_lists <- function(list_of_lists){
 #'     ThetaSS         = cbind(c(0.25,0.10),
 #'                             c(0.25,0.10)),
 #'     Nd      =     1,
-#'     Nu      =     1 
+#'     Nu      =     1
 #'   )
 #'   simu_out   <- simulate_nplcm(set_parameter)
 #'   out <- simu_out$data_nplcm
@@ -2274,20 +2299,7 @@ merge_lists <- function(list_of_lists){
 #' 
 #' # extract cases and controls and combine all the data into one:
 #' data_nplcm_list <- lapply(1:N, function(s) subset_data_nplcm_by_index(out_list[[s]],2-Y[s]))
-#' data_nplcm_unordered      <- combine_data_nplcm(data_nplcm_list) 
-#' data_nplcm_unordered
-#' 
-#' colMeans(data_nplcm_unordered$Mobs$MBS$MBS1[Y==1,])
-#' colMeans(data_nplcm_unordered$Mobs$MBS$MBS1[Y==0,])
-#' 
-#' set_parameter$PsiBS%*%matrix(lambda,ncol=1)
-#' set_parameter$PsiBS%*%matrix(eta,ncol=1)*(1-set_parameter$etiology)+
-#'   set_parameter$ThetaBS%*%matrix(eta,ncol=1)*set_parameter$etiology
-#' 
-#' # data_nplcm <- subset_data_nplcm_by_index(data_nplcm_unordered,
-#' #                    order(-data_nplcm_unordered$Y)) #put cases on top.
-#' 
-#' }
+#' data_nplcm_unordered      <- combine_data_nplcm(data_nplcm_list)
 #' 
 #' @family data operation functions
 #' @export
@@ -2409,8 +2421,6 @@ line2user <- function(line, side) {
 #' used to generate data
 #' @importFrom robCompositions cenLR
 #' @return a vector of (Integrated Squared Aitchison Distance (ISAD), bias-squared, variance, truth)
-#' @export
-#'
 get_metric <- function(DIR_NPLCM,truth){
   use_jags <- is_jags_folder(DIR_NPLCM)
   my.mse <- function(A,B){
@@ -2488,8 +2498,6 @@ get_metric <- function(DIR_NPLCM,truth){
 #' 
 #' @return a list of length two. `diff` is the direct differences; 
 #' `prb` is the percent relative bias.
-#' @export
-#'
 get_direct_bias <- function(DIR_list,truth=NULL,silent=FALSE){
   
   symdiff <- function( x, y) { setdiff( union(x, y), intersect(x, y))}
@@ -2566,8 +2574,6 @@ get_direct_bias <- function(DIR_list,truth=NULL,silent=FALSE){
 #' get_coverage(DIR_NPLCM,truth)
 #' }
 #' @return A logic vector of length as `truth`. 1 for covered; 0 for not.
-#' @export
-#'
 get_coverage <- function(DIR_NPLCM,truth){
   # read from folders:
   out       <- nplcm_read_folder(DIR_NPLCM)
@@ -2596,7 +2602,6 @@ get_coverage <- function(DIR_NPLCM,truth){
 #' get_postsd(DIR_NPLCM)
 #' }
 #' @return a vector of positive numbers
-#' @export
 #'
 get_postsd <- function(DIR_NPLCM){
   # read from folders:
@@ -2622,8 +2627,6 @@ get_postsd <- function(DIR_NPLCM){
 #'    `latent_nm`: a vector of character strings representing the names of the causes
 #' }
 #' 
-#' @export
-
 get_pEti_samp <- function(res_nplcm,model_options){
   cause_list <- model_options$likelihood$cause_list
   # total no. of causes:

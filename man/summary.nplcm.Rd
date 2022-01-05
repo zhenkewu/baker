@@ -11,10 +11,6 @@
 An object of class "nplcm"}
 
 \item{...}{Not used.}
-
-\item{res_dir}{file path to folder where results are stored.}
-
-\item{type}{\code{NoReg},\code{strat}, or \code{Reg}}
 }
 \value{
 see \code{\link[=print.nplcm]{print.nplcm()}}

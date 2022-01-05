@@ -18,9 +18,8 @@ a list of summaries for BrS data
 summarize bronze-standard data
 }
 \examples{
-\dontrun{
-summarize_BrS(data_nplcm$Mobs$MBS[[1]], data_nplcm$Y)
-}
+data(data_nplcm_noreg)
+summarize_BrS(data_nplcm_noreg$Mobs$MBS[[1]], data_nplcm_noreg$Y)
 
 }
 \seealso{

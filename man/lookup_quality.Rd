@@ -18,13 +18,6 @@ Get position to store in data_nplcm$Mobs:
 \details{
 also works for a vector
 }
-\examples{
-\dontrun{
-lookup_quality("BrS")
-lookup_quality("HH")
-}
-
-}
 \seealso{
 \code{\link[=extract_data_raw]{extract_data_raw()}}
 }

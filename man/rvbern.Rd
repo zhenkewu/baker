@@ -18,3 +18,7 @@ Sample a vector of Bernoulli variables with higher speed
 (same length with \code{"p"}).
 The Bernoulli random variables can have different means.
 }
+\examples{
+rvbern(c(0.9,0.1,0.2,0.3))
+
+}

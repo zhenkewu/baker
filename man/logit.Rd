@@ -15,3 +15,7 @@ A real number
 \description{
 logit function
 }
+\examples{
+logit(0.5)
+
+}

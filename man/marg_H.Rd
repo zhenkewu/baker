@@ -15,3 +15,8 @@ a non-negative number
 \description{
 Shannon entropy for binary data
 }
+\examples{
+
+marg_H(0.1)
+
+}

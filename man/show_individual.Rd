@@ -18,9 +18,11 @@ a list with the inquired patient's data
 get an individual's data from the output of \code{\link[=clean_perch_data]{clean_perch_data()}}
 }
 \examples{
-\dontrun{
-show_individual(data_nplcm,"G01431")
-}
+data(data_nplcm_noreg)
+data_nplcm_noreg$X$patid <- paste("PAT",1:length(data_nplcm_noreg$Y0),sep="")
+data_nplcm_noreg$X <- as.data.frame(data_nplcm_noreg$X)
+subset_data_nplcm_by_index(data_nplcm_noreg,which(data_nplcm_noreg$X$patid\%in\%c("PAT12","PAT408")))
+data_nplcm_noreg$X <- NULL
 
 }
 \seealso{

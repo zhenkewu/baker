@@ -25,3 +25,8 @@ Usage is either of the following:\cr
 sort.data.frame(~Block-Variety,Oats)\cr
 sort.data.frame(Oats,~-Variety+Block)\cr
 }
+\examples{
+df <- as.data.frame(list(x1=c(2,3,1),x2=c(3,4,6)))
+sort_data_frame(~-x1+x2,df)
+
+}

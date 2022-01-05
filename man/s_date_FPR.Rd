@@ -27,6 +27,12 @@ controls'.
 \description{
 \code{s_date_FPR} creates design matrices for FPR regressions;
 }
+\examples{
+\dontrun{
+~ -1 +s_date_FPR(DATE,Y,basis = "ps",dof=5)
+}
+
+}
 \seealso{
 \code{\link[=nplcm]{nplcm()}}
 }

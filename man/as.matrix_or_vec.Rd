@@ -16,6 +16,6 @@ a vector
 convert one column data frame to a vector
 }
 \details{
-WinBUGS/JAGS cannot accept a dataframe with one column; This function
-converts it to a vector, which WinBUGS/JAGS will allow.
+JAGS cannot accept a data frame with one column; This function
+converts it to a vector, which JAGS will allow.
 }

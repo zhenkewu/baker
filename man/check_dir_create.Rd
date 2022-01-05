@@ -12,3 +12,8 @@ check_dir_create(path)
 \description{
 check existence and create folder if non-existent
 }
+\examples{
+
+check_dir_create(tempdir())
+
+}

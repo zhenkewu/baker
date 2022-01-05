@@ -15,3 +15,8 @@ a non-negative number
 \description{
 Shannon entropy for multivariate discrete data
 }
+\examples{
+
+H(c(0.5,0.3,0.2))
+
+}

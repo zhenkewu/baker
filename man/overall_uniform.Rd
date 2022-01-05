@@ -17,6 +17,11 @@ a vector of length \code{length(cause_list)}
 \description{
 specify overall uniform (symmetric Dirichlet distribution) for etiology prior
 }
+\examples{
+
+overall_uniform(1,c("A","B","C"))
+
+}
 \seealso{
 Other prior specification functions: 
 \code{\link{set_prior_tpr_BrS_NoNest}()},

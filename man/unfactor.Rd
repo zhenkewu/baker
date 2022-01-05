@@ -15,3 +15,8 @@ A numeric vector
 \description{
 Convert factor to numeric without losing information on the label
 }
+\examples{
+unfactor(factor(c("1","3","3"),levels=c("1","3")))
+# contrast this to:
+as.numeric(factor(c("1","3","3"),levels=c("1","3"))) 
+}

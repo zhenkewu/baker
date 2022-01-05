@@ -5,6 +5,11 @@
 #' @param cause_list a list of latent status
 #' 
 #' @return a vector of length `length(cause_list)`
+#' 
+#' @examples 
+#' 
+#' overall_uniform(1,c("A","B","C"))
+#' 
 #' @family prior specification functions
 #' @export
 #'
@@ -43,7 +48,6 @@ overall_uniform <- function(alpha,cause_list) {
 #' for alpha (beta) parameters as in BETA distribution.
 #' 
 #' @family prior specification functions
-#' @export
 #' 
 set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
   parsed_model <- assign_model(model_options,data_nplcm)
@@ -152,8 +156,6 @@ set_prior_tpr_BrS_NoNest <- function(slice,model_options,data_nplcm){
 #' numeric vector for alpha (beta) parameters to specify Beta prior for TPRs.
 #'
 #' @family prior specification functions
-#' @export
-#' 
 set_prior_tpr_SS <- function(model_options,data_nplcm){
   
   parsed_model <- assign_model(model_options,data_nplcm)

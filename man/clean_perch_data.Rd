@@ -29,8 +29,8 @@ or visualization;}
 \item{\code{patho_taxo_dir}}{: The file path to the pathogen category or taxonomy
 information (.csv). The information should be as complete as possible for a particular
 analysis. If not, the pathogen without taxonomy information could not be
-assigned to bacterial or viral groups (see \code{\link[=plot_group_etiology]{plot_group_etiology()}});
-See \code{\link[=assign_taxo_cause_list]{assign_taxo_cause_list()}} that requires this taxonomy information.}.
+assigned to bacterial or viral groups (see \code{plot_group_etiology()});
+See \code{assign_taxo_cause_list()} that requires this taxonomy information.}.
 }}
 }
 \value{

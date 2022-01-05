@@ -15,3 +15,9 @@ None
 \description{
 Get package from CRAN website
 }
+\examples{
+
+\dontrun{
+getPckg("ggplot2")
+}
+}

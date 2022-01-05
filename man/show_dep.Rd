@@ -22,7 +22,7 @@ Show function dependencies
 \examples{
 \dontrun{
 show_dep("nplcm",ancestor=FALSE)
-show_dep("nplcm",ancestor=FALSE)
+show_dep("nplcm")
 show_dep("nplcm_fit_NoReg",ancestor=FALSE)
 show_dep("nplcm_fit_NoReg")
 }

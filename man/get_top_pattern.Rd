@@ -32,6 +32,10 @@ get top patterns from a slice of bronze-standard measurement
 res <- get_top_pattern(data_nplcm$Mobs$MBS[[1]],data_nplcm$Y,1,30,FALSE)
 }
 
+data(data_nplcm_noreg)
+get_top_pattern(data_nplcm_noreg$Mobs$MBS$MBS1,data_nplcm_noreg$Y,case_status=1,n_pat=5)
+
+
 }
 \seealso{
 Other exploratory data analysis functions: 

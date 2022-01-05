@@ -33,7 +33,8 @@ that of the actual data set, i.e. the same number of cases and controls.
 }
 \examples{
 \dontrun{
-DIR_list <- list("C:\\\\2015_09_04_05SAF_k=1","C:\\\\2015_09_04_05SAF_k=2")
+DIR_list <- list(nplcm_noreg) 
+# see examples in plot_check_pairwise_SLORD() for nplcm_noreg.
 plot_check_common_pattern(DIR_list)
 plot_check_common_pattern(DIR_list[[1]])
 }

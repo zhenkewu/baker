@@ -4,7 +4,7 @@
 \alias{make_foldername}
 \title{Create new folder name}
 \usage{
-make_foldername(parent_path, parameter_names, parameter_vals)
+make_foldername(parent_path, parameter_names, parameter_vals, sep = "/")
 }
 \arguments{
 \item{parent_path}{The parent directory where to put the new folder}
@@ -12,10 +12,18 @@ make_foldername(parent_path, parameter_names, parameter_vals)
 \item{parameter_names}{The parameters that distinguish this folder's scenario}
 
 \item{parameter_vals}{The actual parameter values}
+
+\item{sep}{file name separator - default to \code{"/"} for OSX; \code{"\\\\"} for Windows.}
 }
 \value{
 A string for folder name
 }
 \description{
 Create new folder name
+}
+\examples{
+
+make_foldername("/user",c("theta","alpha","beta"),c(1,2,3))
+
+
 }

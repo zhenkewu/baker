@@ -39,6 +39,15 @@ which measurements are informative of a particular category of latent status.
 Wrap the information about a particular type of measurement, e.g., NPPCR.
 NB: add example! copy some from the vignette file.
 }
+\examples{
+make_meas_object(
+patho = c("A","B","C","D","E","F"), 
+specimen = "MBS",
+test = "1",
+quality = "BrS", 
+cause_list = c("A","B","C","D","E"))
+
+}
 \seealso{
 \code{\link[=make_template]{make_template()}}
 }

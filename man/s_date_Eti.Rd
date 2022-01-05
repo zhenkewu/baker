@@ -29,6 +29,11 @@ if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.}
 \description{
 \code{s_date_Eti} creates design matrices for etiology regressions;
 }
+\examples{
+
+\dontrun{~ -1+s_date_Eti(DATE,Y,basis='ps',dof=7)}
+
+}
 \seealso{
 \code{\link[=nplcm]{nplcm()}}
 }

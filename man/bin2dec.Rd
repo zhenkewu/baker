@@ -16,3 +16,8 @@ a decimal number
 Useful when try to list all the binary patterns. One can group the binary
 sequences according to their equivalent decimal values.
 }
+\examples{
+
+bin2dec(c(1,0,1))
+
+}

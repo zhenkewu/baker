@@ -50,7 +50,7 @@ posterior subpanel (the rightmost panel). The default value is .4}
 \value{
 A figure with two or three columns (if \code{is_plot=TRUE}); otherwise, it
 provide posterior summaries of Etiology information to
-used by \code{\link[=summary.nplcm.noreg]{summary.nplcm.noreg()}}
+used by \code{\link[=print.summary.nplcm.no_reg]{print.summary.nplcm.no_reg()}}
 }
 \description{
 \code{plot_panels()} visualizes the model outputs for communicating how the data inform final

@@ -26,8 +26,8 @@
 #' \item{`patho_taxo_dir`}{: The file path to the pathogen category or taxonomy
 #' information (.csv). The information should be as complete as possible for a particular
 #' analysis. If not, the pathogen without taxonomy information could not be
-#' assigned to bacterial or viral groups (see [plot_group_etiology()]);
-#' See [assign_taxo_cause_list()] that requires this taxonomy information.}.
+#' assigned to bacterial or viral groups (see `plot_group_etiology()`);
+#' See `assign_taxo_cause_list()` that requires this taxonomy information.}.
 #'}
 #'
 #'
@@ -330,6 +330,14 @@ clean_combine_subsites <-
 #'\item{`nm_spec_test`} paste `specimen` and `test` together
 #'}
 #'
+#'@examples
+#' make_meas_object(
+#' patho = c("A","B","C","D","E","F"), 
+#' specimen = "MBS",
+#' test = "1",
+#' quality = "BrS", 
+#' cause_list = c("A","B","C","D","E"))
+#'
 #'@family data standardization functions
 #'
 #'@seealso [make_template()]
@@ -354,6 +362,7 @@ make_meas_object <-
 #' `position`-see [lookup_quality()]
 #' 
 #' @family raw data importing functions
+#' 
 #' @export
 read_meas_object <- function(object,data) {
   position <- lookup_quality(object$quality)
@@ -365,27 +374,6 @@ read_meas_object <- function(object,data) {
   meas <- data[,object$name_in_data,drop = FALSE]
   colnames(meas) <- object$patho
   make_list(meas,position)
-}
-
-
-#' assign taxonomy information to cause list
-#' 
-#' NB: need example; change dir_taxo to an actual matrix or data frame.
-#' 
-#' @param cause_list See `cause_list` in `model_options$likelihood` (see 
-#' parameter settings in [nplcm()])
-#' @param dir_taxo File path to the .csv file storing two columns of information:
-#' `pathogen`, and `pathogen_type`.
-#' @return A vector of factors of taxonomy information (currently for "B","F","V"). 
-#' The names of the vector are pathogen names.
-#' 
-#' @export
-assign_taxo_cause_list <- function(cause_list, dir_taxo=NULL){
-  patho_taxo <- utils::read.csv(dir_taxo,header=TRUE,stringsAsFactors = FALSE)
-  patho_taxo$pathogen_type <- factor(patho_taxo$pathogen_type,levels=c("B","F","V"))
-  res_taxo   <- patho_taxo$pathogen_type[match(cause_list,patho_taxo[,1])]
-  names(res_taxo) <- cause_list
-  res_taxo
 }
 
 
