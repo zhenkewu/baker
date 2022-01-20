@@ -174,7 +174,6 @@ print.summary.nplcm.reg_nest_strat <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' 
 #' @family nplcm results
 print.summary.nplcm.reg_nonest <- function(x,...) {
   

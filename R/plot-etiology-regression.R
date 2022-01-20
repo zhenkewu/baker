@@ -121,7 +121,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   X <- data_nplcm$X
   
   if(is.null(X$ENRLDATE)|is.null(X$std_date)){
-    stop("'ENRLDATE' and/or 'std_date' is not a variable in your dataset! Make sure that the continuous covariate exists and retry this function.")
+    stop("'ENRLDATE' and/or 'std_date' is not a variable in your dataset! 
+         Make sure that the continuous covariate exists and retry this function.") # can we do other covariates?
   }
   # some date transformations:
   X$date_plot  <- as.Date(X$ENRLDATE)
@@ -196,15 +197,14 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
     PR_case_ctrl <- compute_marg_PR_nested_reg_array(ThetaBS_array = ThetaBS_samp,PsiBS_array = PsiBS_samp,
                                                      pEti_mat_array = pEti_samp,subwt_mat_array = subwt_samp,
                                                      case = data_nplcm$Y,template = templateBS)
-    
   }
-  
   
   #
   # 2. use this code if date is included in etiology and false positive regressions:
   #
+  
   # false positive rates:
-  subset_FPR_ctrl     <- data_nplcm$Y==0 & stratum_bool # <--- specifies who to look at.
+  subset_FPR_ctrl     <- data_nplcm$Y==0 & stratum_bool # <----- specifies who to look at. This may be hard to specify if unfamiliar with the data.
   plotid_FPR_ctrl     <- which(subset_FPR_ctrl)[order(data_nplcm$X$std_date[subset_FPR_ctrl])]
   curr_date_FPR       <- data_nplcm$X$std_date[plotid_FPR_ctrl]
   if(!is_nested){
@@ -749,7 +749,6 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
     
     Eti_prob_scale <- aperm(Eti_prob_scale,c(3,1,2))
   }
-  
   
   # weight to marginalize posterior etiology distributions across strata
   user_weight <- rep(1/n_unique_Eti_level,n_unique_Eti_level) # c(0.3,0.2,0.1,0.1,0.1,0.1,0.1)

@@ -29,8 +29,8 @@ nplcm_read_folder <- function(DIR_NPLCM){
     bugs.dat <- as.list(new_env)
     rm(new_env)
     res_nplcm <- coda::read.coda(file.path(DIR_NPLCM,"CODAchain1.txt"),
-                                file.path(DIR_NPLCM,"CODAindex.txt"),
-                                quiet=TRUE)
+                                 file.path(DIR_NPLCM,"CODAindex.txt"),
+                                 quiet=TRUE)
     for (bugs.variable.name in names(bugs.dat)) {
       assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
     }
@@ -42,14 +42,14 @@ nplcm_read_folder <- function(DIR_NPLCM){
                                  quiet=TRUE)
     # WinBUGS stores objects with transposition, so need to rev or aperm back:
     for (bugs.variable.name in names(bugs.dat)) {
-        if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
-          dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
-          bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
-        }
+      if (!is.null(dim(bugs.dat[[bugs.variable.name]]))) {
+        dim(bugs.dat[[bugs.variable.name]]) <- rev(dim(bugs.dat[[bugs.variable.name]]))
+        bugs.dat[[bugs.variable.name]] <- aperm(bugs.dat[[bugs.variable.name]])
+      }
       assign(bugs.variable.name, bugs.dat[[bugs.variable.name]])
     }
   }
-
+  
   model_options  <- dget(file.path(DIR_NPLCM,"model_options.txt"))
   if (!file.exists(file.path(DIR_NPLCM,"data_clean_options.txt"))){
     stop("=='data_clean_options.txt' does not exist in the result folder. Please 'dput' the clean_options in the result folder. ==")
@@ -66,15 +66,15 @@ nplcm_read_folder <- function(DIR_NPLCM){
   
   
   get_MBS <- function(){
-      MBS_nm <- (names(bugs.dat)[grep("MBS_",names(bugs.dat))])
-      MBS_nm <- MBS_nm[order(MBS_nm)]
-      res <- list()
-      for (s in seq_along(MBS_nm)){
-        res[[s]] <- as.data.frame(bugs.dat[[MBS_nm[s]]])
-        colnames(res[[s]]) <- clean_options$BrS_objects[[s]]$patho
-      }
-      names(res) <- unlist(lapply(clean_options$BrS_objects,"[[","nm_spec_test"))
-      res
+    MBS_nm <- (names(bugs.dat)[grep("MBS_",names(bugs.dat))])
+    MBS_nm <- MBS_nm[order(MBS_nm)]
+    res <- list()
+    for (s in seq_along(MBS_nm)){
+      res[[s]] <- as.data.frame(bugs.dat[[MBS_nm[s]]])
+      colnames(res[[s]]) <- clean_options$BrS_objects[[s]]$patho
+    }
+    names(res) <- unlist(lapply(clean_options$BrS_objects,"[[","nm_spec_test"))
+    res
   }
   
   get_MSS <- function(){
@@ -96,7 +96,7 @@ nplcm_read_folder <- function(DIR_NPLCM){
   
   Mobs <- make_list(MBS, MSS, MGS)
   
-
+  
   res <- list(bugs.dat = bugs.dat,
               model_options = model_options,
               clean_options = clean_options,
@@ -255,14 +255,30 @@ get_individual_data <- function(i, data_nplcm){
 
 #' See if a result folder is obtained by JAGS
 #' 
-#' 
 #' @param DIR_NPLCM directory to the folder with results. 
 #' "mcmc_options.txt" must be in the folder.
 #' 
 #' @return TRUE for from JAGS; FALSE otherwise.
+#' @examples
+#' \dontrun{
+#' is_jags_folder("~/users/downloads") # just an illustration.
+#' }
 #' 
+#' @export
 is_jags_folder <- function(DIR_NPLCM){
-  mcmc_options  <- dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
-  !is.null(mcmc_options$use_jags) && mcmc_options$use_jags
+  tryCatch(
+    expr = {
+      mcmc_options = dget(file.path(DIR_NPLCM,"mcmc_options.txt"))
+      res = !is.null(mcmc_options$use_jags) && mcmc_options$use_jags
+    },
+    error = function(e){
+      message("[baker] no `mcmc_option.txt` found.")
+      return(FALSE)
+    },
+    warning = function(w){
+      message("[baker] no `mcmc_option.txt` found.")
+      return(FALSE)
+    }
+  )
 }
 

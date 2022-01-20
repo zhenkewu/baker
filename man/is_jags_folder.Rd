@@ -16,3 +16,9 @@ TRUE for from JAGS; FALSE otherwise.
 \description{
 See if a result folder is obtained by JAGS
 }
+\examples{
+\dontrun{
+is_jags_folder("~/users/downloads") # just an illustration.
+}
+
+}
