@@ -245,3 +245,15 @@ date
 <!-- - [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
 <!--     1. Install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) -->
 <!--     2. Install the WinBUGS 1.4.x [immortality key](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
+
+
+
+<div id='id-section11'/>
+#### Example data sets
+
+We provide two simulated data sets in the package:
+
+`data(data_nplcm_noreg)`
+
+`data(data_nplcm_reg_nest)`
+

@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
 Title: An R Package for Nested Partially Latent Class Models
-Version: 0.9.8.3.5
-Date: 2022-01-18
+Version: 0.9.8.4
+Date: 2022-01-20
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@gmail.com",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),

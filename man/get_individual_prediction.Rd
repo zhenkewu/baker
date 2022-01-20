@@ -28,14 +28,19 @@ model_options_no_reg <- list(
     FPR_formula = list(
       MBS1 =   ~-1)    # no covariate for the subclass weight regression
   ),
-  use_measurements = c("BrS"), # use bronze-standard data only for model estimation.
+  use_measurements = c("BrS"), 
+  # use bronze-standard data only for model estimation.
   prior= list(
-    Eti_prior = overall_uniform(1,cause_list), # Dirichlet(1,...,1) prior for the etiology.
+    Eti_prior = overall_uniform(1,cause_list), 
+    # Dirichlet(1,...,1) prior for the etiology.
     TPR_prior  = list(BrS = list(
       info  = "informative", # informative prior for TPRs
-      input = "match_range", # specify the informative prior for TPRs by specifying a plausible range.
-      val = list(MBS1 = list(up =  list(rep(0.99,J.BrS)), # upper ranges: matched to 97.5\% quantile of a Beta prior
-                             low = list(rep(0.55,J.BrS))))# lower ranges: matched to 2.5\% quantile of a Beta prior
+      input = "match_range", 
+ # specify the informative prior for TPRs by specifying a plausible range.
+      val = list(MBS1 = list(up =  list(rep(0.99,J.BrS)), 
+      # upper ranges: matched to 97.5\% quantile of a Beta prior
+                             low = list(rep(0.55,J.BrS))))
+          # lower ranges: matched to 2.5\% quantile of a Beta prior
     )
     )
   )
