@@ -122,7 +122,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #'           \item [nplcm_fit_Reg_discrete_predictor_NoNest] deals with the setting
 #'           with all discrete covariates for FPRs and CSCFs. The strata defined by the two sets of 
 #'           covariates need not be identical, e.g., as a result of distinct sets of covariates. Again,
-#'           this is directly to let FPR be stratifed by covariates, hence different from Wu and Chen (2020+)
+#'           this is directly to let FPR be stratified by covariates, hence different from Wu and Chen (2020+)
 #'           We implemented this function for methods comparison.
 #'           }
 #'          \item local dependence model for BrS measures: 
