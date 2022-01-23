@@ -1,0 +1,15 @@
+citHeader("To cite baker in publications, please use:")
+
+citEntry(entry = "Article",
+  author = personList(as.person("Zhenke Wu"),
+             as.person("Maria Deloria-Knoll"),
+             as.person("Laura L Hammitt"),
+             as.person("Scott L Zeger")),
+  title = "Partially Latent Class Models for Case-Control Studies
+  of Childhood Pneumonia Aetiology",
+  journal = "Journal of the Royal Statistical Society: Series C (Applied Statistics)",
+  year = "2015",
+  doi = "10.1111/rssc.12101",
+  url = "http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/abstract",
+  textVersion = "Wu, Z., Deloria-Knoll, M., Hammitt, L.L., Zeger, S.L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case-control studies of childhood pneumonia aetiology. Journal of the Royal Statistical Society: Series C (Applied Statistics). doi: 10.1111/rssc.12101."
+)
