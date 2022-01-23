@@ -105,7 +105,7 @@ plot_panels <- function(DIR_NPLCM,
       }    
     }
     
-    cat("\n == Plotting Panels of Measurements and Marginal Posterior of Etiology Fractions == \n")
+    cat("== Plotting Panels of Measurements and Marginal Posterior of CSCFs == \n")
     plot_leftmost(model_options,height_leftmost)
     
     if (!is.null(slices$MBS)){
@@ -135,7 +135,7 @@ plot_panels <- function(DIR_NPLCM,
   res_Eti <- plot_pie_panel(model_options,res_nplcm,bugs.dat,bg_color = bg_color,
                             select_latent,exact,ref_eti=ref_eti0,is_plot=is_plot)
   
-  if(is_plot){cat("\n == Done. == \n")}
+  if(is_plot){cat("== Done. == \n")}
   if (!is_plot){return(make_list(res_Eti,parsed_model))}
   
   #   
@@ -680,7 +680,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   }
   
   first  <- TRUE
-  cat("\n == Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
+  cat("== Plotting BrS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MBS))[slice])
   for (e in 1:nrow(template_ord)){
     gap_seq <- 0
     if (!is.null(pos_vec[[e]]) && length(pos_vec[[e]])>1){
@@ -1299,13 +1299,13 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   #
   op <- graphics::par(mar=c(5.1,0,4.1,0))
   
-  if (!is_length_all_one(pos_vec)){
+  if (check_combo_SS){
     #stop("== Not implemented for combo latent status.==")
     warning("==[baker] Combo latent status implemented with measurements overlapping in SS columns! ==\n")
   }
   
   first  <- TRUE
-  cat("\n == Plotting SS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MSS))[slice])
+  cat("== Plotting SS Slice: ", slice, ": ", unlist(names(data_nplcm$Mobs$MSS))[slice])
   for (e in 1:nrow(template_ord)){
     gap_seq <- 0
     if (!is.null(pos_vec[[e]]) && length(pos_vec[[e]])>1){
@@ -1498,7 +1498,7 @@ plot_pie_panel <- function(model_options,
     
     op <- graphics::par(mar=c(5.1,0,4.1,10))
     
-    cat("\n == Plotting pies == \n")
+    cat("== Plotting pies == \n")
     
     first <- TRUE
     for (e in seq_along(latent_seq)){

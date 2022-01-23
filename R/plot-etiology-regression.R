@@ -582,7 +582,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
             col=2,type="l",ylim=c(0,1),main=k,xlab="scaled date",ylab="subclass weight")
     # # posterior of subclass latent Gaussian mean:
     # #true subclass weights:
-    true_k = class_to_true_class[k_seq[k]]
+    if(!is.null(truth$truth_subwt)){true_k = class_to_true_class[k_seq[k]]}
     if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl, true_k],
                                              type="l",add=TRUE,lwd=4,col=1,lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")} 
   }
@@ -597,7 +597,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
     # # posterior of subclass latent Gaussian mean:
     # matplot(x,t(res_mu_alpha),col=col3,type="l",main="posterior of latent Gaussian mean")
     # # true subclass weights:
-    true_k = class_to_true_class[k_seq[k]]
+    if(!is.null(truth$truth_subwt)){true_k = class_to_true_class[k_seq[k]]}
     if (!is.null(truth$truth_subwt)){matplot(data_nplcm$X$std_date[plotid_FPR_ctrl], truth_subwt[plotid_FPR_ctrl,true_k],type="l",add=TRUE,lwd=4,
                                              col=c("black","black","black"),lty=c(1,1,1),xlab="scaled date",ylab="subclass weight")}
   }

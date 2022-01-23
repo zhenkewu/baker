@@ -371,7 +371,8 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
 #' positive rate for continuous covariates,e.g., enrollment date 
 #' in PERCH application. Smoothing is done by penalized splines implemented by 
 #' `mgcv` package. The penalized spline smoothing term is constructed by 
-#' [mgcv::smooth.construct.ps.smooth.spec()]
+#' [mgcv::smooth.construct.ps.smooth.spec()]. The window size of the moving averages currently is set
+#' to 60 days.
 #' 
 #' @param data_nplcm Data set produced by [clean_perch_data()]
 #' @param patho the index of pathogen
@@ -382,7 +383,9 @@ get_top_pattern <- function(BrS_dat,Y,case_status,n_pat,exclude_missing = TRUE){
 #' @import mgcv
 #' 
 #' @return A figure with smoothed positive rate and confidence bands for cases
-#' and controls, respectively. The right margin shows marginal positive rates.
+#' and controls, respectively. The right margin shows marginal positive rates; all
+#' rates are only among the subset of case subjects who had non-missing responses
+#' for a measured agent (e.g., pathogen); similarly for controls.
 #' 
 #' 
 #' @family exploratory data analysis functions
@@ -541,9 +544,9 @@ visualize_season <- function(data_nplcm, patho, slice = 1,slice_SS = 1){
   ctrl.overall.loc <- case.overall.loc+delta
   
   graphics::text(case.overall.loc,mean(response.case,na.rm=TRUE)+0.3,
-       paste0(round(mean(response.case)*100,1),"%"),col="black",pch=20,srt=90,cex=2)
+       paste0(round(mean(response.case,na.rm=TRUE)*100,1),"%"),col="black",pch=20,srt=90,cex=2)
   graphics::text(ctrl.overall.loc,mean(response.ctrl,na.rm=TRUE)+0.3,
-       paste0(round(mean(response.ctrl)*100,1),"%"),col="dodgerblue2",pch=20,srt=90,cex=2)
+       paste0(round(mean(response.ctrl,na.rm=TRUE)*100,1),"%"),col="dodgerblue2",pch=20,srt=90,cex=2)
   
   ncase = sum(!is.na(response.case))
   nctrl = sum(!is.na(response.ctrl))

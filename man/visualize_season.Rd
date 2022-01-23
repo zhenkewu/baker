@@ -18,7 +18,9 @@ representing blood culture measurements.}
 }
 \value{
 A figure with smoothed positive rate and confidence bands for cases
-and controls, respectively. The right margin shows marginal positive rates.
+and controls, respectively. The right margin shows marginal positive rates; all
+rates are only among the subset of case subjects who had non-missing responses
+for a measured agent (e.g., pathogen); similarly for controls.
 }
 \description{
 visualize trend of pathogen observation rate for NPPCR data (both cases and controls)
@@ -28,7 +30,8 @@ This function shows observed
 positive rate for continuous covariates,e.g., enrollment date
 in PERCH application. Smoothing is done by penalized splines implemented by
 \code{mgcv} package. The penalized spline smoothing term is constructed by
-\code{\link[mgcv:smooth.construct.ps.smooth.spec]{mgcv::smooth.construct.ps.smooth.spec()}}
+\code{\link[mgcv:smooth.construct.ps.smooth.spec]{mgcv::smooth.construct.ps.smooth.spec()}}. The window size of the moving averages currently is set
+to 60 days.
 }
 \seealso{
 Other exploratory data analysis functions: 
