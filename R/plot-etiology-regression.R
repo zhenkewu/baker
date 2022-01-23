@@ -482,7 +482,7 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       etaEti_sd  <- apply(tt_minus,c(1,2),sd)
       betaEti_q1  <- apply(tt_minus,c(1,2),quantile,0.025)
       betaEti_q2  <- apply(tt_minus,c(1,2),quantile,0.975)
-      beta_res <- make_list(betaEti_mean,etaEti_sd,betaEti_q1,betaEti_a2)
+      beta_res <- make_list(betaEti_mean,etaEti_sd,betaEti_q1,betaEti_q2)
       names(beta_res) <- c("post.mean","post.sd","CrI_025","CrI_0975")
       
       return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,res,beta_res,parsed_model))
