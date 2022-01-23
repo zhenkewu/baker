@@ -25,6 +25,8 @@ knitr::opts_chunk$set(
 
 **Issues** Please click [here](https://github.com/zhenkewu/baker/issues) to report reproducible issues.
 
+**Vignette** Please click [here](https://zhenkewu.com/assets/html/baker_vignette.html) to read the latest vignette.
+
 **References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following papers:
 
 |       | Citation     | Paper Link
@@ -34,7 +36,8 @@ knitr::opts_chunk$set(
 | nested pLCM regression   | Wu, Z., Chen, I (2020). Probabilistic Cause-of-disease Assignment using Case-control Diagnostic Tests: A Hierarchical Bayesian Approach. *Statistics in Medicine*. DOI:10.1002/sim.8804. |[Link](https://doi.org/10.1101/672808)| 
 | Application |Maria Deloria Knoll, Wei Fu, Qiyuan Shi, Christine Prosperi, Zhenke Wu, Laura L. Hammitt, Daniel R. Feikin, Henry C. Baggett, Stephen R.C. Howie, J. Anthony G. Scott, David R. Murdoch, Shabir A. Madhi, Donald M. Thea, W. Abdullah Brooks, Karen L. Kotloff, Mengying Li, Daniel E. Park, Wenyi Lin, Orin S. Levine, Katherine L. O’Brien, Scott L. Zeger; Bayesian Estimation of Pneumonia Etiology: Epidemiologic Considerations and Applications to the Pneumonia Etiology Research for Child Health Study, *Clinical Infectious Diseases*, Volume 64, Issue suppl_3, 15 June 2017, Pages S213–S227|[Link](https://academic.oup.com/cid/article/64/suppl_3/S213/3858226/Bayesian-Estimation-of-Pneumonia-Etiology)|
 | Primary PERCH Analysis | The PERCH Study Group (2019). Aetiology of severe hospitalized pneumonia in HIV-uninfected children from Africa and Asia: the Pneumonia Aetiology Research for Child Health (PERCH) Case-Control Study. *The Lancet* 394(10200): 757-779. | [Link](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(19)30721-4/fulltext)|
-| Software paper | Chen I, Shi Q, Zeger SL, Wu Z (2022+) `baker`: An `R` package for Nested Partially-Latent Class Models | In preparation; ask authors|
+| Software paper | Chen I, Shi Q, Zeger SL, Wu Z (2022+) `baker`: An `R` package for Nested Partially-Latent Class Models | [Vignette](https://zhenkewu.com/assets/html/baker_vignette.html)|
+
 
 ## Table of content
 <div id='id-section1'/>
