@@ -89,7 +89,7 @@ print.summary.nplcm.no_reg <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' 
+#' @export
 #' @family nplcm results
 print.summary.nplcm.reg_nonest_strat <- function(x,...) {
   
@@ -133,7 +133,7 @@ print.summary.nplcm.reg_nonest_strat <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' 
+#' @export
 #' @family nplcm results
 print.summary.nplcm.reg_nest_strat <- function(x,...) {
   
@@ -173,7 +173,7 @@ print.summary.nplcm.reg_nest_strat <- function(x,...) {
 #' @param x output from `summary.nplcm` with `summary.nplcm.reg_nonest` as the output object class.
 #' @param ... Not used.
 #' @return see [print.nplcm()]
-#'
+#' @export
 #' @family nplcm results
 print.summary.nplcm.reg_nonest <- function(x,...) {
   
@@ -194,8 +194,10 @@ print.summary.nplcm.reg_nonest <- function(x,...) {
   cat("                  name FPR: ", names(x$parsed_model$regression$do_reg_FPR),"\n")
   cat("                       FPR: ", x$parsed_model$regression$is_discrete_predictor$FPR,"\n")
   
-  cat("\n------- posterior summary -----------\n")
+  cat("\n------- posterior summary (population-level etiology, i.e., CSCFs in the current stratum) -----------\n")
   print(x$res)
+  cat("\n------- posterior summary (etiology regression coefficients)-----------\n")
+  print(x$beta_res)
   # Return
   return(invisible(x))
 }
@@ -210,7 +212,7 @@ print.summary.nplcm.reg_nonest <- function(x,...) {
 #' @param ... Not used.
 #' @return see [print.nplcm()]
 #'
-#' 
+#' @export
 #' @family nplcm results
 print.summary.nplcm.reg_nest <- function(x,...) {
   
@@ -231,8 +233,10 @@ print.summary.nplcm.reg_nest <- function(x,...) {
   cat("                  name FPR: ", names(x$parsed_model$regression$do_reg_FPR),"\n")
   cat("                       FPR: ", x$parsed_model$regression$is_discrete_predictor$FPR,"\n")
   
-  cat("\n------- posterior summary -----------\n")
+  cat("\n------- posterior summary (population-level etiology, i.e., CSCFs in the current stratum) -----------\n")
   print(x$res)
+  cat("\n------- posterior summary (etiology regression coefficients)-----------\n")
+  print(x$beta_res)
   # Return
   return(invisible(x))
 }

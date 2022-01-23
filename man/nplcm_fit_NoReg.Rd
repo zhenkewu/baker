@@ -42,6 +42,9 @@ basis expansion is often needed for approximation.
 
 \item{model_options}{A list of model options: likelihood and prior.
 \describe{
+\item{\code{use_measurements}}{
+A vector of characters strings; can be one or more from \code{"BrS"}, \code{"SS"}, \code{"GS"}.
+}
 \item{\code{likelihood}}{
 \itemize{
 \item{cause_list} The vector of causes (NB: specify);
@@ -60,9 +63,6 @@ format enrollment date; it will produce penalized-spline basis (based on B-splin
 Specify \code{~ 1} if no regression is intended. (NB: If \code{effect="fixed"}, \code{\link[=dm_Rdate_FPR]{dm_Rdate_FPR()}}
 will just specify a design matrix with appropriately standardized dates.)
 }
-}
-\item{\code{use_measurements}}{
-A vector of characters strings; can be one or more from \code{"BrS"}, \code{"SS"}, \code{"GS"}.
 }
 
 \item{\code{prior}}{
@@ -96,8 +96,8 @@ it's easier to just store the posterior samples of the regression coefficients a
 rather than storing them through \code{JAGS}.
 \item \code{result.folder} Path to folder storing the results;
 \item \code{bugsmodel.dir} Path to \code{.bug} model files;
-\item \code{winbugs.dir} Path to where WinBUGS 1.4 is installed. (NB: redundant?)
-\item \code{use_jags} \code{TRUE} for using \code{JAGS} (NB: redundant?)
+\item \code{jags.dir} Path to where JAGS is installed; if \code{NULL}, this will be set
+to \code{jags.dir=""}.
 }}
 }
 \value{

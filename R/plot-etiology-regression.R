@@ -165,10 +165,13 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   # Z_Eti_pred       <- stats::model.matrix(model_options$likelihood$Eti_formula,
   #                                         pred_dataframe_ok)
   # 
-  
+  Z_Eti       <- stats::model.matrix(model_options$likelihood$Eti_formula,
+                                     data.frame(data_nplcm$X,Y=data_nplcm$Y)[data_nplcm$Y==1,,drop=FALSE])
   if (!is_nested){
     betaFPR_samp <- array(t(get_res(paste0("^betaFPR_",slice,"\\["))),c(ncol_dm_FPR,JBrS,n_samp_kept))
-    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept))
+    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept),dimnames = list(colnames(Z_Eti),
+                                                                                                    model_options$likelihood$cause_list,
+                                                                                                    1:n_samp_kept))
     thetaBS_samp <- get_res(paste0("^thetaBS_",slice,"\\["))
     linpred      <- function(beta,design_matrix){design_matrix%*%beta}
     
@@ -179,7 +182,9 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   } else{
     betaFPR_samp <- array(t(get_res(paste0("^betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
     case_betaFPR_samp <- array(t(get_res(paste0("^case_betaFPR_",slice,"\\["))),c(ncol_dm_FPR,K_curr,n_samp_kept))
-    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept)) #useful in effect estimation.
+    betaEti_samp <- array(t(get_res("^betaEti")),c(ncol_dm_Eti,Jcause,n_samp_kept),dimnames = list(colnames(Z_Eti),
+                                                                                                   model_options$likelihood$cause_list,
+                                                                                                   1:n_samp_kept)) #useful in effect estimation.
     ThetaBS_samp <- array(t(get_res(paste0("^ThetaBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
     PsiBS_samp <- array(t(get_res(paste0("^PsiBS_",slice,"\\["))),c(JBrS,K_curr,n_samp_kept))
     Eta_samp <- array(t(get_res(paste0("^Eta_",slice,"\\["))),c(Nd,K_curr,n_samp_kept))
@@ -472,7 +477,15 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       rownames(res) <- model_options$likelihood$cause_list
       colnames(res) <- c("post.mean","post.sd","CrI_025","CrI_0975")
       
-      return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,res,parsed_model))
+      tt_minus <- sweep(betaEti_samp,c(1,3),betaEti_samp[,Jcause,],"-")
+      betaEti_mean  <- apply(tt_minus,c(1,2),mean)
+      etaEti_sd  <- apply(tt_minus,c(1,2),sd)
+      betaEti_q1  <- apply(tt_minus,c(1,2),quantile,0.025)
+      betaEti_q2  <- apply(tt_minus,c(1,2),quantile,0.975)
+      beta_res <- make_list(betaEti_mean,etaEti_sd,betaEti_q1,betaEti_a2)
+      names(beta_res) <- c("post.mean","post.sd","CrI_025","CrI_0975")
+      
+      return(make_list(Eti_overall_mean,Eti_overall_q,Eti_overall_sd,res,beta_res,parsed_model))
     }
   }
   

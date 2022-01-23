@@ -43,6 +43,9 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #' 
 #' @param model_options A list of model options: likelihood and prior. 
 #' \describe{
+#' \item{`use_measurements`}{
+#'   A vector of characters strings; can be one or more from `"BrS"`, `"SS"`, `"GS"`.
+#' }
 #' \item{`likelihood`}{
 #'     \itemize{
 #'          \item{cause_list} The vector of causes (NB: specify);
@@ -61,9 +64,6 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #'          Specify `~ 1` if no regression is intended. (NB: If `effect="fixed"`, [dm_Rdate_FPR()]
 #'          will just specify a design matrix with appropriately standardized dates.)
 #'     }
-#' }
-#' \item{`use_measurements`}{
-#'   A vector of characters strings; can be one or more from `"BrS"`, `"SS"`, `"GS"`.
 #' }
 #' 
 #' \item{`prior`}{
@@ -96,8 +96,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #' rather than storing them through `JAGS`. 
 #' \item `result.folder` Path to folder storing the results;
 #' \item `bugsmodel.dir` Path to `.bug` model files;
-#' \item `winbugs.dir` Path to where WinBUGS 1.4 is installed. (NB: redundant?)
-#' \item `use_jags` `TRUE` for using `JAGS` (NB: redundant?)
+#' \item `jags.dir` Path to where JAGS is installed; if `NULL`, this will be set 
+#' to `jags.dir=""`.
 #' }
 #' @return A `JAGS` output result, fitted by function [R2jags::jags2()] from `R2jags`. 
 #' It is an object of class `nplcm` and `bugs`.
@@ -1001,7 +1001,7 @@ nplcm_fit_NoReg<-
       good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
       writeLines(good_jagsinits_txt, curr_inits_txt_file)
     }
-    
+    if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
     gs <- jags2_baker(data   = curr_data_txt_file,
                       inits  = in_init,
                       parameters.to.save = out_parameter,
@@ -1753,7 +1753,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", 
                                bad_jagsdata_txt,fixed = FALSE)
     writeLines(good_jagsdata_txt, curr_data_txt_file)
-    
+    if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
     gs <- jags2_baker(data   = curr_data_txt_file,
                       inits  = in_init,
                       parameters.to.save = out_parameter,
@@ -2446,7 +2446,7 @@ nplcm_fit_Reg_NoNest <-
       #   good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
       #   writeLines(good_jagsinits_txt, curr_inits_txt_file)
       # }
-      
+      if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
       gs <- jags2_baker(data   = curr_data_txt_file,
                         inits  = in_init,
                         parameters.to.save = out_parameter,
@@ -3203,7 +3203,7 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   bad_jagsdata_txt <- readLines(curr_data_txt_file)
   good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
   writeLines(good_jagsdata_txt, curr_data_txt_file)
-  
+  if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
   gs <- jags2_baker(data   = curr_data_txt_file,
                     inits  = in_init,
                     parameters.to.save = out_parameter,
