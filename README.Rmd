@@ -23,9 +23,9 @@ knitr::opts_chunk$set(
 
 **Maintainer**: Zhenke Wu, zhenkewu@umich.edu
 
-**Issues** Please click [here](https://github.com/zhenkewu/baker/issues) to report reproducible issues.
+**Issues**: Please click [here](https://github.com/zhenkewu/baker/issues) to report reproducible issues.
 
-**Vignette** Please click [here](https://zhenkewu.com/assets/html/baker_vignette.html) to read the latest vignette.
+**Vignette**: Please click [here](https://zhenkewu.com/assets/html/baker_vignette.html) to read the latest vignette.
 
 **References**: If you are using **baker** for population and individual estimation from case-control data, please cite the following papers:
 
