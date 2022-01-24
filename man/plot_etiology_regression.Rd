@@ -57,30 +57,6 @@ enrollment date. (NB: dealing with NoA, multiple-pathogen causes, other continuo
 also there this function only plots the first slice - so generalization may be useful - give
 users an option to choose slice s; currently default to the first slice.)
 }
-\examples{
-\dontrun{
-# legend.text = c("[UPPER FIGURES]",
-                "observed prevalence: cases",
-                "observed prevalence: controls",
-                "fitted prevalence: cases",
-                "fitted prevalence: controls",
-                "true positive rate: mean",
-                "true positive rate: 95\%CI",
-                "[BOTTOM FIGURES]",
-                "etiology curve: mean",
-                "overall etiology: mean",
-                "overall etiology: 95\%CI","","","")
-legend.col=c("white","black","dodgerblue2","black","dodgerblue2","red","red",
-             "white","springgreen4","orange","orange","white","white","white")
-legend.lty=c(1,2,2,1,1,1,2,1,1,1,2)
-legend.lwd=c(2,2,2,2,2,2,2,2,2,2,2,2,2,2)
-legend("topleft",legend=legend.text,
-       lty=legend.lty,lwd=legend.lwd,
-       col=legend.col,ncol=2,
-       y.intersp=1.5,cex=1.6,box.col=NA)
-       }
-       
-}
 \references{
 See example figures
 \itemize{

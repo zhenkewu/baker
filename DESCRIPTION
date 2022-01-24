@@ -6,10 +6,12 @@ Date: 2022-01-23
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@gmail.com",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),
-     person("Scott", "Zeger", email="sz@jhu.edu",role="aut"),
+     person("Scott", "Zeger", email="sz@jhu.edu",role="aut",
+     comment = c(ORCID = "0000-0001-8907-1603")),
      person("John", "Muschelli", email="muschellij2@gmail.com", role="ctb", 
      comment = c(ORCID = "0000-0001-6469-1750")),
-     person("Irena", "Chen", email="irena@umich.edu", role="ctb")
+     person("Irena", "Chen", email="irena@umich.edu", role="ctb",
+     comment = c(ORCID = "0000-0002-9366-8506"))
      )
 Description: Provides functions to specify, fit and visualize
     nested partially-latent class models (Wu 'et' 'al'., 2016,

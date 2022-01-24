@@ -34,28 +34,6 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("eti_mean","ci_025","ci_9
 #' 
 #' @import graphics
 #' @importFrom lubridate day days_in_month month year
-#' @examples 
-#' \dontrun{
-#' # legend.text = c("[UPPER FIGURES]",
-#'                 "observed prevalence: cases",
-#'                 "observed prevalence: controls",
-#'                 "fitted prevalence: cases",
-#'                 "fitted prevalence: controls",
-#'                 "true positive rate: mean",
-#'                 "true positive rate: 95%CI",
-#'                 "[BOTTOM FIGURES]",
-#'                 "etiology curve: mean",
-#'                 "overall etiology: mean",
-#'                 "overall etiology: 95%CI","","","")
-#' legend.col=c("white","black","dodgerblue2","black","dodgerblue2","red","red",
-#'              "white","springgreen4","orange","orange","white","white","white")
-#' legend.lty=c(1,2,2,1,1,1,2,1,1,1,2)
-#' legend.lwd=c(2,2,2,2,2,2,2,2,2,2,2,2,2,2)
-#' legend("topleft",legend=legend.text,
-#'        lty=legend.lty,lwd=legend.lwd,
-#'        col=legend.col,ncol=2,
-#'        y.intersp=1.5,cex=1.6,box.col=NA)
-#'        }
 #'        
 #' @references See example figures 
 #' \itemize{

@@ -98,7 +98,7 @@ plot(dep)
 ```
 You will get a dynamic figure. A snapshot is below:
 
-![](inst/figs/nplcm_functional_dependence.png)
+![](man/figures/nplcm_functional_dependence.png)
 
 <div id='id-section4'/>
 
