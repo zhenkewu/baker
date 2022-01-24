@@ -7,7 +7,7 @@
 subset_data_nplcm_by_index(data_nplcm, index)
 }
 \arguments{
-\item{data_nplcm}{data for fitting nplcm; See \link{nplcm}}
+\item{data_nplcm}{data for fitting nplcm; See \code{\link[=nplcm]{nplcm()}}}
 
 \item{index}{a vector of indices indicating the observations you hope to subset;
 it will subset in all the sublists of data_nplcm}

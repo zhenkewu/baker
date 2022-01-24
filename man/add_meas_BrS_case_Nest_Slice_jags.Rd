@@ -16,7 +16,8 @@ add_meas_BrS_case_Nest_Slice_jags(s, Mobs, cause_list, ppd = NULL)
 \item{ppd}{Default is NULL; Set to TRUE for enabling posterior predictive checking.}
 }
 \value{
-a list of two elements: the first is \code{plug}, the .bug code; the second is \code{parameters}
+a list of two elements: the first is \code{plug}, the \code{.bug} code;
+the second is \code{parameters}
 that stores model parameters introduced by this plugged measurement slice
 }
 \description{

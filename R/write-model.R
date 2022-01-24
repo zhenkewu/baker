@@ -1961,7 +1961,8 @@ add_meas_BrS_param_NoNest_Slice_jags <- function(s,Mobs,prior,cause_list) {
 #' 
 #' @inheritParams add_meas_BrS_case_NoNest_Slice
 #' 
-#' @return a list of two elements: the first is `plug`, the .bug code; the second is `parameters`
+#' @return a list of two elements: the first is `plug`, the `.bug` code; 
+#' the second is `parameters`
 #' that stores model parameters introduced by this plugged measurement slice
 #' @family likelihood specification functions
 #' @family plug-and-play functions

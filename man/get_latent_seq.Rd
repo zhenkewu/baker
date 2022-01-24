@@ -7,7 +7,7 @@
 get_latent_seq(cause_list, ord, select_latent = NULL, exact = TRUE)
 }
 \arguments{
-\item{cause_list}{see mode_options in \link{nplcm}}
+\item{cause_list}{see mode_options in \code{\link[=nplcm]{nplcm()}}}
 
 \item{ord}{order of cause_list according to posterior mean}
 

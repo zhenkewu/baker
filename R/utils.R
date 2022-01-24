@@ -1620,7 +1620,7 @@ as.matrix_or_vec <- function(x){
 
 #' get index of latent status
 #' 
-#' @param cause_list see mode_options in [nplcm]
+#' @param cause_list see mode_options in [nplcm()]
 #' @param ord order of cause_list according to posterior mean
 #' @param select_latent Default is NULL
 #' @param exact Default is TRUE
@@ -2166,7 +2166,7 @@ softmax <- function (x) {
 #' generates a case and control at a particular covariate value, and just choose
 #' a case or control to retain in the simulated data.
 #'
-#' @param data_nplcm data for fitting nplcm; See [nplcm]
+#' @param data_nplcm data for fitting nplcm; See [nplcm()]
 #' @param index a vector of indices indicating the observations you hope to subset;
 #' it will subset in all the sublists of data_nplcm
 #'
@@ -2259,7 +2259,7 @@ merge_lists <- function(list_of_lists){
 
 #' combine multiple data_nplcm (useful when simulating data from regression models)
 #' 
-#' @param data_nplcm_list a list of data_nplcm in [nplcm]
+#' @param data_nplcm_list a list of data_nplcm in [nplcm()]
 #' 
 #' @examples 
 #' 

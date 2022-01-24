@@ -1,6 +1,6 @@
 #' get an individual's data from the output of [clean_perch_data()]
 #'
-#' @param data_nplcm data for fitting nplcm; See [nplcm]
+#' @param data_nplcm data for fitting nplcm; See [nplcm()]
 #' @param ID patient id: `patid`.
 #'
 #' @return a list with the inquired patient's data

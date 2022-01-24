@@ -1,3 +1,9 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Fixed the invalid file URI issue
+  
+
 ## Test environments
 * local OS X install, R 4.0.2
 * ubuntu latest release (on Github-Action), R 4.1.2

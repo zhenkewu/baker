@@ -2468,8 +2468,8 @@ nplcm_fit_Reg_NoNest <-
 
 #' Fit nested partially-latent class model with regression (low-level)
 #'
-#' Called by [nplcm] upon being assigned to this nested regression by 
-#' [assign_model]
+#' Called by [nplcm()] upon being assigned to this nested regression by 
+#' [assign_model()]
 #'
 #' @details This function prepares data, specifies hyperparameters in priors 
 #' (true positive rates and etiology fractions), initializes the posterior

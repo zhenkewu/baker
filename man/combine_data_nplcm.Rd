@@ -7,7 +7,7 @@
 combine_data_nplcm(data_nplcm_list)
 }
 \arguments{
-\item{data_nplcm_list}{a list of data_nplcm in \link{nplcm}}
+\item{data_nplcm_list}{a list of data_nplcm in \code{\link[=nplcm]{nplcm()}}}
 }
 \description{
 combine multiple data_nplcm (useful when simulating data from regression models)

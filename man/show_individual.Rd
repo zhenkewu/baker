@@ -7,7 +7,7 @@
 show_individual(data_nplcm, ID)
 }
 \arguments{
-\item{data_nplcm}{data for fitting nplcm; See \link{nplcm}}
+\item{data_nplcm}{data for fitting nplcm; See \code{\link[=nplcm]{nplcm()}}}
 
 \item{ID}{patient id: \code{patid}.}
 }
