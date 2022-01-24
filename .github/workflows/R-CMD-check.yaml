@@ -30,6 +30,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Install JAGS
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jags
 
       - uses: r-lib/actions/setup-pandoc@v1
 
@@ -45,11 +50,6 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v1
       
-      - name: Install JAGS
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y jags
-
       - name: Show testthat output
         if: always()
         run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true

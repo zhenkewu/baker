@@ -47,7 +47,6 @@ Suggests:
     spelling,
     knitr,
     testthat,
-    bibtex,
     rmarkdown,
     covr
 VignetteBuilder: knitr
