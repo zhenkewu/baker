@@ -1,13 +1,18 @@
 ## Test environments
-* local OS X install, R 3.5.3
-* ubuntu 12.04 (on travis-ci), R 3.5.2
-* win-builder (devel and release)
+* local OS X install, R 4.0.2
+* ubuntu latest release (on Github-Action), R 4.1.2
+* win-builder (devel and release), R 4.1.2
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
-* This is a new release.
+* New submission
+
+* [only appeared on Windows Server 2022, R-devel, 64 bit]checking for detritus in the temp directory ... NOTE
+Found the following files/directories:
+  'lastMiKTeXException'
+  We checked online; it seems to be platform-specific and related to files produced during testing; we did not find any place in the source files where interactive use of the vignette was invoked. This note did not appear in other platforms.
 
 ## Reverse dependencies
 

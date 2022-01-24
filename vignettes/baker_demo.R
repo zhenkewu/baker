@@ -1,21 +1,4 @@
----
-title: "Vignettes for baker: An R package for fitting nested partially latent class models"
-author: "Zhenke Wu"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
-vignette: >
-  %\VignetteIndexEntry{Vignettes for baker: An R package for fitting nested partially latent class models}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-output:
-  rmarkdown::html_vignette:
-    number_sections: yes
-    toc: no
----
-
-This is a simple vignette; please see [here](https://zhenkewu.com/assets/html/baker_vignette.html)
-for the more complete version. 
-
-```{r setup,echo=FALSE,results="hide"}
+## ----setup,echo=FALSE,results="hide"---------------------------
 suppressPackageStartupMessages({
 library(rjags)
 library(R2jags)
@@ -23,16 +6,8 @@ library(baker)
 library(binom)
 library(knitr)
 })
-```
 
-# Introduction
-
-In this vignette, a sharply truncated sampling procedure
-is used to demonstrate use of the 'baker' package tools. Because we built the vignette locally, please check the `inst/doc/` for the actual vignette files. We commented many of the following code segments because their running time is high on the CRAN server.
-
-The data for the illustration are related to pathogen
-categorization in pneumonia. We will simulate the presence or absence of pathogens of these pathogens measured with error.
-```{r lkd}
+## ----lkd-------------------------------------------------------
 fname = file.path(
   "example_data", 
   "pathogen_category_simulation.csv")
@@ -41,15 +16,8 @@ fname = system.file(
   package = "baker")
 demodat = read.csv(fname, stringsAsFactors = FALSE)
 kable(head(demodat))
-```
 
-
-
-# Setup and Simulate Measurements
-
-We first simulate data using NPLCM. We simulate data for controls and cases separately. Among controls, the disease class is termed "no infection". To model the dependence among pathogen measurements, Wu et al 2016, Biostatistics introduced subclasses to characterize such dependence. In this simulation, we assume there are two subclasses ($K=2$). Among cases, there are a few disease classes that represent the true lung infections by pathogens $1, 2, ..., L$ and another class called "None-of-the-above". We don't get to observe these disease classes and wish to use measurements peripheral to the lung to infer for each individual the probabilities of each pathogen infecting the lung as well as the fraction of pneumonia cases caused by each pathogen. We again assume two subclasses are nested within each of $L+1$ disease classes. Controls and cases in a given disease class fall into subclasses with likely different probabilities, which we term as subclass weights; We assume the subclass weights for controls is $\boldsymbol{\nu}=(0.5,0.5)$ and for cases $\boldsymbol{\nu}$ for which the R code below chose a particular pair of values `c(curr_mix,1-curr_mix)`.
-
-```{r doit}
+## ----doit------------------------------------------------------
 rm(list=ls())
 # Note: the example will only run 100 Gibbs sampling steps to save computing time.
 # To produce useful posterior inferences, please modify "mcmc_options" as follows
@@ -142,13 +110,8 @@ set_parameter <- list(
 
 simu_out   <- simulate_nplcm(set_parameter)
 data_nplcm <- simu_out$data_nplcm
-```
 
-# Exploratory data analysis
-
-Below, we visualize a matrix of pairwise log odds ratios (LOR) for cases (upper) and controls (lower). LOR is at the top of the cell. Below it, its standard error is in smaller type, using the same color as the LOR. Then the estimate is divided by its standard error. We put the actual value when the Z-statistics has an absolute value greater than 2; a plus (red) or minus (blue) if between 1 and 2; blank otherwise.
-
-```{r expl, fig.height=10, fig.width=10}
+## ----expl, fig.height=10, fig.width=10-------------------------
 
 # specify cause list:
 cause_list <- set_parameter$cause_list
@@ -164,12 +127,8 @@ BrS_object_1        <- make_meas_object(patho_BrS_MBS1,"MBS","1","BrS",cause_lis
 # pairwise log odds ratio plot:
 pathogen_display <- BrS_object_1$patho
 plot_logORmat(data_nplcm,pathogen_display,1)
-```
 
-
-# Model specification
-
-```{r domod}
+## ----domod-----------------------------------------------------
 m_opt1 <- list(likelihood   = list(cause_list = cause_list,               # <---- fitted causes.
                                    k_subclass = k_fit,                    # <---- no. of subclasses.
                                    Eti_formula = "~ 0",                   # <---- only apply FPR formula to specified slice of measurements; if not default to the first slice.
@@ -193,102 +152,76 @@ m_opt1 <- list(likelihood   = list(cause_list = cause_list,               # <---
 
 model_options <- m_opt1
 assign_model(model_options,data_nplcm)
-```
 
-# Fitting the model
+## ----dofit, eval=FALSE-----------------------------------------
+#  # date stamp for analysis:
+#  Date     <- gsub("-", "_", Sys.Date())
+#  # include stratification information in file name:
+#  dated_strat_name    <- file.path(working_dir,
+#                                   paste0("scn_",scn,"_mixiter_",iter))
+#  if (dir.exists(dated_strat_name)) {
+#    unlink(dated_strat_name, force = TRUE)
+#  }
+#  
+#  # create folder
+#  dir.create(dated_strat_name)
+#  fullname <- dated_strat_name
+#  
+#  # for finer scenarios, e.g., different types of analysis applicable to the
+#  # same data set. Here we just perform one analysis:
+#  result_folder <- file.path(
+#    fullname,
+#    paste0("rep_", rep, "_kfit_",
+#           model_options$likelihood$k_subclass))
+#  dir.create(result_folder)
+#  
+#  
+#  # options for MCMC chains:
+#  mcmc_options <- list(
+#    individual.pred = !TRUE,
+#    ppd             = TRUE,
+#    n.chains   = 1,
+#    n.itermcmc = as.integer(200), #50000
+#    n.burnin   = as.integer(100), #10000
+#    n.thin     = 1, #50
+#    result.folder = result_folder,
+#    bugsmodel.dir = result_folder
+#  )
+#  
+#  # Record the settings of current analysis:
+#  # data clean options:
+#  fname = file.path(
+#    "example_data",
+#    "pathogen_category_simulation.csv")
+#  fname = system.file(
+#    fname,
+#    package = "baker")
+#  global_patho_taxo_dir = fname
+#  
+#  clean_options <- list(
+#    BrS_objects        =  make_list(BrS_object_1),         # <---- all bronze-standard measurements.
+#    patho_taxo_dir = global_patho_taxo_dir,
+#    allow_missing      = FALSE)
+#  
+#  # place the nplcm data and cleaning options into the results folder
+#  dput(data_nplcm,file.path(mcmc_options$result.folder,"data_nplcm.txt"))
+#  dput(clean_options,file.path(mcmc_options$result.folder,"data_clean_options.txt"))
+#  
+#  gs <- nplcm(data_nplcm, model_options, mcmc_options)
 
-```{r dofit, eval=FALSE}
-# date stamp for analysis:
-Date     <- gsub("-", "_", Sys.Date())
-# include stratification information in file name:
-dated_strat_name    <- file.path(working_dir, 
-                                 paste0("scn_",scn,"_mixiter_",iter))
-if (dir.exists(dated_strat_name)) {
-  unlink(dated_strat_name, force = TRUE)
-}
+## ----dovizsetup,eval=FALSE-------------------------------------
+#  result_folder <- mcmc_options$result.folder
 
-# create folder
-dir.create(dated_strat_name)
-fullname <- dated_strat_name
+## ----lkpan,fig.height=10, fig.width=10, eval=FALSE-------------
+#  suppressWarnings(plot(gs, bg_color = NULL))
 
-# for finer scenarios, e.g., different types of analysis applicable to the
-# same data set. Here we just perform one analysis:
-result_folder <- file.path(
-  fullname,
-  paste0("rep_", rep, "_kfit_",
-         model_options$likelihood$k_subclass))
-dir.create(result_folder)
+## ----lkpan2,fig.height=10, fig.width=10, eval=FALSE------------
+#  plot(gs, bg_color = NULL, select_latent = c("A","C"), exact = TRUE)
 
+## ----doSLORD,fig.height=10, fig.width=10, eval=FALSE-----------
+#  plot_check_pairwise_SLORD(result_folder, slice=1)
 
-# options for MCMC chains:
-mcmc_options <- list(
-  individual.pred = !TRUE,
-  ppd             = TRUE,
-  n.chains   = 1,
-  n.itermcmc = as.integer(200), #50000
-  n.burnin   = as.integer(100), #10000
-  n.thin     = 1, #50
-  result.folder = result_folder,
-  bugsmodel.dir = result_folder
-)
-
-# Record the settings of current analysis:
-# data clean options:
-fname = file.path(
-  "example_data", 
-  "pathogen_category_simulation.csv")
-fname = system.file(
-  fname, 
-  package = "baker")
-global_patho_taxo_dir = fname
-
-clean_options <- list(
-  BrS_objects        =  make_list(BrS_object_1),         # <---- all bronze-standard measurements.
-  patho_taxo_dir = global_patho_taxo_dir,
-  allow_missing      = FALSE)
-
-# place the nplcm data and cleaning options into the results folder
-dput(data_nplcm,file.path(mcmc_options$result.folder,"data_nplcm.txt")) 
-dput(clean_options,file.path(mcmc_options$result.folder,"data_clean_options.txt"))
-
-gs <- nplcm(data_nplcm, model_options, mcmc_options)
-```
-
-# Visualizations
-
-```{r dovizsetup,eval=FALSE}
-result_folder <- mcmc_options$result.folder
-```
-
-## plot data, prior, and posteriors for all causative pathogens:
-
-
-```{r lkpan,fig.height=10, fig.width=10, eval=FALSE}
-suppressWarnings(plot(gs, bg_color = NULL))
-```
-
-## plot data, prior, and posterior for selected causes:
-
-```{r lkpan2,fig.height=10, fig.width=10, eval=FALSE}
-plot(gs, bg_color = NULL, select_latent = c("A","C"), exact = TRUE)
-```
-
-## plot the joint posterior of the etiology fraction for any three causes:
-
-## model checking by comparing observed pairwise log odds ratios (LOR)
-
- We compare observed LOR to the posterior predictive distributions of pairwise LOR; The numbers are
- (predicted LOR - observed LOR)/ s.e. (posterior predictive distribution of LOR);
- The closer to zero the better.
-
-```{r doSLORD,fig.height=10, fig.width=10, eval=FALSE}
-plot_check_pairwise_SLORD(result_folder, slice=1)
-```
-
-## model checking by comparing observed frequencies of binary patterns to the model-predicted ones
-
-```{r doobsf,fig.height=10, fig.width=10, eval=FALSE}
-dir_list <- as.list(c(result_folder))
-plot_check_common_pattern(dir_list,slice_vec =c(1,1))
-```
+## ----doobsf,fig.height=10, fig.width=10, eval=FALSE------------
+#  dir_list <- as.list(c(result_folder))
+#  plot_check_common_pattern(dir_list,slice_vec =c(1,1))
 

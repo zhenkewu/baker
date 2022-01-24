@@ -1,10 +1,6 @@
-# baker 0.9.8.5.1
+# baker 1.0.0
 
-* updated exported functions with examples and added generic functions
-
-# baker 0.9.3
-
-* Included regression functionalities for discrete and continuous predictors.
+* first public CRAN release
 
 
 

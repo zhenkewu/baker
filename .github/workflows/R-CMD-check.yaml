@@ -70,6 +70,13 @@ jobs:
         run : |
               rm '/usr/local/bin/gfortran'
               brew install jags
+              
+      - name: Install JAGS (ubuntu-latest)
+        if: runner.os == 'ubuntu'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jags
+          
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
