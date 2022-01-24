@@ -11,3 +11,4 @@ web
 ^cran-comments\.md$
 ^appveyor\.yml$
 ^\.github$
+^CRAN-SUBMISSION$
