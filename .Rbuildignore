@@ -12,3 +12,6 @@ web
 ^appveyor\.yml$
 ^\.github$
 ^CRAN-SUBMISSION$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
