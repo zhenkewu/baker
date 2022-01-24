@@ -8,10 +8,8 @@
 
 [![R build
 status](https://github.com/zhenkewu/baker/workflows/R-CMD-check/badge.svg)](https://github.com/zhenkewu/baker/actions)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker)
-[![Coverage
-status](https://codecov.io/gh/zhenkewu/baker/branch/master/graph/badge.svg)](https://codecov.io/github/zhenkewu/baker?branch=master)
+<!-- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker) -->
+<!-- [![Coverage status](https://codecov.io/gh/zhenkewu/baker/branch/master/graph/badge.svg)](https://codecov.io/github/zhenkewu/baker?branch=master) -->
 
 **Maintainer**: Zhenke Wu, <zhenkewu@umich.edu>
 
@@ -160,7 +158,7 @@ You will get a dynamic figure. A snapshot is below:
 #### Mac OSX 10.11 El Capitan
 
 1.  Use [Just Another Gibbs Sampler
-    (JAGS)](http://mcmc-jags.sourceforge.io/)
+    (JAGS)](https://mcmc-jags.sourceforge.io/)
 2.  Install JAGS 4.2.0; Download
     [here](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/)
 3.  Install `R`; Download from [here](https://cran.r-project.org/)
