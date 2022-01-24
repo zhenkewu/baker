@@ -1,7 +1,6 @@
 if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prior_eti"))
 
 
-
 #' Fit nested partially-latent class models (highest-level wrapper function)
 #'
 #' Uses `JAGS` (OSX or Windows) operating system for Bayesian posterior inference
@@ -2469,7 +2468,7 @@ nplcm_fit_Reg_NoNest <-
 
 #' Fit nested partially-latent class model with regression (low-level)
 #'
-#' Called by [nplcm]() upon being assigned to this nested regression by 
+#' Called by [nplcm] upon being assigned to this nested regression by 
 #' [assign_model]
 #'
 #' @details This function prepares data, specifies hyperparameters in priors 
@@ -2490,8 +2489,6 @@ nplcm_fit_Reg_NoNest <-
 #' 
 #' @family model fitting functions 
 #' 
-#'    
-
 nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   # Record the settings of current analysis:
   cat("==[baker] Results stored in: ==","\n",mcmc_options$result.folder,"\n")

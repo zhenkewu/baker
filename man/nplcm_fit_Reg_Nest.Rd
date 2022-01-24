@@ -104,7 +104,7 @@ to \code{jags.dir=""}.
 BUGS fit results.
 }
 \description{
-Called by \url{nplcm} upon being assigned to this nested regression by
+Called by \link{nplcm} upon being assigned to this nested regression by
 \link{assign_model}
 }
 \details{
