@@ -6,8 +6,8 @@
 > An R Package for Fitting Bayesian [Nested Partially Latent Class
 > Models](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent)
 
-[![Build
-Status](https://travis-ci.org/zhenkewu/baker.svg?branch=master)](https://travis-ci.org/zhenkewu/baker)
+[![R build
+status](https://github.com/zhenkewu/baker/workflows/R-CMD-check/badge.svg)](https://github.com/zhenkewu/baker/actions)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker)
 [![Coverage
@@ -15,10 +15,11 @@ status](https://codecov.io/gh/zhenkewu/baker/branch/master/graph/badge.svg)](htt
 
 **Maintainer**: Zhenke Wu, <zhenkewu@umich.edu>
 
-**Issues** Please click [here](https://github.com/zhenkewu/baker/issues)
-to report reproducible issues.
+**Issues**: Please click
+[here](https://github.com/zhenkewu/baker/issues) to report reproducible
+issues.
 
-**Vignette** Please click
+**Vignette**: Please click
 [here](https://zhenkewu.com/assets/html/baker_vignette.html) to read the
 latest vignette.
 
@@ -27,9 +28,9 @@ estimation from case-control data, please cite the following papers:
 
 |                                      | Citation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Paper Link                                                                                                                 |
 |--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| partially Latent Class Models (pLCM) | Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. *J. R. Stat. Soc. C*, 65: 97–114. <doi:10.1111/rssc.12101>                                                                                                                                                                                                                                                                                                                        | [Link](http://onlinelibrary.wiley.com/doi/10.1111/rssc.12101/full)                                                         |
-| nested pLCM                          | Wu, Z., Deloria-Knoll, M., Zeger, S.L.; Nested partially latent class models for dependent binary data; estimating disease etiology. *Biostatistics* 2017; 18 (2): 200-213. doi: 10.1093/biostatistics/kxw037                                                                                                                                                                                                                                                                                                                                                                                             | [Link](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent) |
-| nested pLCM regression               | Wu, Z., Chen, I (2020). Probabilistic Cause-of-disease Assignment using Case-control Diagnostic Tests: A Hierarchical Bayesian Approach. *Statistics in Medicine*. <DOI:10.1002/sim.8804>.                                                                                                                                                                                                                                                                                                                                                                                                                | [Link](https://doi.org/10.1101/672808)                                                                                     |
+| partially Latent Class Models (pLCM) | Wu, Z., Deloria-Knoll, M., Hammitt, L. L., Zeger, S. L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case–control studies of childhood pneumonia aetiology. *J. R. Stat. Soc. C*, 65: 97–114.                                                                                                                                                                                                                                                                                                                                                 | [Link](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssc.12101)                                                    |
+| nested pLCM                          | Wu, Z., Deloria-Knoll, M., Zeger, S.L.; Nested partially latent class models for dependent binary data; estimating disease etiology. *Biostatistics* 2017; 18 (2): 200-213.                                                                                                                                                                                                                                                                                                                                                                                                                               | [Link](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent) |
+| nested pLCM regression               | Wu, Z., Chen, I (2020). Probabilistic Cause-of-disease Assignment using Case-control Diagnostic Tests: A Hierarchical Bayesian Approach. *Statistics in Medicine*.                                                                                                                                                                                                                                                                                                                                                                                                                                        | [Link](https://doi.org/10.1101/672808)                                                                                     |
 | Application                          | Maria Deloria Knoll, Wei Fu, Qiyuan Shi, Christine Prosperi, Zhenke Wu, Laura L. Hammitt, Daniel R. Feikin, Henry C. Baggett, Stephen R.C. Howie, J. Anthony G. Scott, David R. Murdoch, Shabir A. Madhi, Donald M. Thea, W. Abdullah Brooks, Karen L. Kotloff, Mengying Li, Daniel E. Park, Wenyi Lin, Orin S. Levine, Katherine L. O’Brien, Scott L. Zeger; Bayesian Estimation of Pneumonia Etiology: Epidemiologic Considerations and Applications to the Pneumonia Etiology Research for Child Health Study, *Clinical Infectious Diseases*, Volume 64, Issue suppl_3, 15 June 2017, Pages S213–S227 | [Link](https://academic.oup.com/cid/article/64/suppl_3/S213/3858226/Bayesian-Estimation-of-Pneumonia-Etiology)             |
 | Primary PERCH Analysis               | The PERCH Study Group (2019). Aetiology of severe hospitalized pneumonia in HIV-uninfected children from Africa and Asia: the Pneumonia Aetiology Research for Child Health (PERCH) Case-Control Study. *The Lancet* 394(10200): 757-779.                                                                                                                                                                                                                                                                                                                                                                 | [Link](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(19)30721-4/fulltext)                                |
 | Software paper                       | Chen I, Shi Q, Zeger SL, Wu Z (2022+) `baker`: An `R` package for Nested Partially-Latent Class Models                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | [Vignette](https://zhenkewu.com/assets/html/baker_vignette.html)                                                           |
@@ -137,10 +138,10 @@ You will get a dynamic figure. A snapshot is below:
     with differential measurement characteristics, and multiple-pathogen
     etiology.
 3.  Scientists in [Pneumonia Etiology Research for Child
-    Health](http://www.jhsph.edu/research/centers-and-institutes/ivac/projects/perch/)
-    (PERCH) study usually refer to the etiology distribution as
-    “*population etiology pie*” and “*individual etiology pie*” for
-    their compositional nature, hence the name of the package.
+    Health](https://www.jhsph.edu/ivac/) (PERCH) study usually refer to
+    the etiology distribution as “*population etiology pie*” and
+    “*individual etiology pie*” for their compositional nature, hence
+    the name of the package.
 
 <div id='id-section7'/>
 
@@ -159,7 +160,7 @@ You will get a dynamic figure. A snapshot is below:
 #### Mac OSX 10.11 El Capitan
 
 1.  Use [Just Another Gibbs Sampler
-    (JAGS)](http://mcmc-jags.sourceforge.net/)
+    (JAGS)](http://mcmc-jags.sourceforge.io/)
 2.  Install JAGS 4.2.0; Download
     [here](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/)
 3.  Install `R`; Download from [here](https://cran.r-project.org/)
@@ -283,7 +284,7 @@ date
     4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/);
     Add the path to JAGS 4.2.0 into the environmental variable
     (essential for R to find the jags program). See
-    [this](http://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10)
+    [this](https://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10)
     for setting environmental variables;
 
 -   alternatives are `brew install -v jags` for OSX,

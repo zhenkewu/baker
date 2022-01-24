@@ -15,7 +15,7 @@ Description: Provides functions to specify, fit and visualize
     nested partially-latent class models (Wu et al., 2016,
     'JRSS-C' <doi:10.1111/rssc.12101>; 
     Wu et al., 2017, Biostatistics <doi:10.1093/biostatistics/kxw037>;
-    Wu and Chen, 2021, Statistics in Medicine <doi: 10.1002/sim.8804>) for 
+    Wu and Chen, 2021, Statistics in Medicine <doi:10.1002/sim.8804>) for 
     inference of population disease etiology and individual diagnosis. In the motivating
     Pneumonia Etiology Research for Child Health (PERCH) study, because both quantities
     of interest sum to one hundred percent, the PERCH scientists frequently refer to

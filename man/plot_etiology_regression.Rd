@@ -84,8 +84,10 @@ legend("topleft",legend=legend.text,
 \references{
 See example figures
 \itemize{
-\item A Figure using simulated data for six pathogens: \url{https://bit.ly/2FWoYeM}
-\item The legends for the figure above: \url{https://bit.ly/2OU8F60}
+\item A Figure using simulated data for six pathogens:
+\url{https://github.com/zhenkewu/baker/blob/master/inst/figs/visualize_etiology_regression_SITE=1.pdf}
+\item The legends for the figure above:
+\url{https://github.com/zhenkewu/baker/blob/master/inst/figs/legends_visualize_etiology_regression.png}
 }
 }
 \seealso{

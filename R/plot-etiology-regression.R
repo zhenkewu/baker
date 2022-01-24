@@ -59,8 +59,10 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("eti_mean","ci_025","ci_9
 #'        
 #' @references See example figures 
 #' \itemize{
-#' \item A Figure using simulated data for six pathogens: <https://bit.ly/2FWoYeM>
-#' \item The legends for the figure above: <https://bit.ly/2OU8F60>
+#' \item A Figure using simulated data for six pathogens: 
+#' <https://github.com/zhenkewu/baker/blob/master/inst/figs/visualize_etiology_regression_SITE=1.pdf>
+#' \item The legends for the figure above: 
+#' <https://github.com/zhenkewu/baker/blob/master/inst/figs/legends_visualize_etiology_regression.png>
 #' }
 #' @family visualization functions
 #'    
