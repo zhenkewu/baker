@@ -1,5 +1,5 @@
 ---
-title: "Vignettes for baker: An R package for fitting nested partially latent class model to estimate disease etiologies"
+title: "Vignettes for baker: An R package for fitting nested partially latent class models"
 author: "Zhenke Wu"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
@@ -12,12 +12,8 @@ output:
     toc: no
 ---
 
-<!--
-#######################################################################
-# Simulated Examples for Nested Partially-Latent Class Models
-# Zhenke Wu | zhenkewu@gmail.com
-# Februrary 16, 2016
--->
+This is a simple vignette; please see [here](https://zhenkewu.com/assets/html/baker_vignette.html)
+for the more complete version. 
 
 ```{r setup,echo=FALSE,results="hide"}
 suppressPackageStartupMessages({
@@ -226,17 +222,14 @@ dir.create(result_folder)
 
 # options for MCMC chains:
 mcmc_options <- list(
-  debugstatus = !TRUE,
   individual.pred = !TRUE,
   ppd             = TRUE,
   n.chains   = 1,
-  n.itermcmc = as.integer(50), #50000
-  n.burnin   = as.integer(10), #10000
+  n.itermcmc = as.integer(200), #50000
+  n.burnin   = as.integer(100), #10000
   n.thin     = 1, #50
   result.folder = result_folder,
-  bugsmodel.dir = result_folder,
-  jags.dir = "",
-  use_jags = TRUE
+  bugsmodel.dir = result_folder
 )
 
 # Record the settings of current analysis:
@@ -254,9 +247,9 @@ clean_options <- list(
   patho_taxo_dir = global_patho_taxo_dir,
   allow_missing      = FALSE)
 
-dput(clean_options,
-     file.path(mcmc_options$result.folder,
-               "data_clean_options.txt"))
+# place the nplcm data and cleaning options into the results folder
+dput(data_nplcm,file.path(mcmc_options$result.folder,"data_nplcm.txt")) 
+dput(clean_options,file.path(mcmc_options$result.folder,"data_clean_options.txt"))
 
 gs <- nplcm(data_nplcm, model_options, mcmc_options)
 ```
@@ -271,33 +264,16 @@ result_folder <- mcmc_options$result.folder
 
 
 ```{r lkpan,fig.height=10, fig.width=10, eval=FALSE}
-suppressWarnings(plot_panels(result_folder, bg_color=NULL))
+suppressWarnings(plot(gs, bg_color = NULL))
 ```
 
 ## plot data, prior, and posterior for selected causes:
 
 ```{r lkpan2,fig.height=10, fig.width=10, eval=FALSE}
-plot_panels(
-  result_folder, bg_color = NULL, 
-  select_latent = c("A","C"), exact = TRUE)
+plot(gs, bg_color = NULL, select_latent = c("A","C"), exact = TRUE)
 ```
 
 ## plot the joint posterior of the etiology fraction for any three causes:
-
-```{r trysel,fig.height=10, fig.width=10, eval=FALSE}
-plot_selected_etiology(
-  selected = c("A","B","C"), 
-  result_folder, 1, 5)
-```
-
-## grouped etiology (e.g., bacteria (left) vs virus (right) )
-
-```{r dodod,fig.height=10, fig.width=10, eval=FALSE}
-plot_group_etiology(
-  result_folder,
-  dir_taxo = global_patho_taxo_dir, 
-  ksFrac = 1)
-```
 
 ## model checking by comparing observed pairwise log odds ratios (LOR)
 
