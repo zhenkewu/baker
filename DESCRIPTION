@@ -48,11 +48,11 @@ Suggests:
     knitr,
     testthat,
     rmarkdown,
-    covr
+    covr,
+    knitcitations
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Encoding: UTF-8
-Remotes: cran/knitcitations
 URL: https://github.com/zhenkewu/baker
 BugReports: https://github.com/zhenkewu/baker/issues
 Roxygen: list(markdown = TRUE)
