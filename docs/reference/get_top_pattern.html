@@ -92,10 +92,22 @@ with <code>Y = case_status</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">get_top_pattern</span><span class="op">(</span><span class="va">data_nplcm</span><span class="op">$</span><span class="va">Mobs</span><span class="op">$</span><span class="va">MBS</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">data_nplcm</span><span class="op">$</span><span class="va">Y</span>,<span class="fl">1</span>,<span class="fl">30</span>,<span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_nplcm_noreg</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">get_top_pattern</span><span class="op">(</span><span class="va">data_nplcm_noreg</span><span class="op">$</span><span class="va">Mobs</span><span class="op">$</span><span class="va">MBS</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">data_nplcm_noreg</span><span class="op">$</span><span class="va">Y</span>,<span class="fl">1</span>,<span class="fl">5</span>,<span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $obs_pat</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     100000     001000     101000     110000     010000      other </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.22666667 0.08666667 0.08666667 0.06666667 0.06333333 0.47000000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $pattern_names</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "100000" "001000" "101000" "110000" "010000" "other" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $exist_other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_nplcm_noreg</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">get_top_pattern</span><span class="op">(</span><span class="va">data_nplcm_noreg</span><span class="op">$</span><span class="va">Mobs</span><span class="op">$</span><span class="va">MBS</span><span class="op">$</span><span class="va">MBS1</span>,<span class="va">data_nplcm_noreg</span><span class="op">$</span><span class="va">Y</span>,case_status<span class="op">=</span><span class="fl">1</span>,n_pat<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span>

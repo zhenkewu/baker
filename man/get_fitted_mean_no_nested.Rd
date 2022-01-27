@@ -29,16 +29,3 @@ a list with model fitted means
 \description{
 get model fitted mean for conditional independence model
 }
-\examples{
-\dontrun{
-result_folder <- c("C:/2015_09_17_01KEN")
-out           <- nplcm_read_folder(result_folder)
-data_nplcm    <- list(Mobs  = out$Mobs, Y = out$Y)
-slice         <- 1
-# fitted positive rates for pathogens separately among cases and controls:
-get_fitted_mean_no_nested(slice,out$res_nplcm,out$model_options,data_nplcm,
-                      out$clean_options)
-# names of pathogens:
-colnames(out$Mobs$MBS[[slice]])
-}
-}

@@ -52,6 +52,9 @@ on the horizontal axis for the SS panel.}
 \item{prior_shape}{\code{interval} or \code{boxplot} - for how to represent
 prior/posteriors of the TPR/FPRs of measurements.}
 }
+\value{
+plotting function
+}
 \description{
 Plot silver-standard (SS) panel
 }

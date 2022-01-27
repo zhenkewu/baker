@@ -33,4 +33,4 @@ data_nplcm_noreg <- simu_out_noreg$data_nplcm
 
 
 ##save the simulated data to the R package for illustration:
-save(data_nplcm_noreg, file = "data/data_nplcm_noreg.rda", compress = "xz")
+#save(data_nplcm_noreg, file = "data/data_nplcm_noreg.rda", compress = "xz")

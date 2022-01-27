@@ -620,6 +620,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @importFrom reshape2 melt
 #' @family visualization functions
 #'    
+#' @return plotting function
 plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
                                 truth=NULL,
                                 RES_NPLCM=NULL,show_levels=0,is_plot=TRUE){

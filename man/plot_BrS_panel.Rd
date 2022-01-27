@@ -55,6 +55,9 @@ prior/posteriors of the TPR/FPRs of measurements.}
 
 \item{silent}{Default is TRUE to not print any warning messages; FALSE otherwise.}
 }
+\value{
+plotting function.
+}
 \description{
 Plot bronze-standard (BrS) panel
 }

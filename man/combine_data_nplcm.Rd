@@ -9,6 +9,10 @@ combine_data_nplcm(data_nplcm_list)
 \arguments{
 \item{data_nplcm_list}{a list of data_nplcm in \code{\link[=nplcm]{nplcm()}}}
 }
+\value{
+a list with each element resulting from row binding of each
+corresponding element in the input \code{data_nplcm_list}.
+}
 \description{
 combine multiple data_nplcm (useful when simulating data from regression models)
 }

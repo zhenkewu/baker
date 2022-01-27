@@ -16,6 +16,9 @@ A and B)}
 \usage{
 data("data_nplcm_noreg")
 }
+\value{
+No returned value; just loading data into the working space.
+}
 \description{
 Data set for illustrating regression functionalities
 }

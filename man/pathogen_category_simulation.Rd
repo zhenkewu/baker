@@ -15,6 +15,9 @@ bacterium, \code{V} for virus, which are randomly assigned.}
 \usage{
 data("pathogen_category_simulation")
 }
+\value{
+No returned value; just loading data into the working space.
+}
 \description{
 This is used in simulations where the pathogen names are from the alphabet,
 and we hope to plot etiologies grouped by virus or bacteria

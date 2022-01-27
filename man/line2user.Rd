@@ -11,6 +11,11 @@ line2user(line, side)
 
 \item{side}{integer; 1-4}
 }
+\value{
+a numeric vector of the same length as \code{line};
+the values represent the coordinates in the current plot
+and are converted from \code{line}.
+}
 \description{
 Here's a version that works with log-scale and linear scale axes.
 The trick is to express line locations in npc coordinates rather than user coordinates,
@@ -28,7 +33,7 @@ height of a line in user coords we would use
 
 
 setup_plot <- function(log = "") {
-  par(mar = c(2, 10, 2, 2), oma = rep(2, 4))
+  oldpar <- par(mar = c(2, 10, 2, 2), oma = rep(2, 4))
   plot.new()
   plot.window(xlim = c(1, 10), ylim = c(1, 10), log = log)
   box(which = "plot", lwd = 2, col = "gray40")
@@ -42,6 +47,7 @@ setup_plot <- function(log = "") {
   for (i in 0:9) {
     mtext(side = 2, col = "darkred", text = paste0("Line", i), line = i)
   }
+  par(oldpar)
 }
 # And here are a couple of examples, applied to your setup_plot with mar=c(5, 5, 5, 5):
 setup_plot()
@@ -76,6 +82,7 @@ abline(h=line2user(0:4, 1), lty=3, xpd=TRUE)
 abline(v=line2user(0:4, 2), lty=3, xpd=TRUE)
 abline(h=line2user(0:4, 3), lty=3, xpd=TRUE)
 abline(v=line2user(0:4, 4), lty=3, xpd=TRUE)
+
 }
 \references{
 \url{https://stackoverflow.com/questions/29125019/get-margin-line-locations-mgp-in-user-coordinates}

@@ -31,8 +31,8 @@ if \code{intercept=TRUE}; \code{dof-1} if \code{FALSE}.}
 }
 \examples{
 
-\dontrun{~ -1+s_date_Eti(DATE,Y,basis='ps',dof=7)}
-
+data("data_nplcm_reg_nest")
+s_date_Eti(data_nplcm_reg_nest$X$DATE,data_nplcm_reg_nest$Y,basis='ps',dof=7)
 }
 \seealso{
 \code{\link[=nplcm]{nplcm()}}

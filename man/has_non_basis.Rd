@@ -2,15 +2,19 @@
 % Please edit documentation in R/utils.R
 \name{has_non_basis}
 \alias{has_non_basis}
-\title{test if a formula has other terms not created by s_date_Eti or s_date_FPR}
+\title{test if a formula has terms not created by [s_date_Eti() or \code{\link[=s_date_FPR]{s_date_FPR()}}}
 \usage{
 has_non_basis(form)
 }
 \arguments{
 \item{form}{a formula}
 }
+\value{
+logical \code{TRUE} (if having terms not created by [s_date_Eti() or \code{\link[=s_date_FPR]{s_date_FPR()}});
+\code{FALSE} otherwise.
+}
 \description{
-test if a formula has other terms not created by s_date_Eti or s_date_FPR
+test if a formula has terms not created by [s_date_Eti() or \code{\link[=s_date_FPR]{s_date_FPR()}}
 }
 \examples{
 form1 <- as.formula(~ -1+s_date_FPR(DATE,Y,basis = "ps",10) + as.factor(SITE))
@@ -20,4 +24,5 @@ form3 <- as.formula(~ s_date_FPR(DATE,Y,basis = "ps",10))
 has_non_basis(form1)
 has_non_basis(form2)
 has_non_basis(form3)
+
 }

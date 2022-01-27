@@ -97,8 +97,10 @@ log odds ratio for the BrS data. The function generates this figure in your work
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_nplcm_noreg</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
+<span class="r-in"> <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_nplcm_noreg</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">cause_list</span> <span class="op">&lt;-</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">J.BrS</span>      <span class="op">&lt;-</span> <span class="fl">6</span></span>
 <span class="r-in"><span class="va">model_options_no_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span class="r-in">  likelihood   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span class="r-in">    cause_list <span class="op">=</span> <span class="va">cause_list</span>,</span>
@@ -115,23 +117,24 @@ log odds ratio for the BrS data. The function generates this figure in your work
 <span class="r-in">    TPR_prior  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>BrS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span class="r-in">      info  <span class="op">=</span> <span class="st">"informative"</span>, <span class="co"># informative prior for TPRs</span></span>
 <span class="r-in">      input <span class="op">=</span> <span class="st">"match_range"</span>, </span>
-<span class="r-in"> <span class="co"># specify the informative prior for TPRs by specifying a plausible range.</span></span>
+<span class="r-in">      <span class="co"># specify the informative prior for TPRs by specifying a plausible range.</span></span>
 <span class="r-in">      val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>MBS1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>up <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.99</span>,<span class="va">J.BrS</span><span class="op">)</span><span class="op">)</span>, </span>
-<span class="r-in">      <span class="co"># upper ranges: matched to 97.5% quantile of a Beta prior</span></span>
+<span class="r-in">                             <span class="co"># upper ranges: matched to 97.5% quantile of a Beta prior</span></span>
 <span class="r-in">                             low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.55</span>,<span class="va">J.BrS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">         <span class="co"># lower ranges: matched to 2.5% quantile of a Beta prior</span></span>
+<span class="r-in">      <span class="co"># lower ranges: matched to 2.5% quantile of a Beta prior</span></span>
 <span class="r-in">    <span class="op">)</span></span>
 <span class="r-in">    <span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span>     </span>
 <span class="r-in"></span>
+<span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># include stratification information in file name:</span></span>
-<span class="r-in"><span class="va">thedir_dated</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">working_dir</span>,<span class="va">Date</span>,<span class="st">"_no_reg"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">thedir</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"_no_reg"</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># create folders to store the model results </span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">thedir_dated</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">result_folder_no_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">thedir_dated</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"results"</span>,collapse<span class="op">=</span><span class="st">"_"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">thedir</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">result_folder_no_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">thedir</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"results"</span>,collapse<span class="op">=</span><span class="st">"_"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">thedir</span> <span class="op">&lt;-</span> <span class="va">result_folder_no_reg</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">thedir</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"></span>
@@ -145,21 +148,28 @@ log odds ratio for the BrS data. The function generates this figure in your work
 <span class="r-in">  individual.pred <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span class="r-in">  ppd <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span class="r-in">  result.folder <span class="op">=</span> <span class="va">thedir</span>,</span>
-<span class="r-in">  bugsmodel.dir <span class="op">=</span> <span class="va">thedir</span>,</span>
-<span class="r-in">  jags.dir <span class="op">=</span> <span class="st">""</span></span>
+<span class="r-in">  bugsmodel.dir <span class="op">=</span> <span class="va">thedir</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
+<span class="r-in"><span class="va">BrS_object_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_meas_object.html">make_meas_object</a></span><span class="op">(</span>patho <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, </span>
+<span class="r-in">                                 specimen <span class="op">=</span> <span class="st">"MBS"</span>, test <span class="op">=</span> <span class="st">"1"</span>, </span>
+<span class="r-in">                                 quality <span class="op">=</span> <span class="st">"BrS"</span>, cause_list <span class="op">=</span> <span class="va">cause_list</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">clean_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>BrS_objects <span class="op">=</span> <span class="fu"><a href="make_list.html">make_list</a></span><span class="op">(</span><span class="va">BrS_object_1</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># place the nplcm data and cleaning options into the results folder</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dput.html" class="external-link">dput</a></span><span class="op">(</span><span class="va">data_nplcm_noreg</span>,<span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">thedir</span>,<span class="st">"data_nplcm.txt"</span><span class="op">)</span><span class="op">)</span> </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dput.html" class="external-link">dput</a></span><span class="op">(</span><span class="va">clean_options</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">thedir</span>,<span class="st">"data_clean_options.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dput.html" class="external-link">dput</a></span><span class="op">(</span><span class="va">clean_options</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">thedir</span>, <span class="st">"data_clean_options.txt"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">rjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rjags/man/jags.module.html" class="external-link">load.module</a></span><span class="op">(</span><span class="st">"glm"</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">nplcm_noreg</span> <span class="op">&lt;-</span> <span class="fu"><a href="nplcm.html">nplcm</a></span><span class="op">(</span><span class="va">data_nplcm_noreg</span>,<span class="va">model_options_no_reg</span>,<span class="va">mcmc_options_no_reg</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==[baker] Results stored in: == </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  /var/folders/rk/89yxmwcj4333kgsy6lh5q36r0000gn/T//RtmpY2bG4w_no_reg/results </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">plot_check_pairwise_SLORD</span><span class="op">(</span><span class="va">nplcm_noreg</span><span class="op">$</span><span class="va">DIR_NPLCM</span>,slice<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-plt img"><img src="plot_check_pairwise_SLORD-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==[baker]A figure is generated for model checking: pairwise standardized log odds ratio difference (SLORD). </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Stored in  /var/folders/rk/89yxmwcj4333kgsy6lh5q36r0000gn/T//RtmpY2bG4w_no_reg/results  ==</span>
+<span class="r-in"><span class="co"># }</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

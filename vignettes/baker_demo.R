@@ -18,7 +18,6 @@ demodat = read.csv(fname, stringsAsFactors = FALSE)
 kable(head(demodat))
 
 ## ----doit------------------------------------------------------
-rm(list=ls())
 # Note: the example will only run 100 Gibbs sampling steps to save computing time.
 # To produce useful posterior inferences, please modify "mcmc_options" as follows
 #                      "n.itermcmc" to 50000
@@ -27,10 +26,6 @@ rm(list=ls())
 
 
 working_dir <- tempdir() # <-- create a temporary directory.
-#curd = getwd()
-#randname = paste(curd, basename(tempfile()), sep="/") # need absolute path
-#dir.create(randname)
-#working_dir = randname
 
 K.true  <- 2   # no. of latent subclasses in actual simulation. 
 # If eta = c(1,0), K.true is effectively 1.

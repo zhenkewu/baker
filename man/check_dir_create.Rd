@@ -9,6 +9,9 @@ check_dir_create(path)
 \arguments{
 \item{path}{Folder path to check and create if not there.}
 }
+\value{
+the same returned values for \code{\link[=dir.create]{dir.create()}}
+}
 \description{
 check existence and create folder if non-existent
 }

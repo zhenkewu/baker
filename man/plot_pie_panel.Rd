@@ -42,6 +42,9 @@ on the horizontal axis for the pie panel.}
 
 \item{is_plot}{default to \code{TRUE} for plotting only; set to \code{FALSE} if to get summary.}
 }
+\value{
+plotting function.
+}
 \description{
 Plot etiology (pie) panel
 }

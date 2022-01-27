@@ -16,11 +16,14 @@ a matrix of individual predictions; rows for cases, columns for causes
 specified in \code{model_options$likelihood$cause_list}; See \code{\link[=nplcm]{nplcm()}}
 }
 \description{
-get individual prediction (Bayesian posterior)
+must set \code{individual.pred = TRUE} in MCMC options (see the example of this
+function)
 }
 \examples{
-\dontrun{
+\donttest{
 data(data_nplcm_noreg)
+cause_list <- LETTERS[1:6]
+J.BrS      <- 6
 model_options_no_reg <- list(
   likelihood   = list(
     cause_list = cause_list,
@@ -37,23 +40,24 @@ model_options_no_reg <- list(
     TPR_prior  = list(BrS = list(
       info  = "informative", # informative prior for TPRs
       input = "match_range", 
- # specify the informative prior for TPRs by specifying a plausible range.
+      # specify the informative prior for TPRs by specifying a plausible range.
       val = list(MBS1 = list(up =  list(rep(0.99,J.BrS)), 
-      # upper ranges: matched to 97.5\% quantile of a Beta prior
+                             # upper ranges: matched to 97.5\% quantile of a Beta prior
                              low = list(rep(0.55,J.BrS))))
-          # lower ranges: matched to 2.5\% quantile of a Beta prior
+      # lower ranges: matched to 2.5\% quantile of a Beta prior
     )
     )
   )
-)
+)     
+
 
 set.seed(1)
 # include stratification information in file name:
-thedir_dated    <- paste0(working_dir,Date,"_no_reg")
+thedir    <- paste0(tempdir(),"_no_reg")
 
-# create folders to store the model results
-dir.create(thedir_dated, showWarnings = FALSE)
-result_folder_no_reg <- file.path(thedir_dated,paste("results",collapse="_"))
+# create folders to store the model results 
+dir.create(thedir, showWarnings = FALSE)
+result_folder_no_reg <- file.path(thedir,paste("results",collapse="_"))
 thedir <- result_folder_no_reg
 dir.create(thedir, showWarnings = FALSE)
 
@@ -61,25 +65,28 @@ dir.create(thedir, showWarnings = FALSE)
 mcmc_options_no_reg <- list(
   debugstatus = TRUE,
   n.chains = 1,
-  n.itermcmc = as.integer(200),
-  n.burnin = as.integer(100),
+  n.itermcmc = as.integer(200), 
+  n.burnin = as.integer(100), 
   n.thin = 1,
-  individual.pred = FALSE,
-  ppd = TRUE,
+  individual.pred = TRUE, # <- must set to TRUE! <------- NOTE! 
+  ppd = FALSE,
   result.folder = thedir,
-  bugsmodel.dir = thedir,
-  jags.dir = ""
+  bugsmodel.dir = thedir
 )
 
+BrS_object_1 <- make_meas_object(patho = LETTERS[1:6], 
+                                 specimen = "MBS", test = "1", 
+                                 quality = "BrS", cause_list = cause_list)
+clean_options <- list(BrS_objects = make_list(BrS_object_1))
 # place the nplcm data and cleaning options into the results folder
-dput(data_nplcm_noreg,file.path(thedir,"data_nplcm.txt"))
-dput(clean_options, file.path(thedir,"data_clean_options.txt"))
+dput(data_nplcm_noreg,file.path(thedir,"data_nplcm.txt")) 
+dput(clean_options, file.path(thedir, "data_clean_options.txt"))
 
 rjags::load.module("glm")
 
 nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
 
-image(get_individual_prediction(nplcm_read_folder(nplcm_noreg$DIR_NPLCM)))
+image(get_individual_prediction(nplcm_noreg))
 
 }
 

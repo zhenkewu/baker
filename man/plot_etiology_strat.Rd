@@ -32,6 +32,9 @@ levels of strata; default to \code{0} for overall.}
 
 \item{is_plot}{default to TRUE, plotting the figures; if \code{FALSE} only returning summaries}
 }
+\value{
+plotting function
+}
 \description{
 This function visualizes the etiology estimates against one discrete covariate, e.g.,
 age groups.

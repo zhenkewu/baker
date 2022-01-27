@@ -37,6 +37,9 @@ line.}
 
 \item{title}{text for the figure}
 }
+\value{
+plotting function; no returned value.
+}
 \description{
 Special to case-control visualization: upper right for cases, lower left
 for controls.

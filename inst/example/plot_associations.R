@@ -1,4 +1,3 @@
-rm(list=ls())
 K.true  <- 2   # no. of latent subclasses in actual simulation. 
                # If eta = c(1,0), effectively, it is K.true=1
 J       <- 5   # no. of pathogens.
@@ -15,7 +14,7 @@ it <- layout(matrix(1:J^2,nrow=J,ncol=J,byrow=TRUE),
             heights = rep(3,J),
             widths  = rep(3,J)) 
 
-par(oma=c(8,10,8,3));  
+oldpar <- par(oma=c(8,10,8,3));  
 
 pch_seq_cause <- LETTERS[1:J]
 lty_seq_cause <- 1+(1:J)
@@ -201,4 +200,5 @@ for (scn in c(1,2,3)){
    }
  }
 }
+par(oldpar)
 

@@ -13,6 +13,9 @@ write.model(model, con = "model.bug", digits = 5)
 
 \item{digits}{number of significant digits used for WinBUGS input, see formatC}
 }
+\value{
+write text lines to a connection; same as \code{\link[=writeLines]{writeLines()}}
+}
 \description{
 function to write bugs model (copied from R2WinBUGS)
 }

@@ -15,6 +15,9 @@ bacterium, \code{V} for virus, \code{F} for fungus, \code{O} for "not categorize
 \usage{
 data("pathogen_category_perch")
 }
+\value{
+No returned value; just loading data into the working space.
+}
 \description{
 231 rows indicating bacteria, virus, fungi, or other categories.
 }

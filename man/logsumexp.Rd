@@ -9,6 +9,9 @@ logsumexp(x)
 \arguments{
 \item{x}{a vector of numbers}
 }
+\value{
+a numeric value
+}
 \description{
 log sum exp trick
 }

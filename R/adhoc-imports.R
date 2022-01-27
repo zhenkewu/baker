@@ -181,6 +181,8 @@ if(!is.R()) .subset <- function(x, index) x[index]
 #' @param con passed to writeLines which actually writes the model file
 #' @param digits number of significant digits used for WinBUGS input, see formatC
 #' 
+#' @return write text lines to a connection; same as [writeLines()]
+#' 
 write.model <- function(model, con = "model.bug", digits = 5)
 {
   if (is.R()){

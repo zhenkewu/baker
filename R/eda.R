@@ -204,11 +204,7 @@ plot_logORmat = function(data_nplcm,
 #' 
 #' data(data_nplcm_noreg)
 #' summarize_BrS(data_nplcm_noreg$Mobs$MBS[[1]], data_nplcm_noreg$Y)
-#' 
-#' @examples 
-#' \dontrun{
-#' summarize_SS(data_nplcm$Mobs$MSS[[1]], data_nplcm$Y)
-#' }
+#' summarize_SS(data_nplcm_noreg$Mobs$MSS[[1]], data_nplcm_noreg$Y)
 #' 
 #' @family exploratory data analysis functions
 #' @export
@@ -291,10 +287,9 @@ summarize_BrS <- function(BrS_dat,Y){
 #' @param exclude_missing DEFAULT is TRUE for excluding any individual with missing measurements.
 #' 
 #' @examples 
-#' \dontrun{
 #' 
-#' res <- get_top_pattern(data_nplcm$Mobs$MBS[[1]],data_nplcm$Y,1,30,FALSE)
-#' }
+#' data(data_nplcm_noreg)
+#' get_top_pattern(data_nplcm_noreg$Mobs$MBS[[1]],data_nplcm_noreg$Y,1,5,FALSE)
 #' 
 #' @return a list of results: `obs_pat` - observed rates; 
 #' `pattern_names`; `exist_other` - if

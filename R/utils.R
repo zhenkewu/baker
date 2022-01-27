@@ -265,22 +265,6 @@ beta_plot = function(a,b) {
 }
 
 
-#' Get package from CRAN website
-#'
-#' @param pckg package name
-#'
-#' @return None
-#' 
-#' @examples 
-#' 
-#' \dontrun{
-#' getPckg("ggplot2")
-#' }
-#' @export
-getPckg <- function(pckg) {
-  utils::install.packages(pckg, repos = "http://cran.r-project.org")
-}
-
 
 #' Convert factor to numeric without losing information on the label
 #'
@@ -300,19 +284,8 @@ unfactor <- function(f) {
 
 #' Order rows of data frame according to variable combinations.
 #'
-#'
-#' Author: Kevin Wright\cr
-#' http://tolstoy.newcastle.edu.au/R/help/04/09/4300.html
-#' Some ideas from Andy Liaw\cr
-#' http://tolstoy.newcastle.edu.au/R/help/04/07/1076.html\cr
-#' Use + for ascending, - for descending.\cr
-#' Sorting is left to right in the formula\cr
-#' Usage is either of the following:\cr
-#' sort.data.frame(~Block-Variety,Oats)\cr
-#' sort.data.frame(Oats,~-Variety+Block)\cr
-#'
-#'
-#'@param form A Formula. See example in **Description**.
+#'@param form A Formula. See the example below; 
+#' use `+` for ascending, `-` for descending
 #'@param dat Data frame to be ordered.
 #'
 #'@return Ordered data frame.
@@ -326,7 +299,7 @@ sort_data_frame <- function(form,dat) {
   # http://tolstoy.newcastle.edu.au/R/help/04/09/4300.html
   # Some ideas from Andy Liaw
   # http://tolstoy.newcastle.edu.au/R/help/04/07/1076.html
-  # Use + for ascending, - for decending.
+  # Use + for ascending, - for descending.
   # Sorting is left to right in the formula
   # Usage is either of the following:
   # sort.data.frame(~Block-Variety,Oats)
@@ -405,8 +378,15 @@ my_reorder <- function(disp_order,raw_nm) {
 #'
 #' Case at upper triangle; control at lower triangle
 #'
-#' @param MBS.case Case Bronze-Standard (BrS) data
-#' @param MBS.ctrl Control Bronze-Standard (BrS) data
+#' @param MBS.case Case Bronze-Standard (BrS) data; rows for case subjects;
+#' columns contain `JBrS` measurements
+#' @param MBS.ctrl Control Bronze-Standard (BrS) data; rows for control subjects;
+#' columns contain `JBrS` measurements  
+#' 
+#' @return a list of two elements: `logOR` (`JBrS` by `JBrS` matrix of log
+#' odds ratios for each pair among `JBrS` measurements) and `logOR.se` (
+#' same dimension as `logOR`, but representing the standard errors of the corresponding
+#' estimated log odds ratios in `logOR`).
 #'
 logOR <- function(MBS.case,MBS.ctrl) {
   JBrS <- ncol(MBS.case)
@@ -473,6 +453,8 @@ logOR <- function(MBS.case,MBS.ctrl) {
 #' @param ylab label for y-axis
 #' @param asp aspect ratio; default is `1` to ensure square shape
 #' @param title text for the figure
+#' 
+#' @return plotting function; no returned value.
 #'
 visualize_case_control_matrix <- function(mat, dim_names = ncol(mat),
                                           cell_metrics = "",folding_line = TRUE,
@@ -928,42 +910,6 @@ beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
 
 
 
-
-
-
-
-#' Load or install a package
-#'
-#'`load_or_install` checks if a package is installed,
-#' loads it if it is, and installs it if not.
-#'
-#' @param package_names A vector of package names
-#' @param repos URL for downloading the packages. 
-#'
-#' @references Credit:
-#'  <http://www.vikparuchuri.com/blog/loading-andor-installing-packages/>
-#' @return No message if it successfully loads the specified packages; Error
-#'  if such a package does not exist.
-#'
-#'
-#'
-load_or_install <-
-  function(package_names,repos) {
-    is_installed <-
-      function(mypkg)
-        is.element(mypkg, utils::installed.packages()[,1])
-    
-    for (package_name in package_names)
-    {
-      if (!is_installed(package_name))
-      {
-        utils::install.packages(package_name,repos)
-      }
-      library(
-        package_name,character.only = TRUE,quietly = TRUE,verbose = FALSE
-      )
-    }
-  }
 
 #' Convert `NULL` to zero.
 #'
@@ -1707,7 +1653,7 @@ loadOneName <- function(objName, file, envir = parent.frame(),
 #' 
 #' @examples 
 #' 
-#' graphics::par(mfrow=c(3,3),oma=c(0,1,5,0),
+#' oldpar <- graphics::par(mfrow=c(3,3),oma=c(0,1,5,0),
 #'    mar=c(1,2,1,1))
 #' for (iter in 1:9){
 #'  u   <- c(rbeta(9,1,0.8),1)
@@ -1716,6 +1662,7 @@ loadOneName <- function(objName, file, envir = parent.frame(),
 #' }
 #' graphics::mtext("Truncated Stick-Breaking Dist. (10 segments)",3,
 #'      outer=TRUE,cex=1.5,line=1.5)
+#' par(oldpar)
 #' @export
 tsb <- function(u){
   K <- length(u)
@@ -1737,12 +1684,8 @@ tsb <- function(u){
 #' @importFrom mvbutils foodweb
 #' 
 #' @examples
-#' \dontrun{
 #' show_dep("nplcm",ancestor=FALSE)
 #' show_dep("nplcm")
-#' show_dep("nplcm_fit_NoReg",ancestor=FALSE)
-#' show_dep("nplcm_fit_NoReg")
-#' }
 #' 
 #' @export
 show_dep <- function(fname,pckg="package:baker",...){
@@ -1768,6 +1711,9 @@ show_dep <- function(fname,pckg="package:baker",...){
 #' 
 #' check_dir_create(tempdir())
 #' 
+#' @return the same returned values for [dir.create()]
+#' 
+#' 
 #' @export
 check_dir_create <- function(path){
   if (file.exists(path)){
@@ -1791,7 +1737,7 @@ total_loc <- function(DIR="R"){
   N
 }
 
-#' test if a formula has other terms not created by s_date_Eti or s_date_FPR
+#' test if a formula has terms not created by [s_date_Eti() or [s_date_FPR()]
 #' 
 #' @param form a formula
 #' @examples 
@@ -1802,6 +1748,10 @@ total_loc <- function(DIR="R"){
 #' has_non_basis(form1)
 #' has_non_basis(form2)
 #' has_non_basis(form3)
+#' 
+#' @return logical `TRUE` (if having terms not created by [s_date_Eti() or [s_date_FPR()]);
+#' `FALSE` otherwise.
+#' 
 #' @export
 has_non_basis <- function(form){
   out <- stats::terms(form)
@@ -1831,8 +1781,8 @@ has_non_basis <- function(form){
 #' }
 #' @examples 
 #' 
-#' \dontrun{~ -1+s_date_Eti(DATE,Y,basis='ps',dof=7)}
-#' 
+#' data("data_nplcm_reg_nest")
+#' s_date_Eti(data_nplcm_reg_nest$X$DATE,data_nplcm_reg_nest$Y,basis='ps',dof=7)
 #' @importFrom stats quantile
 #' @export
 s_date_Eti <- function(Rdate,Y,basis = "ps",dof=ifelse(basis=="ncs",5,10),...) {
@@ -1896,9 +1846,10 @@ s_date_Eti <- function(Rdate,Y,basis = "ps",dof=ifelse(basis=="ncs",5,10),...) {
 #' @return Design matrix for FPR regression, with cases' rows on top of
 #' controls'.
 #' @examples 
-#' \dontrun{
-#' ~ -1 +s_date_FPR(DATE,Y,basis = "ps",dof=5)
-#' }
+#' 
+#' data(data_nplcm_reg_nest)
+#' s_date_FPR(data_nplcm_reg_nest$X$DATE,data_nplcm_reg_nest$Y,basis='ps',dof=7)
+#' 
 #' 
 #' @export
 s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
@@ -1991,6 +1942,7 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #' 
 #' @inheritParams R2jags::jags
 #' @import R2jags
+#' @return Same as [R2jags::jags()]
 #' @seealso [R2jags::jags()]
 jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bug", 
                          n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
@@ -2002,7 +1954,7 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
     working.directory <- path.expand(working.directory)
     savedWD <- getwd()
     setwd(working.directory)
-    on.exit(setwd(savedWD))
+    on.exit(setwd(savedWD)) # reset to before this function is called.
   }
   else {
     savedWD <- getwd()
@@ -2137,6 +2089,8 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
 #' 
 #' logsumexp(c(-20,-30))
 #' 
+#' @return a numeric value
+#' 
 logsumexp <- function (x) {
   y = max(x)
   y + log(sum(exp(x - y)))
@@ -2153,6 +2107,8 @@ logsumexp <- function (x) {
 #' softmax2 <- function(x) exp(x) / sum(exp(x))
 #' softmax(c(1, 2, 3) * 1000)  # NaN NaN NaN
 #' softmax2(c(1, 2, 3) * 1000)  # 0 0 1
+#' 
+#' @return a vector of positive values that sum to one.
 #' 
 #' @export
 softmax <- function (x) {
@@ -2300,7 +2256,9 @@ merge_lists <- function(list_of_lists){
 #' # extract cases and controls and combine all the data into one:
 #' data_nplcm_list <- lapply(1:N, function(s) subset_data_nplcm_by_index(out_list[[s]],2-Y[s]))
 #' data_nplcm_unordered      <- combine_data_nplcm(data_nplcm_list)
-#' 
+#'
+#' @return a list with each element resulting from row binding of each
+#' corresponding element in the input `data_nplcm_list`.
 #' @family data operation functions
 #' @export
 combine_data_nplcm <- function(data_nplcm_list){
@@ -2343,7 +2301,7 @@ combine_data_nplcm <- function(data_nplcm_list){
 #' 
 #' 
 #' setup_plot <- function(log = "") {
-#'   par(mar = c(2, 10, 2, 2), oma = rep(2, 4))
+#'   oldpar <- par(mar = c(2, 10, 2, 2), oma = rep(2, 4))
 #'   plot.new()
 #'   plot.window(xlim = c(1, 10), ylim = c(1, 10), log = log)
 #'   box(which = "plot", lwd = 2, col = "gray40")
@@ -2357,6 +2315,7 @@ combine_data_nplcm <- function(data_nplcm_list){
 #'   for (i in 0:9) {
 #'     mtext(side = 2, col = "darkred", text = paste0("Line", i), line = i)
 #'   }
+#'   par(oldpar)
 #' }
 #' # And here are a couple of examples, applied to your setup_plot with mar=c(5, 5, 5, 5):
 #' setup_plot()
@@ -2391,6 +2350,11 @@ combine_data_nplcm <- function(data_nplcm_list){
 #' abline(v=line2user(0:4, 2), lty=3, xpd=TRUE)
 #' abline(h=line2user(0:4, 3), lty=3, xpd=TRUE)
 #' abline(v=line2user(0:4, 4), lty=3, xpd=TRUE)
+#' 
+#' @return a numeric vector of the same length as `line`; 
+#' the values represent the coordinates in the current plot
+#' and are converted from `line`.
+#' 
 line2user <- function(line, side) {
   lh <- par('cin')[2] * par('cex') * par('lheight')
   x_off <- diff(grconvertX(c(0, lh), 'inches', 'npc'))
@@ -2567,12 +2531,6 @@ get_direct_bias <- function(DIR_list,truth=NULL,silent=FALSE){
 #' @param DIR_NPLCM Path to where Bayesian results are stored
 #' @param truth True etiologic fraction vector (must sum to 1)  used to generate data.
 #' 
-#' @examples 
-#' \dontrun{
-#' DIR_NPLCM <- "~/downloads/rep_1_kfit_2/"  
-#' truth     <- c(0.5,0.2,0.15,0.1,0.05)
-#' get_coverage(DIR_NPLCM,truth)
-#' }
 #' @return A logic vector of length as `truth`. 1 for covered; 0 for not.
 get_coverage <- function(DIR_NPLCM,truth){
   # read from folders:
@@ -2596,11 +2554,6 @@ get_coverage <- function(DIR_NPLCM,truth){
 #'
 #' @param DIR_NPLCM Path to where Bayesian results are stored
 #' 
-#' @examples 
-#' \dontrun{
-#' DIR_NPLCM <- "~/downloads/rep_1_kfit_2/"  
-#' get_postsd(DIR_NPLCM)
-#' }
 #' @return a vector of positive numbers
 #'
 get_postsd <- function(DIR_NPLCM){

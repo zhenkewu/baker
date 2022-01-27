@@ -63,10 +63,19 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>MBS.case</dt>
-<dd><p>Case Bronze-Standard (BrS) data</p></dd>
+<dd><p>Case Bronze-Standard (BrS) data; rows for case subjects;
+columns contain <code>JBrS</code> measurements</p></dd>
 <dt>MBS.ctrl</dt>
-<dd><p>Control Bronze-Standard (BrS) data</p></dd>
+<dd><p>Control Bronze-Standard (BrS) data; rows for control subjects;
+columns contain <code>JBrS</code> measurements</p></dd>
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>a list of two elements: <code>logOR</code> (<code>JBrS</code> by <code>JBrS</code> matrix of log
+odds ratios for each pair among <code>JBrS</code> measurements) and <code>logOR.se</code> (
+same dimension as <code>logOR</code>, but representing the standard errors of the corresponding
+estimated log odds ratios in <code>logOR</code>).</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

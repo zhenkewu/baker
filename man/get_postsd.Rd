@@ -15,9 +15,3 @@ a vector of positive numbers
 \description{
 Obtain posterior standard deviation from a result folder
 }
-\examples{
-\dontrun{
-DIR_NPLCM <- "~/downloads/rep_1_kfit_2/"  
-get_postsd(DIR_NPLCM)
-}
-}

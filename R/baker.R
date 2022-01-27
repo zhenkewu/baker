@@ -31,6 +31,7 @@
 #' as "population etiology pie" and "individual etiology pie" for their 
 #' compositional nature, hence the name of the package (baking the pie).
 #' 
+#' 
 #' @seealso 
 #' \itemize{
 #' \item <https://github.com/zhenkewu/baker> for the source code
@@ -38,7 +39,7 @@
 #' }
 #'
 #' @import rjags
-#'
+#' @return No returned value; documentation purpose only.
 #' @section baker functions:
 #' [nplcm()]
 #'

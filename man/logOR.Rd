@@ -7,9 +7,17 @@
 logOR(MBS.case, MBS.ctrl)
 }
 \arguments{
-\item{MBS.case}{Case Bronze-Standard (BrS) data}
+\item{MBS.case}{Case Bronze-Standard (BrS) data; rows for case subjects;
+columns contain \code{JBrS} measurements}
 
-\item{MBS.ctrl}{Control Bronze-Standard (BrS) data}
+\item{MBS.ctrl}{Control Bronze-Standard (BrS) data; rows for control subjects;
+columns contain \code{JBrS} measurements}
+}
+\value{
+a list of two elements: \code{logOR} (\code{JBrS} by \code{JBrS} matrix of log
+odds ratios for each pair among \code{JBrS} measurements) and \code{logOR.se} (
+same dimension as \code{logOR}, but representing the standard errors of the corresponding
+estimated log odds ratios in \code{logOR}).
 }
 \description{
 Case at upper triangle; control at lower triangle

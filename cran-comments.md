@@ -1,8 +1,29 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Fixed the invalid file URI issue
-  
+* removed the quotes around et and al
+
+* fixed Author@R issue: we have removed all other places (except in DESCRIPTION) where authors were indicated. A prior issue was we credited a user from an online forum who provided ideas about solving a problem. Because I implemented the code by myself, I decided to remove that name entirely.
+
+* added \value in all the 14 .Rd files that previously did not have this tag;
+(manually checked using `grep -L -F "\value{" man/*.Rd`, which did not return any files).
+
+* fixed issues related to examples in unexported functions, I kept the functions 
+unexported and removed examples.
+
+* replaced \dontrun with \donttest for examples that involve
+>5 seconds because of posterior MCMC sampling steps; for other previous instances of \dontrun
+we have unwrapped them by providing fast examples
+
+* checked functions; did not find any actions that would write in user's home filespace
+
+* fixed the issue related to `par()`; now all changes by plotting functions in examples
+and vignettes because of`par()` are reset after the plots are rendered
+
+* removed all instances `rm(list=ls())` in examples and vignettes
+
+* removed all instances of `installed.packages()`
+
 
 ## Test environments
 * local OS X install, R 4.0.2

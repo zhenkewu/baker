@@ -71,6 +71,9 @@ jags2_baker(
 
 \item{refresh}{refresh frequency for progress bar, default is \code{n.iter/50}}
 }
+\value{
+Same as \code{\link[R2jags:jags]{R2jags::jags()}}
+}
 \description{
 The jags function takes data and starting values as input.
 It automatically writes a jags script, calls the model, and saves the

@@ -85,22 +85,6 @@
 equal to the no. of measurement dimensions within a slice.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">result_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C:/2015_09_17_01KEN_nplcm"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">out</span>           <span class="op">&lt;-</span> <span class="fu"><a href="nplcm_read_folder.html">nplcm_read_folder</a></span><span class="op">(</span><span class="va">result_folder</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data_nplcm</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Mobs  <span class="op">=</span> <span class="va">out</span><span class="op">$</span><span class="va">Mobs</span>, Y <span class="op">=</span> <span class="va">out</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">slice</span>         <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="co"># fitted positive rates for pathogens separately among cases and controls:</span></span>
-<span class="r-in"><span class="fu">get_fitted_mean_nested</span><span class="op">(</span><span class="va">slice</span>,<span class="va">out</span><span class="op">$</span><span class="va">res_nplcm</span>,<span class="va">out</span><span class="op">$</span><span class="va">model_options</span>,<span class="va">data_nplcm</span>,</span>
-<span class="r-in">                      <span class="va">out</span><span class="op">$</span><span class="va">clean_options</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># names of pathogens:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">Mobs</span><span class="op">$</span><span class="va">MBS</span><span class="op">[[</span><span class="va">slice</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

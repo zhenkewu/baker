@@ -108,8 +108,7 @@ for reference.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span>list<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">K.true</span>  <span class="op">&lt;-</span> <span class="fl">2</span>   <span class="co"># no. of latent subclasses in actual simulation. </span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">K.true</span>  <span class="op">&lt;-</span> <span class="fl">2</span>   <span class="co"># no. of latent subclasses in actual simulation. </span></span>
 <span class="r-in">               <span class="co"># If eta = c(1,0), effectively, it is K.true=1</span></span>
 <span class="r-in"><span class="va">J</span>       <span class="op">&lt;-</span> <span class="fl">5</span>   <span class="co"># no. of pathogens.</span></span>
 <span class="r-in"><span class="va">N</span>       <span class="op">&lt;-</span> <span class="fl">500</span> <span class="co"># no. of cases/controls.</span></span>
@@ -125,7 +124,7 @@ for reference.</p>
 <span class="r-in">            heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">3</span>,<span class="va">J</span><span class="op">)</span>,</span>
 <span class="r-in">            widths  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">3</span>,<span class="va">J</span><span class="op">)</span><span class="op">)</span> </span>
 <span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>oma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">10</span>,<span class="fl">8</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span>;  </span>
+<span class="r-in"><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>oma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">10</span>,<span class="fl">8</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span>;  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">pch_seq_cause</span> <span class="op">&lt;-</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">J</span><span class="op">]</span></span>
 <span class="r-in"><span class="va">lty_seq_cause</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">+</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">J</span><span class="op">)</span></span>
@@ -317,6 +316,7 @@ for reference.</p>
 <span class="r-plt img"><img src="compute_logOR_single_cause-2.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "==Shading pairs of C and others.==="</span>
 <span class="r-plt img"><img src="compute_logOR_single_cause-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

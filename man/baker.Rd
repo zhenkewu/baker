@@ -5,6 +5,9 @@
 \alias{baker}
 \title{baker: \strong{B}ayesian \strong{A}nalytic \strong{K}it for
 \strong{E}tiology \strong{R}esearch}
+\value{
+No returned value; documentation purpose only.
+}
 \description{
 \code{baker} is designed for disease etiology studies from case-control data
 with multiple sources of measurements with potential errors. If you are

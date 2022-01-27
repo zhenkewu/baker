@@ -9,6 +9,9 @@ softmax(x)
 \arguments{
 \item{x}{a vector of numbers}
 }
+\value{
+a vector of positive values that sum to one.
+}
 \description{
 uses logsumexp trick to prevent numerical overflow
 }

@@ -17,10 +17,3 @@ A logic vector of length as \code{truth}. 1 for covered; 0 for not.
 \description{
 Obtain coverage status from a result folder
 }
-\examples{
-\dontrun{
-DIR_NPLCM <- "~/downloads/rep_1_kfit_2/"  
-truth     <- c(0.5,0.2,0.15,0.1,0.05)
-get_coverage(DIR_NPLCM,truth)
-}
-}

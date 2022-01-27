@@ -27,10 +27,9 @@ with \code{Y = case_status}.
 get top patterns from a slice of bronze-standard measurement
 }
 \examples{
-\dontrun{
 
-res <- get_top_pattern(data_nplcm$Mobs$MBS[[1]],data_nplcm$Y,1,30,FALSE)
-}
+data(data_nplcm_noreg)
+get_top_pattern(data_nplcm_noreg$Mobs$MBS[[1]],data_nplcm_noreg$Y,1,5,FALSE)
 
 data(data_nplcm_noreg)
 get_top_pattern(data_nplcm_noreg$Mobs$MBS$MBS1,data_nplcm_noreg$Y,case_status=1,n_pat=5)

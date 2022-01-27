@@ -10,6 +10,9 @@
 #'   bacterium, `V` for virus, which are randomly assigned.}
 #' }
 #' @usage data("pathogen_category_simulation")
+#' 
+#' 
+#' @return No returned value; just loading data into the working space.
 "pathogen_category_simulation"
 
 
@@ -23,6 +26,9 @@
 #'   \item{pathogen_type}{category of the pathogens, `B` for
 #'   bacterium, `V` for virus, `F` for fungus, `O` for "not categorized"}
 #' }
+#' 
+#' @return No returned value; just loading data into the working space.
+#' 
 #' @usage data("pathogen_category_perch")
 "pathogen_category_perch"
 
@@ -58,6 +64,7 @@
 #'   DATE (index from 1:300), std_date (standardized DATE), ENRLDATE (actual dates)}
 #' }
 #' 
+#' @return No returned value; just loading data into the working space.
 #' @usage data("data_nplcm_reg_nest")
 "data_nplcm_reg_nest"
 
@@ -72,6 +79,8 @@
 #'   A and B)}
 #'   \item{Y}{case-control status}
 #' }
+#' 
+#' @return No returned value; just loading data into the working space.
 #' 
 #' @usage data("data_nplcm_noreg")
 "data_nplcm_noreg"

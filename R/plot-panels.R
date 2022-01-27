@@ -222,7 +222,7 @@ order_post_eti <- function(res_nplcm,model_options){
 #' baker:::is_length_all_one(l) # FALSE
 #' l = list(a = 5, b = 1)
 #' baker:::is_length_all_one(l) # TRUE
-#'         
+#' @export       
 is_length_all_one <- function(x){
   len_vec <-  unlist(lapply(x,length))
   all(len_vec==1)
@@ -319,6 +319,8 @@ plot_leftmost <- function(model_options,height){
 #' @param prior_shape `interval` or `boxplot` - for how to represent
 #' prior/posteriors of the TPR/FPRs of measurements.
 #' @param silent Default is TRUE to not print any warning messages; FALSE otherwise.
+#' 
+#' @return plotting function.
 #' 
 #' @family visualization functions
 plot_BrS_panel <- function(slice,data_nplcm,model_options,
@@ -754,18 +756,6 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
 #' get model fitted mean for conditional independence model
 #' 
 #' @inheritParams get_fitted_mean_nested
-#' @examples 
-#' \dontrun{
-#' result_folder <- c("C:/2015_09_17_01KEN")
-#' out           <- nplcm_read_folder(result_folder)
-#' data_nplcm    <- list(Mobs  = out$Mobs, Y = out$Y)
-#' slice         <- 1
-#' # fitted positive rates for pathogens separately among cases and controls:
-#' get_fitted_mean_no_nested(slice,out$res_nplcm,out$model_options,data_nplcm,
-#'                       out$clean_options)
-#' # names of pathogens:
-#' colnames(out$Mobs$MBS[[slice]])
-#' }
 #' @return a list with model fitted means
 get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
                                       clean_options){
@@ -817,19 +807,6 @@ get_fitted_mean_no_nested <- function(slice,res_nplcm,model_options,data_nplcm,
 #' @param clean_options see [clean_perch_data()]
 #' @return a matrix of no. of rows equal to retained MCMC samples, no. of columns
 #' equal to the no. of measurement dimensions within a slice.
-#' 
-#' @examples 
-#' \dontrun{
-#' result_folder <- c("C:/2015_09_17_01KEN_nplcm")
-#' out           <- nplcm_read_folder(result_folder)
-#' data_nplcm    <- list(Mobs  = out$Mobs, Y = out$Y)
-#' slice         <- 1
-#' # fitted positive rates for pathogens separately among cases and controls:
-#' get_fitted_mean_nested(slice,out$res_nplcm,out$model_options,data_nplcm,
-#'                       out$clean_options)
-#' # names of pathogens:
-#' colnames(out$Mobs$MBS[[slice]])
-#' }
 #' 
 get_fitted_mean_nested <- function(slice,res_nplcm, model_options,
                                    data_nplcm,clean_options){
@@ -1047,6 +1024,8 @@ get_marginal_rates_nested <- function(slice, res_nplcm, model_options,data_nplcm
 #' 
 #' @importFrom binom binom.confint
 #' @family visualization functions
+#' 
+#' @return plotting function
 #' 
 plot_SS_panel <- function(slice,data_nplcm,model_options,
                           clean_options,bugs.dat,res_nplcm,
@@ -1387,6 +1366,8 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
 #' 
 #' @importFrom binom binom.confint
 #' @family visualization functions
+#' 
+#' @return plotting function.
 plot_pie_panel <- function(model_options,
                            res_nplcm,
                            bugs.dat,

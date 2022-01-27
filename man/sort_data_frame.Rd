@@ -7,7 +7,8 @@
 sort_data_frame(form, dat)
 }
 \arguments{
-\item{form}{A Formula. See example in \strong{Description}.}
+\item{form}{A Formula. See the example below;
+use \code{+} for ascending, \code{-} for descending}
 
 \item{dat}{Data frame to be ordered.}
 }
@@ -15,15 +16,7 @@ sort_data_frame(form, dat)
 Ordered data frame.
 }
 \description{
-Author: Kevin Wright\cr
-http://tolstoy.newcastle.edu.au/R/help/04/09/4300.html
-Some ideas from Andy Liaw\cr
-http://tolstoy.newcastle.edu.au/R/help/04/07/1076.html\cr
-Use + for ascending, - for descending.\cr
-Sorting is left to right in the formula\cr
-Usage is either of the following:\cr
-sort.data.frame(~Block-Variety,Oats)\cr
-sort.data.frame(Oats,~-Variety+Block)\cr
+Order rows of data frame according to variable combinations.
 }
 \examples{
 df <- as.data.frame(list(x1=c(2,3,1),x2=c(3,4,6)))
