@@ -2,7 +2,7 @@ Package: baker
 Type: Package
 Title: Nested Partially Latent Class Models
 Version: 1.0.0
-Date: 2022-01-27
+Date: 2022-01-29
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@gmail.com",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),

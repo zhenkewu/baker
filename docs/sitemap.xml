@@ -160,9 +160,6 @@
     <loc>/reference/extract_data_raw.html</loc>
   </url>
   <url>
-    <loc>/reference/getPckg.html</loc>
-  </url>
-  <url>
     <loc>/reference/get_coverage.html</loc>
   </url>
   <url>
@@ -260,9 +257,6 @@
   </url>
   <url>
     <loc>/reference/loadOneName.html</loc>
-  </url>
-  <url>
-    <loc>/reference/load_or_install.html</loc>
   </url>
   <url>
     <loc>/reference/logOR.html</loc>
@@ -440,9 +434,6 @@
   </url>
   <url>
     <loc>/reference/softmax.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sort_data_frame.html</loc>
   </url>
   <url>
     <loc>/reference/subset_data_nplcm_by_index.html</loc>
