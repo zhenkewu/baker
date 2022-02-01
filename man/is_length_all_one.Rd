@@ -17,7 +17,7 @@ check if a list has elements all of length one
 }
 \examples{
 l = list(a = 5, b = 1:2)
-baker:::is_length_all_one(l) # FALSE
+is_length_all_one(l) # FALSE
 l = list(a = 5, b = 1)
-baker:::is_length_all_one(l) # TRUE
+is_length_all_one(l) # TRUE
 }

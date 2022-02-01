@@ -1,29 +1,9 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* fixed Author@R issue; removed all functions based on a code snippet online (related to author issue; now all contributions/copyright holders are from the currently listed authors.); in particular, the function at issue`sort_data_frame()` is now completely removed.
+* exported functions that used `baker:::`
 
-* removed "An R package for" in tht title
-
-* removed the quotes around et and al
-
-* added \value in all the 14 .Rd files that previously did not have this tag;
-(manually checked using `grep -L -F "\value{" man/*.Rd`, which did not return any files).
-
-* fixed issues related to examples in unexported functions, I kept the functions unexported and removed examples.
-
-* replaced \dontrun with \donttest for examples that involve
-`>`5 seconds because of posterior MCMC sampling steps; for other previous instances of \dontrun
-we have unwrapped them by providing fast examples
-
-* checked functions; did not find any actions that would write in user's home filespace
-
-* fixed the issue related to `par()`; now all changes by plotting functions in examples
-and vignettes because of`par()` are reset after the plots are rendered
-
-* removed all instances `rm(list=ls())` in examples and vignettes
-
-* removed all instances of `installed.packages()`
+* removed all occurrences of `rm(list = ls())`
 
 
 ## Test environments

@@ -74,7 +74,7 @@
       <img src="" class="logo" alt=""><h1>Vignettes for baker: An R package for fitting nested partially latent class models</h1>
                         <h4 data-toc-skip class="author">Zhenke Wu</h4>
             
-            <h4 data-toc-skip class="date">January 29, 2022</h4>
+            <h4 data-toc-skip class="date">February 01, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/zhenkewu/baker/blob/HEAD/vignettes/baker_demo.Rmd" class="external-link"><code>vignettes/baker_demo.Rmd</code></a></small>
       <div class="d-none name"><code>baker_demo.Rmd</code></div>
@@ -135,8 +135,7 @@
 </h2>
 <p>We first simulate data using NPLCM. We simulate data for controls and cases separately. Among controls, the disease class is termed “no infection”. To model the dependence among pathogen measurements, Wu et al 2016, Biostatistics introduced subclasses to characterize such dependence. In this simulation, we assume there are two subclasses (<span class="math inline">\(K=2\)</span>). Among cases, there are a few disease classes that represent the true lung infections by pathogens <span class="math inline">\(1, 2, ..., L\)</span> and another class called “None-of-the-above”. We don’t get to observe these disease classes and wish to use measurements peripheral to the lung to infer for each individual the probabilities of each pathogen infecting the lung as well as the fraction of pneumonia cases caused by each pathogen. We again assume two subclasses are nested within each of <span class="math inline">\(L+1\)</span> disease classes. Controls and cases in a given disease class fall into subclasses with likely different probabilities, which we term as subclass weights; We assume the subclass weights for controls is <span class="math inline">\(\boldsymbol{\nu}=(0.5,0.5)\)</span> and for cases <span class="math inline">\(\boldsymbol{\nu}\)</span> for which the R code below chose a particular pair of values <code>c(curr_mix,1-curr_mix)</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span>list<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Note: the example will only run 100 Gibbs sampling steps to save computing time.</span>
+<code class="sourceCode R"><span class="co"># Note: the example will only run 100 Gibbs sampling steps to save computing time.</span>
 <span class="co"># To produce useful posterior inferences, please modify "mcmc_options" as follows</span>
 <span class="co">#                      "n.itermcmc" to 50000</span>
 <span class="co">#                      "n.burnin"   to 10000,</span>

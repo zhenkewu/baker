@@ -219,9 +219,9 @@ order_post_eti <- function(res_nplcm,model_options){
 #' @return TRUE or FALSE
 #' @examples
 #' l = list(a = 5, b = 1:2)
-#' baker:::is_length_all_one(l) # FALSE
+#' is_length_all_one(l) # FALSE
 #' l = list(a = 5, b = 1)
-#' baker:::is_length_all_one(l) # TRUE
+#' is_length_all_one(l) # TRUE
 #' @export       
 is_length_all_one <- function(x){
   len_vec <-  unlist(lapply(x,length))
