@@ -10,8 +10,13 @@
 status](https://github.com/zhenkewu/baker/workflows/R-CMD-check/badge.svg)](https://github.com/zhenkewu/baker/actions)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker)
-[![](https://img.shields.io/badge/devel%20version-1.0.0-blue.svg)](https://github.com/zhenkewu/baker)
+[![](https://www.r-pkg.org/badges/version/baker?color=green)](https://cran.r-project.org/package=baker)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/baker?color=green)](https://cran.r-project.org/package=baker)
+[![](http://cranlogs.r-pkg.org/badges/last-month/baker?color=green)](https://cran.r-project.org/package=baker)
+[![](http://cranlogs.r-pkg.org/badges/last-week/baker?color=green)](https://cran.r-project.org/package=baker)
+[![](https://img.shields.io/badge/devel%20version-1.0.0.9000-blue.svg)](https://github.com/zhenkewu/baker)
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
+
 <!-- [![Coverage status](https://codecov.io/gh/zhenkewu/baker/branch/master/graph/badge.svg)](https://codecov.io/github/zhenkewu/baker?branch=master) -->
 
 **Maintainer**: Zhenke Wu, <zhenkewu@umich.edu>

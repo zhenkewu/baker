@@ -25,8 +25,13 @@ knitr::opts_chunk$set(
 
 [![R build status](https://github.com/zhenkewu/baker/workflows/R-CMD-check/badge.svg)](https://github.com/zhenkewu/baker/actions)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker)
+`r badger::badge_cran_release("baker", "green")`
+`r badger::badge_cran_download("baker", "grand-total", "green")`
+`r badger::badge_cran_download("baker", "last-month", "green")`
+`r badger::badge_cran_download("baker", "last-week", "green")`
 `r badger::badge_devel("zhenkewu/baker", "blue")`
-`r badge_lifecycle("maturing", "blue")`
+`r badger::badge_lifecycle("maturing", "blue")`
+
 <!-- [![Coverage status](https://codecov.io/gh/zhenkewu/baker/branch/master/graph/badge.svg)](https://codecov.io/github/zhenkewu/baker?branch=master) -->
 
 **Maintainer**: Zhenke Wu, zhenkewu@umich.edu
