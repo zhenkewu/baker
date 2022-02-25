@@ -930,7 +930,7 @@ set_strat <- function(X,X_reg) {
 #'
 #' @details Note that this function should be used with caution. It used
 #' \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an *ad hoc* criterion.
-#' It is not the same as [plyr::is.discrete()]
+#' It is not the same as `plyr::is.discrete()`
 #'
 #' @param X   A data frame of covariates
 #' @param X_reg The vector of covariates that will stratify the analyses. These
