@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_nplcm_noreg}
 \alias{data_nplcm_noreg}
-\title{Simulated dataset that is structured in the format necessary for an \code{\link[=nplcm]{nplcm()}} with regression}
+\title{Simulated dataset that is structured in the format necessary for an \code{\link[=nplcm]{nplcm()}} without regression}
 \format{
 A list containing three items
 \describe{

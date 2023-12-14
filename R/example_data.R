@@ -68,7 +68,7 @@
 #' @usage data("data_nplcm_reg_nest")
 "data_nplcm_reg_nest"
 
-#' Simulated dataset that is structured in the format necessary for an [nplcm()] with regression 
+#' Simulated dataset that is structured in the format necessary for an [nplcm()] without regression 
 #'
 #' Data set for illustrating regression functionalities
 #' 
@@ -84,7 +84,6 @@
 #' 
 #' @usage data("data_nplcm_noreg")
 "data_nplcm_noreg"
-
 
 
 # NB: a few more data sets: data_nplcm_no_reg (no regression setting); this can be used in a lot of functions

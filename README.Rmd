@@ -258,7 +258,7 @@ date
 2. Install [JAGS 4.2.0](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/); Add the path to JAGS 4.2.0 into the environmental variable (essential for R to find the jags program). See [this](https://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10) for setting environmental variables;
 - alternatives are `brew install -v jags` for OSX, `sudo apt-get install jags` for Ubuntu/Debian
 3. Fire up `R`, run `R` command `install.packages("rjags")`
-4. Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) (for building and installing R pacakges from source); Add the path to `Rtools` (e.g. `C:\Rtools\`) into your environmental variables so that R knows where to find it. 
+4. Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) (for building and installing R pacakges from source); Add the path to `Rtools` (e.g., `C:\Rtools\`) into your environmental variables so that R knows where to find it. 
 
 <!-- - [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
 <!--     1. Install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) -->

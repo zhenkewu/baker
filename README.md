@@ -14,7 +14,7 @@ status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch
 [![](http://cranlogs.r-pkg.org/badges/grand-total/baker?color=green)](https://cran.r-project.org/package=baker)
 [![](http://cranlogs.r-pkg.org/badges/last-month/baker?color=green)](https://cran.r-project.org/package=baker)
 [![](http://cranlogs.r-pkg.org/badges/last-week/baker?color=green)](https://cran.r-project.org/package=baker)
-[![](https://img.shields.io/badge/devel%20version-1.0.0.9000-blue.svg)](https://github.com/zhenkewu/baker)
+[![](https://img.shields.io/badge/devel%20version-1.0.1-blue.svg)](https://github.com/zhenkewu/baker)
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 
 <!-- [![Coverage status](https://codecov.io/gh/zhenkewu/baker/branch/master/graph/badge.svg)](https://codecov.io/github/zhenkewu/baker?branch=master) -->
@@ -303,8 +303,8 @@ date
 3.  Fire up `R`, run `R` command `install.packages("rjags")`
 4.  Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/)
     (for building and installing R pacakges from source); Add the path
-    to `Rtools` (e.g. `C:\Rtools\`) into your environmental variables so
-    that R knows where to find it.
+    to `Rtools` (e.g., `C:\Rtools\`) into your environmental variables
+    so that R knows where to find it.
 
 <!-- - [WinBUGS 1.4.3](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/) -->
 <!--     1. Install the [patch](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/the-bugs-project-winbugs-patches/) -->

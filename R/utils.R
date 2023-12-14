@@ -930,11 +930,11 @@ set_strat <- function(X,X_reg) {
 #'
 #' @details Note that this function should be used with caution. It used
 #' \deqn{nrow(X)/nrow(unique(X[,X_reg,drop=FALSE]))>10} as an *ad hoc* criterion.
-#' It is not the same as `plyr::is.discrete()`
+#' It is not the same as `is.discrete()` in `plyr`
 #'
 #' @param X   A data frame of covariates
 #' @param X_reg The vector of covariates that will stratify the analyses. These
-#' variables have to be categorical. Or a formula (can be tested by `plyr::is.formula`), 
+#' variables have to be categorical. Or a formula (can be tested by `is.formula` in `plyr`), 
 #' e.g., `~as.factor(SITE8) + as.factor(AGECAT > 1)`.
 #'
 #' @return `TRUE` for all being discrete; `FALSE` otherwise.
@@ -1500,6 +1500,7 @@ as.matrix_or_vec <- function(x){
   }  
   as.matrix(x)
 }
+
 
 #' get index of latent status
 #' 

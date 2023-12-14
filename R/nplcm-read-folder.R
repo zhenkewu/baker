@@ -235,7 +235,7 @@ nplcm_read_folder <- function(DIR_NPLCM){
 #'   n.itermcmc = as.integer(200), 
 #'   n.burnin = as.integer(100), 
 #'   n.thin = 1,
-#'   individual.pred = TRUE, # <- must set to TRUE! <------- NOTE! 
+#'   individual.pred = TRUE, # <- must set to TRUE! 
 #'   ppd = FALSE,
 #'   result.folder = thedir,
 #'   bugsmodel.dir = thedir
@@ -251,9 +251,8 @@ nplcm_read_folder <- function(DIR_NPLCM){
 #' 
 #' rjags::load.module("glm")
 #' 
-#' nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
-#' 
-#' image(get_individual_prediction(nplcm_noreg))
+#' fitted_nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
+#' image(get_individual_prediction(fitted_nplcm_noreg))
 #' 
 #' }
 #' 

@@ -1,15 +1,34 @@
-citHeader("To cite baker in publications, please use:")
-
-citEntry(entry = "Article",
-  author = personList(as.person("Zhenke Wu"),
-             as.person("Maria Deloria-Knoll"),
-             as.person("Laura L Hammitt"),
-             as.person("Scott L Zeger")),
+bibentry(
+  bibtype = "Article",
   title = "Partially Latent Class Models for Case-Control Studies
   of Childhood Pneumonia Aetiology",
+  author = c(person("Zhenke", "Wu"),
+  person("Maria",  "Deloria-Knoll"),
+  person("Laura L", "Hammitt"),
+  person("Scott L", "Zeger")
+  ),
   journal = "Journal of the Royal Statistical Society: Series C (Applied Statistics)",
   year = "2015",
-  doi = "10.1111/rssc.12101",
+  volume = "65",
+  number = "1",
+  pages = " 97–114",
   url = "https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssc.12101",
-  textVersion = "Wu, Z., Deloria-Knoll, M., Hammitt, L.L., Zeger, S.L. and the Pneumonia Etiology Research for Child Health Core Team (2016), Partially latent class models for case-control studies of childhood pneumonia aetiology. Journal of the Royal Statistical Society: Series C (Applied Statistics). doi: 10.1111/rssc.12101."
+  doi = "10.1111/rssc.12101"
+)
+
+
+bibentry(
+  bibtype = "Article",
+  title = "Nested partially latent class models for dependent binary data; estimating disease etiology",
+  author = c(person("Zhenke", "Wu"),
+  person("Maria",  "Deloria-Knoll"),
+  person("Scott L", "Zeger")
+  ),
+  journal = "Biostatistics",
+  year = "2017",
+  volume = "18",
+  number = "2",
+  pages = " 200–213",
+  url = "https://academic.oup.com/biostatistics/article/18/2/200/2555349",
+  doi = "10.1093/biostatistics/kxw037"
 )

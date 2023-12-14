@@ -209,7 +209,7 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   Mobs <- data_nplcm$Mobs
   Y    <- data_nplcm$Y
   if (length(rle(Y)[["values"]])>2 | Y[1]!=1) {
-  stop("==[baker] 'data_nplcm$Y' must have cases on top of controls. 
+    stop("==[baker] 'data_nplcm$Y' must have cases on top of controls. 
   Use 'baker::subset_data_nplcm_by_index()' to shuffle the rows. Then retry.==\n")}
   X    <- data_nplcm$X
   
@@ -232,7 +232,7 @@ nplcm <- function(data_nplcm,model_options,mcmc_options){
   } 
   if (do_reg & !any(do_nested)){
     if (do_discrete){
-    fitted_type   <- "reg_nonest_strat"
+      fitted_type   <- "reg_nonest_strat"
       # when every regression is a regression upon discrete variables;
       # when it is not a regression, the fitting function treats it as a single stratum
       # when specifying the model in the .bug file (in the assign_model function, ~1 
@@ -543,7 +543,8 @@ nplcm_fit_NoReg<-
       
       for(i in seq_along(JBrS_list)){
         assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
-        assign(paste("MBS", i, sep = "_"), as.matrix_or_vec(MBS_list[[i]])) 
+        xx <- as.matrix_or_vec(MBS_list[[i]]);  attr(xx,"dimnames") <- NULL # remove dimnames.
+        assign(paste("MBS", i, sep = "_"), xx)
         assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))   
       }
       
@@ -995,7 +996,13 @@ nplcm_fit_NoReg<-
          file = curr_data_txt_file)
     ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
     bad_jagsdata_txt <- readLines(curr_data_txt_file)
-    good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+    #good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+    ## to add an additional complicatoin of dump creates a text file with , dim = but the JAGS only accepts .Dim=
+    good_jagsdata_txt <- gsub( ", dim =", ", .Dim=", 
+                               gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE),
+                               fixed = FALSE)
+    
+    
     writeLines(good_jagsdata_txt, curr_data_txt_file)
     
     # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
@@ -1007,6 +1014,15 @@ nplcm_fit_NoReg<-
       good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
       writeLines(good_jagsinits_txt, curr_inits_txt_file)
     }
+    
+    ## fixed some problems of JAGS 4.3.2 not having cut function; and I(a,b) functions weirdly, even though
+    ## the two elements are already constants (errors says that are not constant).
+    curr_model_txt_file <- file.path(mcmc_options$result.folder,"model_NoReg.bug")
+    bad_model_txt <- readLines(curr_model_txt_file)
+    good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
+    good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+    writeLines(good_model_txt, curr_model_txt_file)
+    
     if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
     gs <- jags2_baker(data   = curr_data_txt_file,
                       inits  = in_init,
@@ -1237,7 +1253,8 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
         attributes(Z_FPR_list[[i]])[names(attributes(Z_FPR_list[[i]]))!="dim"] <- NULL
         
         assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
-        assign(paste("MBS", i, sep = "_"), as.matrix_or_vec(MBS_list[[i]])) 
+        xx <- as.matrix_or_vec(MBS_list[[i]]);  attr(xx,"dimnames") <- NULL # remove dimnames.
+        assign(paste("MBS", i, sep = "_"), xx)
         assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))  
         
         # Z_FPR0       <- Z_FPR_list[[i]]
@@ -1943,7 +1960,8 @@ nplcm_fit_Reg_NoNest <-
         attributes(Z_FPR_list[[i]])[names(attributes(Z_FPR_list[[i]]))!="dim"] <- NULL
         
         assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
-        assign(paste("MBS", i, sep = "_"), as.matrix_or_vec(MBS_list[[i]])) 
+        xx <- as.matrix_or_vec(MBS_list[[i]]);  attr(xx,"dimnames") <- NULL # remove dimnames.
+        assign(paste("MBS", i, sep = "_"), xx)
         assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))  
         
         # Z_FPR0       <- Z_FPR_list[[i]]
@@ -2519,7 +2537,7 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   }
   
   if(is.null(prior$Eti_hyper_pflex)){
-     prior$Eti_hyper_pflex = c(1,0.5)
+    prior$Eti_hyper_pflex = c(1,0.5)
     # beta prior for selecting constant vs non-constant additive component
   }
   
@@ -2651,7 +2669,8 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
       attributes(Z_FPR_list[[i]])[names(attributes(Z_FPR_list[[i]]))!="dim"] <- NULL
       
       assign(paste("JBrS", i, sep = "_"), JBrS_list[[i]])    
-      assign(paste("MBS", i, sep = "_"), as.matrix_or_vec(MBS_list[[i]])) 
+      xx <- as.matrix_or_vec(MBS_list[[i]]);  attr(xx,"dimnames") <- NULL # remove dimnames.
+      assign(paste("MBS", i, sep = "_"), xx)
       assign(paste("templateBS", i, sep = "_"), as.matrix_or_vec(template_BrS_list[[i]]))  
       
       # Z_FPR0       <- Z_FPR_list[[i]]
