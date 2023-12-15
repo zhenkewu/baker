@@ -3,10 +3,7 @@ This is a resubmission. In this version I have:
 
 * updated to fix an issue in the example of `nplcm` (Package was archived on CRAN because of a tricky interfacing issue between JAGS 4.3.x and R 4.3.x)
 
-* [only appeared on Windows Server 2022, R-devel, 64 bit]checking for detritus in the temp directory ... NOTE
-Found the following files/directories:
-  'lastMiKTeXException'
-  We checked online; it seems to be platform-specific and related to files produced during testing; we did not find any place in the source files where interactive use of the vignette was invoked. This note did not appear in other platforms.
+* [only appeared on Windows Server 2022, R-devel, x64] Lost braces; missing escapes or markup?
   
 * There is another note (occasionally) about some doi links being "Service Unavailable". 
   I checked that every link works. They were considered to be slow (by the checking functions) 
