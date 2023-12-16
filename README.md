@@ -7,14 +7,13 @@
 > Models](https://academic.oup.com/biostatistics/article/18/2/200/2555349/Nested-partially-latent-class-models-for-dependent)
 
 [![R build
-status](https://github.com/zhenkewu/baker/workflows/R-CMD-check/badge.svg)](https://github.com/zhenkewu/baker/actions)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker)
+status](https://github.com/zhenkewu/baker/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/zhenkewu/baker/actions)
+<!-- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/zhenkewu/baker?branch=master&svg=true)](https://ci.appveyor.com/project/zhenkewu/baker) -->
 [![](https://www.r-pkg.org/badges/version/baker?color=green)](https://cran.r-project.org/package=baker)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/baker?color=green)](https://cran.r-project.org/package=baker)
 [![](http://cranlogs.r-pkg.org/badges/last-month/baker?color=green)](https://cran.r-project.org/package=baker)
 [![](http://cranlogs.r-pkg.org/badges/last-week/baker?color=green)](https://cran.r-project.org/package=baker)
-[![](https://img.shields.io/badge/devel%20version-1.0.1-blue.svg)](https://github.com/zhenkewu/baker)
+[![](https://img.shields.io/badge/devel%20version-1.0.2-blue.svg)](https://github.com/zhenkewu/baker)
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 
 <!-- [![Coverage status](https://codecov.io/gh/zhenkewu/baker/branch/master/graph/badge.svg)](https://codecov.io/github/zhenkewu/baker?branch=master) -->
@@ -43,24 +42,31 @@ estimation from case-control data, please cite the following papers:
 | nested pLCM regression               | Wu, Z., Chen, I (2021). Probabilistic Cause-of-disease Assignment using Case-control Diagnostic Tests: A Hierarchical Bayesian Approach. *Statistics in Medicine* 40(4):823-841. [![](https://img.shields.io/badge/doi-10.1002/sim.8804-yellow.svg)](https://doi.org/10.1002/sim.8804)                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | Application                          | Maria Deloria Knoll, Wei Fu, Qiyuan Shi, Christine Prosperi, Zhenke Wu, Laura L. Hammitt, Daniel R. Feikin, Henry C. Baggett, Stephen R.C. Howie, J. Anthony G. Scott, David R. Murdoch, Shabir A. Madhi, Donald M. Thea, W. Abdullah Brooks, Karen L. Kotloff, Mengying Li, Daniel E. Park, Wenyi Lin, Orin S. Levine, Katherine L. O’Brien, Scott L. Zeger; Bayesian Estimation of Pneumonia Etiology: Epidemiologic Considerations and Applications to the Pneumonia Etiology Research for Child Health Study, *Clinical Infectious Diseases*, Volume 64, Issue suppl_3, 15 June 2017, Pages S213–S227 [![](https://img.shields.io/badge/doi-10.1093/cid/cix144-yellow.svg)](https://doi.org/10.1093/cid/cix144) |
 | Primary PERCH Analysis               | The PERCH Study Group (2019). Aetiology of severe hospitalized pneumonia in HIV-uninfected children from Africa and Asia: the Pneumonia Aetiology Research for Child Health (PERCH) Case-Control Study. *The Lancet* 394(10200): 757-779. [![](https://img.shields.io/badge/doi-10.1016/S0140--6736(19)30721--4-yellow.svg)](https://doi.org/10.1016/S0140-6736(19)30721-4)                                                                                                                                                                                                                                                                                                                                         |
-| Software paper                       | Chen I, Shi Q, Zeger SL, Wu Z (2022+) `baker`: An `R` package for Nested Partially-Latent Class Models. [![](https://img.shields.io/badge/arxiv-preprint-red.svg)](https://arxiv.org/abs/2202.11778) [![](https://img.shields.io/badge/vignette-workflow-blue.svg)](https://zhenkewu.com/assets/html/baker_vignette.html)                                                                                                                                                                                                                                                                                                                                                                                           |
+| Software paper                       | Chen I, Shi Q, Zeger SL, Wu Z (2022+) `baker`: An `R` package for Nested Partially-Latent Class Models. [![](https://img.shields.io/badge/arxiv-preprint-red.svg)](https://arxiv.org/abs/2202.11778) [![](https://img.shields.io/badge/vignette-workflow-blue.svg)](https://zhenkewu.com/assets/html/baker_vignette.html)  [![](https://img.shields.io/badge/doi-10.1093/cid/cix144-yellow.svg)](https://doi.org/10.1093/cid/cix144)                                                                                                                                                                                                                                                                                         |
+
+There are a number of scientific papers on global health and infectious diseases
+that have used the model and some the software (in its earlier versions). Some notable
+examples are listed below:
+
+- Kubale et al. (2023). Etiology of acute lower respiratory illness hospitalizations among infants in four countries. Open Forum Infectious Diseases, ofad580. [![](https://img.shields.io/badge/doi-10.1093/ofid/ofad580   -yellow.svg)](https://doi.org/10.1093/ofid/ofad580)             
+
+- aha SK et al. (2018). Causes and incidence of community-acquired serious infections among young children in south Asia (ANISA): an observational cohort study. *The Lancet* 392(10142):145-159. [https://doi.org/10.1016/S0140-6736(18)31127-9)](https://doi.org/10.1016/S0140-6736(18)31127-9)                                                                                      
 
 ## Table of content
 
 <div id='id-section1'/>
 
--   [1. Installation](#id-section1)
--   [2. Vignettes](#id-section2)
--   [3. Graphical User Interface (GUI)](#id-section3)
--   [4. Analytic Goal](#id-section4)
--   [5. Comparison to Other Existing Solutions](#id-section5)
--   [6. Details](#id-section6)
--   [7. Platform](#id-section7)
--   [8. Connect `R` to `JAGS` on Unix systems or OSX](#id-section8)
--   [9. Submit Jobs to Computing Cluster via a shell
-    script](#id-section9)
--   [10. Connect `R` to `JAGS` on Windows](#id-section10)
--   [11. Example Datasets](#id-section11)
+- [1. Installation](#id-section1)
+- [2. Vignettes](#id-section2)
+- [3. Graphical User Interface (GUI)](#id-section3)
+- [4. Analytic Goal](#id-section4)
+- [5. Comparison to Other Existing Solutions](#id-section5)
+- [6. Details](#id-section6)
+- [7. Platform](#id-section7)
+- [8. Connect `R` to `JAGS` on Unix systems or OSX](#id-section8)
+- [9. Submit Jobs to Computing Cluster via a shell script](#id-section9)
+- [10. Connect `R` to `JAGS` on Windows](#id-section10)
+- [11. Example Datasets](#id-section11)
 
 <div id='id-section1'/>
 
@@ -73,12 +79,12 @@ devtools::install_github("zhenkewu/baker")
 
 Note:
 
--   run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package
-    is reported as missing.
--   Windows User: use
-    `devtools::install_github("zhenkewu/baker",INSTALL_opts=c("--no-multiarch"))`
-    instead if you see an error message
-    `ERROR: loading failed for 'i386'` (Thanks Chrissy!).
+- run `install.packages("pbkrtest")` for `R(>=3.2.3)` if this package is
+  reported as missing.
+- Windows User: use
+  `devtools::install_github("zhenkewu/baker",INSTALL_opts=c("--no-multiarch"))`
+  instead if you see an error message `ERROR: loading failed for 'i386'`
+  (Thanks Chrissy!).
 
 <div id='id-section2'/>
 
@@ -118,19 +124,19 @@ You will get a dynamic figure. A snapshot is below:
 
 ## Analytic Goal
 
--   To study disease etiology from case-control data from multiple
-    sources that have measurement errors. If you are interested in
-    estimating the population etiology pie (fraction), and the
-    probability of each cause for individual case, try `baker`.
+- To study disease etiology from case-control data from multiple sources
+  that have measurement errors. If you are interested in estimating the
+  population etiology pie (fraction), and the probability of each cause
+  for individual case, try `baker`.
 
 <div id='id-section5'/>
 
 ## Comparison to Other Existing Solutions
 
--   Acknowledges various levels of measurement errors and combines
-    multiple sources of data for optimal disease diagnosis.
--   Main function: `nplcm()` that fits the model with or without
-    covariates.
+- Acknowledges various levels of measurement errors and combines
+  multiple sources of data for optimal disease diagnosis.
+- Main function: `nplcm()` that fits the model with or without
+  covariates.
 
 <div id='id-section6'/>
 
@@ -157,11 +163,11 @@ You will get a dynamic figure. A snapshot is below:
 
 ## Platform
 
--   The `baker` package is compatible with OSX, Linux and Windows
-    systems, each requiring a slightly different setup as described
-    below. If you need to speed up the installation and analysis, please
-    contact the maintainer or chat by clicking the `gitter` button at
-    the top of this README file.
+- The `baker` package is compatible with OSX, Linux and Windows systems,
+  each requiring a slightly different setup as described below. If you
+  need to speed up the installation and analysis, please contact the
+  maintainer or chat by clicking the `gitter` button at the top of this
+  README file.
 
 <div id='id-section8'/>
 
@@ -185,10 +191,10 @@ Linked to JAGS 4.x.0
 Loaded modules: basemod,bugs
 ```
 
--   Run `R` command `library(baker)`. If the package `ks` cannot be
-    loaded due to failure of loading package `rgl`, first install X11 by
-    going [here](https://www.xquartz.org/releases/XQuartz-2.7.11.html),
-    followed by
+- Run `R` command `library(baker)`. If the package `ks` cannot be loaded
+  due to failure of loading package `rgl`, first install X11 by going
+  [here](https://www.xquartz.org/releases/XQuartz-2.7.11.html), followed
+  by
 
 ``` r
 install.packages("http://download.r-forge.r-project.org/src/contrib/rgl_0.95.1504.tar.gz",repo=NULL,type="source")
@@ -287,7 +293,7 @@ date
 
 #### Windows
 
--   JAGS 4.2.0
+- JAGS 4.2.0
 
 1.  Install `R`; Download from [here](https://cran.r-project.org/)
 2.  Install [JAGS
@@ -297,8 +303,8 @@ date
     [this](https://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10)
     for setting environmental variables;
 
--   alternatives are `brew install -v jags` for OSX,
-    `sudo apt-get install jags` for Ubuntu/Debian
+- alternatives are `brew install -v jags` for OSX,
+  `sudo apt-get install jags` for Ubuntu/Debian
 
 3.  Fire up `R`, run `R` command `install.packages("rjags")`
 4.  Install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/)

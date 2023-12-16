@@ -1,0 +1,331 @@
+H                       Shannon entropy for multivariate discrete data
+I2symb                  Convert 0/1 coding to pathogen/combinations
+Imat2cat                Convert a matrix of binary indicators to
+                        categorical variables
+NA2dot                  convert 'NA' to '.'
+add_meas_BrS_case_Nest_Slice
+                        add likelihood for a BrS measurement slice
+                        among cases (conditional dependence)
+add_meas_BrS_case_Nest_Slice_jags
+                        add likelihood for a BrS measurement slice
+                        among cases (conditional dependence)
+add_meas_BrS_case_NoNest_Slice
+                        add a likelihood component for a BrS
+                        measurement slice among cases (conditional
+                        independence)
+add_meas_BrS_case_NoNest_Slice_jags
+                        add a likelihood component for a BrS
+                        measurement slice among cases (conditional
+                        independence)
+add_meas_BrS_case_NoNest_reg_Slice_jags
+                        add likelihood component for a BrS measurement
+                        slice among cases
+add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags
+                        add likelihood component for a BrS measurement
+                        slice among cases
+add_meas_BrS_ctrl_Nest_Slice
+                        add likelihood for a BrS measurement slice
+                        among controls (conditional independence)
+add_meas_BrS_ctrl_NoNest_Slice
+                        add a likelihood component for a BrS
+                        measurement slice among controls (conditional
+                        independence)
+add_meas_BrS_ctrl_NoNest_reg_Slice_jags
+                        add a likelihood component for a BrS
+                        measurement slice among controls
+add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags
+                        add a likelihood component for a BrS
+                        measurement slice among controls
+add_meas_BrS_param_Nest_Slice
+                        add parameters for a BrS measurement slice
+                        among cases and controls (conditional
+                        dependence)
+add_meas_BrS_param_Nest_Slice_jags
+                        add parameters for a BrS measurement slice
+                        among cases and controls (conditional
+                        dependence)
+add_meas_BrS_param_Nest_reg_Slice_jags
+                        add parameters for a BrS measurement slice
+                        among cases and controls
+add_meas_BrS_param_NoNest_Slice
+                        add parameters for a BrS measurement slice
+                        among cases and controls (conditional
+                        independence)
+add_meas_BrS_param_NoNest_Slice_jags
+                        add parameters for a BrS measurement slice
+                        among cases and controls (conditional
+                        independence)
+add_meas_BrS_param_NoNest_reg_Slice_jags
+                        add parameters for a BrS measurement slice
+                        among cases and controls
+add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags
+                        add parameters for a BrS measurement slice
+                        among cases and controls
+add_meas_BrS_subclass_Nest_Slice
+                        add subclass indicators for a BrS measurement
+                        slice among cases and controls (conditional
+                        independence)
+add_meas_SS_case        add likelihood for a SS measurement slice among
+                        cases (conditional independence)
+add_meas_SS_param       add parameters for a SS measurement slice among
+                        cases (conditional independence)
+as.matrix_or_vec        convert one column data frame to a vector
+assign_model            Interpret the specified model structure
+baker                   baker: *B*ayesian *A*nalytic *K*it for
+                        *E*tiology *R*esearch
+beta_parms_from_quantiles
+                        Pick parameters in the Beta distribution to
+                        match the specified range
+beta_plot               Plot beta density
+bin2dec                 Convert a 0/1 binary-coded sequence into
+                        decimal digits
+check_dir_create        check existence and create folder if
+                        non-existent
+clean_combine_subsites
+                        Combine subsites in raw PERCH data set
+clean_perch_data        Clean PERCH data
+combine_data_nplcm      combine multiple data_nplcm (useful when
+                        simulating data from regression models)
+compute_logOR_single_cause
+                        Calculate marginal log odds ratios
+compute_marg_PR_nested_reg
+                        compute positive rates for nested model with
+                        subclass mixing weights that are the same
+                        across 'Jcause' classes for each person (people
+                        may have different weights.)
+compute_marg_PR_nested_reg_array
+                        compute positive rates for nested model with
+                        subclass mixing weights that are the same
+                        across 'Jcause' classes for each person (people
+                        may have different weights.)
+create_bugs_regressor_Eti
+                        create regressor summation equation used in
+                        regression for etiology
+create_bugs_regressor_FPR
+                        create regressor summation equation used in
+                        regression for FPR
+data_nplcm_noreg        Simulated dataset that is structured in the
+                        format necessary for an 'nplcm()' without
+                        regression
+data_nplcm_reg_nest     Simulated dataset that is structured in the
+                        format necessary for an 'nplcm()' with
+                        regression
+delete_start_with       Deletes a pattern from the start of a string,
+                        or each of a vector of strings.
+dm_Rdate_Eti            Make etiology design matrix for dates with R
+                        format.
+dm_Rdate_FPR            Make FPR design matrix for dates with R format.
+expit                   expit function
+extract_data_raw        Import Raw PERCH Data 'extract_data_raw'
+                        imports and converts the raw data to analyzable
+                        format
+get_coverage            Obtain coverage status from a result folder
+get_direct_bias         Obtain direct bias that measure the discrepancy
+                        of a posterior distribution of pie and a true
+                        pie.
+get_fitted_mean_nested
+                        get fitted mean for nested model with subclass
+                        mixing weights that are the same among cases
+get_fitted_mean_no_nested
+                        get model fitted mean for conditional
+                        independence model
+get_individual_data     get individual data
+get_individual_prediction
+                        get individual prediction (Bayesian posterior)
+get_latent_seq          get index of latent status
+get_marginal_rates_nested
+                        get marginal TPR and FPR for nested model
+get_marginal_rates_no_nested
+                        get marginal TPR and FPR for no nested model
+get_metric              Obtain Integrated Squared Aitchison Distance,
+                        Squared Bias and Variance (both on Central
+                        Log-Ratio transformed scale) that measure the
+                        discrepancy of a posterior distribution of pie
+                        and a true pie.
+get_pEti_samp           get etiology samples by names (no regression)
+get_plot_num            get the plotting positions (numeric) for the
+                        fitted means; 3 positions for each cell
+get_plot_pos            get a list of measurement index where to look
+                        for data
+get_postsd              Obtain posterior standard deviation from a
+                        result folder
+get_top_pattern         get top patterns from a slice of
+                        bronze-standard measurement
+has_non_basis           test if a formula has terms not created by
+                        [s_date_Eti() or 's_date_FPR()'
+init_latent_jags_multipleSS
+                        Initialize individual latent status (for
+                        'JAGS')
+insert_bugfile_chunk_noreg_etiology
+                        insert distribution for latent status code
+                        chunk into .bug file
+insert_bugfile_chunk_noreg_meas
+                        Insert measurement likelihood (without
+                        regression) code chunks into .bug model file
+insert_bugfile_chunk_reg_discrete_predictor_etiology
+                        insert etiology regression for latent status
+                        code chunk into .bug file; discrete predictors
+insert_bugfile_chunk_reg_discrete_predictor_nonest_meas
+                        Insert measurement likelihood (with regression;
+                        discrete) code chunks into .bug model file
+insert_bugfile_chunk_reg_etiology
+                        insert etiology regression for latent status
+                        code chunk into .bug file
+insert_bugfile_chunk_reg_nest_meas
+                        Insert measurement likelihood (nested
+                        model+regression) code chunks into .bug model
+                        file
+insert_bugfile_chunk_reg_nonest_meas
+                        Insert measurement likelihood (with regression)
+                        code chunks into .bug model file
+is.error                Test for 'try-error' class
+is_discrete             Check if covariates are discrete
+is_intercept_only       check if the formula is intercept only
+is_jags_folder          See if a result folder is obtained by JAGS
+is_length_all_one       check if a list has elements all of length one
+jags2_baker             Run 'JAGS' from R
+line2user               convert line to user coordinates
+loadOneName             load an object from .RDATA file
+logOR                   calculate pairwise log odds ratios
+logit                   logit function
+logsumexp               log sum exp trick
+lookup_quality          Get position to store in data_nplcm$Mobs:
+make_filename           Create new file name
+make_foldername         Create new folder name
+make_list               Takes any number of R objects as arguments and
+                        returns a list whose names are derived from the
+                        names of the R objects.
+make_meas_object        Make measurement slice
+make_numbered_list      Make a list with numbered names
+make_template           make a mapping template for model fitting
+marg_H                  Shannon entropy for binary data
+match_cause             Match latent causes that might have the same
+                        combo but different specifications
+merge_lists             For a list of many sublists each of which has
+                        matrices as its member, we combine across the
+                        many sublists to produce a final list
+my_reorder              Reorder the measurement dimensions to match the
+                        order for display
+nplcm                   Fit nested partially-latent class models
+                        (highest-level wrapper function)
+nplcm_fit_NoReg         Fit nested partially-latent class model
+                        (low-level)
+nplcm_fit_Reg_Nest      Fit nested partially-latent class model with
+                        regression (low-level)
+nplcm_fit_Reg_NoNest    Fit nested partially-latent class model with
+                        regression (low-level)
+nplcm_fit_Reg_discrete_predictor_NoNest
+                        Fit nested partially-latent class model with
+                        regression (low-level)
+nplcm_read_folder       Read data and other model information from a
+                        folder that stores model results.
+null_as_zero            Convert 'NULL' to zero.
+order_post_eti          order latent status by posterior mean
+overall_uniform         specify overall uniform (symmetric Dirichlet
+                        distribution) for etiology prior
+parse_nplcm_reg         parse regression components (either false
+                        positive rate or etiology regression) for
+                        fitting npLCM; Only use this when formula is
+                        not 'NULL'.
+pathogen_category_perch
+                        pathogens and their categories in PERCH study
+                        (virus or bacteria)
+pathogen_category_simulation
+                        Hypothetical pathogens and their categories
+                        (virus or bacteria)
+plot.nplcm              'plot.nplcm' plot the results from 'nplcm()'.
+plot_BrS_panel          Plot bronze-standard (BrS) panel
+plot_SS_panel           Plot silver-standard (SS) panel
+plot_case_study         visualize the PERCH etiology regression with a
+                        continuous covariate
+plot_check_common_pattern
+                        Posterior predictive checking for the nested
+                        partially class models - frequent patterns in
+                        the BrS data. (for multiple folders)
+plot_check_pairwise_SLORD
+                        Posterior predictive checking for nested
+                        partially latent class models - pairwise log
+                        odds ratio (only for bronze-standard data)
+plot_etiology_regression
+                        visualize the etiology regression with a
+                        continuous covariate
+plot_etiology_strat     visualize the etiology estimates for each
+                        discrete levels
+plot_leftmost           plotting the labels on the left margin for
+                        panels plot
+plot_logORmat           Visualize pairwise log odds ratios (LOR) for
+                        data that are available in both cases and
+                        controls
+plot_panels             Plot three-panel figures for nested
+                        partially-latent model results
+plot_pie_panel          Plot etiology (pie) panel
+plot_subwt_regression   visualize the subclass weight regression with a
+                        continuous covariate
+print.nplcm             'print.nplcm' summarizes the results from
+                        'nplcm()'.
+print.summary.nplcm.no_reg
+                        Compact printing of 'nplcm()' model fits
+print.summary.nplcm.reg_nest
+                        Compact printing of 'nplcm()' model fits
+print.summary.nplcm.reg_nest_strat
+                        Compact printing of 'nplcm()' model fits
+print.summary.nplcm.reg_nonest
+                        Compact printing of 'nplcm()' model fits
+print.summary.nplcm.reg_nonest_strat
+                        Compact printing of 'nplcm()' model fits
+read_meas_object        Read measurement slices
+rvbern                  Sample a vector of Bernoulli variables.
+s_date_Eti              Make Etiology design matrix for dates with R
+                        format.
+s_date_FPR              Make false positive rate (FPR) design matrix
+                        for dates with R format.
+set_prior_tpr_BrS_NoNest
+                        Set true positive rate (TPR) prior ranges for
+                        bronze-standard (BrS) data
+set_prior_tpr_SS        Set true positive rate (TPR) prior ranges for
+                        silver-standard data.
+set_strat               Stratification setup by covariates
+show_dep                Show function dependencies
+show_individual         get an individual's data from the output of
+                        'clean_perch_data()'
+simulate_brs            Simulate Bronze-Standard (BrS) Data
+simulate_latent         Simulate Latent Status:
+simulate_nplcm          Simulate data from nested partially-latent
+                        class model (npLCM) family
+simulate_ss             Simulate Silver-Standard (SS) Data
+softmax                 softmax
+subset_data_nplcm_by_index
+                        subset data from the output of
+                        'clean_perch_data()'
+summarize_BrS           summarize bronze-standard data
+summarize_SS            silver-standard data summary
+summary.nplcm           'summary.nplcm' summarizes the results from
+                        'nplcm()'.
+sym_diff_month          get symmetric difference of months from two
+                        vector of R-format dates
+symb2I                  Convert names of pathogen/combinations into 0/1
+                        coding
+tsb                     generate stick-breaking prior (truncated) from
+                        a vector of random probabilities
+unfactor                Convert factor to numeric without losing
+                        information on the label
+unique_cause            get unique causes, regardless of the actual
+                        order in combo
+unique_month            Get unique month from Date
+visualize_case_control_matrix
+                        Visualize matrix for a quantity measured on
+                        cases and controls (a single number)
+visualize_season        visualize trend of pathogen observation rate
+                        for NPPCR data (both cases and controls)
+write.model             function to write bugs model (copied from
+                        R2WinBUGS)
+write_model_NoReg       Write .bug model file for model without
+                        regression
+write_model_Reg_Nest    Write '.bug' model file for regression model
+                        WITH nested subclasses
+write_model_Reg_NoNest
+                        Write .bug model file for regression model
+                        without nested subclasses
+write_model_Reg_discrete_predictor_NoNest
+                        Write .bug model file for regression model
+                        without nested subclasses

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head><title>R: Nested Partially Latent Class Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+<h1> Nested Partially Latent Class Models
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
+</h1>
+<hr/>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
+</div><h2>Documentation for package &lsquo;baker&rsquo; version 1.0.2</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+<li><a href="../NEWS">Package NEWS</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<p style="text-align: center;">
+<a href="#A">A</a>
+<a href="#B">B</a>
+<a href="#C">C</a>
+<a href="#D">D</a>
+<a href="#E">E</a>
+<a href="#G">G</a>
+<a href="#H">H</a>
+<a href="#I">I</a>
+<a href="#J">J</a>
+<a href="#L">L</a>
+<a href="#M">M</a>
+<a href="#N">N</a>
+<a href="#O">O</a>
+<a href="#P">P</a>
+<a href="#R">R</a>
+<a href="#S">S</a>
+<a href="#T">T</a>
+<a href="#U">U</a>
+<a href="#V">V</a>
+<a href="#W">W</a>
+</p>
+
+
+<h2><a id="A">-- A --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="add_meas_BrS_case_Nest_Slice.html">add_meas_BrS_case_Nest_Slice</a></td>
+<td>add likelihood for a BrS measurement slice among cases (conditional dependence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_case_Nest_Slice_jags.html">add_meas_BrS_case_Nest_Slice_jags</a></td>
+<td>add likelihood for a BrS measurement slice among cases (conditional dependence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags.html">add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags</a></td>
+<td>add likelihood component for a BrS measurement slice among cases</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_case_NoNest_reg_Slice_jags.html">add_meas_BrS_case_NoNest_reg_Slice_jags</a></td>
+<td>add likelihood component for a BrS measurement slice among cases</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_case_NoNest_Slice.html">add_meas_BrS_case_NoNest_Slice</a></td>
+<td>add a likelihood component for a BrS measurement slice among cases (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_case_NoNest_Slice_jags.html">add_meas_BrS_case_NoNest_Slice_jags</a></td>
+<td>add a likelihood component for a BrS measurement slice among cases (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_ctrl_Nest_Slice.html">add_meas_BrS_ctrl_Nest_Slice</a></td>
+<td>add likelihood for a BrS measurement slice among controls (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags.html">add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags</a></td>
+<td>add a likelihood component for a BrS measurement slice among controls</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_ctrl_NoNest_reg_Slice_jags.html">add_meas_BrS_ctrl_NoNest_reg_Slice_jags</a></td>
+<td>add a likelihood component for a BrS measurement slice among controls</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_ctrl_NoNest_Slice.html">add_meas_BrS_ctrl_NoNest_Slice</a></td>
+<td>add a likelihood component for a BrS measurement slice among controls (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_param_Nest_reg_Slice_jags.html">add_meas_BrS_param_Nest_reg_Slice_jags</a></td>
+<td>add parameters for a BrS measurement slice among cases and controls</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_param_Nest_Slice.html">add_meas_BrS_param_Nest_Slice</a></td>
+<td>add parameters for a BrS measurement slice among cases and controls (conditional dependence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_param_Nest_Slice_jags.html">add_meas_BrS_param_Nest_Slice_jags</a></td>
+<td>add parameters for a BrS measurement slice among cases and controls (conditional dependence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags.html">add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags</a></td>
+<td>add parameters for a BrS measurement slice among cases and controls</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_param_NoNest_reg_Slice_jags.html">add_meas_BrS_param_NoNest_reg_Slice_jags</a></td>
+<td>add parameters for a BrS measurement slice among cases and controls</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_param_NoNest_Slice.html">add_meas_BrS_param_NoNest_Slice</a></td>
+<td>add parameters for a BrS measurement slice among cases and controls (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_param_NoNest_Slice_jags.html">add_meas_BrS_param_NoNest_Slice_jags</a></td>
+<td>add parameters for a BrS measurement slice among cases and controls (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_BrS_subclass_Nest_Slice.html">add_meas_BrS_subclass_Nest_Slice</a></td>
+<td>add subclass indicators for a BrS measurement slice among cases and controls (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_SS_case.html">add_meas_SS_case</a></td>
+<td>add likelihood for a SS measurement slice among cases (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="add_meas_SS_param.html">add_meas_SS_param</a></td>
+<td>add parameters for a SS measurement slice among cases (conditional independence)</td></tr>
+<tr><td style="width: 25%;"><a href="as.matrix_or_vec.html">as.matrix_or_vec</a></td>
+<td>convert one column data frame to a vector</td></tr>
+<tr><td style="width: 25%;"><a href="assign_model.html">assign_model</a></td>
+<td>Interpret the specified model structure</td></tr>
+</table>
+
+<h2><a id="B">-- B --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="baker.html">baker</a></td>
+<td>baker: *B*ayesian *A*nalytic *K*it for *E*tiology *R*esearch</td></tr>
+<tr><td style="width: 25%;"><a href="beta_parms_from_quantiles.html">beta_parms_from_quantiles</a></td>
+<td>Pick parameters in the Beta distribution to match the specified range</td></tr>
+<tr><td style="width: 25%;"><a href="beta_plot.html">beta_plot</a></td>
+<td>Plot beta density</td></tr>
+<tr><td style="width: 25%;"><a href="bin2dec.html">bin2dec</a></td>
+<td>Convert a 0/1 binary-coded sequence into decimal digits</td></tr>
+</table>
+
+<h2><a id="C">-- C --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="check_dir_create.html">check_dir_create</a></td>
+<td>check existence and create folder if non-existent</td></tr>
+<tr><td style="width: 25%;"><a href="clean_combine_subsites.html">clean_combine_subsites</a></td>
+<td>Combine subsites in raw PERCH data set</td></tr>
+<tr><td style="width: 25%;"><a href="clean_perch_data.html">clean_perch_data</a></td>
+<td>Clean PERCH data</td></tr>
+<tr><td style="width: 25%;"><a href="combine_data_nplcm.html">combine_data_nplcm</a></td>
+<td>combine multiple data_nplcm (useful when simulating data from regression models)</td></tr>
+<tr><td style="width: 25%;"><a href="compute_logOR_single_cause.html">compute_logOR_single_cause</a></td>
+<td>Calculate marginal log odds ratios</td></tr>
+<tr><td style="width: 25%;"><a href="compute_marg_PR_nested_reg.html">compute_marg_PR_nested_reg</a></td>
+<td>compute positive rates for nested model with subclass mixing weights that are the same across 'Jcause' classes for each person (people may have different weights.)</td></tr>
+<tr><td style="width: 25%;"><a href="compute_marg_PR_nested_reg_array.html">compute_marg_PR_nested_reg_array</a></td>
+<td>compute positive rates for nested model with subclass mixing weights that are the same across 'Jcause' classes for each person (people may have different weights.)</td></tr>
+<tr><td style="width: 25%;"><a href="create_bugs_regressor_Eti.html">create_bugs_regressor_Eti</a></td>
+<td>create regressor summation equation used in regression for etiology</td></tr>
+<tr><td style="width: 25%;"><a href="create_bugs_regressor_FPR.html">create_bugs_regressor_FPR</a></td>
+<td>create regressor summation equation used in regression for FPR</td></tr>
+</table>
+
+<h2><a id="D">-- D --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="data_nplcm_noreg.html">data_nplcm_noreg</a></td>
+<td>Simulated dataset that is structured in the format necessary for an 'nplcm()' without regression</td></tr>
+<tr><td style="width: 25%;"><a href="data_nplcm_reg_nest.html">data_nplcm_reg_nest</a></td>
+<td>Simulated dataset that is structured in the format necessary for an 'nplcm()' with regression</td></tr>
+<tr><td style="width: 25%;"><a href="delete_start_with.html">delete_start_with</a></td>
+<td>Deletes a pattern from the start of a string, or each of a vector of strings.</td></tr>
+<tr><td style="width: 25%;"><a href="dm_Rdate_Eti.html">dm_Rdate_Eti</a></td>
+<td>Make etiology design matrix for dates with R format.</td></tr>
+<tr><td style="width: 25%;"><a href="dm_Rdate_FPR.html">dm_Rdate_FPR</a></td>
+<td>Make FPR design matrix for dates with R format.</td></tr>
+</table>
+
+<h2><a id="E">-- E --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="expit.html">expit</a></td>
+<td>expit function</td></tr>
+<tr><td style="width: 25%;"><a href="extract_data_raw.html">extract_data_raw</a></td>
+<td>Import Raw PERCH Data 'extract_data_raw' imports and converts the raw data to analyzable format</td></tr>
+</table>
+
+<h2><a id="G">-- G --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="get_coverage.html">get_coverage</a></td>
+<td>Obtain coverage status from a result folder</td></tr>
+<tr><td style="width: 25%;"><a href="get_direct_bias.html">get_direct_bias</a></td>
+<td>Obtain direct bias that measure the discrepancy of a posterior distribution of pie and a true pie.</td></tr>
+<tr><td style="width: 25%;"><a href="get_fitted_mean_nested.html">get_fitted_mean_nested</a></td>
+<td>get fitted mean for nested model with subclass mixing weights that are the same among cases</td></tr>
+<tr><td style="width: 25%;"><a href="get_fitted_mean_no_nested.html">get_fitted_mean_no_nested</a></td>
+<td>get model fitted mean for conditional independence model</td></tr>
+<tr><td style="width: 25%;"><a href="get_individual_data.html">get_individual_data</a></td>
+<td>get individual data</td></tr>
+<tr><td style="width: 25%;"><a href="get_individual_prediction.html">get_individual_prediction</a></td>
+<td>get individual prediction (Bayesian posterior)</td></tr>
+<tr><td style="width: 25%;"><a href="get_latent_seq.html">get_latent_seq</a></td>
+<td>get index of latent status</td></tr>
+<tr><td style="width: 25%;"><a href="get_marginal_rates_nested.html">get_marginal_rates_nested</a></td>
+<td>get marginal TPR and FPR for nested model</td></tr>
+<tr><td style="width: 25%;"><a href="get_marginal_rates_no_nested.html">get_marginal_rates_no_nested</a></td>
+<td>get marginal TPR and FPR for no nested model</td></tr>
+<tr><td style="width: 25%;"><a href="get_metric.html">get_metric</a></td>
+<td>Obtain Integrated Squared Aitchison Distance, Squared Bias and Variance (both on Central Log-Ratio transformed scale) that measure the discrepancy of a posterior distribution of pie and a true pie.</td></tr>
+<tr><td style="width: 25%;"><a href="get_pEti_samp.html">get_pEti_samp</a></td>
+<td>get etiology samples by names (no regression)</td></tr>
+<tr><td style="width: 25%;"><a href="get_plot_num.html">get_plot_num</a></td>
+<td>get the plotting positions (numeric) for the fitted means; 3 positions for each cell</td></tr>
+<tr><td style="width: 25%;"><a href="get_plot_pos.html">get_plot_pos</a></td>
+<td>get a list of measurement index where to look for data</td></tr>
+<tr><td style="width: 25%;"><a href="get_postsd.html">get_postsd</a></td>
+<td>Obtain posterior standard deviation from a result folder</td></tr>
+<tr><td style="width: 25%;"><a href="get_top_pattern.html">get_top_pattern</a></td>
+<td>get top patterns from a slice of bronze-standard measurement</td></tr>
+</table>
+
+<h2><a id="H">-- H --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="H.html">H</a></td>
+<td>Shannon entropy for multivariate discrete data</td></tr>
+<tr><td style="width: 25%;"><a href="has_non_basis.html">has_non_basis</a></td>
+<td>test if a formula has terms not created by [s_date_Eti() or 's_date_FPR()'</td></tr>
+</table>
+
+<h2><a id="I">-- I --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="I2symb.html">I2symb</a></td>
+<td>Convert 0/1 coding to pathogen/combinations</td></tr>
+<tr><td style="width: 25%;"><a href="Imat2cat.html">Imat2cat</a></td>
+<td>Convert a matrix of binary indicators to categorical variables</td></tr>
+<tr><td style="width: 25%;"><a href="init_latent_jags_multipleSS.html">init_latent_jags_multipleSS</a></td>
+<td>Initialize individual latent status (for 'JAGS')</td></tr>
+<tr><td style="width: 25%;"><a href="insert_bugfile_chunk_noreg_etiology.html">insert_bugfile_chunk_noreg_etiology</a></td>
+<td>insert distribution for latent status code chunk into .bug file</td></tr>
+<tr><td style="width: 25%;"><a href="insert_bugfile_chunk_noreg_meas.html">insert_bugfile_chunk_noreg_meas</a></td>
+<td>Insert measurement likelihood (without regression) code chunks into .bug model file</td></tr>
+<tr><td style="width: 25%;"><a href="insert_bugfile_chunk_reg_discrete_predictor_etiology.html">insert_bugfile_chunk_reg_discrete_predictor_etiology</a></td>
+<td>insert etiology regression for latent status code chunk into .bug file; discrete predictors</td></tr>
+<tr><td style="width: 25%;"><a href="insert_bugfile_chunk_reg_discrete_predictor_nonest_meas.html">insert_bugfile_chunk_reg_discrete_predictor_nonest_meas</a></td>
+<td>Insert measurement likelihood (with regression; discrete) code chunks into .bug model file</td></tr>
+<tr><td style="width: 25%;"><a href="insert_bugfile_chunk_reg_etiology.html">insert_bugfile_chunk_reg_etiology</a></td>
+<td>insert etiology regression for latent status code chunk into .bug file</td></tr>
+<tr><td style="width: 25%;"><a href="insert_bugfile_chunk_reg_nest_meas.html">insert_bugfile_chunk_reg_nest_meas</a></td>
+<td>Insert measurement likelihood (nested model+regression) code chunks into .bug model file</td></tr>
+<tr><td style="width: 25%;"><a href="insert_bugfile_chunk_reg_nonest_meas.html">insert_bugfile_chunk_reg_nonest_meas</a></td>
+<td>Insert measurement likelihood (with regression) code chunks into .bug model file</td></tr>
+<tr><td style="width: 25%;"><a href="is.error.html">is.error</a></td>
+<td>Test for 'try-error' class</td></tr>
+<tr><td style="width: 25%;"><a href="is_discrete.html">is_discrete</a></td>
+<td>Check if covariates are discrete</td></tr>
+<tr><td style="width: 25%;"><a href="is_intercept_only.html">is_intercept_only</a></td>
+<td>check if the formula is intercept only</td></tr>
+<tr><td style="width: 25%;"><a href="is_jags_folder.html">is_jags_folder</a></td>
+<td>See if a result folder is obtained by JAGS</td></tr>
+<tr><td style="width: 25%;"><a href="is_length_all_one.html">is_length_all_one</a></td>
+<td>check if a list has elements all of length one</td></tr>
+</table>
+
+<h2><a id="J">-- J --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="jags2_baker.html">jags2_baker</a></td>
+<td>Run 'JAGS' from R</td></tr>
+</table>
+
+<h2><a id="L">-- L --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="line2user.html">line2user</a></td>
+<td>convert line to user coordinates</td></tr>
+<tr><td style="width: 25%;"><a href="loadOneName.html">loadOneName</a></td>
+<td>load an object from .RDATA file</td></tr>
+<tr><td style="width: 25%;"><a href="logit.html">logit</a></td>
+<td>logit function</td></tr>
+<tr><td style="width: 25%;"><a href="logOR.html">logOR</a></td>
+<td>calculate pairwise log odds ratios</td></tr>
+<tr><td style="width: 25%;"><a href="logsumexp.html">logsumexp</a></td>
+<td>log sum exp trick</td></tr>
+<tr><td style="width: 25%;"><a href="lookup_quality.html">lookup_quality</a></td>
+<td>Get position to store in data_nplcm$Mobs:</td></tr>
+</table>
+
+<h2><a id="M">-- M --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="make_filename.html">make_filename</a></td>
+<td>Create new file name</td></tr>
+<tr><td style="width: 25%;"><a href="make_foldername.html">make_foldername</a></td>
+<td>Create new folder name</td></tr>
+<tr><td style="width: 25%;"><a href="make_list.html">make_list</a></td>
+<td>Takes any number of R objects as arguments and returns a list whose names are derived from the names of the R objects.</td></tr>
+<tr><td style="width: 25%;"><a href="make_meas_object.html">make_meas_object</a></td>
+<td>Make measurement slice</td></tr>
+<tr><td style="width: 25%;"><a href="make_numbered_list.html">make_numbered_list</a></td>
+<td>Make a list with numbered names</td></tr>
+<tr><td style="width: 25%;"><a href="make_template.html">make_template</a></td>
+<td>make a mapping template for model fitting</td></tr>
+<tr><td style="width: 25%;"><a href="marg_H.html">marg_H</a></td>
+<td>Shannon entropy for binary data</td></tr>
+<tr><td style="width: 25%;"><a href="match_cause.html">match_cause</a></td>
+<td>Match latent causes that might have the same combo but different specifications</td></tr>
+<tr><td style="width: 25%;"><a href="merge_lists.html">merge_lists</a></td>
+<td>For a list of many sublists each of which has matrices as its member, we combine across the many sublists to produce a final list</td></tr>
+<tr><td style="width: 25%;"><a href="my_reorder.html">my_reorder</a></td>
+<td>Reorder the measurement dimensions to match the order for display</td></tr>
+</table>
+
+<h2><a id="N">-- N --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="NA2dot.html">NA2dot</a></td>
+<td>convert 'NA' to '.'</td></tr>
+<tr><td style="width: 25%;"><a href="nplcm.html">nplcm</a></td>
+<td>Fit nested partially-latent class models (highest-level wrapper function)</td></tr>
+<tr><td style="width: 25%;"><a href="nplcm_fit_NoReg.html">nplcm_fit_NoReg</a></td>
+<td>Fit nested partially-latent class model (low-level)</td></tr>
+<tr><td style="width: 25%;"><a href="nplcm_fit_Reg_discrete_predictor_NoNest.html">nplcm_fit_Reg_discrete_predictor_NoNest</a></td>
+<td>Fit nested partially-latent class model with regression (low-level)</td></tr>
+<tr><td style="width: 25%;"><a href="nplcm_fit_Reg_Nest.html">nplcm_fit_Reg_Nest</a></td>
+<td>Fit nested partially-latent class model with regression (low-level)</td></tr>
+<tr><td style="width: 25%;"><a href="nplcm_fit_Reg_NoNest.html">nplcm_fit_Reg_NoNest</a></td>
+<td>Fit nested partially-latent class model with regression (low-level)</td></tr>
+<tr><td style="width: 25%;"><a href="nplcm_read_folder.html">nplcm_read_folder</a></td>
+<td>Read data and other model information from a folder that stores model results.</td></tr>
+<tr><td style="width: 25%;"><a href="null_as_zero.html">null_as_zero</a></td>
+<td>Convert 'NULL' to zero.</td></tr>
+</table>
+
+<h2><a id="O">-- O --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="order_post_eti.html">order_post_eti</a></td>
+<td>order latent status by posterior mean</td></tr>
+<tr><td style="width: 25%;"><a href="overall_uniform.html">overall_uniform</a></td>
+<td>specify overall uniform (symmetric Dirichlet distribution) for etiology prior</td></tr>
+</table>
+
+<h2><a id="P">-- P --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="parse_nplcm_reg.html">parse_nplcm_reg</a></td>
+<td>parse regression components (either false positive rate or etiology regression) for fitting npLCM; Only use this when formula is not 'NULL'.</td></tr>
+<tr><td style="width: 25%;"><a href="pathogen_category_perch.html">pathogen_category_perch</a></td>
+<td>pathogens and their categories in PERCH study (virus or bacteria)</td></tr>
+<tr><td style="width: 25%;"><a href="pathogen_category_simulation.html">pathogen_category_simulation</a></td>
+<td>Hypothetical pathogens and their categories (virus or bacteria)</td></tr>
+<tr><td style="width: 25%;"><a href="plot.nplcm.html">plot.nplcm</a></td>
+<td>'plot.nplcm' plot the results from 'nplcm()'.</td></tr>
+<tr><td style="width: 25%;"><a href="plot_BrS_panel.html">plot_BrS_panel</a></td>
+<td>Plot bronze-standard (BrS) panel</td></tr>
+<tr><td style="width: 25%;"><a href="plot_case_study.html">plot_case_study</a></td>
+<td>visualize the PERCH etiology regression with a continuous covariate</td></tr>
+<tr><td style="width: 25%;"><a href="plot_check_common_pattern.html">plot_check_common_pattern</a></td>
+<td>Posterior predictive checking for the nested partially class models - frequent patterns in the BrS data. (for multiple folders)</td></tr>
+<tr><td style="width: 25%;"><a href="plot_check_pairwise_SLORD.html">plot_check_pairwise_SLORD</a></td>
+<td>Posterior predictive checking for nested partially latent class models - pairwise log odds ratio (only for bronze-standard data)</td></tr>
+<tr><td style="width: 25%;"><a href="plot_etiology_regression.html">plot_etiology_regression</a></td>
+<td>visualize the etiology regression with a continuous covariate</td></tr>
+<tr><td style="width: 25%;"><a href="plot_etiology_strat.html">plot_etiology_strat</a></td>
+<td>visualize the etiology estimates for each discrete levels</td></tr>
+<tr><td style="width: 25%;"><a href="plot_leftmost.html">plot_leftmost</a></td>
+<td>plotting the labels on the left margin for panels plot</td></tr>
+<tr><td style="width: 25%;"><a href="plot_logORmat.html">plot_logORmat</a></td>
+<td>Visualize pairwise log odds ratios (LOR) for data that are available in both cases and controls</td></tr>
+<tr><td style="width: 25%;"><a href="plot_panels.html">plot_panels</a></td>
+<td>Plot three-panel figures for nested partially-latent model results</td></tr>
+<tr><td style="width: 25%;"><a href="plot_pie_panel.html">plot_pie_panel</a></td>
+<td>Plot etiology (pie) panel</td></tr>
+<tr><td style="width: 25%;"><a href="plot_SS_panel.html">plot_SS_panel</a></td>
+<td>Plot silver-standard (SS) panel</td></tr>
+<tr><td style="width: 25%;"><a href="plot_subwt_regression.html">plot_subwt_regression</a></td>
+<td>visualize the subclass weight regression with a continuous covariate</td></tr>
+<tr><td style="width: 25%;"><a href="print.nplcm.html">print.nplcm</a></td>
+<td>'print.nplcm' summarizes the results from 'nplcm()'.</td></tr>
+<tr><td style="width: 25%;"><a href="print.summary.nplcm.no_reg.html">print.summary.nplcm.no_reg</a></td>
+<td>Compact printing of 'nplcm()' model fits</td></tr>
+<tr><td style="width: 25%;"><a href="print.summary.nplcm.reg_nest.html">print.summary.nplcm.reg_nest</a></td>
+<td>Compact printing of 'nplcm()' model fits</td></tr>
+<tr><td style="width: 25%;"><a href="print.summary.nplcm.reg_nest_strat.html">print.summary.nplcm.reg_nest_strat</a></td>
+<td>Compact printing of 'nplcm()' model fits</td></tr>
+<tr><td style="width: 25%;"><a href="print.summary.nplcm.reg_nonest.html">print.summary.nplcm.reg_nonest</a></td>
+<td>Compact printing of 'nplcm()' model fits</td></tr>
+<tr><td style="width: 25%;"><a href="print.summary.nplcm.reg_nonest_strat.html">print.summary.nplcm.reg_nonest_strat</a></td>
+<td>Compact printing of 'nplcm()' model fits</td></tr>
+</table>
+
+<h2><a id="R">-- R --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="read_meas_object.html">read_meas_object</a></td>
+<td>Read measurement slices</td></tr>
+<tr><td style="width: 25%;"><a href="rvbern.html">rvbern</a></td>
+<td>Sample a vector of Bernoulli variables.</td></tr>
+</table>
+
+<h2><a id="S">-- S --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="set_prior_tpr_BrS_NoNest.html">set_prior_tpr_BrS_NoNest</a></td>
+<td>Set true positive rate (TPR) prior ranges for bronze-standard (BrS) data</td></tr>
+<tr><td style="width: 25%;"><a href="set_prior_tpr_SS.html">set_prior_tpr_SS</a></td>
+<td>Set true positive rate (TPR) prior ranges for silver-standard data.</td></tr>
+<tr><td style="width: 25%;"><a href="set_strat.html">set_strat</a></td>
+<td>Stratification setup by covariates</td></tr>
+<tr><td style="width: 25%;"><a href="show_dep.html">show_dep</a></td>
+<td>Show function dependencies</td></tr>
+<tr><td style="width: 25%;"><a href="show_individual.html">show_individual</a></td>
+<td>get an individual's data from the output of 'clean_perch_data()'</td></tr>
+<tr><td style="width: 25%;"><a href="simulate_brs.html">simulate_brs</a></td>
+<td>Simulate Bronze-Standard (BrS) Data</td></tr>
+<tr><td style="width: 25%;"><a href="simulate_latent.html">simulate_latent</a></td>
+<td>Simulate Latent Status:</td></tr>
+<tr><td style="width: 25%;"><a href="simulate_nplcm.html">simulate_nplcm</a></td>
+<td>Simulate data from nested partially-latent class model (npLCM) family</td></tr>
+<tr><td style="width: 25%;"><a href="simulate_ss.html">simulate_ss</a></td>
+<td>Simulate Silver-Standard (SS) Data</td></tr>
+<tr><td style="width: 25%;"><a href="softmax.html">softmax</a></td>
+<td>softmax</td></tr>
+<tr><td style="width: 25%;"><a href="subset_data_nplcm_by_index.html">subset_data_nplcm_by_index</a></td>
+<td>subset data from the output of 'clean_perch_data()'</td></tr>
+<tr><td style="width: 25%;"><a href="summarize_BrS.html">summarize_BrS</a></td>
+<td>summarize bronze-standard data</td></tr>
+<tr><td style="width: 25%;"><a href="summarize_SS.html">summarize_SS</a></td>
+<td>silver-standard data summary</td></tr>
+<tr><td style="width: 25%;"><a href="summary.nplcm.html">summary.nplcm</a></td>
+<td>'summary.nplcm' summarizes the results from 'nplcm()'.</td></tr>
+<tr><td style="width: 25%;"><a href="symb2I.html">symb2I</a></td>
+<td>Convert names of pathogen/combinations into 0/1 coding</td></tr>
+<tr><td style="width: 25%;"><a href="sym_diff_month.html">sym_diff_month</a></td>
+<td>get symmetric difference of months from two vector of R-format dates</td></tr>
+<tr><td style="width: 25%;"><a href="s_date_Eti.html">s_date_Eti</a></td>
+<td>Make Etiology design matrix for dates with R format.</td></tr>
+<tr><td style="width: 25%;"><a href="s_date_FPR.html">s_date_FPR</a></td>
+<td>Make false positive rate (FPR) design matrix for dates with R format.</td></tr>
+</table>
+
+<h2><a id="T">-- T --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="tsb.html">tsb</a></td>
+<td>generate stick-breaking prior (truncated) from a vector of random probabilities</td></tr>
+</table>
+
+<h2><a id="U">-- U --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="unfactor.html">unfactor</a></td>
+<td>Convert factor to numeric without losing information on the label</td></tr>
+<tr><td style="width: 25%;"><a href="unique_cause.html">unique_cause</a></td>
+<td>get unique causes, regardless of the actual order in combo</td></tr>
+<tr><td style="width: 25%;"><a href="unique_month.html">unique_month</a></td>
+<td>Get unique month from Date</td></tr>
+</table>
+
+<h2><a id="V">-- V --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="visualize_case_control_matrix.html">visualize_case_control_matrix</a></td>
+<td>Visualize matrix for a quantity measured on cases and controls (a single number)</td></tr>
+<tr><td style="width: 25%;"><a href="visualize_season.html">visualize_season</a></td>
+<td>visualize trend of pathogen observation rate for NPPCR data (both cases and controls)</td></tr>
+</table>
+
+<h2><a id="W">-- W --</a></h2>
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="write.model.html">write.model</a></td>
+<td>function to write bugs model (copied from R2WinBUGS)</td></tr>
+<tr><td style="width: 25%;"><a href="write_model_NoReg.html">write_model_NoReg</a></td>
+<td>Write .bug model file for model without regression</td></tr>
+<tr><td style="width: 25%;"><a href="write_model_Reg_discrete_predictor_NoNest.html">write_model_Reg_discrete_predictor_NoNest</a></td>
+<td>Write .bug model file for regression model without nested subclasses</td></tr>
+<tr><td style="width: 25%;"><a href="write_model_Reg_Nest.html">write_model_Reg_Nest</a></td>
+<td>Write '.bug' model file for regression model WITH nested subclasses</td></tr>
+<tr><td style="width: 25%;"><a href="write_model_Reg_NoNest.html">write_model_Reg_NoNest</a></td>
+<td>Write .bug model file for regression model without nested subclasses</td></tr>
+</table>
+</div></body></html>
