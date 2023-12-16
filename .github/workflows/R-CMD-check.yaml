@@ -47,7 +47,7 @@ jobs:
           Get-Command g++ | Select-Object -ExpandProperty Definition
           mingw32-make --version
           Get-Command mingw32-make | Select-Object -ExpandProperty Definition
-          (New-Object System.Net.WebClient).DownloadFile('https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/JAGS-4.3.0.exe', 'C:\JAGS-4.3.0.exe')
+          (New-Object System.Net.WebClient).DownloadFile('https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/JAGS-4.3.0.exe', 'C:\JAGS-4.3.0')
         shell: powershell
 
       - name: Install JAGS on Windows
