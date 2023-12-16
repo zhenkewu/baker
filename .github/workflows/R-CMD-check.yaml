@@ -52,7 +52,7 @@ jobs:
 
       - name: Install JAGS on Windows
         if: runner.os == 'Windows'
-        run: C:\JAGS-4.3.0.exe /S
+        run: C:\JAGS-4.3.0\JAGS-4.3.0.exe /S
         shell: cmd
 
       - name: Install Mac system dependencies
