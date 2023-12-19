@@ -51,7 +51,8 @@ Suggests:
     testthat,
     rmarkdown,
     covr,
-    knitcitations
+    knitcitations,
+    sf
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 Encoding: UTF-8
