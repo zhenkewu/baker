@@ -18,7 +18,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #' (effectively deleting `MGS` from `Mobs`).
 #' \itemize{
 #' \item `MBS` a list of data frame of bronze-standard (BrS) measurements.
-#' Rows are subjects, columns are causative agents (e.g., pathogen species). 
+#' For each data frame (referred to as a 'slice'), 
+#' rows are subjects, columns are causative agents (e.g., pathogen species). 
 #' We use `list` here to accommodate the possibility of multiple sets of BrS data.
 #' They have imperfect sensitivity/specificity (e.g. nasopharyngeal polymerase chain
 #' reaction - NPPCR). 
@@ -46,32 +47,35 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #'   A vector of characters strings; can be one or more from `"BrS"`, `"SS"`, `"GS"`.
 #' }
 #' \item{`likelihood`}{
-#'     \itemize{
-#'          \item{cause_list} The vector of causes (NB: specify);
-#'          \item{k_subclass} The number of nested subclasses in each 
+#'     \describe{
+#'          \item{cause_list}{ The vector of causes (NB: specify);}
+#'          \item{k_subclass}{ The number of nested subclasses in each 
 #'          disease class (one of case classes or the control class; the same `k_subclass`
 #'          is assumed for each class) and each slice of BrS measurements. 
 #'          `1` for conditional independence; larger than `1` for conditional dependence. 
 #'          It is only available for BrS measurements. It is a vector of length equal to 
-#'          the number of slices of BrS measurements;
-#'          \item{Eti_formula} Formula for etiology regressions. You can use  
+#'          the number of slices of BrS measurements;}
+#'          \item{Eti_formula}{ Formula for etiology regressions. You can use  
 #'          [s_date_Eti()] to specify the design matrix for `R` format enrollment date; 
-#'          it will produce natural cubic spline basis. Specify `~ 1` if no regression is intended.
-#'          \item{FPR_formula}formula for false positive rates (FPR) regressions; see [formula()]. 
+#'          it will produce natural cubic spline basis. Specify `~ 1` if no regression is intended.}
+#'          \item{FPR_formula}{formula for false positive rates (FPR) regressions; see [formula()]. 
 #'          You can use [s_date_FPR()] to specify part of the design matrix for `R` 
 #'          format enrollment date; it will produce penalized-spline basis (based on B-splines). 
 #'          Specify `~ 1` if no regression is intended. (NB: If `effect="fixed"`, [dm_Rdate_FPR()]
-#'          will just specify a design matrix with appropriately standardized dates.)
+#'          will just specify a design matrix with appropriately standardized dates.)}
 #'     }
 #' }
 #' 
 #' \item{`prior`}{
-#'     \itemize{
-#'          \item{Eti_prior}Description of etiology prior (e.g., `overall_uniform` - 
-#'          all hyperparameters are `1`; or `0_1` - all hyperparameters are `0.1`);
-#'          \item{TPR_prior}Description of priors for the measurements 
-#'          (e.g., informative vs non-informative). Its length should be the same with `M_use`.
-#'          (NB: not sure what M use is...)
+#'     \describe{
+#'          \item{Eti_prior}{Description of etiology prior (e.g., `overall_uniform` - 
+#'          all hyperparameters are `1`; or `0_1` - all hyperparameters are `0.1`);}
+#'          \item{TPR_prior}{Description of priors for the measurements 
+#'          (e.g., informative vs non-informative). Its length should be the 
+#'          same as `use_measurements` above. Please see examples for how to specify.
+#'          The package can also handle multiple slices of BrS, SS data, so separate
+#'          specification of the TPR priors are needed. 
+#'        }
 #'     }
 #' }
 #' }
@@ -116,7 +120,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #'          This function is called when there exists one or more than one discrete covariate among
 #'          the union of the two covariate sets. The method implemented by this function
 #'          directly lets FPR depend upon covariates. 
-#'          This is different from Wu and Chen (2020+), which let the subclass 
+#'          This is different from Wu and Chen (2021), which let the subclass 
 #'          weights depend upon covariates. We implemented this function for methods comparison.
 #'           \item [nplcm_fit_Reg_discrete_predictor_NoNest] deals with the setting
 #'           with all discrete covariates for FPRs and CSCFs. The strata defined by the two sets of 
@@ -126,7 +130,7 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("set_prior_tpr","set_prio
 #'           }
 #'          \item local dependence model for BrS measures: 
 #'          Fitted at lower level by [nplcm_fit_Reg_Nest]: This is the method introduced in 
-#'          Wu and Chen (2020+): CSCF regression + case/control subclass weight regression.
+#'          Wu and Chen (2021): CSCF regression + case/control subclass weight regression.
 #'          It does not provide a specialized function for the setting with all discrete covariates.
 #'        }
 #' }
@@ -994,30 +998,21 @@ nplcm_fit_NoReg<-
     if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
     dump(names(in_data.list), append = FALSE, envir = here,
          file = curr_data_txt_file)
-    ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
-    bad_jagsdata_txt <- readLines(curr_data_txt_file)
-    #good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
-    ## to add an additional complicatoin of dump creates a text file with , dim = but the JAGS only accepts .Dim=
-    good_jagsdata_txt <- gsub( ", dim =", ", .Dim=", 
-                               gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE),
-                               fixed = FALSE)
     
-    
-    writeLines(good_jagsdata_txt, curr_data_txt_file)
-    
-    # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
-    inits_fnames <- list.files(mcmc_options$result.folder,pattern = "^jagsinits[0-9]+.txt",
-                               full.names = TRUE)
-    for (fiter in seq_along(inits_fnames)){
-      curr_inits_txt_file <- inits_fnames[fiter]
-      bad_jagsinits_txt <- readLines(curr_inits_txt_file)
-      good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
-      writeLines(good_jagsinits_txt, curr_inits_txt_file)
-    }
-    
+    # ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
+    # bad_jagsdata_txt <- readLines(curr_data_txt_file)
+    # #good_jagsdata_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
+    # ## to add an additional complicatoin of dump creates a text file with , dim = but the JAGS only accepts .Dim=
+    # good_jagsdata_txt <- gsub( ", dim =", ", .Dim=", 
+    #                            gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE),
+    #                            fixed = FALSE)
+    # 
+    # 
+    # writeLines(good_jagsdata_txt, curr_data_txt_file)
+
     ## fixed some problems of JAGS 4.3.2 not having cut function; and I(a,b) functions weirdly, even though
     ## the two elements are already constants (errors says that are not constant).
-    curr_model_txt_file <- file.path(mcmc_options$result.folder,"model_NoReg.bug")
+    curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
     bad_model_txt <- readLines(curr_model_txt_file)
     good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
     good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
@@ -1771,14 +1766,18 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
     dump(names(in_data.list), append = FALSE, envir = here,
          file = curr_data_txt_file)
-    # fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
-    bad_jagsdata_txt <- readLines(curr_data_txt_file)
-    good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", 
-                               bad_jagsdata_txt,fixed = FALSE)
-    writeLines(good_jagsdata_txt, curr_data_txt_file)
+    
+    ## fixed some problems of JAGS 4.3.2 not having cut function; and I(a,b) functions weirdly, even though
+    ## the two elements are already constants (errors says that are not constant).
+    curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
+    bad_model_txt <- readLines(curr_model_txt_file)
+    good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
+    good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+    writeLines(good_model_txt, curr_model_txt_file)
+    
     if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
     gs <- jags2_baker(data   = curr_data_txt_file,
-                      inits  = in_init,
+                      inits  = xxx,
                       parameters.to.save = out_parameter,
                       model.file = filename,
                       working.directory = mcmc_options$result.folder,
@@ -2456,20 +2455,15 @@ nplcm_fit_Reg_NoNest <-
       if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
       dump(names(in_data.list), append = FALSE, envir = here,
            file = curr_data_txt_file)
-      ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
-      bad_jagsdata_txt <- readLines(curr_data_txt_file)
-      good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
-      writeLines(good_jagsdata_txt, curr_data_txt_file)
       
-      # # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
-      # inits_fnames <- list.files(mcmc_options$result.folder,pattern = "^jagsinits[0-9]+.txt",
-      #                            full.names = TRUE)
-      # for (fiter in seq_along(inits_fnames)){
-      #   curr_inits_txt_file <- inits_fnames[fiter]
-      #   bad_jagsinits_txt <- readLines(curr_inits_txt_file)
-      #   good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsinits_txt,fixed = FALSE)
-      #   writeLines(good_jagsinits_txt, curr_inits_txt_file)
-      # }
+      ## fixed some problems of JAGS 4.3.2 not having cut function; and I(a,b) functions weirdly, even though
+      ## the two elements are already constants (errors says that are not constant).
+      curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
+      bad_model_txt <- readLines(curr_model_txt_file)
+      good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
+      good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+      writeLines(good_model_txt, curr_model_txt_file)
+      
       if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
       gs <- jags2_baker(data   = curr_data_txt_file,
                         inits  = in_init,
@@ -3222,10 +3216,16 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   if(file.exists(curr_data_txt_file)){file.remove(curr_data_txt_file)}
   dump(names(in_data.list), append = FALSE, envir = here,
        file = curr_data_txt_file)
-  ## fix dimension problem.... convert say .Dmi=7:6 to c(7,6) (an issue for templateBS_1):
-  bad_jagsdata_txt <- readLines(curr_data_txt_file)
-  good_jagsdata_txt <- gsub( ".Dim = ([0-9]+):([0-9]+)", ".Dim = c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE)
-  writeLines(good_jagsdata_txt, curr_data_txt_file)
+
+  
+  ## fixed some problems of JAGS 4.3.2 not having cut function; and I(a,b) functions weirdly, even though
+  ## the two elements are already constants (errors says that are not constant).
+  curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
+  bad_model_txt <- readLines(curr_model_txt_file)
+  good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
+  good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+  writeLines(good_model_txt, curr_model_txt_file)
+  
   if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
   gs <- jags2_baker(data   = curr_data_txt_file,
                     inits  = in_init,

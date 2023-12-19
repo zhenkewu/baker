@@ -7,7 +7,7 @@
 #' @param clean_options The list of options for cleaning PERCH data.
 #' Its elements are defined as follows:
 #' 
-#' \itemize{
+#' \describe{
 #' \item{`raw_meas_dir`}{: The file path to the raw data;}
 #' \item{`case_def`}{: Variable name in raw data for **case** definition;}
 #' \item{`case_def_val`}{: The value for **case** definition;}
@@ -194,20 +194,20 @@ clean_perch_data <- function(clean_options) {
 #'   The default is NULL, which means not reading in any covariate.
 #'
 #' @return A list of data.
-#' \itemize{
+#' \describe{
 #' \item{Mobs}{
-#'    \itemize{
-#'    \item{MBS} A list of Bronze-Standard (BrS) measurements.
+#'    \describe{
+#'    \item{MBS}{ A list of Bronze-Standard (BrS) measurements.
 #'    The names of the list take the form of `specimen`_`test`. 
 #'    Each element of the list is a data frame. The rows of the data frame 
-#'    are for subjects; the columns are for measured pathogens.
-#'    \item{MSS} A list of Silver-Standard (SS) measurements. 
-#'    The formats are the same as `MBS` above.
-#'    \item{MGS} A list of Gold-Standard (GS) measurements. 
-#'    It equals `NULL` if no GS data exist.
+#'    are for subjects; the columns are for measured pathogens.}
+#'    \item{MSS}{ A list of Silver-Standard (SS) measurements. 
+#'    The formats are the same as `MBS` above.}
+#'    \item{MGS}{ A list of Gold-Standard (GS) measurements. 
+#'    It equals `NULL` if no GS data exist.}
 #'    }
 #' }
-#' \item{X} A data frame with columns specified by `extra_covariates`.
+#' \item{X}{ A data frame with columns specified by `extra_covariates`.}
 #' }
 #' 
 #' @family raw data importing functions

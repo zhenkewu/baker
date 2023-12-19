@@ -10,7 +10,7 @@ clean_perch_data(clean_options)
 \item{clean_options}{The list of options for cleaning PERCH data.
 Its elements are defined as follows:
 
-\itemize{
+\describe{
 \item{\code{raw_meas_dir}}{: The file path to the raw data;}
 \item{\code{case_def}}{: Variable name in raw data for \strong{case} definition;}
 \item{\code{case_def_val}}{: The value for \strong{case} definition;}

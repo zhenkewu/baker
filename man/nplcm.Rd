@@ -18,7 +18,8 @@ is not available, please specify it as, e.g., \code{MGS=NULL}
 (effectively deleting \code{MGS} from \code{Mobs}).
 \itemize{
 \item \code{MBS} a list of data frame of bronze-standard (BrS) measurements.
-Rows are subjects, columns are causative agents (e.g., pathogen species).
+For each data frame (referred to as a 'slice'),
+rows are subjects, columns are causative agents (e.g., pathogen species).
 We use \code{list} here to accommodate the possibility of multiple sets of BrS data.
 They have imperfect sensitivity/specificity (e.g. nasopharyngeal polymerase chain
 reaction - NPPCR).
@@ -46,32 +47,35 @@ basis expansion is often needed for approximation.
 A vector of characters strings; can be one or more from \code{"BrS"}, \code{"SS"}, \code{"GS"}.
 }
 \item{\code{likelihood}}{
-\itemize{
-\item{cause_list} The vector of causes (NB: specify);
-\item{k_subclass} The number of nested subclasses in each
+\describe{
+\item{cause_list}{ The vector of causes (NB: specify);}
+\item{k_subclass}{ The number of nested subclasses in each
 disease class (one of case classes or the control class; the same \code{k_subclass}
 is assumed for each class) and each slice of BrS measurements.
 \code{1} for conditional independence; larger than \code{1} for conditional dependence.
 It is only available for BrS measurements. It is a vector of length equal to
-the number of slices of BrS measurements;
-\item{Eti_formula} Formula for etiology regressions. You can use
+the number of slices of BrS measurements;}
+\item{Eti_formula}{ Formula for etiology regressions. You can use
 \code{\link[=s_date_Eti]{s_date_Eti()}} to specify the design matrix for \code{R} format enrollment date;
-it will produce natural cubic spline basis. Specify \code{~ 1} if no regression is intended.
-\item{FPR_formula}formula for false positive rates (FPR) regressions; see \code{\link[=formula]{formula()}}.
+it will produce natural cubic spline basis. Specify \code{~ 1} if no regression is intended.}
+\item{FPR_formula}{formula for false positive rates (FPR) regressions; see \code{\link[=formula]{formula()}}.
 You can use \code{\link[=s_date_FPR]{s_date_FPR()}} to specify part of the design matrix for \code{R}
 format enrollment date; it will produce penalized-spline basis (based on B-splines).
 Specify \code{~ 1} if no regression is intended. (NB: If \code{effect="fixed"}, \code{\link[=dm_Rdate_FPR]{dm_Rdate_FPR()}}
-will just specify a design matrix with appropriately standardized dates.)
+will just specify a design matrix with appropriately standardized dates.)}
 }
 }
 
 \item{\code{prior}}{
-\itemize{
-\item{Eti_prior}Description of etiology prior (e.g., \code{overall_uniform} -
-all hyperparameters are \code{1}; or \verb{0_1} - all hyperparameters are \code{0.1});
-\item{TPR_prior}Description of priors for the measurements
-(e.g., informative vs non-informative). Its length should be the same with \code{M_use}.
-(NB: not sure what M use is...)
+\describe{
+\item{Eti_prior}{Description of etiology prior (e.g., \code{overall_uniform} -
+all hyperparameters are \code{1}; or \verb{0_1} - all hyperparameters are \code{0.1});}
+\item{TPR_prior}{Description of priors for the measurements
+(e.g., informative vs non-informative). Its length should be the
+same as \code{use_measurements} above. Please see examples for how to specify.
+The package can also handle multiple slices of BrS, SS data, so separate
+specification of the TPR priors are needed.
+}
 }
 }
 }}
@@ -119,7 +123,7 @@ covariates may be identical, overlapping or non-overlapping.
 This function is called when there exists one or more than one discrete covariate among
 the union of the two covariate sets. The method implemented by this function
 directly lets FPR depend upon covariates.
-This is different from Wu and Chen (2020+), which let the subclass
+This is different from Wu and Chen (2021), which let the subclass
 weights depend upon covariates. We implemented this function for methods comparison.
 \item \link{nplcm_fit_Reg_discrete_predictor_NoNest} deals with the setting
 with all discrete covariates for FPRs and CSCFs. The strata defined by the two sets of
@@ -129,7 +133,7 @@ We implemented this function for methods comparison.
 }
 \item local dependence model for BrS measures:
 Fitted at lower level by \link{nplcm_fit_Reg_Nest}: This is the method introduced in
-Wu and Chen (2020+): CSCF regression + case/control subclass weight regression.
+Wu and Chen (2021): CSCF regression + case/control subclass weight regression.
 It does not provide a specialized function for the setting with all discrete covariates.
 }
 }

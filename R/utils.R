@@ -1696,7 +1696,7 @@ has_non_basis <- function(form){
   outlab <- attr(out,"term.labels")
   (attr(out,"intercept")>0) ||
     (length(grep("^s_",outlab))>=1 && length(outlab[-grep("^s_",outlab)])>=1 && attr(out,"intercept")==0) ||
-     (length(outlab)>=1 && length(grep("^s_",outlab))==0 && attr(out,"intercept")==0) 
+    (length(outlab)>=1 && length(grep("^s_",outlab))==0 && attr(out,"intercept")==0) 
 }
 
 #' Make Etiology design matrix for dates with R format.
@@ -1922,6 +1922,22 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
     }
   }
   lapply(names(data.list), dump, append = TRUE, file = "jagsdata.txt")
+  
+  
+  ## ZW fix:
+  ## fix a problem related to dumped matrix having a structure attribute of dim not
+  ## .Dim as desired by JAGS 4.3.2; also the dimension could be represented by 7:6
+  ## instead of c(7,6), which may cause problems - so fixing this here.
+  bad_jagsdata_txt <- readLines("jagsdata.txt")
+  good_jagsdata_txt <- gsub( ", dim =", ", .Dim=", 
+                             gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)", bad_jagsdata_txt,fixed = FALSE),
+                             fixed = FALSE)
+  writeLines(good_jagsdata_txt, "jagsdata.txt")
+  
+  #### end of data fix.
+  
+  
+  
   data <- read.jagsdata("jagsdata.txt")
   if (is.function(model.file)) {
     temp <- tempfile("model")
@@ -1960,15 +1976,14 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
       with(initial.values, dump(names(initial.values), 
                                 file = curr_init_txt_file))
       
-      # fix dimension problem.... convert say 7:6 to c(7,6) (an issue for a dumped matrix):
-      inits_fnames <- list.files(pattern = "^jagsinits[0-9]+.txt",
-                                 full.names = TRUE)
-      for (fiter in seq_along(inits_fnames)){
-        curr_inits_txt_file <- inits_fnames[fiter]
-        bad_jagsinits_txt <- readLines(curr_inits_txt_file)
-        good_jagsinits_txt <- gsub( "([0-9]+):([0-9]+)", "c(\\1L,\\2L)", bad_jagsinits_txt,fixed = FALSE)
-        writeLines(good_jagsinits_txt, curr_inits_txt_file)
-      }
+      ## ZW fix:
+      bad_jagsinits_txt <- readLines(curr_init_txt_file)
+      good_jagsinits_txt <- gsub( ", dim =", ", .Dim=",
+                                  gsub( "([0-9]+):([0-9]+)", "c(\\1,\\2)",
+                                        bad_jagsinits_txt,fixed = FALSE),
+                                  fixed = FALSE)
+      writeLines(good_jagsinits_txt, curr_init_txt_file)
+      ## end of inits fix.
       
       
     }
