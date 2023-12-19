@@ -1777,7 +1777,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     
     if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
     gs <- jags2_baker(data   = curr_data_txt_file,
-                      inits  = xxx,
+                      inits  = in_init,
                       parameters.to.save = out_parameter,
                       model.file = filename,
                       working.directory = mcmc_options$result.folder,
