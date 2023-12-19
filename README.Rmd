@@ -53,6 +53,14 @@ knitr::opts_chunk$set(
 | Primary PERCH Analysis | The PERCH Study Group (2019). Aetiology of severe hospitalized pneumonia in HIV-uninfected children from Africa and Asia: the Pneumonia Aetiology Research for Child Health (PERCH) Case-Control Study. *The Lancet* 394(10200): 757-779. `r badger::badge_doi("10.1016/S0140-6736(19)30721-4", "yellow")`|
 | Software paper | Chen I, Shi Q, Zeger SL, Wu Z (2022+) `baker`: An `R` package for Nested Partially-Latent Class Models. `r badge_custom("arxiv", "preprint", "red", "https://arxiv.org/abs/2202.11778")` `r badge_custom("vignette", "workflow", "blue", "https://zhenkewu.com/assets/html/baker_vignette.html")`|
 
+There are a number of scientific papers on global health and infectious diseases
+that have used the model and some the software (in its earlier versions). Some notable
+examples are listed below:
+
+| | Notable References using `baker` (model and/or software)|
+| -------------  | -------------  | 
+|1 |Kubale et al. (2023). Etiology of acute lower respiratory illness hospitalizations among infants in four countries. *Open Forum Infectious Diseases*, ofad580. `r badger::badge_doi("10.1093/ofid/ofad580", "green")`         
+|2 |Saha SK et al. (2018). Causes and incidence of community-acquired serious infections among young children in south Asia (ANISA): an observational cohort study. *The Lancet* 392(10142):145-159. `r badger::badge_doi("10.1016/S0140-6736(18)31127-9","green")`  
 
 ## Table of content
 <div id='id-section1'/>
