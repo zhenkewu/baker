@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
-Title: Nested Partially Latent Class Models
+Title: "Nested Partially Latent Class Models"
 Version: 1.0.2
-Date: 2023-12-18
+Date: 2023-12-20
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@gmail.com",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),
@@ -15,13 +15,13 @@ Authors@R: c(
      )
 Description: Provides functions to specify, fit and visualize
     nested partially-latent class models (
-    'Wu, Deloria-Knoll, Hammitt, and Zeger, 2016, JRSS-C' <doi:10.1111/rssc.12101>; 
-    'Wu, Deloria-Knoll, and Zeger, 2017, Biostatistics' <doi:10.1093/biostatistics/kxw037>;
-    'Wu and Chen, 2021, Statistics in Medicine' <doi:10.1002/sim.8804>) for 
+    Wu, Deloria-Knoll, Hammitt, and Zeger (2016) <doi:10.1111/rssc.12101>; 
+    Wu, Deloria-Knoll, and Zeger (2017) <doi:10.1093/biostatistics/kxw037>;
+    Wu and Chen (2021) <doi:10.1002/sim.8804>) for 
     inference of population disease etiology and individual diagnosis. In the motivating
     Pneumonia Etiology Research for Child Health (PERCH) study, because both quantities
     of interest sum to one hundred percent, the PERCH scientists frequently refer to
-    them as 'population etiology pie' and 'individual etiology pie', hence the name of the package.
+    them as population etiology pie and individual etiology pie, hence the name of the package.
 Depends:
     R(>= 4.3.0)
 Imports:

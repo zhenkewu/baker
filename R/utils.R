@@ -403,7 +403,9 @@ visualize_case_control_matrix <- function(mat, dim_names = ncol(mat),
   cex_main = min(2,20 / n)
   cex_se  = min(1.5,15 / n)
   
-  graphics::par(mar = c(0, 0, 5, 0), bg = "white",xpd = TRUE)
+  op <- graphics::par(mar = c(0, 0, 5, 0), bg = "white",xpd = TRUE)
+  on.exit(par(op))
+  
   graphics::plot(
     c(0, n + 0.8), c(0, n + 0.8), axes = axes, xlab = "",
     ylab = "", asp = 1, type = "n"

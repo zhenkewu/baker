@@ -1015,7 +1015,7 @@ nplcm_fit_NoReg<-
     curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
     bad_model_txt <- readLines(curr_model_txt_file)
     good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
-    good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+    # good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
     writeLines(good_model_txt, curr_model_txt_file)
     
     if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
@@ -1772,7 +1772,7 @@ nplcm_fit_Reg_discrete_predictor_NoNest <-
     curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
     bad_model_txt <- readLines(curr_model_txt_file)
     good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
-    good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+    # good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
     writeLines(good_model_txt, curr_model_txt_file)
     
     if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
@@ -2461,7 +2461,7 @@ nplcm_fit_Reg_NoNest <-
       curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
       bad_model_txt <- readLines(curr_model_txt_file)
       good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
-      good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+      # good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
       writeLines(good_model_txt, curr_model_txt_file)
       
       if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}
@@ -3223,7 +3223,7 @@ nplcm_fit_Reg_Nest <- function(data_nplcm,model_options,mcmc_options){
   curr_model_txt_file <- file.path(mcmc_options$result.folder,model_bugfile_name)
   bad_model_txt <- readLines(curr_model_txt_file)
   good_model_txt <- gsub( "cut\\(", "(", bad_model_txt,fixed = FALSE)
-  good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
+  # good_model_txt <- gsub( "I\\(0\\.000001,0\\.999999\\)", " ", good_model_txt,fixed = FALSE)
   writeLines(good_model_txt, curr_model_txt_file)
   
   if(is.null(mcmc_options$jags.dir)){mcmc_options$jags.dir=""}

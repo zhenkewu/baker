@@ -266,6 +266,7 @@ get_plot_num <- function(e, height){
 plot_leftmost <- function(model_options,height){
   
   op <- graphics::par(mar=c(5.1,4,4.1,0))
+  on.exit(par(op))
   graphics::plot(rep(0,3*height),
                  c(sapply(1:height,get_plot_num,height)),
                  xlim=c(0,0.1),
@@ -675,6 +676,7 @@ plot_BrS_panel <- function(slice,data_nplcm,model_options,
   #
   #op <- graphics::par(mar=c(5.1,4.1,4.1,0))
   op <- graphics::par(mar=c(5.1,0,4.1,0))
+  on.exit(par(op))
   
   if (!is_length_all_one(pos_vec)){
     #stop("== Not implemented for combo latent status.==")
@@ -1277,6 +1279,7 @@ plot_SS_panel <- function(slice,data_nplcm,model_options,
   # plotting:
   #
   op <- graphics::par(mar=c(5.1,0,4.1,0))
+  on.exit(par(op))
   
   if (check_combo_SS){
     #stop("== Not implemented for combo latent status.==")

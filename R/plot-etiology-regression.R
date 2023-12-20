@@ -288,13 +288,15 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
   # plot results:
   #################
   if (do_plot){  
-    par(mfcol=c(2,Jcause),oma=c(3,0,3,0))
+    op <- par(mfcol=c(2,Jcause),oma=c(3,0,3,0))
+    on.exit(par(op))
     for (j in 1:Jcause){ # <--- the marginal dimension of measurements.
       # need to fix this for NoA! <------------------------ FIX!
       #
       # Figure 1 for case and control positive rates:
       #
-      par(mar=c(2,5,0,1))
+      op1 <- par(mar=c(2,5,0,1))
+      on.exit(par(op1))
       #<------------------------ FIX!
       if (model_options$likelihood$cause_list[j] == "other"){
         plot(0,0.5,type="l",ylim=c(0,1),pch="n",
@@ -376,7 +378,8 @@ plot_etiology_regression <- function(DIR_NPLCM,stratum_bool,slice=1,plot_basis=F
       #
       # Figure 2 for Etiology Regression:
       #
-      par(mar=c(2,5,0,1))
+      op2 <- par(mar=c(2,5,0,1))
+      on.exit(par(op2))
       plot(curr_date_Eti,Eti_mean[j,],type="l",ylim=c(0,1),xlab="standardized date",
            ylab=c("","etiologic fraction")[(j==1)+1],bty="n",xaxt="n",yaxt="n",las=2)
       ## ONLY FOR SIMULATIONS <---------------------- FIX!
@@ -614,6 +617,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @param show_levels a vector of integers less than or equal to the total number of 
 #' levels of strata; default to `0` for overall.
 #' @param is_plot default to TRUE, plotting the figures; if `FALSE` only returning summaries
+#' @param VERBOSE default to `TRUE`, print actual meanings of the levels
 #' @import graphics ggplot2
 #' @importFrom ggpubr ggarrange
 #' @importFrom stats aggregate
@@ -623,7 +627,7 @@ plot_subwt_regression <- function(DIR_NPLCM,stratum_bool,case=0,slice=1,truth=NU
 #' @return plotting function
 plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
                                 truth=NULL,
-                                RES_NPLCM=NULL,show_levels=0,is_plot=TRUE){
+                                RES_NPLCM=NULL,show_levels=0,is_plot=TRUE,VERBOSE=TRUE){
   # ### test
   # DIR_NPLCM = result_folder_discrete
   # strata_weights = "empirical"
@@ -868,8 +872,12 @@ plot_etiology_strat <- function(DIR_NPLCM,strata_weights = "empirical",
       }
     }
     
-    print("==[baker] actual meanings of levels (by row):")
-    print(unique_Eti_level)
+    if(VERBOSE){
+      print("==[baker] actual meanings of levels (by row):")
+      print(unique_Eti_level)
+    }
+    # this following is plotting, because this is a plotting function to be fed
+    # into a genric plot function, so we keep it out of VERBOSE if else logic:
     print(ggpubr::ggarrange(plotlist=plot_list_show,nrow = length(plot_list_show)))
   }
 

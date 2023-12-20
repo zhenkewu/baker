@@ -1272,7 +1272,7 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separa
     ",r0_nm[s],"[",K_nm[s],"]<-1
     for(j in 2:",K_nm[s],") {",Lambda0_nm[s],"[j]<-",r0_nm[s],"[j]*(1-",r0_nm[s],"[j-1])*",Lambda0_nm[s],"[j-1]/",r0_nm[s],"[j-1]}
     for(k in 1:(",K_nm[s],"-1)){
-    ",r0_nm[s],"[k]~dbeta(1,",alphadp0_nm[s],")I(0.000001,0.999999)
+    ",r0_nm[s],"[k]~dbeta(1,",alphadp0_nm[s],")T(0.000001,0.999999)
     }
     
     for (k in 1:(",K_nm[s],"-1)){",Lambda_nm[s],"[k]<-max(0.000001,min(0.999999,",Lambda0_nm[s],"[k]))}
@@ -1283,7 +1283,7 @@ add_meas_BrS_param_Nest_Slice <- function(s,Mobs,cause_list) { #note: has separa
     ",r1_nm[s],"[",K_nm[s],"]<-1
     for(j in 2:",K_nm[s],") {",Eta0_nm[s],"[j]<-",r1_nm[s],"[j]*(1-",r1_nm[s],"[j-1])*",Eta0_nm[s],"[j-1]/",r1_nm[s],"[j-1]}
     for(k in 1:(",K_nm[s],"-1)){
-    ",r1_nm[s],"[k]~dbeta(1,",alphadp0_case_nm[s],")I(0.000001,0.999999)
+    ",r1_nm[s],"[k]~dbeta(1,",alphadp0_case_nm[s],")T(0.000001,0.999999)
     }
     
     for (k in 1:(",K_nm[s],"-1)){",Eta_nm[s],"[k]<-max(0.000001,min(0.999999,",Eta0_nm[s],"[k]))}

@@ -10,7 +10,8 @@ plot_etiology_strat(
   truth = NULL,
   RES_NPLCM = NULL,
   show_levels = 0,
-  is_plot = TRUE
+  is_plot = TRUE,
+  VERBOSE = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ if available, will be shown in thicker red solid vertical lines.}
 levels of strata; default to \code{0} for overall.}
 
 \item{is_plot}{default to TRUE, plotting the figures; if \code{FALSE} only returning summaries}
+
+\item{VERBOSE}{default to \code{TRUE}, print actual meanings of the levels}
 }
 \value{
 plotting function
