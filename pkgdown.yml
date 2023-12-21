@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   baker_demo: baker_demo.html
-last_built: 2023-12-20T19:50Z
+last_built: 2023-12-21T14:46Z
 urls:
   reference: https://zhenkewu.com/baker/reference
   article: https://zhenkewu.com/baker/articles
