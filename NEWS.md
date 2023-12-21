@@ -1,3 +1,5 @@
+# baker (development version)
+
 # baker 1.0.2
 
 * fix an issue related to JAGS 4.3.x removed `cut()` function and only recognizes
