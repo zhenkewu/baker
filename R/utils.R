@@ -1871,6 +1871,13 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 #   }
 # }
 
+
+is.R <- function () {
+  exists("version") && !is.null(vl <- version$language) && vl == 
+  "R"
+}
+
+
 #' Run `JAGS` from R
 #' 
 #' The jags function takes data and starting values as input. 
