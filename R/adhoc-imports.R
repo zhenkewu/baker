@@ -28,14 +28,14 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   #require(R2WinBUGS)
   sims.files <- paste("CODAchain", 1:n.chains, ".txt", sep = "")
   index <- read.table("CODAindex.txt", header = FALSE)#, sep = "\t")
-  if (is.R()) {
+  # if (is.R()) {
       parameter.names <- as.vector(index[, 1])
       n.keep <- index[1, 3] - index[1, 2] + 1
-  }
-  else {
-      parameter.names <- row.names(index)
-      n.keep <- index[1, 2] - index[1, 1] + 1
-  }
+  # }
+  # else {
+  #     parameter.names <- row.names(index)
+  #     n.keep <- index[1, 2] - index[1, 1] + 1
+  # }
   n.parameters <- length(parameter.names)
   n.sims <- n.keep * n.chains
   sims <- matrix(, n.sims, n.parameters)
@@ -84,13 +84,13 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   }
   rank.long <- unlist(long.short)
   for (i in 1:n.chains) {
-      if (is.R()) {
+      # if (is.R()) {
           sims.i <- scan(sims.files[i], quiet = TRUE)[2 * (1:(n.keep * 
               n.parameters))]
-      }
-      else {
-          sims.i <- scan(sims.files[i])[2 * (1:(n.keep * n.parameters))]
-      }
+      # }
+      # else {
+      #     sims.i <- scan(sims.files[i])[2 * (1:(n.keep * n.parameters))]
+      # }
       sims[(n.keep * (i - 1) + 1):(n.keep * i), ] <- sims.i
       sims.array[, i, ] <- sims.i
   }
@@ -172,7 +172,7 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   all
 }
 
-if(!is.R()) .subset <- function(x, index) x[index]
+# if(!is.R()) .subset <- function(x, index) x[index]
 
 
 #' function to write bugs model (copied from R2WinBUGS)
@@ -185,14 +185,14 @@ if(!is.R()) .subset <- function(x, index) x[index]
 #' 
 write.model <- function(model, con = "model.bug", digits = 5)
 {
-  if (is.R()){
+  # if (is.R()){
     model.text <- c("model", replaceScientificNotationR(body(model), digits = digits))
     # "[\+\-]?\d*\.?[Ee]?[\+\-]?\d*"
-  } else {
-    ## In S-PLUS the source code of a function can be obtained with
-    ## as.character(function_name).  This omits the "function_name <- function()" piece
-    model.text <- paste("model", as.character(model))
-  }
+  # } else {
+  #   ## In S-PLUS the source code of a function can be obtained with
+  #   ## as.character(function_name).  This omits the "function_name <- function()" piece
+  #   model.text <- paste("model", as.character(model))
+  # }
   model.text <- gsub("%_%", "", model.text)
   writeLines(model.text, con = con)
 }
@@ -260,9 +260,9 @@ replaceScientificNotationR <- function(bmodel, digits = 5){
                        confshrink = conv.p$confshrink, n.eff = conv.p$n.eff)
       }
       else if (trans[i]=="logit"){
-        if (!is.R()){
+        #if (!is.R()){
           logit <- function (x) { log(x /(1- x)) }
-        }    
+        #}    
         conv.p <- conv.par(logit(ai), n.chains, Rupper.keep=Rupper.keep)
         conv.p <- list(quantiles = invlogit(conv.p$quantiles),
                        confshrink = conv.p$confshrink, n.eff = conv.p$n.eff)

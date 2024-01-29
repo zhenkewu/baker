@@ -1872,11 +1872,6 @@ s_date_FPR <- function(Rdate,Y,basis="ps",dof=10,...) {
 # }
 
 
-is.R <- function () {
-  exists("version") && !is.null(vl <- version$language) && vl == 
-  "R"
-}
-
 
 #' Run `JAGS` from R
 #' 
@@ -1950,7 +1945,7 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
   data <- read.jagsdata("jagsdata.txt")
   if (is.function(model.file)) {
     temp <- tempfile("model")
-    temp <- if (is.R() || .Platform$OS.type != "windows") {
+    temp <- if (.Platform$OS.type != "windows") {
       paste(temp, "txt", sep = ".")
     }
     else {
@@ -1958,8 +1953,8 @@ jags2_baker <- function (data, inits, parameters.to.save, model.file = "model.bu
     }
     write.model(model.file, con = temp)
     model.file <- gsub("\\\\", "/", temp)
-    if (!is.R()) 
-      on.exit(file.remove(model.file), add = TRUE)
+    # if (!is.R()) 
+    #   on.exit(file.remove(model.file), add = TRUE)
   }
   jags.call <- if (jags.path == "") {
     "jags"
