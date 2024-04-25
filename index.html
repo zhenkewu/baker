@@ -5,30 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Provides functions to specify, fit and visualize
-    nested partially-latent class models (
-    Wu, Deloria-Knoll, Hammitt, and Zeger (2016) &lt;doi:10.1111/rssc.12101&gt;; 
-    Wu, Deloria-Knoll, and Zeger (2017) &lt;doi:10.1093/biostatistics/kxw037&gt;;
-    Wu and Chen (2021) &lt;doi:10.1002/sim.8804&gt;) for 
-    inference of population disease etiology and individual diagnosis. In the motivating
-    Pneumonia Etiology Research for Child Health (PERCH) study, because both quantities
-    of interest sum to one hundred percent, the PERCH scientists frequently refer to
-    them as population etiology pie and individual etiology pie, hence the name of the package.">
+<meta name="description" content="Provides functions to specify, fit and visualize nested partially-latent class models ( Wu, Deloria-Knoll, Hammitt, and Zeger (2016) &lt;doi:10.1111/rssc.12101&gt;; Wu, Deloria-Knoll, and Zeger (2017) &lt;doi:10.1093/biostatistics/kxw037&gt;; Wu and Chen (2021) &lt;doi:10.1002/sim.8804&gt;) for inference of population disease etiology and individual diagnosis. In the motivating Pneumonia Etiology Research for Child Health (PERCH) study, because both quantities of interest sum to one hundred percent, the PERCH scientists frequently refer to them as population etiology pie and individual etiology pie, hence the name of the package.">
 <title>"Nested Partially Latent Class Models" • baker</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="" nested partially latent class models>
-<meta property="og:description" content="Provides functions to specify, fit and visualize
-    nested partially-latent class models (
-    Wu, Deloria-Knoll, Hammitt, and Zeger (2016) &lt;doi:10.1111/rssc.12101&gt;; 
-    Wu, Deloria-Knoll, and Zeger (2017) &lt;doi:10.1093/biostatistics/kxw037&gt;;
-    Wu and Chen (2021) &lt;doi:10.1002/sim.8804&gt;) for 
-    inference of population disease etiology and individual diagnosis. In the motivating
-    Pneumonia Etiology Research for Child Health (PERCH) study, because both quantities
-    of interest sum to one hundred percent, the PERCH scientists frequently refer to
-    them as population etiology pie and individual etiology pie, hence the name of the package.">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="" nested partially latent class models>
+<meta property="og:description" content="Provides functions to specify, fit and visualize nested partially-latent class models ( Wu, Deloria-Knoll, Hammitt, and Zeger (2016) &lt;doi:10.1111/rssc.12101&gt;; Wu, Deloria-Knoll, and Zeger (2017) &lt;doi:10.1093/biostatistics/kxw037&gt;; Wu and Chen (2021) &lt;doi:10.1002/sim.8804&gt;) for inference of population disease etiology and individual diagnosis. In the motivating Pneumonia Etiology Research for Child Health (PERCH) study, because both quantities of interest sum to one hundred percent, the PERCH scientists frequently refer to them as population etiology pie and individual etiology pie, hence the name of the package.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -38,11 +22,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="index.html">baker</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -283,10 +267,10 @@
 </li>
 <li>Run <code>R</code> command <code><a href="https://mcmc-jags.sourceforge.io" class="external-link">library(rjags)</a></code> in R console; If the installations are successful, you’ll see some notes like this:</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span><span class="fu">library</span>(rjags)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> coda</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Linked to JAGS <span class="fl">4.</span>x<span class="fl">.0</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Loaded modules<span class="sc">:</span> basemod,bugs</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="sc">&gt;</span><span class="fu">library</span>(rjags)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>Loading required package<span class="sc">:</span> coda</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>Linked to JAGS <span class="fl">4.</span>x<span class="fl">.0</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>Loaded modules<span class="sc">:</span> basemod,bugs</span></code></pre></div>
 <ul>
 <li>Run <code>R</code> command <code><a href="https://github.com/zhenkewu/baker" class="external-link">library(baker)</a></code>. If the package <code>ks</code> cannot be loaded due to failure of loading package <code>rgl</code>, first install X11 by going <a href="https://www.xquartz.org/releases/XQuartz-2.7.11.html" class="external-link">here</a>, followed by</li>
 </ul>
@@ -301,40 +285,40 @@
 <li><p>Download source code for <a href="https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/JAGS-4.2.0.tar.gz/download" class="external-link">JAGS 4.2.0</a>; The workflow would be similar for later versions of <code>JAGS</code>.</p></li>
 <li>
 <p>Suppose you’ve downloaded it in <code>~/local/jags/4.2.0</code>. Follow the bash commands below:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change to the directory with the newly downloaded source files:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/local/jags/4.2.0</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new folder named "usr"</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> usr</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># decompress files:</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> zxvf JAGS-4.2.0.tar.gz</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># change to the directory with newly decompressed files:</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/local/jags/4.2.0/JAGS-4.2.0</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># specify new JAGS home:</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">JAGS_HOME</span><span class="op">=</span><span class="va">$HOME</span>/local/jags/4.2.0/usr</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/bin:<span class="va">$PATH</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># link to BLAS and LAPACK:</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Here I have used "/usr/lib64/atlas/" and "/usr/lib64/" on JHPCE that give me</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># access to libblas.so.3 and liblapack.so.3. Please modify to paths on your system.</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="va">LDFLAGS</span><span class="op">=</span><span class="st">"-L/usr/lib64/atlas/ -L/usr/lib64/"</span> <span class="ex">./configure</span> <span class="at">--prefix</span><span class="op">=</span><span class="va">$JAGS_HOME</span> <span class="at">--libdir</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/lib64 </span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># if you have 8 cores:</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j8</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> install</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare to install R package, rjags:</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PKG_CONFIG_PATH</span><span class="op">=</span><span class="va">$HOME</span>/local/jags/4.2.0/usr/lib64/pkgconfig </span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> install.packages<span class="er">(</span><span class="st">"rjags"</span><span class="kw">)</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co"># or if the above fails, try:</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span>install.packages<span class="er">(</span><span class="st">"rjags"</span><span class="ex">,</span> configure.args=<span class="st">"--enable-rpath"</span><span class="kw">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># change to the directory with the newly downloaded source files:</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="bu">cd</span> ~/local/jags/4.2.0</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># create a new folder named "usr"</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">mkdir</span> usr</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co"># decompress files:</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">tar</span> zxvf JAGS-4.2.0.tar.gz</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># change to the directory with newly decompressed files:</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="bu">cd</span> ~/local/jags/4.2.0/JAGS-4.2.0</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co"># specify new JAGS home:</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="bu">export</span> <span class="va">JAGS_HOME</span><span class="op">=</span><span class="va">$HOME</span>/local/jags/4.2.0/usr</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/bin:<span class="va">$PATH</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co"># link to BLAS and LAPACK:</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co"># Here I have used "/usr/lib64/atlas/" and "/usr/lib64/" on JHPCE that give me</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co"># access to libblas.so.3 and liblapack.so.3. Please modify to paths on your system.</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="va">LDFLAGS</span><span class="op">=</span><span class="st">"-L/usr/lib64/atlas/ -L/usr/lib64/"</span> <span class="ex">./configure</span> <span class="at">--prefix</span><span class="op">=</span><span class="va">$JAGS_HOME</span> <span class="at">--libdir</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/lib64 </span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co"># if you have 8 cores:</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j8</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="fu">make</span> install</span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co"># prepare to install R package, rjags:</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="bu">export</span> <span class="va">PKG_CONFIG_PATH</span><span class="op">=</span><span class="va">$HOME</span>/local/jags/4.2.0/usr/lib64/pkgconfig </span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="ex">module</span> load R</span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> install.packages<span class="er">(</span><span class="st">"rjags"</span><span class="kw">)</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a><span class="co"># or if the above fails, try:</span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span>install.packages<span class="er">(</span><span class="st">"rjags"</span><span class="ex">,</span> configure.args=<span class="st">"--enable-rpath"</span><span class="kw">)</span></span></code></pre></div>
 </li>
 <li><p>Also check out the <a href="https://CRAN.R-project.org/package=rjags/INSTALL" class="external-link">INSTALLATION</a> file for <code>rjags</code> package.</p></li>
 </ol>
@@ -346,32 +330,32 @@
 <h2 id="submitting-jobs-to-computing-cluster-via-a-shell-script">Submitting Jobs to Computing Cluster via a shell script<a class="anchor" aria-label="anchor" href="#submitting-jobs-to-computing-cluster-via-a-shell-script"></a>
 </h2>
 <p>Again, I use JHPCE as an example.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -M zhenkewu@gmail.com</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -N baker_regression_perch</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -o /users/zhwu/baker_regression/data_analysis/baker_regression_test.txt</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -e /users/zhwu/baker_regression/data_analysis/baker_regression_test.txt</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">JAGS_HOME</span><span class="op">=</span><span class="va">$HOME</span>/local/jags/4.2.0/usr</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/bin:<span class="va">$PATH</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">LD_LIBRARY_PATH</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/lib64</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /users/zhwu/baker_regression/data_analysis</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -cwd</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"**** Job starts ****"</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"**** JHPCE info ****"</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"User: </span><span class="va">${USER}</span><span class="st">"</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job id: </span><span class="va">${JOB_ID}</span><span class="st">"</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job name: </span><span class="va">${JOB_NAME}</span><span class="st">"</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Hostname: </span><span class="va">${HOSTNAME}</span><span class="st">"</span> </span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> real_regression_data_jhpce.R</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"**** Job ends ****"</span> </span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#$ -M zhenkewu@gmail.com</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#$ -N baker_regression_perch</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#$ -o /users/zhwu/baker_regression/data_analysis/baker_regression_test.txt</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#$ -e /users/zhwu/baker_regression/data_analysis/baker_regression_test.txt</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="bu">export</span> <span class="va">JAGS_HOME</span><span class="op">=</span><span class="va">$HOME</span>/local/jags/4.2.0/usr</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/bin:<span class="va">$PATH</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="bu">export</span> <span class="va">LD_LIBRARY_PATH</span><span class="op">=</span><span class="va">$JAGS_HOME</span>/lib64</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="bu">cd</span> /users/zhwu/baker_regression/data_analysis</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#$ -cwd</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"**** Job starts ****"</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"**** JHPCE info ****"</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"User: </span><span class="va">${USER}</span><span class="st">"</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job id: </span><span class="va">${JOB_ID}</span><span class="st">"</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job name: </span><span class="va">${JOB_NAME}</span><span class="st">"</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Hostname: </span><span class="va">${HOSTNAME}</span><span class="st">"</span> </span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="ex">Rscript</span> real_regression_data_jhpce.R</span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"**** Job ends ****"</span> </span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="fu">date</span></span></code></pre></div>
 <div id="id-section10"></div>
 
 <div class="section level4">
@@ -447,13 +431,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Zhenke Wu, Scott Zeger.</p>
+  <p>Developed by Zhenke Wu, Scott Zeger.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer>
