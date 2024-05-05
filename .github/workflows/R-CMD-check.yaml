@@ -26,6 +26,7 @@ jobs:
       NOT_CRAN: true
       R_KEEP_PKG_SOURCE: yes
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: false
+      JAGS_PREFIX: '/opt/local'
 
     steps:
       - uses: actions/checkout@v3
@@ -59,9 +60,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install jags
-          where jags
           
-
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
         run: |
