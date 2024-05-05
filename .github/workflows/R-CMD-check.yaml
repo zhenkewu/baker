@@ -59,11 +59,9 @@ jobs:
       - name: Install Mac system dependencies
         if: runner.os == 'macOS'
         run: |
-          print -l $path
           PATH="${PATH}:/opt/homebrew"
           export PATH=$PATH
           brew install jags
-          print -l $path
           
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
