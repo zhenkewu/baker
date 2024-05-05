@@ -59,13 +59,13 @@ jobs:
       - name: Install Mac system dependencies
         if: runner.os == 'macOS'
         run: |
-          sudo curl -OL https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/extras/JAGS-4.3.2-universal.tar.gz
-          sudo tar -xvf JAGS-4.3.2-universal.tar.gz -C /
+          brew install jags
           
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
         run: |
-          brew install jags
+          sudo apt-get update
+          sudo apt-get install libglpk-dev libglpk40 jags libv8-dev libnode-dev libcurl4-openssl-dev
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
