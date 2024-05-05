@@ -36,9 +36,6 @@ jobs:
           rtools-version: ${{ matrix.config.rtools }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-          env:
-            JAGS_PREFIX: '/opt/homebrew/'
-            
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -70,6 +67,8 @@ jobs:
           sudo apt-get install libglpk-dev libglpk40 jags libv8-dev libnode-dev libcurl4-openssl-dev
 
       - uses: r-lib/actions/setup-r-dependencies@v2
+        env:
+          JAGS_PREFIX: '/opt/homebrew/'
         with:
           extra-packages: any::rcmdcheck
           needs: check
