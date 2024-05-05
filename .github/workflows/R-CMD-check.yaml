@@ -16,9 +16,9 @@ jobs:
         config:
           - {os: macOS-latest,   r: 'release'}
           #- {os: macOS-13,   r: 'release'}
-          - {os: windows-latest, r: 'release', rtools: '42'}
+          #- {os: windows-latest, r: 'release', rtools: '42'}
           ## - {os: ubuntu-latest,   r: 'devel', rtools: '' , http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release', rtools: ''}
+          #- {os: ubuntu-latest,   r: 'release', rtools: ''}
           ## - {os: ubuntu-latest,   r: 'oldrel-1', rtools: ''}
 
     env:
@@ -73,5 +73,7 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+        env:
+          JAGS_PREFIX: '/opt/homebrew'
         with:
           upload-snapshots: true
