@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
+          - {os: macOS-latest-large,   r: 'release'}
           #- {os: windows-latest, r: 'release', rtools: '42'}
           ## - {os: ubuntu-latest,   r: 'devel', rtools: '' , http-user-agent: 'release'}
           #- {os: ubuntu-latest,   r: 'release', rtools: ''}
@@ -68,8 +68,6 @@ jobs:
           sudo apt-get install libglpk-dev libglpk40 jags libv8-dev libnode-dev libcurl4-openssl-dev
 
       - uses: r-lib/actions/setup-r-dependencies@v2
-        env:
-          JAGS_PREFIX: '/opt/local'
         with:
           extra-packages: any::rcmdcheck
           needs: check
