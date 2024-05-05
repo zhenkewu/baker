@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release', rtools: ''}
+          - {os: macOS-latest,   r: 'release'}
           - {os: windows-latest, r: 'release', rtools: '42'}
           # - {os: ubuntu-latest,   r: 'devel', rtools: '' , http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release', rtools: ''}
@@ -57,7 +57,8 @@ jobs:
 
       - name: Install Mac system dependencies
         if: runner.os == 'macOS'
-        run: brew install jags
+        run: |
+          brew install jags
 
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
