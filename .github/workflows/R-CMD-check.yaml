@@ -58,9 +58,8 @@ jobs:
       - name: Install Mac system dependencies
         if: runner.os == 'macOS'
         run: |
-          brew install pkg-config
           brew install jags
-          pkg-config --modversion jags
+          where jags
           
 
       - name: Install Linux system dependencies
