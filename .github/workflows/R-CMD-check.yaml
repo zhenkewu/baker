@@ -15,10 +15,10 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release', rtools: '42'}
-          # - {os: ubuntu-latest,   r: 'devel', rtools: '' , http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release', rtools: ''}
-          # - {os: ubuntu-latest,   r: 'oldrel-1', rtools: ''}
+          #- {os: windows-latest, r: 'release', rtools: '42'}
+          ## - {os: ubuntu-latest,   r: 'devel', rtools: '' , http-user-agent: 'release'}
+          #- {os: ubuntu-latest,   r: 'release', rtools: ''}
+          ## - {os: ubuntu-latest,   r: 'oldrel-1', rtools: ''}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -58,7 +58,10 @@ jobs:
       - name: Install Mac system dependencies
         if: runner.os == 'macOS'
         run: |
+          brew install pkg-config
           brew install jags
+          pkg-config --modversion jags
+          
 
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
@@ -67,8 +70,6 @@ jobs:
           sudo apt-get install libglpk-dev libglpk40 jags libv8-dev libnode-dev libcurl4-openssl-dev
 
       - uses: r-lib/actions/setup-r-dependencies@v2
-        env:
-          JAGS_PREFIX: '/opt/homebrew/'
         with:
           extra-packages: any::rcmdcheck
           needs: check
