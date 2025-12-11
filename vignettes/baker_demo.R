@@ -25,7 +25,8 @@ kable(head(demodat))
 #                      "n.thin"     to 40,
 
 
-working_dir <- tempdir() # <-- create a temporary directory.
+# working_dir <- tempdir() # <-- create a temporary directory. need to uncomment
+## if later need to run this .R file.
 
 K.true  <- 2   # no. of latent subclasses in actual simulation. 
 # If eta = c(1,0), K.true is effectively 1.

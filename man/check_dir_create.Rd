@@ -16,7 +16,13 @@ the same returned values for \code{\link[=dir.create]{dir.create()}}
 check existence and create folder if non-existent
 }
 \examples{
-
-check_dir_create(tempdir())
+\donttest{
+run_example <- function(){
+ xx <- tempdir()
+ check_dir_create(xx)
+ on.exit(unlink(xx, recursive = TRUE), add = TRUE) 
+}
+run_example()
+}
 
 }

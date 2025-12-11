@@ -22,9 +22,9 @@ see \code{\link[=print.nplcm]{print.nplcm()}}
 Other nplcm results: 
 \code{\link{print.nplcm}()},
 \code{\link{print.summary.nplcm.no_reg}()},
-\code{\link{print.summary.nplcm.reg_nest_strat}()},
 \code{\link{print.summary.nplcm.reg_nest}()},
-\code{\link{print.summary.nplcm.reg_nonest_strat}()},
-\code{\link{print.summary.nplcm.reg_nonest}()}
+\code{\link{print.summary.nplcm.reg_nest_strat}()},
+\code{\link{print.summary.nplcm.reg_nonest}()},
+\code{\link{print.summary.nplcm.reg_nonest_strat}()}
 }
 \concept{nplcm results}

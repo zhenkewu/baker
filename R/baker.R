@@ -43,8 +43,7 @@
 #' @section baker functions:
 #' [nplcm()]
 #'
-#' @docType package
-#' @name baker
-NULL
+#' @keywords internal
+"_PACKAGE"
 #> NULL
 

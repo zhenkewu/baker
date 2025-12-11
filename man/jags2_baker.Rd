@@ -37,7 +37,7 @@ jags2_baker(
 \item{model.file}{file containing the model written in \code{BUGS}
   code. Alternatively, as in \pkg{R2WinBUGS}, \code{model.file} can be an R
   function that contains a \code{BUGS} model that is written to a
-  temporary model file (see \code{\link{tempfile}}) using \code{\link{write.model}}}
+  temporary model file (see \code{tempfile}) using \code{write.model}}
 
 \item{n.chains}{number of Markov chains (default: 3)}
 

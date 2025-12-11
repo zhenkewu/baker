@@ -20,10 +20,10 @@ Summary of object output by \code{\link[=nplcm]{nplcm()}} --- need details.
 \seealso{
 Other nplcm results: 
 \code{\link{print.summary.nplcm.no_reg}()},
-\code{\link{print.summary.nplcm.reg_nest_strat}()},
 \code{\link{print.summary.nplcm.reg_nest}()},
-\code{\link{print.summary.nplcm.reg_nonest_strat}()},
+\code{\link{print.summary.nplcm.reg_nest_strat}()},
 \code{\link{print.summary.nplcm.reg_nonest}()},
+\code{\link{print.summary.nplcm.reg_nonest_strat}()},
 \code{\link{summary.nplcm}()}
 }
 \concept{nplcm results}

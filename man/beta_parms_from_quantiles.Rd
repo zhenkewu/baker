@@ -45,6 +45,3 @@ the true positive rates (TPR)
 beta_parms_from_quantiles(c(0.5,0.99))
 
 }
-\references{
-\url{http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html}
-}

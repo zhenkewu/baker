@@ -1,4 +1,4 @@
-if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DIR","..y.."))
+if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DIR","y"))
 
 #' Posterior predictive checking for nested partially latent class models - 
 #' pairwise log odds ratio (only for bronze-standard data)
@@ -45,12 +45,16 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DI
 #' 
 #' 
 #' set.seed(1)
+#' 
+#' run_example <- function(){
 #' # include stratification information in file name:
-#' thedir    <- paste0(tempdir(),"_no_reg")
+#' thedir0    <- paste0(tempdir(),"_no_reg")
 #' 
 #' # create folders to store the model results 
-#' dir.create(thedir, showWarnings = FALSE)
-#' result_folder_no_reg <- file.path(thedir,paste("results",collapse="_"))
+#' dir.create(thedir0, showWarnings = FALSE)
+#' on.exit(unlink(thedir0, recursive = TRUE), add = TRUE) 
+#' 
+#' result_folder_no_reg <- file.path(thedir0,paste("results",collapse="_"))
 #' thedir <- result_folder_no_reg
 #' dir.create(thedir, showWarnings = FALSE)
 #' 
@@ -80,6 +84,8 @@ if(getRversion() >= "2.15.1") utils::globalVariables(c("pattern","frequency","DI
 #' nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
 #' 
 #' plot_check_pairwise_SLORD(nplcm_noreg$DIR_NPLCM,slice=1)
+#' }
+#' run_example()
 #' }
 #' @family visualization functions
 #' @family model checking functions
@@ -222,12 +228,14 @@ plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
 #' 
 #' 
 #' set.seed(1)
+#' run_example <- function(){
 #' # include stratification information in file name:
-#' thedir    <- paste0(tempdir(),"_no_reg")
+#' thedir0    <- paste0(tempdir(),"_no_reg")
 #' 
 #' # create folders to store the model results 
-#' dir.create(thedir, showWarnings = FALSE)
-#' result_folder_no_reg <- file.path(thedir,paste("results",collapse="_"))
+#' dir.create(thedir0, showWarnings = FALSE)
+#' on.exit(unlink(thedir0, recursive = TRUE), add = TRUE) 
+#' result_folder_no_reg <- file.path(thedir0,paste("results",collapse="_"))
 #' thedir <- result_folder_no_reg
 #' dir.create(thedir, showWarnings = FALSE)
 #' 
@@ -257,7 +265,9 @@ plot_check_pairwise_SLORD <- function(DIR_NPLCM,slice = 1){
 #' nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
 #' 
 #' plot_check_common_pattern(nplcm_noreg$DIR_NPLCM)
+#' }
 #' 
+#' run_example()
 #' }
 #' 
 #' @family visualization functions
@@ -508,7 +518,7 @@ plot_check_common_pattern <- function(DIR_list,
                 aes(x = factor(pattern), y = frequency, fill = factor(DIR))) +
       #facet_wrap(~ CASE, ncol = 2)+ 
       #facet_grid(~CASE,labeller=case_status_labeller)+
-      labs(list(x = "pattern", y = "frequency"))+theme_bw()+
+      labs(x = "pattern", y = "frequency")+theme_bw()+
       stat_summary(fun.data = f, geom="boxplot",
                    position = position_dodge(dodge_val))+
       stat_summary(fun.data = mean_with_nm,geom="point",aes(size=1.5),
@@ -528,8 +538,8 @@ plot_check_common_pattern <- function(DIR_list,
                x = length(case_pat_list[[1]])/2, 
                y = ymax*0.67, size = 8, colour = "red")+
       stat_summary(fun = identity,geom='errorbar', 
-                    width=0.8,aes(ymax=..y..,ymin=..y..),
-                    color="blue",size=0.9,data=hline.data)
+                    width=0.8,aes(ymax=after_stat(y),ymin=after_stat(y)),
+                    color="blue",linewidth=0.9,data=hline.data)
       # geom_errorbar(stat = "hline", 
       #               width=0.8,aes(yintercept = frequency,ymax=..y..,ymin=..y..),
       #               color="blue",size=0.9,data=hline.data)
@@ -633,7 +643,7 @@ plot_check_common_pattern <- function(DIR_list,
 #                  position = position_dodge(dodge_val))+scale_size(guide = 'none')+
 #     stat_summary(fun.data = mean_with_nm_txt,geom="text",
 #                  aes(angle=90),position = position_dodge(width = dodge_val))+
-#     scale_fill_discrete("Model\n",labels = c(base_nm))+
+#     scale_fill_discrete(title="Model\n",labels = c(base_nm))+
 #     guides(fill=guide_legend(nrow=NDIR,byrow=TRUE))+
 #     theme(legend.text = element_text(colour="blue",size = 16, face = "bold"),
 #           legend.title = element_text(size=16,face="bold"),legend.position = "top",

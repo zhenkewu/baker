@@ -1,8 +1,8 @@
 Package: baker
 Type: Package
 Title: "Nested Partially Latent Class Models"
-Version: 1.0.3.9001
-Date: 2024-04-25
+Version: 1.0.3.9003
+Date: 2025-12-11
 Authors@R: c(
      person("Zhenke", "Wu", email="zhenkewu@gmail.com",role=c("cre","aut","cph"),
      comment = c(ORCID = "0000-0001-7582-669X")),
@@ -54,7 +54,7 @@ Suggests:
     knitcitations,
     sf
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 URL: https://github.com/zhenkewu/baker, https://zhenkewu.com/baker/
 BugReports: https://github.com/zhenkewu/baker/issues

@@ -12,7 +12,7 @@ bibentry(
   volume = "65",
   number = "1",
   pages = " 97–114",
-  url = "https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssc.12101",
+  url = "https://doi.org/10.1111/rssc.12101",
   doi = "10.1111/rssc.12101"
 )
 
@@ -29,6 +29,6 @@ bibentry(
   volume = "18",
   number = "2",
   pages = " 200–213",
-  url = "https://academic.oup.com/biostatistics/article/18/2/200/2555349",
+  url = "https://doi.org/10.1093/biostatistics/kxw037",
   doi = "10.1093/biostatistics/kxw037"
 )

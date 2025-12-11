@@ -490,7 +490,6 @@ NA2dot <- function(s) {
 #' 
 #' beta_parms_from_quantiles(c(0.5,0.99))
 #'
-#' @references <http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html>
 #' @export
 #'
 beta_parms_from_quantiles <- function(q, p = c(0.025,0.975),
@@ -1278,7 +1277,7 @@ delete_start_with = function(s,vec) {
 #' derived from the names of the R objects.
 #'
 #' Roger Peng's listlabeling challenge from
-#' <http://simplystatistics.tumblr.com/post/11988685443/computing-on-the-language>.
+#' <https://simplystatistics.tumblr.com/post/11988685443/computing-on-the-language>.
 #' Code copied from <https://gist.github.com/ajdamico/1329117/0134148987859856fcecbe4446cfd37e500e4272>
 #'
 #' @param ... any R objects
@@ -1648,8 +1647,14 @@ show_dep <- function(fname,pckg="package:baker",...){
 #' 
 #' @param path Folder path to check and create if not there.
 #' @examples 
-#' 
-#' check_dir_create(tempdir())
+#' \donttest{
+#' run_example <- function(){
+#'  xx <- tempdir()
+#'  check_dir_create(xx)
+#'  on.exit(unlink(xx, recursive = TRUE), add = TRUE) 
+#' }
+#' run_example()
+#' }
 #' 
 #' @return the same returned values for [dir.create()]
 #' 

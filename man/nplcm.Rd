@@ -177,12 +177,18 @@ model_options_no_reg <- list(
 
 
 set.seed(1)
+
+run_example <- function(){
 # include stratification information in file name:
-thedir    <- paste0(tempdir(),"_no_reg")
+thedir0    <- paste0(tempdir(),"_no_reg")
 
 # create folders to store the model results 
-dir.create(thedir, showWarnings = FALSE)
-result_folder_no_reg <- file.path(thedir,paste("results",collapse="_"))
+dir.create(thedir0, showWarnings = FALSE)
+# remove the temp folder on exit:
+# add = TRUE ensures you don't overwrite other exit handlers
+on.exit(unlink(thedir0, recursive = TRUE), add = TRUE) 
+
+result_folder_no_reg <- file.path(thedir0,paste("results",collapse="_"))
 thedir <- result_folder_no_reg
 dir.create(thedir, showWarnings = FALSE)
 
@@ -211,7 +217,8 @@ rjags::load.module("glm")
 
 nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
 
-
+}
+run_example()
 }
 
 
