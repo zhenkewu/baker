@@ -71,8 +71,6 @@ add_meas_SS_param       add parameters for a SS measurement slice among
                         cases (conditional independence)
 as.matrix_or_vec        convert one column data frame to a vector
 assign_model            Interpret the specified model structure
-baker                   baker: *B*ayesian *A*nalytic *K*it for
-                        *E*tiology *R*esearch
 beta_parms_from_quantiles
                         Pick parameters in the Beta distribution to
                         match the specified range

@@ -1,3 +1,4 @@
+baker-package	baker-package
 add_meas_BrS_case_Nest_Slice	add_meas_BrS_case_Nest_Slice
 add_meas_BrS_case_Nest_Slice_jags	add_meas_BrS_case_Nest_Slice_jags
 add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags	add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags
@@ -20,7 +21,7 @@ add_meas_SS_case	add_meas_SS_case
 add_meas_SS_param	add_meas_SS_param
 as.matrix_or_vec	as.matrix_or_vec
 assign_model	assign_model
-baker	baker
+baker	baker-package
 beta_parms_from_quantiles	beta_parms_from_quantiles
 beta_plot	beta_plot
 bin2dec	bin2dec
