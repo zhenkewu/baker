@@ -1,4 +1,4 @@
-# baker (development version)
+# baker 1.0.4
 
 # baker 1.0.3
 
