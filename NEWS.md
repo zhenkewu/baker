@@ -1,4 +1,12 @@
+# baker (development version)
+
 # baker 1.0.4
+
+* Fixed an issue related to the ggplot2 label requirement change that made
+function `plot_check_common_pattern()` produce an error. This removed an Error.
+* In the example of the package main function `nplcm()`, removed a 
+temporary folder created when executing the example; similarly we fixed the issue
+for all other examples that created temporary folders. This removes a Note.
 
 # baker 1.0.3
 
