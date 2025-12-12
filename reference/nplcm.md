@@ -276,7 +276,7 @@ nplcm_noreg <- nplcm(data_nplcm_noreg,model_options_no_reg,mcmc_options_no_reg)
 }
 run_example()
 #> ==[baker] Results stored in: == 
-#>  /tmp/RtmpRcxbeQ_no_reg/results 
+#>  /tmp/RtmpEs5B3L_no_reg/results 
 # }
 
 ```

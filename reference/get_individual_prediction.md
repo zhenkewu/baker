@@ -101,7 +101,7 @@ image(get_individual_prediction(fitted_nplcm_noreg))
 run_example()
 #> module glm loaded
 #> ==[baker] Results stored in: == 
-#>  /tmp/RtmpRcxbeQ_no_reg/results 
+#>  /tmp/RtmpEs5B3L_no_reg/results 
 
 # }
 

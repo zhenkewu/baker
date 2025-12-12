@@ -117,9 +117,9 @@ plot_check_pairwise_SLORD(nplcm_noreg$DIR_NPLCM,slice=1)
 }
 run_example()
 #> ==[baker] Results stored in: == 
-#>  /tmp/RtmpRcxbeQ_no_reg/results 
+#>  /tmp/RtmpEs5B3L_no_reg/results 
 
 #> ==[baker]A figure is generated for model checking: pairwise standardized log odds ratio difference (SLORD). 
-#>           Stored in  /tmp/RtmpRcxbeQ_no_reg/results  ==
+#>           Stored in  /tmp/RtmpEs5B3L_no_reg/results  ==
 # }
 ```

@@ -129,7 +129,7 @@ plot_check_common_pattern(nplcm_noreg$DIR_NPLCM)
 
 run_example()
 #> ==[baker] Results stored in: == 
-#>  /tmp/RtmpRcxbeQ_no_reg/results 
+#>  /tmp/RtmpEs5B3L_no_reg/results 
 #> ==Plotting for model checking: frequent BrS measurements patterns. ==
 
 # }
