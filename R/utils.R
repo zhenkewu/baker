@@ -1651,7 +1651,7 @@ show_dep <- function(fname,pckg="package:baker",...){
 #' run_example <- function(){
 #'  xx <- tempdir()
 #'  check_dir_create(xx)
-#'  on.exit(unlink(xx, recursive = TRUE), add = TRUE) 
+#'  # on.exit(unlink(xx, recursive = TRUE), add = TRUE) 
 #' }
 #' run_example()
 #' }

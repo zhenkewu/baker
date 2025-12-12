@@ -1,489 +1,165 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/baker_demo.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/H.html</loc>
-  </url>
-  <url>
-    <loc>/reference/I2symb.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Imat2cat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/NA2dot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_case_Nest_Slice.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_case_Nest_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_case_NoNest_Slice.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_case_NoNest_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_case_NoNest_reg_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_ctrl_Nest_Slice.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_ctrl_NoNest_Slice.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_ctrl_NoNest_reg_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_param_Nest_Slice.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_param_Nest_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_param_Nest_reg_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_param_NoNest_Slice.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_param_NoNest_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_param_NoNest_reg_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_BrS_subclass_Nest_Slice.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_SS_case.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_meas_SS_param.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as.matrix_or_vec.html</loc>
-  </url>
-  <url>
-    <loc>/reference/assign_model.html</loc>
-  </url>
-  <url>
-    <loc>/reference/baker.html</loc>
-  </url>
-  <url>
-    <loc>/reference/beta_parms_from_quantiles.html</loc>
-  </url>
-  <url>
-    <loc>/reference/beta_plot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bin2dec.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_dir_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/clean_combine_subsites.html</loc>
-  </url>
-  <url>
-    <loc>/reference/clean_perch_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/combine_data_nplcm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compute_logOR_single_cause.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compute_marg_PR_nested_reg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compute_marg_PR_nested_reg_array.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_bugs_regressor_Eti.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_bugs_regressor_FPR.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_nplcm_noreg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_nplcm_reg_nest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/delete_start_with.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dm_Rdate_Eti.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dm_Rdate_FPR.html</loc>
-  </url>
-  <url>
-    <loc>/reference/expit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/extract_data_raw.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_coverage.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_direct_bias.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_fitted_mean_nested.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_fitted_mean_no_nested.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_individual_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_individual_prediction.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_latent_seq.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_marginal_rates_nested.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_marginal_rates_no_nested.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_metric.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_pEti_samp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_plot_num.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_plot_pos.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_postsd.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_top_pattern.html</loc>
-  </url>
-  <url>
-    <loc>/reference/has_non_basis.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/init_latent_jags_multipleSS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/insert_bugfile_chunk_noreg_etiology.html</loc>
-  </url>
-  <url>
-    <loc>/reference/insert_bugfile_chunk_noreg_meas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/insert_bugfile_chunk_reg_discrete_predictor_etiology.html</loc>
-  </url>
-  <url>
-    <loc>/reference/insert_bugfile_chunk_reg_discrete_predictor_nonest_meas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/insert_bugfile_chunk_reg_etiology.html</loc>
-  </url>
-  <url>
-    <loc>/reference/insert_bugfile_chunk_reg_nest_meas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/insert_bugfile_chunk_reg_nonest_meas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is.error.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_discrete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_intercept_only.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_jags_folder.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_length_all_one.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jags2_baker.html</loc>
-  </url>
-  <url>
-    <loc>/reference/line2user.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadOneName.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logOR.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logsumexp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lookup_quality.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_filename.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_foldername.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_meas_object.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_numbered_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_template.html</loc>
-  </url>
-  <url>
-    <loc>/reference/marg_H.html</loc>
-  </url>
-  <url>
-    <loc>/reference/match_cause.html</loc>
-  </url>
-  <url>
-    <loc>/reference/merge_lists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/my_reorder.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nplcm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nplcm_fit_NoReg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nplcm_fit_Reg_Nest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nplcm_fit_Reg_NoNest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nplcm_fit_Reg_discrete_predictor_NoNest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nplcm_read_folder.html</loc>
-  </url>
-  <url>
-    <loc>/reference/null_as_zero.html</loc>
-  </url>
-  <url>
-    <loc>/reference/order_post_eti.html</loc>
-  </url>
-  <url>
-    <loc>/reference/overall_uniform.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parse_nplcm_reg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pathogen_category_perch.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pathogen_category_simulation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.nplcm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_BrS_panel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_SS_panel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_case_study.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_check_common_pattern.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_check_pairwise_SLORD.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_etiology_regression.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_etiology_strat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_leftmost.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_logORmat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_panels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_pie_panel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_subwt_regression.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.nplcm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.summary.nplcm.no_reg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.summary.nplcm.reg_nest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.summary.nplcm.reg_nest_strat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.summary.nplcm.reg_nonest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.summary.nplcm.reg_nonest_strat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_meas_object.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rvbern.html</loc>
-  </url>
-  <url>
-    <loc>/reference/s_date_Eti.html</loc>
-  </url>
-  <url>
-    <loc>/reference/s_date_FPR.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_prior_tpr_BrS_NoNest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_prior_tpr_SS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_strat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_dep.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_individual.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simulate_brs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simulate_latent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simulate_nplcm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simulate_ss.html</loc>
-  </url>
-  <url>
-    <loc>/reference/softmax.html</loc>
-  </url>
-  <url>
-    <loc>/reference/subset_data_nplcm_by_index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarize_BrS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarize_SS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summary.nplcm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sym_diff_month.html</loc>
-  </url>
-  <url>
-    <loc>/reference/symb2I.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tsb.html</loc>
-  </url>
-  <url>
-    <loc>/reference/unfactor.html</loc>
-  </url>
-  <url>
-    <loc>/reference/unique_cause.html</loc>
-  </url>
-  <url>
-    <loc>/reference/unique_month.html</loc>
-  </url>
-  <url>
-    <loc>/reference/visualize_case_control_matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/visualize_season.html</loc>
-  </url>
-  <url>
-    <loc>/reference/write.model.html</loc>
-  </url>
-  <url>
-    <loc>/reference/write_model_NoReg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/write_model_Reg_Nest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/write_model_Reg_NoNest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/write_model_Reg_discrete_predictor_NoNest.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://zhenkewu.com/baker/404.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/LICENSE-text.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/articles/baker_demo.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/articles/index.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/authors.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/index.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/news/index.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/H.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/I2symb.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/Imat2cat.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/NA2dot.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_case_Nest_Slice.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_case_Nest_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_case_NoNest_Slice.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_case_NoNest_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_case_NoNest_reg_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_case_NoNest_reg_discrete_predictor_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_ctrl_Nest_Slice.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_ctrl_NoNest_Slice.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_ctrl_NoNest_reg_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_ctrl_NoNest_reg_discrete_predictor_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_param_Nest_Slice.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_param_Nest_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_param_Nest_reg_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_param_NoNest_Slice.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_param_NoNest_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_param_NoNest_reg_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_param_NoNest_reg_discrete_predictor_Slice_jags.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_BrS_subclass_Nest_Slice.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_SS_case.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/add_meas_SS_param.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/as.matrix_or_vec.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/assign_model.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/baker-package.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/beta_parms_from_quantiles.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/beta_plot.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/bin2dec.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/check_dir_create.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/clean_combine_subsites.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/clean_perch_data.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/combine_data_nplcm.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/compute_logOR_single_cause.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/compute_marg_PR_nested_reg.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/compute_marg_PR_nested_reg_array.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/create_bugs_regressor_Eti.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/create_bugs_regressor_FPR.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/data_nplcm_noreg.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/data_nplcm_reg_nest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/delete_start_with.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/dm_Rdate_Eti.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/dm_Rdate_FPR.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/expit.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/extract_data_raw.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_coverage.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_direct_bias.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_fitted_mean_nested.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_fitted_mean_no_nested.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_individual_data.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_individual_prediction.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_latent_seq.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_marginal_rates_nested.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_marginal_rates_no_nested.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_metric.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_pEti_samp.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_plot_num.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_plot_pos.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_postsd.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/get_top_pattern.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/has_non_basis.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/index.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/init_latent_jags_multipleSS.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/insert_bugfile_chunk_noreg_etiology.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/insert_bugfile_chunk_noreg_meas.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/insert_bugfile_chunk_reg_discrete_predictor_etiology.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/insert_bugfile_chunk_reg_discrete_predictor_nonest_meas.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/insert_bugfile_chunk_reg_etiology.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/insert_bugfile_chunk_reg_nest_meas.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/insert_bugfile_chunk_reg_nonest_meas.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/is.error.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/is_discrete.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/is_intercept_only.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/is_jags_folder.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/is_length_all_one.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/jags2_baker.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/line2user.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/loadOneName.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/logOR.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/logit.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/logsumexp.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/lookup_quality.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/make_filename.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/make_foldername.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/make_list.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/make_meas_object.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/make_numbered_list.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/make_template.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/marg_H.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/match_cause.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/merge_lists.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/my_reorder.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/nplcm.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/nplcm_fit_NoReg.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/nplcm_fit_Reg_Nest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/nplcm_fit_Reg_NoNest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/nplcm_fit_Reg_discrete_predictor_NoNest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/nplcm_read_folder.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/null_as_zero.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/order_post_eti.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/overall_uniform.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/parse_nplcm_reg.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/pathogen_category_perch.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/pathogen_category_simulation.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot.nplcm.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_BrS_panel.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_SS_panel.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_case_study.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_check_common_pattern.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_check_pairwise_SLORD.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_etiology_regression.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_etiology_strat.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_leftmost.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_logORmat.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_panels.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_pie_panel.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/plot_subwt_regression.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/print.nplcm.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/print.summary.nplcm.no_reg.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/print.summary.nplcm.reg_nest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/print.summary.nplcm.reg_nest_strat.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/print.summary.nplcm.reg_nonest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/print.summary.nplcm.reg_nonest_strat.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/read_meas_object.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/rvbern.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/s_date_Eti.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/s_date_FPR.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/set_prior_tpr_BrS_NoNest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/set_prior_tpr_SS.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/set_strat.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/show_dep.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/show_individual.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/simulate_brs.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/simulate_latent.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/simulate_nplcm.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/simulate_ss.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/softmax.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/subset_data_nplcm_by_index.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/summarize_BrS.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/summarize_SS.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/summary.nplcm.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/sym_diff_month.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/symb2I.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/tsb.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/unfactor.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/unique_cause.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/unique_month.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/visualize_case_control_matrix.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/visualize_season.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/write.model.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/write_model_NoReg.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/write_model_Reg_Nest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/write_model_Reg_NoNest.html</loc></url>
+<url><loc>https://zhenkewu.com/baker/reference/write_model_Reg_discrete_predictor_NoNest.html</loc></url>
 </urlset>
+

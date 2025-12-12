@@ -48,7 +48,12 @@ jobs:
           Get-Command g++ | Select-Object -ExpandProperty Definition
           mingw32-make --version
           Get-Command mingw32-make | Select-Object -ExpandProperty Definition
-          (New-Object System.Net.WebClient).DownloadFile('https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/JAGS-4.3.1.exe', 'C:\JAGS-4.3.1.exe')
+          try {
+              (New-Object System.Net.WebClient).DownloadFile('https://drive.google.com/file/d/11rmG5kliD2m67k5uWWmb_0Zcem4awBD8/view?usp=sharing', 'C:\JAGS-4.3.1.exe')
+          } catch {
+              Write-Host "Failed to download JAGS: $_"
+          }
+          # (New-Object System.Net.WebClient).DownloadFile('https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/JAGS-4.3.1.exe', 'C:\JAGS-4.3.1.exe')
         shell: powershell
 
       - name: Install JAGS on Windows
@@ -60,6 +65,10 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install jags
+          # Confirm JAGS install location and set library path
+          echo "JAGS installed at:" $(brew --prefix jags)
+          export DYLD_LIBRARY_PATH=$(brew --prefix jags)/lib:$DYLD_LIBRARY_PATH
+          echo "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
           
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
